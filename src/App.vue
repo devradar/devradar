@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" fixed app>
       <v-list dense>
-        <v-list-tile 
+        <v-list-tile
         v-for="elm in menuItems"
         v-bind:key="elm.title"
         router
@@ -49,8 +49,10 @@ export default {
     drawer: false,
     menuItems: [
       { icon: 'history', title: 'History', link: '/history' },
-      { icon: 'donut_large', title: 'Radar', link: '/' },
-      { icon: 'delete', title: 'Deprecated', link: '/deprecated' }
+      { icon: 'track_changes', title: 'Radar', link: '/' },
+      { icon: 'delete', title: 'Deprecated', link: '/deprecated' },
+      { icon: 'face', title: 'Login', link: '/login' },
+      { icon: 'person_add', title: 'Signup', link: '/signup' }
     ]
   }),
   props: {
