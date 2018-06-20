@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Radar from '@/components/Radar'
 import History from '@/components/History'
 import Deprecated from '@/components/Deprecated'
-import Signup from '@/components/Signup'
 import Login from '@/components/Login'
 
 Vue.use(Router)
@@ -24,11 +23,6 @@ export default new Router({
       path: '/deprecated',
       name: 'Deprecated',
       component: Deprecated
-    },
-    {
-      path: '/signup',
-      name: 'Signup',
-      component: Signup
     },
     {
       path: '/login',

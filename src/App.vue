@@ -51,8 +51,7 @@ export default {
       { icon: 'history', title: 'History', link: '/history' },
       { icon: 'track_changes', title: 'Radar', link: '/' },
       { icon: 'delete', title: 'Deprecated', link: '/deprecated' },
-      { icon: 'face', title: 'Login', link: '/login' },
-      { icon: 'person_add', title: 'Signup', link: '/signup' }
+      { icon: 'face', title: 'Login', link: '/login' }
     ]
   }),
   props: {
