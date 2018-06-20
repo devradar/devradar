@@ -1,59 +1,47 @@
 <template>
-  <div class="page-container">
-    <md-app md-mode="reveal">
-      <md-app-toolbar class="md-primary">
-        <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
-          <md-icon>menu</md-icon>
-        </md-button>
-        <span class="md-title">Techradar</span>
-      </md-app-toolbar>
-
-      <md-app-drawer :md-active.sync="menuVisible">
-        <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
-
-        <md-list>
-          <md-list-item>
-            <md-icon>history</md-icon>
-            <span class="md-list-item-text">History</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>donut_large</md-icon>
-            <span class="md-list-item-text">Radar</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>delete</md-icon>
-            <span class="md-list-item-text">Deprecated</span>
-          </md-list-item>
-        </md-list>
-      </md-app-drawer>
-
-      <md-app-content>
-        <router-view/>
-      </md-app-content>
-    </md-app>
-  </div>
+  <v-app id="inspire">
+    <v-navigation-drawer v-model="drawer" fixed app>
+      <v-list dense v-for="menu in menuItems" v-bind:key="menu.title">
+        <v-list-tile @click="menu.link">
+          <v-list-tile-action>
+            <v-icon>{{menu.icon}}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{menu.title}}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar class="primary" dark fixed app>
+      <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>Techradar 📡</v-toolbar-title>
+      <v-toolbar-items class="hidden-xs-only" v-for="menu in menuItems" v-bind:key="menu.title">
+        <v-btn flat>
+          <v-icon left>{{menu.icon}}</v-icon>
+          {{menu.title}}
+        </v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+    <v-content>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
-
-<style lang="scss" scoped>
-  .md-app {
-    max-height: 400px;
-    border: 1px solid rgba(#000, .12);
-  }
-
-   // Demo purposes only
-  .md-drawer {
-    width: 230px;
-    max-width: calc(100vw - 125px);
-  }
-</style>
 
 <script>
 export default {
-  name: 'Reveal',
   data: () => ({
-    menuVisible: false
-  })
+    drawer: false,
+    menuItems: [
+      { icon: 'history', title: 'History', link: '' },
+      { icon: 'donut_large', title: 'Radar', link: '' },
+      { icon: 'delete', title: 'Deprecated', link: '' }
+    ]
+  }),
+  props: {
+    source: String
+  }
 }
 </script>
