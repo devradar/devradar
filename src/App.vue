@@ -1,24 +1,37 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" fixed app>
-      <v-list dense v-for="menu in menuItems" v-bind:key="menu.title">
-        <v-list-tile @click="menu.link">
+      <v-list dense>
+        <v-list-tile 
+        v-for="elm in menuItems"
+        v-bind:key="elm.title"
+        router
+        v-bind:to="elm.link"
+        >
           <v-list-tile-action>
-            <v-icon>{{menu.icon}}</v-icon>
+            <v-icon>{{elm.icon}}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>{{menu.title}}</v-list-tile-title>
+            <v-list-tile-title>{{elm.title}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar class="primary" dark fixed app>
       <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Techradar 📡</v-toolbar-title>
-      <v-toolbar-items class="hidden-xs-only" v-for="menu in menuItems" v-bind:key="menu.title">
-        <v-btn flat>
-          <v-icon left>{{menu.icon}}</v-icon>
-          {{menu.title}}
+      <v-toolbar-title>
+        Techradar 📡
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn flat
+        v-for="elm in menuItems"
+        v-bind:key="elm.title"
+        router
+        v-bind:to="elm.link"
+        >
+          <v-icon left>{{elm.icon}}</v-icon>
+          {{elm.title}}
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -35,9 +48,9 @@ export default {
   data: () => ({
     drawer: false,
     menuItems: [
-      { icon: 'history', title: 'History', link: '' },
-      { icon: 'donut_large', title: 'Radar', link: '' },
-      { icon: 'delete', title: 'Deprecated', link: '' }
+      { icon: 'history', title: 'History', link: '/history' },
+      { icon: 'donut_large', title: 'Radar', link: '/' },
+      { icon: 'delete', title: 'Deprecated', link: '/deprecated' }
     ]
   }),
   props: {
