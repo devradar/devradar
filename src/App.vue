@@ -56,6 +56,9 @@ export default {
   }),
   props: {
     source: String
+  },
+  mounted: function () {
+    this.$store.dispatch('init')
   }
 }
 </script>

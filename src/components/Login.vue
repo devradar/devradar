@@ -13,6 +13,9 @@
                     <v-btn v-on:click="onLogin('github')" mx-auto>Login using GitHub</v-btn>
                   </v-flex>
                 </v-layout>
+                <v-layout row>
+                  <span>user: {{ user }}</span>
+                </v-layout>
             </v-container>
           </v-card-text>
         </v-card>
@@ -25,10 +28,17 @@
 export default {
   data: () => ({
   }),
+  computed: {
+    user () {
+      return this.$store.getters.user
+    }
+  },
   methods: {
     onLogin (provider) {
       this.$store.dispatch('oauthLogin', {provider})
     }
+  },
+  mounted: function () {
   }
 }
 </script>

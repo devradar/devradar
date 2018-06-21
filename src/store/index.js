@@ -38,11 +38,7 @@ export const store = new VueX.Store({
         'changed': true
       }
     ],
-    user: {
-      name: 'hans',
-      id: 'userId123',
-      role: 'janitor'
-    }
+    user: null
   },
   mutations: {
     setUser (state, payload) {
@@ -62,19 +58,27 @@ export const store = new VueX.Store({
         default:
           console.error(`Unknown provider: ${payload.provider}`)
       }
-      fb.auth().signInWithPopup(provider)
-        .then(result => {
-          const user = result.user
-          console.log('yay')
-          console.log(user)
-        }).catch(error => {
+      fb.auth().setPersistence(fb.auth.Auth.Persistence.LOCAL) // store user until logout happens
+      fb.auth().signInWithPopup(provider) // authenticated user is propagated to state using the hook created in the `init` action
+        .catch(error => {
           console.error(error)
         })
+    },
+    init ({commit}) {
+      // hook up auth listener to mutate 'user' state
+      fb.auth().onAuthStateChanged(user => {
+        if (user) {
+          commit('setUser', user)
+        }
+      })
     }
   },
   getters: {
     loadedBlips (state) {
       return state.loadedBlips.sort((a, b) => a.title < b.title).sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
+    },
+    user (state) {
+      return state.user
     }
   }
 })
