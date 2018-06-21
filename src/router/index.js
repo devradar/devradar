@@ -4,6 +4,7 @@ import Radar from '@/components/Radar'
 import History from '@/components/History'
 import Deprecated from '@/components/Deprecated'
 import Login from '@/components/Login'
+import Users from '@/components/Users'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/users',
+      name: 'Users',
+      component: Users
     }
   ]
 })

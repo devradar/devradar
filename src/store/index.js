@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import VueX from 'vuex'
-import * as fb from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 
-const ghProvider = new fb.auth.GithubAuthProvider()
-const twitterProvider = new fb.auth.TwitterAuthProvider()
+const ghProvider = new firebase.auth.GithubAuthProvider()
+const twitterProvider = new firebase.auth.TwitterAuthProvider()
 Vue.use(VueX)
 
 export const store = new VueX.Store({
@@ -38,11 +40,15 @@ export const store = new VueX.Store({
         'changed': true
       }
     ],
-    user: null
+    user: null,
+    userList: []
   },
   mutations: {
     setUser (state, payload) {
       state.user = payload
+    },
+    setUserList (state, users) {
+      state.userList = users
     }
   },
   actions: {
@@ -58,19 +64,26 @@ export const store = new VueX.Store({
         default:
           console.error(`Unknown provider: ${payload.provider}`)
       }
-      fb.auth().setPersistence(fb.auth.Auth.Persistence.LOCAL) // store user until logout happens
-      fb.auth().signInWithPopup(provider) // authenticated user is propagated to state using the hook created in the `init` action
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // store user until logout happens
+      firebase.auth().signInWithPopup(provider) // authenticated user is propagated to state using the hook created in the `init` action
         .catch(error => {
           console.error(error)
         })
     },
     init ({commit}) {
       // hook up auth listener to mutate 'user' state
-      fb.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged(user => {
         if (user) {
           commit('setUser', user)
         }
       })
+    },
+    getUserList ({commit}) {
+      firebase.firestore().collection('users').get()
+        .then(snapshot => {
+          const users = snapshot.docs.map(d => d.data())
+          commit('setUserList', users)
+        })
     }
   },
   getters: {
@@ -79,6 +92,9 @@ export const store = new VueX.Store({
     },
     user (state) {
       return state.user
+    },
+    userList (state) {
+      return state.userList
     }
   }
 })

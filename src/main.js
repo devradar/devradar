@@ -1,7 +1,8 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import * as fb from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
 import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
@@ -27,12 +28,13 @@ new Vue({
   components: { App },
   template: '<App/>',
   created () {
-    fb.initializeApp({
+    firebase.initializeApp({
       apiKey: 'AIzaSyC3FxfpYywy5ZYpiWuf9nw8_vlbxibpQH8',
       authDomain: 'techradar-f5834.firebaseapp.com',
       databaseURL: 'https://techradar-f5834.firebaseio.com',
       projectId: 'techradar-f5834',
       storageBucket: 'techradar-f5834.appspot.com'
     })
+    firebase.firestore().settings({timestampsInSnapshots: true})
   }
 })

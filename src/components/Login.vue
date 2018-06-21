@@ -6,10 +6,10 @@
           <v-card-text>
             <v-container>
                 <v-layout row>
-                  <v-flex xs6>
+                  <v-flex xs6 class="text-xs-center">
                     <v-btn v-on:click="onLogin('twitter')" mx-auto>Login using Twitter</v-btn>
                   </v-flex>
-                  <v-flex xs6>
+                  <v-flex xs6 class="text-xs-center">
                     <v-btn v-on:click="onLogin('github')" mx-auto>Login using GitHub</v-btn>
                   </v-flex>
                 </v-layout>
@@ -30,7 +30,7 @@ export default {
   }),
   computed: {
     user () {
-      return this.$store.getters.user
+      return (this.$store.getters.user || {}).uid
     }
   },
   methods: {
