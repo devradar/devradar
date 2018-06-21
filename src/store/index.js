@@ -75,6 +75,8 @@ export const store = new VueX.Store({
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           commit('setUser', user)
+        } else {
+          commit('setUser', null)
         }
       })
     },

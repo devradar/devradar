@@ -46,16 +46,28 @@
 <script>
 export default {
   data: () => ({
-    drawer: false,
-    menuItems: [
-      { icon: 'history', title: 'History', link: '/history' },
-      { icon: 'track_changes', title: 'Radar', link: '/' },
-      { icon: 'delete', title: 'Deprecated', link: '/deprecated' },
-      { icon: 'face', title: 'Login', link: '/login' }
-    ]
+    drawer: false
   }),
   props: {
     source: String
+  },
+  computed: {
+    menuItems: function () {
+      const uid = (this.$store.getters.user || {}).uid
+      if (uid) {
+        return [
+          { icon: 'history', title: 'History', link: '/history' },
+          { icon: 'track_changes', title: 'Radar', link: '/' },
+          { icon: 'delete', title: 'Deprecated', link: '/deprecated' },
+          { icon: 'exit_to_app', title: 'Logout', link: '/logout' }
+        ]
+      } else {
+        return [
+          { icon: 'track_changes', title: 'Radar', link: '/' },
+          { icon: 'face', title: 'Login', link: '/login' }
+        ]
+      }
+    }
   },
   mounted: function () {
     this.$store.dispatch('init')
