@@ -4,9 +4,6 @@
       {{ userList }}
     </v-layout>
     <v-layout row>
-      {{ roles }}
-    </v-layout>
-    <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-list two-line>
@@ -16,13 +13,13 @@
               ripple
             >
               <v-list-tile-content>
-                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ item.uid }}</v-list-tile-sub-title>
+                <v-list-tile-title>{{ item.name }} ({{ item.uid }})</v-list-tile-title>
+                <v-list-tile-sub-title>last seen: {{ item.lastLogin }}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-list-tile-action-text>Admin</v-list-tile-action-text>
                 <v-icon
-                  v-if="item.roles.indexOf('admin') > -1"
+                  v-if="item.roles.admin"
                   color="yellow darken-2"
                 >star</v-icon>
                 <v-icon
@@ -60,10 +57,6 @@ export default {
   },
   mounted () {
     this.$store.dispatch('getUserList')
-    firebase.firestore().collection('settings').doc('roles').get()
-      .then(snapshot => {
-        this.roles = snapshot.data()
-      })
   }
 }
 </script>

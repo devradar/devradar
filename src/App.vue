@@ -53,20 +53,16 @@ export default {
   },
   computed: {
     menuItems: function () {
-      const uid = (this.$store.getters.user || {}).uid
-      if (uid) {
-        return [
-          { icon: 'history', title: 'History', link: '/history' },
-          { icon: 'track_changes', title: 'Radar', link: '/' },
-          { icon: 'delete', title: 'Deprecated', link: '/deprecated' },
-          { icon: 'exit_to_app', title: 'Logout', link: '/logout' }
-        ]
-      } else {
-        return [
-          { icon: 'track_changes', title: 'Radar', link: '/' },
-          { icon: 'face', title: 'Login', link: '/login' }
-        ]
-      }
+      const user = this.$store.getters.user || {}
+      const items = [
+        { icon: 'history', title: 'History', link: '/history', validator: user => user.uid },
+        { icon: 'track_changes', title: 'Radar', link: '/', validator: user => true },
+        { icon: 'delete', title: 'Deprecated', link: '/deprecated', validator: user => user.uid },
+        { icon: 'exit_to_app', title: 'Logout', link: '/logout', validator: user => user.uid },
+        { icon: '', title: 'Users', link: '/users', validator: user => user.uid && user.roles.admin },
+        { icon: 'face', title: 'Login', link: '/login', validator: user => !user.uid }
+      ]
+      return items.filter(i => i.validator(user))
     }
   },
   mounted: function () {

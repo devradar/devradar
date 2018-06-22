@@ -40,7 +40,7 @@ export const store = new VueX.Store({
         'changed': true
       }
     ],
-    user: null,
+    user: {},
     userList: []
   },
   mutations: {
@@ -74,9 +74,29 @@ export const store = new VueX.Store({
       // hook up auth listener to mutate 'user' state
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          commit('setUser', user)
+          // upsert into user collection
+          const coll = firebase.firestore().collection('users')
+          coll.doc(user.uid).get()
+            .then(snapshot => {
+              const doc = snapshot.data()
+              doc.displayName = user.displayName
+              doc.lastLogin = new Date().toISOString()
+              commit('setUser', doc)
+              return coll.doc(user.uid).update(doc)
+            })
+            .catch(e => { // document does not exist
+              const doc = {
+                uid: user.uid,
+                name: user.displayName || user.uid,
+                displayName: user.displayName,
+                lastLogin: new Date().toISOString(),
+                roles: {}
+              }
+              commit('setUser', doc)
+              return coll.doc(user.uid).set(doc)
+            })
         } else {
-          commit('setUser', null)
+          commit('setUser', {})
         }
       })
     },

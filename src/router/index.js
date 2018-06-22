@@ -6,6 +6,7 @@ import Deprecated from '@/components/Deprecated'
 import Login from '@/components/Login'
 import Logout from '@/components/Logout'
 import Users from '@/components/Users'
+import AuthGuard from './auth-guard'
 
 Vue.use(Router)
 
@@ -19,12 +20,14 @@ export default new Router({
     {
       path: '/history',
       name: 'History',
-      component: History
+      component: History,
+      beforeEnter: AuthGuard(user => user.uid)
     },
     {
       path: '/deprecated',
       name: 'Deprecated',
-      component: Deprecated
+      component: Deprecated,
+      beforeEnter: AuthGuard(user => user.uid)
     },
     {
       path: '/login',
@@ -39,7 +42,8 @@ export default new Router({
     {
       path: '/users',
       name: 'Users',
-      component: Users
+      component: Users,
+      beforeEnter: AuthGuard(user => user.uid && user.roles.admin)
     }
   ]
 })
