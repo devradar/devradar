@@ -66,7 +66,6 @@ export default {
     }
   },
   mounted: function () {
-    this.$store.dispatch('init')
   }
 }
 </script>

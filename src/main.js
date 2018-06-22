@@ -41,27 +41,37 @@ new Vue({
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         // upsert into user collection
-        const coll = firebase.firestore().collection('users')
-        coll.doc(user.uid).get()
+        const db = firebase.firestore()
+        db.collection('users').doc(user.uid).get()
           .then(snapshot => {
             const doc = snapshot.data()
-            doc.displayName = user.displayName
-            doc.lastLogin = new Date().toISOString()
-            store.commit('setUser', doc)
-            return coll.doc(user.uid).update(doc)
-          })
-          .catch(e => { // document does not exist
-            const doc = {
-              uid: user.uid,
-              name: user.displayName || user.uid,
-              displayName: user.displayName,
-              lastLogin: new Date().toISOString(),
-              roles: {}
+            if (doc) {
+              doc.displayName = user.displayName
+              doc.lastLogin = new Date().toISOString()
+              db.collection('users').doc(user.uid).update(doc) // update server document with time
+              db.collection('roles').doc(user.uid).get()
+                .then(rolesSnapshot => {
+                  return Object.assign(doc, {roles: rolesSnapshot.data() || {}})
+                })
+                .catch(() => { // no roles defined
+                  return Object.assign(doc, {roles: {}})
+                })
+                .then(user => {
+                  store.commit('setUser', user)
+                })
+            } else { // document does not exist, create new user
+              const doc = {
+                uid: user.uid,
+                name: user.displayName || user.uid,
+                displayName: user.displayName,
+                lastLogin: new Date().toISOString()
+              }
+              store.commit('setUser', {...doc, roles: {}})
+              return db.collection('users').doc(user.uid).set(doc)
             }
-            store.commit('setUser', doc)
-            return coll.doc(user.uid).set(doc)
           })
-      } else {
+          .catch(e => console.error(e))
+      } else { // user is not set (logout)
         store.commit('setUser', {})
       }
     })

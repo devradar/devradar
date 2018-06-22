@@ -1,26 +1,28 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /settings/roles {
-      allow read: if isSignedIn() && hasRole('admin');
-      allow write: if false;
-    }
     match /users/{user} {
-    	allow read: if false;
+     	allow get: if request.auth.uid == user || hasRole('admin');
+      allow list: if hasRole('admin');
+      allow write: if request.auth.uid == user || hasRole('admin');
+    }
+
+    match /roles/{user} {
+      allow get: if request.auth.uid == user || hasRole('admin');
+      allow list: if hasRole('admin');
+      allow write: if hasRole('admin');
     }
     
     function isSignedIn() {
       return request.auth != null;
     }    
-    function getUser() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data
+    function getRoles() {
+      return get(/databases/$(database)/documents/roles/$(request.auth.uid)).data
     }
-    
     function hasRole(role) {
-      return getUser().roles[role] == true;
+      return isSignedIn() && getRoles()[role] == true;
     }
-
     function hasAnyRole(roles) {
-      return getUser().roles.keys().hasAny(roles);
+      return isSignedIn() && ggetRoles().keys().hasAny(roles);
     }
   }
 }

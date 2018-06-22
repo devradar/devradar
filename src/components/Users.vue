@@ -1,9 +1,6 @@
 <template>
   <v-container>
     <v-layout row>
-      {{ userList }}
-    </v-layout>
-    <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-list two-line>
@@ -18,14 +15,20 @@
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-list-tile-action-text>Admin</v-list-tile-action-text>
-                <v-icon
-                  v-if="item.roles.admin"
-                  color="yellow darken-2"
-                >star</v-icon>
-                <v-icon
-                  v-else
-                  color="grey lighten-1"
-                >star_border</v-icon>
+                <v-btn
+                icon
+                @click="setRole(index, 'admin', !item.roles.admin)"
+                v-bind:key="item.roles.admin"
+                >
+                  <v-icon
+                    v-if="item.roles.admin"
+                    color="yellow darken-2"
+                  >star</v-icon>
+                  <v-icon
+                    v-else
+                    color="grey lighten-1"
+                  >star_border</v-icon>
+                </v-btn>
               </v-list-tile-action>
             </v-list-tile>
           </template>
@@ -37,9 +40,6 @@
 </template>
 
 <script>
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-
 export default {
   data: () => ({
     items: [],
@@ -51,8 +51,10 @@ export default {
     }
   },
   methods: {
-    onLogin (provider) {
-      this.$store.dispatch('oauthLogin', {provider})
+    setRole (index, role, value) {
+      this.userList[index].roles[role] = value
+      const targetUser = this.userList[index]
+      this.$store.dispatch('setRoles', {targetUser})
     }
   },
   mounted () {

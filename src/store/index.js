@@ -71,16 +71,30 @@ export const store = new VueX.Store({
         })
     },
     getUserList ({commit}) {
-      firebase.firestore().collection('users').get()
-        .then(snapshot => {
-          const users = snapshot.docs.map(d => d.data())
+      Promise.all([
+        firebase.firestore().collection('users').get(),
+        firebase.firestore().collection('roles').get()
+      ])
+        .then(([usersSnapshot, rolesSnapshot]) => {
+          const roles = rolesSnapshot.docs.map(d => Object.assign(d.data(), {id: d.id}))
+          const users = usersSnapshot.docs
+            .map(d => Object.assign(d.data(), {id: d.id}))
+            .map(d => {
+              const userRoles = roles.find(r => r.id === d.id) || {}
+              delete userRoles.id
+              return Object.assign(d, {roles: userRoles})
+            })
           commit('setUserList', users)
         })
+        .catch(err => console.error(err))
     },
     setRoles ({commit}, {targetUser}) {
-      firebase.firestore().collection('users').doc(targetUser.uid).update({
-        roles: targetUser.roles
-      })
+      const coll = firebase.firestore().collection('roles')
+      return coll.doc(targetUser.uid).update(targetUser.roles)
+        .catch(() => {
+          return coll.doc(targetUser.uid).set(targetUser.roles)
+        })
+        .catch(err => console.error(err))
     }
   },
   getters: {
