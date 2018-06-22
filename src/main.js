@@ -36,5 +36,34 @@ new Vue({
       storageBucket: 'techradar-f5834.appspot.com'
     })
     firebase.firestore().settings({timestampsInSnapshots: true})
+
+    // hook up auth listener to mutate 'user' state
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // upsert into user collection
+        const coll = firebase.firestore().collection('users')
+        coll.doc(user.uid).get()
+          .then(snapshot => {
+            const doc = snapshot.data()
+            doc.displayName = user.displayName
+            doc.lastLogin = new Date().toISOString()
+            store.commit('setUser', doc)
+            return coll.doc(user.uid).update(doc)
+          })
+          .catch(e => { // document does not exist
+            const doc = {
+              uid: user.uid,
+              name: user.displayName || user.uid,
+              displayName: user.displayName,
+              lastLogin: new Date().toISOString(),
+              roles: {}
+            }
+            store.commit('setUser', doc)
+            return coll.doc(user.uid).set(doc)
+          })
+      } else {
+        store.commit('setUser', {})
+      }
+    })
   }
 })

@@ -70,42 +70,17 @@ export const store = new VueX.Store({
           console.error(error)
         })
     },
-    init ({commit}) {
-      // hook up auth listener to mutate 'user' state
-      firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-          // upsert into user collection
-          const coll = firebase.firestore().collection('users')
-          coll.doc(user.uid).get()
-            .then(snapshot => {
-              const doc = snapshot.data()
-              doc.displayName = user.displayName
-              doc.lastLogin = new Date().toISOString()
-              commit('setUser', doc)
-              return coll.doc(user.uid).update(doc)
-            })
-            .catch(e => { // document does not exist
-              const doc = {
-                uid: user.uid,
-                name: user.displayName || user.uid,
-                displayName: user.displayName,
-                lastLogin: new Date().toISOString(),
-                roles: {}
-              }
-              commit('setUser', doc)
-              return coll.doc(user.uid).set(doc)
-            })
-        } else {
-          commit('setUser', {})
-        }
-      })
-    },
     getUserList ({commit}) {
       firebase.firestore().collection('users').get()
         .then(snapshot => {
           const users = snapshot.docs.map(d => d.data())
           commit('setUserList', users)
         })
+    },
+    setRoles ({commit}, {targetUser}) {
+      firebase.firestore().collection('users').doc(targetUser.uid).update({
+        roles: targetUser.roles
+      })
     }
   },
   getters: {
