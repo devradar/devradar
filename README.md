@@ -17,3 +17,7 @@
 The main part is a static Vue.js application using Firebase as backend and authentication provider.
 
 ![design](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/techradar/master/assets/design.puml)
+
+Database schema
+
+![firestore schema](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/techradar/master/assets/firestore.puml)
