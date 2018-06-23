@@ -11,6 +11,18 @@ service cloud.firestore {
       allow list: if hasRole('admin');
       allow write: if hasRole('admin');
     }
+
+    match /blips/{blip} {
+      allow get: if true;
+      allow list: if true;
+      allow write: if hasAnyRole(['admin', 'editor']);
+    }
+
+    match /blips/{blip}/changes/{entry} {
+      allow get: if hasAnyRole(['admin', 'editor']);
+      allow list: if hasAnyRole(['admin', 'editor']);
+      allow write: if hasAnyRole(['admin', 'editor']);
+    }
     
     function isSignedIn() {
       return request.auth != null;
