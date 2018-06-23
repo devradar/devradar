@@ -74,6 +74,7 @@ new Vue({
       } else { // user is not set (logout)
         store.commit('setUser', {})
       }
+      store.dispatch('getBlips')
     })
   }
 })

@@ -10,36 +10,7 @@ Vue.use(VueX)
 
 export const store = new VueX.Store({
   state: {
-    loadedBlips: [
-      {
-        'title': 'AKS',
-        'area': 'cloud',
-        'status': 'trial',
-        'link': '',
-        'changed': false
-      },
-      {
-        'title': 'ava',
-        'area': 'backend',
-        'status': 'trial',
-        'link': '',
-        'changed': false
-      },
-      {
-        'title': 'Azure Functions',
-        'area': 'cloud',
-        'status': 'trial',
-        'link': '',
-        'changed': true
-      },
-      {
-        'title': 'Tensorflow',
-        'area': 'datascience',
-        'status': 'assess',
-        'link': '',
-        'changed': true
-      }
-    ],
+    loadedBlips: [],
     user: {},
     userList: []
   },
@@ -49,6 +20,9 @@ export const store = new VueX.Store({
     },
     setUserList (state, users) {
       state.userList = users
+    },
+    setBlips (state, blips) {
+      state.loadedBlips = blips
     }
   },
   actions: {
@@ -95,6 +69,13 @@ export const store = new VueX.Store({
           return coll.doc(targetUser.uid).set(targetUser.roles)
         })
         .catch(err => console.error(err))
+    },
+    getBlips ({commit}) {
+      firebase.firestore().collection('blips').get()
+        .then(snapshot => {
+          const blips = snapshot.docs.map(d => Object.assign(d.data(), {id: d.id}))
+          commit('setBlips', blips)
+        })
     }
   },
   getters: {
