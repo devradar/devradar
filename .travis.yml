@@ -7,9 +7,10 @@ jobs:
   include:
     - stage: build
       script: npm run build
+      if: branch != master
     - stage: deploy
       if: branch = master
-      script: echo "Deploying to firebase"
+      script: npm run build
       deploy:
         provider: firebase
         token:
