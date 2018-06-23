@@ -14,7 +14,7 @@ jobs:
         provider: firebase
         token:
           secure: "It9YEil1YNM0d5zPHIhes0XGV4yzvBUoPJxQTfzkYg8IBvqgvtm33WkROLlx6pUefSkwI6GPvo85ZDwX0GJSQsjeJPm/1xIpgTNn+UfoIKchnIboAF8IeoCWOIhWjksUC8Wr4uL4ZdCa0n9HdfGJKILq7GgYAmFriHJ3VIV3CO44mGAhtOgiKOig9vPE+s+en5CyKWUD3PSF5D4gs+IBHy9kKcW+PDZLLmo6a3nses18+RJxKpgo4PlHrit5duaqT49W7fnT45JNtRgwefVjIKBlj5tu/Ae+9lH83WZXO32XwwUl0c/syWdWLOO2lJpTTx4XEzSlFb2FsyAB9d1XptwzEkg+nzmJkaUooO+QarMfleOuv/JXOJNnoTkfYdiKa9Jw+1aWr0K8kXNHpsxalLV9V9i0WDwvfcHe/QENqIJtf8SOk+biDgTlRk9MEoNzhzGs5bt9z5u5siK9BLhMveLbWovwY7+sDkhttWmvbpK/f9t3xiIObW3kb2FlzEvAzgQOIxaqBlKfiTdYB1dgiqaNqz3/fW7lkZko+EcxSpOm2Yu+dfK54PBaEZMZMKfgBWoFx8T1lmKkUQU3rzyAGMxfrzs6+FMXxgQkP4mBh+9pDLtGu2eHfKWe4njeixt667C+db3D3VzrgURczFIzuwx37ttTOT7HKxYxqC5qZT4="
-        project: techradar
+        project: techradar-f5834
 
 
 script:
