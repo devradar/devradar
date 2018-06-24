@@ -157,7 +157,7 @@ export default {
   },
   mounted: function () {
     this.$store.subscribe((mutation, state) => {
-      if (mutation.type === 'setBlips') {
+      if (['setBlips', 'addBlip'].indexOf(mutation.type) > -1) {
         setTimeout(() => this.arrangeBlips(), 50) // delay because blobs aren't in DOM yet
       }
     })

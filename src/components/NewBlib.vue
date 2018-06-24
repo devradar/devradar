@@ -22,7 +22,7 @@
                         v-model="title"
                         label="Title"
                         required
-                        :rules="[v => !!v || 'Item is required']"
+                        :rules="[v => !!v || 'Title is required']"
                         >
                         </v-text-field>
                         <v-text-field
@@ -36,16 +36,16 @@
                         label="Category"
                         single-line
                         required
-                        :rules="[v => !!v || 'Item is required']"
+                        :rules="[v => !!v || 'Category is required']"
                         >
                         </v-select>
                         <v-select
                         :items="states"
                         v-model="state"
-                        label="State"
+                        label="Status"
                         single-line
                         required
-                        :rules="[v => !!v || 'Item is required']"
+                        :rules="[v => !!v || 'Status is required']"
                         ></v-select>
                     </v-form>
                 </v-card-text>
@@ -66,9 +66,9 @@ export default {
       fab: false,
       dialog: false,
       category: null,
-      categories: [{ text: 'tools' }, { text: 'cloud' }, { text: 'backend' }, { text: 'datascience' }],
+      categories: ['tools', 'cloud', 'backend', 'datascience'],
       state: null,
-      states: [{ text: 'hold' }, { text: 'assess' }, { text: 'trial' }, { text: 'adopt' }],
+      states: ['hold', 'assess', 'trial', 'adopt'],
       title: null,
       link: null
     }
@@ -77,9 +77,9 @@ export default {
     submit () {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('addBlip', {
-          category: this.category.text,
+          category: this.category,
           link: this.link,
-          status: this.state.text,
+          status: this.state,
           title: this.title
         })
         this.dialog = false

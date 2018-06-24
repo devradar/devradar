@@ -23,6 +23,9 @@ export const store = new VueX.Store({
     },
     setBlips (state, blips) {
       state.loadedBlips = blips
+    },
+    addBlip (state, blip) {
+      state.loadedBlips.push(blip)
     }
   },
   actions: {
@@ -79,10 +82,9 @@ export const store = new VueX.Store({
     },
     addBlip ({commit}, payload) {
       firebase.firestore().collection('blips').add(payload)
-        .then(snapshot => {
-          console.log(JSON.stringify(snapshot))
-        }).catch(e => {
-          console.log(e)
+        .then(docRef => {
+          const id = docRef.id
+          commit('addBlip', Object.assign(payload, {id}))
         })
     }
   },
