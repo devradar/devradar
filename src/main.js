@@ -20,61 +20,76 @@ Vue.use(Vuetify, {
 })
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>',
-  created () {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyC3FxfpYywy5ZYpiWuf9nw8_vlbxibpQH8',
-      authDomain: 'techradar-f5834.firebaseapp.com',
-      databaseURL: 'https://techradar-f5834.firebaseio.com',
-      projectId: 'techradar-f5834',
-      storageBucket: 'techradar-f5834.appspot.com'
+function upsertUser (user) {
+  // upsert into user collection
+  const db = firebase.firestore()
+  return db.collection('users').doc(user.uid).get()
+    .then(snapshot => {
+      const doc = snapshot.data()
+      if (doc) {
+        doc.displayName = user.displayName
+        doc.lastLogin = new Date().toISOString()
+        db.collection('users').doc(user.uid).update(doc) // update server document with time
+        return db.collection('roles').doc(user.uid).get()
+          .then(rolesSnapshot => {
+            return Object.assign(doc, {roles: rolesSnapshot.data() || {}})
+          })
+      } else { // document does not exist, create new user
+        const doc = {
+          uid: user.uid,
+          name: user.displayName || user.uid,
+          displayName: user.displayName,
+          lastLogin: new Date().toISOString()
+        }
+        return db.collection('users').doc(user.uid).set(doc)
+          .then(doc => {
+            return Object.assign(doc, {roles: {}})
+          })
+      }
     })
-    firebase.firestore().settings({timestampsInSnapshots: true})
+    .catch(e => console.error(e))
+}
 
-    // hook up auth listener to mutate 'user' state
+function init () {
+  firebase.initializeApp({
+    apiKey: 'AIzaSyC3FxfpYywy5ZYpiWuf9nw8_vlbxibpQH8',
+    authDomain: 'techradar-f5834.firebaseapp.com',
+    databaseURL: 'https://techradar-f5834.firebaseio.com',
+    projectId: 'techradar-f5834',
+    storageBucket: 'techradar-f5834.appspot.com'
+  })
+  firebase.firestore().settings({timestampsInSnapshots: true})
+
+  // hook up auth listener to mutate 'user' state
+  store.dispatch('getBlips')
+  // resolve after auth status is defined as logged in or not
+  return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        // upsert into user collection
-        const db = firebase.firestore()
-        db.collection('users').doc(user.uid).get()
-          .then(snapshot => {
-            const doc = snapshot.data()
-            if (doc) {
-              doc.displayName = user.displayName
-              doc.lastLogin = new Date().toISOString()
-              db.collection('users').doc(user.uid).update(doc) // update server document with time
-              db.collection('roles').doc(user.uid).get()
-                .then(rolesSnapshot => {
-                  return Object.assign(doc, {roles: rolesSnapshot.data() || {}})
-                })
-                .catch(() => { // no roles defined
-                  return Object.assign(doc, {roles: {}})
-                })
-                .then(user => {
-                  store.commit('setUser', user)
-                })
-            } else { // document does not exist, create new user
-              const doc = {
-                uid: user.uid,
-                name: user.displayName || user.uid,
-                displayName: user.displayName,
-                lastLogin: new Date().toISOString()
-              }
-              store.commit('setUser', {...doc, roles: {}})
-              return db.collection('users').doc(user.uid).set(doc)
-            }
+        upsertUser(user)
+          .then(user => {
+            store.commit('setUser', user)
+            resolve(user)
           })
-          .catch(e => console.error(e))
       } else { // user is not set (logout)
         store.commit('setUser', {})
+        resolve({})
       }
-      store.dispatch('getBlips')
     })
-  }
-})
+  })
+}
+
+// only initialize app after auth
+init()
+  .catch(() => Promise.resolve())
+  .then(() => {
+  /* eslint-disable no-new */
+    new Vue({
+      el: '#app',
+      router,
+      store,
+      components: { App },
+      render: h => h(App),
+      template: '<App/>'
+    })
+  })
