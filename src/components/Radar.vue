@@ -1,15 +1,7 @@
 <template>
   <v-container id="radar-container">
-    <div>
-      <new-blib></new-blib>
-      <v-btn
-      v-on:click="arrangeBlips()">
-        Arrange
-      </v-btn>
-    </div>
+    <new-blib></new-blib>
     <div class="radar" ref="radar">
-      <div class="xline"></div>
-      <div class="yline"></div>
       <div id="blips">
         <a v-for="blip in blips" v-bind:key="blip.id" class="blip blip--hidden" rel="tooltip" v-bind:href="blip.link" target="_blank" v-bind:data-category="blip.category" v-bind:data-status="blip.status" v-bind:data-changed="blip.changed" v-bind:title="blip.title">
           <span>{{blip.index}}</span>
@@ -36,7 +28,7 @@
         </ul>
       </div>
 
-      <div class="adopt"></div>
+      <div class="adopt" v-on:click="arrangeBlips()"></div>
       <div class="trial"></div>
       <div class="assess"></div>
       <div class="hold"></div>
@@ -146,6 +138,7 @@ export default {
       }
     })
     window.addEventListener('resize', this.handleResize)
+    this.handleResize()
   },
   beforeDestroy: function () {
     window.removeEventListener('resize', this.handleResize)

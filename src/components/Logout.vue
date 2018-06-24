@@ -17,6 +17,9 @@ export default {
   },
   mounted: function () {
     firebase.auth().signOut()
+      .then(() => {
+        this.$router.replace('/')
+      })
   }
 }
 </script>
