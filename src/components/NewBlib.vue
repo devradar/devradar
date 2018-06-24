@@ -60,31 +60,31 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       valid: false,
       fab: false,
       dialog: false,
       category: null,
-      categories: [{ text: "tools" }, { text: "cloud" }, { text: "backend" }, { text: "datascience" }],
+      categories: [{ text: 'tools' }, { text: 'cloud' }, { text: 'backend' }, { text: 'datascience' }],
       state: null,
-      states: [{ text: "hold" }, { text: "assess" }, { text: "trial" }, { text: "adopt" }],
+      states: [{ text: 'hold' }, { text: 'assess' }, { text: 'trial' }, { text: 'adopt' }],
       title: null,
       link: null
-    };
+    }
   },
   methods: {
-      submit () {
-        if (this.$refs.form.validate()) {
-          this.$store.dispatch("addBlip", {
-              category: this.category.text,
-              link: this.link,
-              status: this.state.text,
-              title: this.title
-          })
-          this.dialog = false
-        }
+    submit () {
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch('addBlip', {
+          category: this.category.text,
+          link: this.link,
+          status: this.state.text,
+          title: this.title
+        })
+        this.dialog = false
       }
+    }
   }
-};
+}
 </script>
