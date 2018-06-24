@@ -66,9 +66,9 @@ export default {
       fab: false,
       dialog: false,
       category: null,
-      categories: [{ text: "A" }, { text: "B" }, { text: "C" }, { text: "D" }],
+      categories: [{ text: "tools" }, { text: "cloud" }, { text: "backend" }, { text: "datascience" }],
       state: null,
-      states: [{ text: "A" }, { text: "B" }, { text: "C" }, { text: "D" }],
+      states: [{ text: "hold" }, { text: "assess" }, { text: "trial" }, { text: "adopt" }],
       title: null,
       link: null
     };
@@ -76,13 +76,12 @@ export default {
   methods: {
       submit () {
         if (this.$refs.form.validate()) {
-          // Native form submission is not yet supported
-        //   axios.post('/api/submit', {
-        //     name: this.name,
-        //     email: this.email,
-        //     select: this.select,
-        //     checkbox: this.checkbox
-        //   })
+          this.$store.dispatch("addBlip", {
+              category: this.category.text,
+              link: this.link,
+              status: this.state.text,
+              title: this.title
+          })
           this.dialog = false
         }
       }

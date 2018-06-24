@@ -76,6 +76,14 @@ export const store = new VueX.Store({
           const blips = snapshot.docs.map(d => Object.assign(d.data(), {id: d.id}))
           commit('setBlips', blips)
         })
+    },
+    addBlip ({commit}, payload) {
+      firebase.firestore().collection('blips').add(payload)
+        .then(snapshot => {
+          console.log(JSON.stringify(snapshot))
+        }).catch(e => {
+          console.log(e)
+        })
     }
   },
   getters: {
