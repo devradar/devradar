@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      {{ blips }}
+      <new-blib></new-blib>
     </div>
       <div class="radar">
         <div class="xline"></div>
@@ -23,7 +23,10 @@
 </template>
 
 <script>
+import NewBlib from './NewBlib'
+
 export default {
+  components: { NewBlib },
   computed: {
     blips () {
       return this.$store.getters.loadedBlips
