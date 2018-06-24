@@ -51,7 +51,9 @@ ul {
     @include smaller($breakpoint-sm) { font-size: 0.8em; }
 		margin-bottom: .2em;
     border-bottom: 1px solid lighten(black, 92%);
-    text-transform: uppercase;
+    a {
+      text-decoration: none;
+    }
 	}
 }
 
