@@ -88,7 +88,8 @@ export const store = new VueX.Store({
   },
   getters: {
     loadedBlips (state) {
-      return state.loadedBlips.sort((a, b) => a.title < b.title).sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
+      return state.loadedBlips
+        .map((b, index) => Object.assign(b, {index: index + 1}))
     },
     user (state) {
       return state.user

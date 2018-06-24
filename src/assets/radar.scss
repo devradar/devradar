@@ -31,8 +31,8 @@ $q4: #A13F52;
 }
 
 .radar {
-  width: 60em;
-  height: 60em;
+  width: 50em;
+  height: 50em;
   margin: 0 auto;
   margin-top: 4rem;
   background: lighten(black, 95%);
@@ -44,26 +44,26 @@ $q4: #A13F52;
 .radar {
   .q1 {
     color: $q1;
-    right: -3em;
-    top: 0;
+    right: -5em;
+    top: -4em;
     position: absolute;
   }
   .q2 {
     color: $q2;
-    left: -3em;
-    top: 0;
+    left: -5em;
+    top: -4em;
     position: absolute;
   }
   .q3 {
     color: $q3;
-    left: -3em;
-    bottom: 0;
+    left: -5em;
+    bottom: 4em;
     position: absolute;
   }
   .q4 {
     color: $q4;
-    right: -3em;
-    bottom: 0;
+    right: -5em;
+    bottom: 4em;
     position: absolute;
   }
 }
@@ -75,12 +75,14 @@ $q4: #A13F52;
     color: white;
   }
   ul {
+    list-style-type: none;
     li {
       a {
         color: $q1;
       }
       span {
-        background: $q1;
+        border-color: $q1;
+        color: $q1;
       }
     }
   }
@@ -93,12 +95,14 @@ $q4: #A13F52;
     color: white;
   }
   ul {
+    list-style-type: none;
     li {
       a {
         color: $q2;
       }
       span {
-        background: $q2;
+        border-color: $q2;
+        color: $q2;
       }
     }
   }
@@ -111,12 +115,14 @@ $q4: #A13F52;
     color: white;
   }
   ul {
+    list-style-type: none;
     li {
       a {
         color: $q3;
       }
       span {
-        background: $q3;
+        border-color: $q3;
+        color: $q3;
       }
     }
   }
@@ -129,12 +135,14 @@ $q4: #A13F52;
     color: white;
   }
   ul {
+    list-style-type: none;
     li {
       a {
         color: $q4;
       }
       span {
-        background: $q4;
+        border-color: $q4;
+        color: $q4;
       }
     }
   }
@@ -259,6 +267,9 @@ a.blip {
   &--q4 {
     background: $q4;
   }
+  &--hidden {
+    display: none;
+  }
 }
 .blip > span {
   color: white;
@@ -266,11 +277,11 @@ a.blip {
 
 span.blip-number {
   display:  inline-block;
-  width: 24px;
-  height: 24px;
-  border: 1px solid white;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  border: 1px solid;
   border-radius: 50%;
-  color: white;
   margin-right: 5px;
   text-align: center;
 }

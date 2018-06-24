@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container id="radar-container">
     <div>
       <new-blib></new-blib>
       <v-btn
@@ -11,28 +11,28 @@
       <div class="xline"></div>
       <div class="yline"></div>
       <div id="blips">
-        <a v-for="(blip, index) in blips" v-bind:key="blip.id" class="blip" rel="tooltip" v-bind:href="blip.link" target="_blank" v-bind:data-category="blip.category" v-bind:data-status="blip.status" v-bind:data-changed="blip.changed" v-bind:title="blip.title">
-          <span>{{index}}</span>
+        <a v-for="blip in blips" v-bind:key="blip.id" class="blip blip--hidden" rel="tooltip" v-bind:href="blip.link" target="_blank" v-bind:data-category="blip.category" v-bind:data-status="blip.status" v-bind:data-changed="blip.changed" v-bind:title="blip.title">
+          <span>{{blip.index}}</span>
         </a>
       </div>
       <div class="q1"><h3>Cloud Technologies</h3>
         <ul>
-          <li v-for="(blip, index) in blips" v-bind:key="blip.id" v-if="blip.category === 'cloud'"><span class="blip-number">{{index}}</span>{{blip.title}}</li>
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'cloud'"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</li>
         </ul>
       </div>
       <div class="q2"><h3>Tools</h3>
         <ul>
-          <li v-for="(blip, index) in blips" v-bind:key="blip.id" v-if="blip.category === 'tools'"><span class="blip-number">{{index}}</span>{{blip.title}}</li>
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'tools'"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</li>
         </ul>
       </div>
       <div class="q3"><h3>Backend</h3>
         <ul>
-          <li v-for="(blip, index) in blips" v-bind:key="blip.id" v-if="blip.category === 'backend'"><span class="blip-number">{{index}}</span>{{blip.title}}</li>
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'backend'"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</li>
         </ul>
       </div>
       <div class="q4"><h3>Datascience</h3>
         <ul>
-          <li v-for="(blip, index) in blips" v-bind:key="blip.id" v-if="blip.category === 'datascience'"><span class="blip-number">{{index}}</span>{{blip.title}}</li>
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'datascience'"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</li>
         </ul>
       </div>
 
@@ -125,10 +125,18 @@ export default {
         b.style.left = `${x}px`
         b.style.top = `${y}px`
 
-        // add class for color
+        // add class for color and make visible
         b.classList.add(`blip--q${quadrant}`)
+        b.classList.remove('blip--hidden')
       }
     }
+  },
+  mounted: function () {
+    this.$store.subscribe((mutation, state) => {
+      if (mutation.type === 'setBlips') {
+        setTimeout(() => this.arrangeBlips(), 10) // delay because blobs aren't in DOM yet
+      }
+    })
   }
 }
 </script>
