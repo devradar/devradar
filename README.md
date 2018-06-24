@@ -6,11 +6,11 @@
 
 - [ ] add new blips
 - [ ] modify blips
-- [ ] render tech blips on radar
+- [x] render tech blips on radar
 - [ ] show blip history
 - [ ] make radar categories customizable
-- [ ] oauth (github, twitter)
-- [ ] authorization
+- [x] oauth (github, twitter)
+- [x] authorization
 
 ## Design
 
@@ -21,3 +21,9 @@ The main part is a static Vue.js application using Firebase as backend and authe
 Database schema
 
 ![firestore schema](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/techradar/master/assets/firestore.puml)
+
+## Attributions
+
+- [Urban Sanden](https://github.com/urre/radar/) @ [MIT](https://github.com/urre/radar/blob/502b57332467e68819ce69eeb65f8432129d69b9/LICENSE)
+  - Inspiration for placing the blips
+  - parts of his SCSS styles
