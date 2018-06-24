@@ -17,22 +17,22 @@
       </div>
       <div class="q1"><h3>Cloud Technologies</h3>
         <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'cloud'"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</li>
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'cloud'"><a v-bind:href="blip.link"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</a></li>
         </ul>
       </div>
       <div class="q2"><h3>Tools</h3>
         <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'tools'"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</li>
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'tools'"><a v-bind:href="blip.link"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</a></li>
         </ul>
       </div>
       <div class="q3"><h3>Backend</h3>
         <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'backend'"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</li>
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'backend'"><a v-bind:href="blip.link"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</a></li>
         </ul>
       </div>
       <div class="q4"><h3>Datascience</h3>
         <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'datascience'"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</li>
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'datascience'"><a v-bind:href="blip.link"><span class="blip-number">{{blip.index}}</span>{{blip.title}}</a></li>
         </ul>
       </div>
 
@@ -55,6 +55,7 @@ export default {
     }
   },
   data: () => ({
+    previousRadarSize: 0 // help detect resize due to SCSS breakpoints in this.handleResize()
   }),
   methods: {
     arrangeBlips () {
@@ -129,14 +130,25 @@ export default {
         b.classList.add(`blip--q${quadrant}`)
         b.classList.remove('blip--hidden')
       }
+    },
+    handleResize () {
+      const radar = document.getElementsByClassName('radar')[0]
+      if (radar.clientWidth !== this.previousRadarSize) {
+        this.previousRadarSize = radar.clientWidth
+        this.arrangeBlips()
+      }
     }
   },
   mounted: function () {
     this.$store.subscribe((mutation, state) => {
       if (mutation.type === 'setBlips') {
-        setTimeout(() => this.arrangeBlips(), 10) // delay because blobs aren't in DOM yet
+        setTimeout(() => this.arrangeBlips(), 50) // delay because blobs aren't in DOM yet
       }
     })
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy: function () {
+    window.removeEventListener('resize', this.handleResize)
   }
 }
 </script>

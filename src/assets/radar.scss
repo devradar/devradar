@@ -1,4 +1,5 @@
 // Area (blip) colors
+@import './responsive.scss';
 
 // Q2 | Q1
 // Q3 | Q4
@@ -33,6 +34,8 @@ $q4: #A13F52;
 .radar {
   width: 50em;
   height: 50em;
+  @include smaller($breakpoint-sm) { width: 400px; height: 400px; }
+  @include smaller($breakpoint-xs) { width: 250px; height: 250px; }
   margin: 0 auto;
   margin-top: 4rem;
   background: lighten(black, 95%);
@@ -41,28 +44,48 @@ $q4: #A13F52;
   margin-bottom: 4em;
 }
 
+ul {
+	list-style: none;
+	li {
+    font-size: 1em;
+    @include smaller($breakpoint-xs) { font-size: 0.8em; }
+		margin-bottom: .2em;
+    border-bottom: 1px solid lighten(black, 92%);
+    text-transform: uppercase;
+	}
+}
+
+
 .radar {
+  h3 {
+    font-size: 2em;
+    @include smaller($breakpoint-sm) { font-size: 0.8em; }
+  }
   .q1 {
     color: $q1;
-    right: -5em;
+    right: -10em;
+    @include smaller($breakpoint-sm) { right: -5em; }
     top: -4em;
     position: absolute;
   }
   .q2 {
     color: $q2;
-    left: -5em;
+    left: -10em;
+    @include smaller($breakpoint-sm) { left: -5em; }
     top: -4em;
     position: absolute;
   }
   .q3 {
     color: $q3;
-    left: -5em;
+    left: -10em;
+    @include smaller($breakpoint-sm) { left: -5em; }
     bottom: 4em;
     position: absolute;
   }
   .q4 {
     color: $q4;
-    right: -5em;
+    right: -10em;
+    @include smaller($breakpoint-sm) { right: -5em; }
     bottom: 4em;
     position: absolute;
   }
@@ -70,81 +93,45 @@ $q4: #A13F52;
 
 .q1 {
   z-index: 5;
-  header {
-    background: $q1;
-    color: white;
+  a {
+    color: $q1;
   }
-  ul {
-    list-style-type: none;
-    li {
-      a {
-        color: $q1;
-      }
-      span {
-        border-color: $q1;
-        color: $q1;
-      }
-    }
+  span {
+    border-color: $q1;
+    color: $q1;
   }
 }
 
 .q2 {
   z-index: 5;
-  header {
-    background: $q2;
-    color: white;
+  a {
+    color: $q2;
   }
-  ul {
-    list-style-type: none;
-    li {
-      a {
-        color: $q2;
-      }
-      span {
-        border-color: $q2;
-        color: $q2;
-      }
-    }
+  span {
+    border-color: $q2;
+    color: $q2;
   }
 }
 
 .q3 {
   z-index: 5;
-  header {
-    background: $q3;
-    color: white;
+  a {
+    color: $q3;
   }
-  ul {
-    list-style-type: none;
-    li {
-      a {
-        color: $q3;
-      }
-      span {
-        border-color: $q3;
-        color: $q3;
-      }
-    }
+  span {
+    border-color: $q3;
+    color: $q3;
   }
 }
 
 .q4 {
   z-index: 5;
-  header {
-    background: $q4;
-    color: white;
+  a {
+    color: $q4;
   }
-  ul {
-    list-style-type: none;
-    li {
-      a {
-        color: $q4;
-      }
-      span {
-        border-color: $q4;
-        color: $q4;
-      }
-    }
+  span {
+    border-color: $q4;
+    color: $q4;
   }
 }
 
@@ -152,9 +139,11 @@ $q4: #A13F52;
   &:before {
     content: 'Hold';
     font-size: 1em;
+    @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
     position: absolute;
     top: -30px;
+    @include smaller($breakpoint-sm) { top: -20px; }
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -178,9 +167,11 @@ $q4: #A13F52;
   &:before {
     content: 'Adopt';
     font-size: 1em;
+    @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
     position: absolute;
     top: -30px;
+    @include smaller($breakpoint-sm) { top: -20px; }
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -204,9 +195,11 @@ $q4: #A13F52;
   &:before {
     content: 'Trial';
     font-size: 1em;
+    @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
     position: absolute;
     top: -30px;
+    @include smaller($breakpoint-sm) { top: -20px; }
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -229,9 +222,11 @@ $q4: #A13F52;
   &:before {
     content: 'Assess';
     font-size: 1em;
+    @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
     position: absolute;
     top: -30px;
+    @include smaller($breakpoint-sm) { top: -20px; }
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -244,6 +239,7 @@ a.blip {
   display: block;
   width: 24px;
   height: 24px;
+  @include smaller($breakpoint-sm) { width: 16px; height: 16px; font-size: 10px; }
   border: 1px solid white;
   &:hover {
     animation: waves .1s ease-in-out 1 forwards;
@@ -279,6 +275,7 @@ span.blip-number {
   display:  inline-block;
   width: 20px;
   height: 20px;
+  @include smaller($breakpoint-sm) { width: 16px; height: 16px; font-size: 10px; }
   font-size: 12px;
   border: 1px solid;
   border-radius: 50%;
