@@ -246,10 +246,10 @@ span.blip-status {
 
 a.blip {
   display: block;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   @include smaller($breakpoint-sm) { width: 16px; height: 16px; font-size: 10px; }
-  border: 1px solid white;
+  border: 2px solid white;
   &:hover {
     animation: waves .1s ease-in-out 1 forwards;
   }
@@ -257,6 +257,7 @@ a.blip {
   background: $q1;
   position: absolute;
   text-align: center;
+  text-decoration: none;
   top: 0;
   left: 0;
   z-index: 5;

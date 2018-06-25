@@ -67,7 +67,7 @@ export default {
   components: { NewBlib },
   computed: {
     blips () {
-      return this.$store.getters.loadedBlips
+      return this.$store.getters.blips
     }
   },
   data: () => ({
