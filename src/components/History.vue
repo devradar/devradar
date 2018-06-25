@@ -68,9 +68,6 @@ export default {
   computed: {
     blips () {
       const blips = this.$store.getters.blips
-      blips.forEach((b, ix) => {
-        blips[ix].changes = b.changes.map(c => ({...c, timestamp: new Date(c.date.seconds*1000).toISOString()}))
-      })
       return blips
     }
   },
