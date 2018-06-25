@@ -10,7 +10,7 @@
       <div class="q1"><h3>Cloud Technologies</h3>
         <ul>
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'cloud'">
-            <a v-bind:href="blip.link">
+            <a v-bind:href="blip.link" target="_blank">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title}}
               <span class="blip-status">{{blip.status}}</span>
@@ -21,7 +21,7 @@
       <div class="q2"><h3>Tools</h3>
         <ul>
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'tools'">
-            <a v-bind:href="blip.link">
+            <a v-bind:href="blip.link" target="_blank">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title}}
               <span class="blip-status">{{blip.status}}</span>
@@ -32,7 +32,7 @@
       <div class="q3"><h3>Backend</h3>
         <ul>
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'backend'">
-            <a v-bind:href="blip.link">
+            <a v-bind:href="blip.link" target="_blank">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title}}
               <span class="blip-status">{{blip.status}}</span>
@@ -43,7 +43,7 @@
       <div class="q4"><h3>Datascience</h3>
         <ul>
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'datascience'">
-            <a v-bind:href="blip.link">
+            <a v-bind:href="blip.link" target="_blank">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title}}
               <span class="blip-status">{{blip.status}}</span>

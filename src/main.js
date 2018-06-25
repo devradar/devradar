@@ -13,7 +13,7 @@ import {store} from './store'
 Vue.use(Vuetify, {
   theme: {
     primary: colors.teal.base,
-    secondary: colors.grey.darken1,
+    secondary: colors.green.lighten1,
     accent: colors.shades.black,
     error: colors.red.accent3
   }

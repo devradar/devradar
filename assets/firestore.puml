@@ -33,7 +33,6 @@ blip : _id : Auto ID
 blip : title : String
 blip : category : String
 blip : status : String
-blip : changed : Boolean
 blip : link : String
 blip : changes : change
 

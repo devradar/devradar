@@ -15,9 +15,18 @@ export default {
   },
   actions: {
     getBlips ({commit}) {
+      let blips
       firebase.firestore().collection('blips').get()
         .then(snapshot => {
-          const blips = snapshot.docs.map(d => Object.assign(d.data(), {id: d.id}))
+          blips = snapshot.docs
+            .map(d => Object.assign(d.data(), {id: d.id}))
+          return Promise.all(blips.map(b => firebase.firestore().collection(`blips/${b.id}/changes`).get()))
+        })
+        .then(snapshotArray => {
+          for (const [index, snapshot] of snapshotArray.entries()) {
+            const changes = snapshot.docs.map(d => Object.assign(d.data(), {id: d.id}))
+            blips[index].changes = changes
+          }
           commit('setBlips', blips)
         })
     },
@@ -26,6 +35,15 @@ export default {
         .then(docRef => {
           const id = docRef.id
           commit('addBlip', Object.assign(payload, {id}))
+        })
+    },
+    addChange ({commit}, blip, change) {
+      firebase.firestore().collection(`blips/${blip.id}/changes`).add(change)
+        .then(docRef => {
+          const id = docRef.id
+          change = Object.assign(change, {id})
+          blip.changes.push(change)
+          commit('exchangeBlip', blip)
         })
     }
   },

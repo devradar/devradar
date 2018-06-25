@@ -60,7 +60,7 @@ export default {
         { icon: 'delete', title: 'Deprecated', link: '/deprecated', validator: user => user.uid },
         { icon: 'exit_to_app', title: 'Logout', link: '/logout', validator: user => user.uid },
         { icon: '', title: 'Users', link: '/users', validator: user => user.uid && user.roles.admin },
-        { icon: 'face', title: 'Login', link: '/login', validator: user => !user.uid }
+        { icon: 'meeting_room', title: 'Login', link: '/login', validator: user => !user.uid }
       ]
       return items.filter(i => i.validator(user))
     }
