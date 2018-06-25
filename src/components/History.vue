@@ -2,13 +2,30 @@
   <v-container
     fluid
     grid-list-lg>
+    <new-blib v-if="edit"></new-blib>
+    <v-btn
+        @click="edit = !edit"
+        color="secondary"
+        fab
+        fixed
+        bottom
+        left
+    >
+    <v-icon>edit</v-icon>
+    </v-btn>
     <v-layout row wrap>
       <v-flex xs12 v-for="blip in blips" v-bind:key="blip.id">
         <v-card>
           <v-container fluid grid-list-lg>
             <v-layout row wrap>
               <v-flex xs12 sm6>
-                  <span class="headline"><a v-bind:href="blip.link" target="_blank">{{blip.title}}</a></span>
+                  <span class="headline">
+                    <a v-bind:href="blip.link" target="_blank">{{blip.title}}</a>
+                    <v-btn icon v-if="edit" v-on:click="deleteBlip(blip.id)"><v-icon>delete</v-icon></v-btn>
+                    <v-btn icon v-if="edit" v-on:click="editBlip(blip.id)"><v-icon>edit</v-icon></v-btn>
+                    <v-btn icon v-if="edit" v-on:click="addHistory(blip.id)"><v-icon>add</v-icon></v-btn>
+                    <v-btn icon disabled></v-btn>
+                  </span>
               </v-flex>
               <v-flex xs12 sm6 text-xs-right>
                 <v-chip small disabled color="cyan" text-color="white">
@@ -27,21 +44,16 @@
             </v-layout>
           </v-container>
           <v-card-title>
-            <div>
-              <span class="grey--text">Number 10</span><br>
-              <span>Whitehaven Beach</span><br>
-              <span>Whitsunday Island, Whitsunday Islands</span>
-            </div>
+            <span class="body-2">{{blip.description}}</span>
           </v-card-title>
-          <v-card-text>
-            {{blip}}
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn small flat color="primary darken-3" icon><v-icon>delete</v-icon></v-btn>
-            <v-btn small flat color="primary darken-3" icon ><v-icon>edit</v-icon></v-btn>
-            <v-btn small flat color="primary darken-3" icon><v-icon>history</v-icon></v-btn>
-          </v-card-actions>
+          <div v-for="change in blip.changes" v-bind:key="change.id">
+            <v-subheader>
+              <span class="subheading">{{ new Date(change.date.seconds*1000).toISOString().split('T')[0] }}</span>
+              </v-subheader>
+            <v-card-text>
+              {{change.text}}
+            </v-card-text>
+          </div>
         </v-card>
       </v-flex>
     </v-layout>
@@ -55,11 +67,27 @@ export default {
   components: { NewBlib },
   computed: {
     blips () {
-      return this.$store.getters.blips
+      const blips = this.$store.getters.blips
+      blips.forEach((b, ix) => {
+        blips[ix].changes = b.changes.map(c => ({...c, timestamp: new Date(c.date.seconds*1000).toISOString()}))
+      })
+      return blips
     }
   },
   data: () => ({
-  })
+    edit: false
+  }),
+  methods: {
+    deleteBlip (blipId) {
+      console.log('delete blip', blipId)
+    },
+    addHistory (blipId) {
+
+    },
+    editBlip (blipId) {
+
+    }
+  }
 }
 </script>
 
