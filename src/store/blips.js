@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import Vue from 'vue'
 
 export default {
   state: {
@@ -16,7 +17,7 @@ export default {
       state.blips[blip.id] = blip
     },
     removeBlip (state, blip) {
-      delete state.blips[blip.id]
+      Vue.delete(state.blips, blip.id)
     }
   },
   actions: {
@@ -50,6 +51,12 @@ export default {
           commit('exchangeBlip', blip)
         })
     },
+    deleteBlip ({commit}, blip) {
+      firebase.firestore().collection('blips').doc(blip.id).delete()
+        .then(() => {
+          commit('removeBlip', blip)
+        })
+    },
     addChange ({commit}, blip, change) {
       firebase.firestore().collection(`blips/${blip.id}/changes`).add(change)
         .then(docRef => {
@@ -57,12 +64,6 @@ export default {
           change = Object.assign(change, {id})
           blip.changes.push(change)
           commit('exchangeBlip', blip)
-        })
-    },
-    deleteBlip ({commit}, blip) {
-      firebase.firestore().collection('blips').doc(blip.id).delete()
-        .then(() => {
-          commit('removeBlip', blip)
         })
     }
   },

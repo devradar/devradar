@@ -2,7 +2,7 @@
   <v-container
     fluid
     grid-list-lg>
-    <new-blib v-if="edit"></new-blib>
+    <new-blip v-if="edit"></new-blip>
     <v-btn
         @click="edit = !edit"
         color="secondary"
@@ -14,25 +14,55 @@
     <v-icon>edit</v-icon>
     </v-btn>
     <v-layout row wrap>
-      <v-flex xs12 v-for="blip in blips" v-bind:key="blip.id">
+      <v-flex xs3>
+          <v-icon>search</v-icon>
+          <v-text-field
+            v-model="searchTitle"
+            label="Search.."
+          ></v-text-field>
+      </v-flex>
+      <v-flex xs12 v-for="blip in filteredBlips" v-bind:key="blip.id">
         <v-card>
           <v-container fluid grid-list-lg>
             <v-layout row wrap>
               <v-flex xs12 sm6>
-                  <span class="headline">
+                  <span class="headline" v-if="!isEditMode(blip.id)">
                     <a v-bind:href="blip.link" target="_blank">{{blip.title}}</a>
-                    <v-btn icon v-if="edit" v-on:click="deleteBlip(blip.id)"><v-icon>delete</v-icon></v-btn>
-                    <v-btn icon v-if="edit" v-on:click="editBlip(blip.id)"><v-icon>edit</v-icon></v-btn>
-                    <v-btn icon v-if="edit" v-on:click="addHistory(blip.id)"><v-icon>add</v-icon></v-btn>
-                    <v-btn icon disabled></v-btn>
                   </span>
+                  <v-text-field
+                  v-model="editBlips[blip.id].title"
+                  v-if="isEditMode(blip.id)"
+                  label="Title"
+                  required
+                  ></v-text-field>
+                  <v-text-field
+                  v-model="editBlips[blip.id].link"
+                  v-if="isEditMode(blip.id)"
+                  label="Link"
+                  required
+                  ></v-text-field>
+                    <v-btn icon
+                    v-if="edit && !isEditMode(blip.id)"
+                    v-on:click="deleteBlip(blip)"><v-icon>delete</v-icon></v-btn>
+                    <v-btn icon
+                    v-if="edit && !isEditMode(blip.id)"
+                    v-on:click="editBlip(blip)"><v-icon>edit</v-icon></v-btn>
+                    <v-btn icon
+                    v-if="edit && !isEditMode(blip.id)"
+                    v-on:click="addHistory(blip)"><v-icon>playlist_add</v-icon></v-btn>
+                    <v-btn icon
+                    v-if="edit && isEditMode(blip.id)"
+                    v-on:click="saveBlip(editBlips[blip.id])"><v-icon>done</v-icon></v-btn>
+                    <v-btn icon
+                    v-if="edit && isEditMode(blip.id)"
+                    v-on:click="cancelEditBlip(blip)"><v-icon>clear</v-icon></v-btn>
               </v-flex>
               <v-flex xs12 sm6 text-xs-right>
                 <v-chip small disabled color="cyan" text-color="white">
                   <v-avatar class="cyan darken-4">
                     <v-icon dark>domain</v-icon>
                   </v-avatar>
-                  {{blip.category}}
+                  <span>{{blip.category}}</span>
                 </v-chip>
                 <v-chip small disabled color="green" text-color="white">
                   <v-avatar class="green darken-4">
@@ -44,7 +74,13 @@
             </v-layout>
           </v-container>
           <v-card-title>
-            <span class="body-2">{{blip.description}}</span>
+            <span class="body-2" v-if="!isEditMode(blip.id)">{{blip.description}}</span>
+            <v-text-field
+              multi-line
+              v-model="editBlips[blip.id].description"
+              v-if="isEditMode(blip.id)"
+              label="Description"
+              ></v-text-field>
           </v-card-title>
           <div v-for="change in blip.changes" v-bind:key="change.id">
             <v-subheader>
@@ -61,28 +97,51 @@
 </template>
 
 <script>
-import NewBlib from './NewBlib'
+import NewBlip from './NewBlip'
 
 export default {
-  components: { NewBlib },
+  components: { NewBlip },
   computed: {
     blips () {
       const blips = this.$store.getters.blips
       return blips
+    },
+    filteredBlips () {
+      if (!this.searchTitle) return this.blips
+      const blips = this.blips
+      return Object.keys(this.blips)
+        .filter(id => blips[id].title.includes(this.searchTitle))
+        .map(id => blips[id])
     }
   },
   data: () => ({
-    edit: false
+    edit: false,
+    editBlips: {},
+    editMode: [],
+    searchTitle: null
   }),
   methods: {
-    deleteBlip (blipId) {
-      console.log('delete blip', blipId)
+    deleteBlip (blip) {
+      this.$store.dispatch('deleteBlip', blip)
     },
-    addHistory (blipId) {
-
+    addHistory (blip) {
     },
-    editBlip (blipId) {
-
+    editBlip (blip) {
+      this.editBlips[blip.id] = {...blip}
+      this.editMode.push(blip.id)
+    },
+    saveBlip (blip) {
+      const updatedBlip = blip
+      this.editMode = this.editMode.filter(id => id !== blip.id)
+      delete this.editBlips[blip.id]
+      this.$store.dispatch('updateBlip', updatedBlip)
+    },
+    cancelEditBlip (blip) {
+      this.editMode = this.editMode.filter(id => id !== blip.id)
+      delete this.editBlips[blip.id]
+    },
+    isEditMode (blipId) {
+      return this.editMode.indexOf(blipId) >= 0
     }
   }
 }
