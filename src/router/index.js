@@ -14,34 +14,35 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Radar',
+      name: 'radar',
       component: Radar
     },
     {
-      path: '/history',
-      name: 'History',
+      path: '/history/:search?',
+      name: 'history',
       component: History,
+      props: true,
       beforeEnter: AuthGuard(user => user.uid)
     },
     {
       path: '/deprecated',
-      name: 'Deprecated',
+      name: 'deprecated',
       component: Deprecated,
       beforeEnter: AuthGuard(user => user.uid)
     },
     {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: Login
     },
     {
       path: '/logout',
-      name: 'Logout',
+      name: 'logout',
       component: Logout
     },
     {
       path: '/users',
-      name: 'Users',
+      name: 'users',
       component: Users,
       beforeEnter: AuthGuard(user => user.uid && user.roles.admin)
     }

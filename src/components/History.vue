@@ -19,6 +19,7 @@
           <v-text-field
             v-model="searchTitle"
             label="Search.."
+            v-on:input="searchUpdated"
           ></v-text-field>
       </v-flex>
       <v-flex xs12 v-for="blip in filteredBlips" v-bind:key="blip.id">
@@ -98,6 +99,7 @@
 
 <script>
 import NewBlip from './NewBlip'
+import router from '../router'
 
 export default {
   components: { NewBlip },
@@ -110,16 +112,21 @@ export default {
       if (!this.searchTitle) return this.blips
       const blips = this.blips
       return Object.keys(this.blips)
-        .filter(id => blips[id].title.includes(this.searchTitle))
+        .filter(id => new RegExp(this.searchTitle, 'i').exec(blips[id].title))
         .map(id => blips[id])
     }
   },
-  data: () => ({
-    edit: false,
-    editBlips: {},
-    editMode: [],
-    searchTitle: null
-  }),
+  props: {
+    search: String
+  },
+  data: function () {
+    return {
+      edit: false,
+      editBlips: {},
+      editMode: [],
+      searchTitle: this.search
+    }
+  },
   methods: {
     deleteBlip (blip) {
       this.$store.dispatch('deleteBlip', blip)
@@ -142,6 +149,9 @@ export default {
     },
     isEditMode (blipId) {
       return this.editMode.indexOf(blipId) >= 0
+    },
+    searchUpdated () {
+      if (this.searchTitle) router.replace({name: 'history', params: {search: this.searchTitle}})
     }
   }
 }
