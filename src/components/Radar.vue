@@ -1,6 +1,6 @@
 <template>
   <v-container id="radar-container">
-    <new-blib></new-blib>
+    <new-blip></new-blip>
     <div class="radar" ref="radar">
       <div id="blips">
         <a v-for="blip in blips" v-bind:key="blip.id" class="blip blip--hidden" rel="tooltip" v-bind:href="blip.link" target="_blank" v-bind:data-category="blip.category" v-bind:data-status="blip.status" v-bind:data-changed="blip.changed" v-bind:title="blip.title">
@@ -61,13 +61,13 @@
 </template>
 
 <script>
-import NewBlib from './NewBlib'
+import NewBlip from './NewBlip'
 
 export default {
-  components: { NewBlib },
+  components: { NewBlip },
   computed: {
     blips () {
-      return this.$store.getters.blips
+      return this.$store.getters.blipsArray
     }
   },
   data: () => ({
