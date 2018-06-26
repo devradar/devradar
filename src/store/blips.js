@@ -11,7 +11,7 @@ export default {
       state.blips = blips
     },
     addBlip (state, blip) {
-      state.blips[blip.id] = blip
+      Vue.set(state.blips, blip.id, blip)
     },
     exchangeBlip (state, blip) {
       state.blips[blip.id] = blip
@@ -72,7 +72,7 @@ export default {
       return state.blips
     },
     blipsArray (state) {
-      const blips = Object.keys(state.blips).map(id => state.blips[id])
+      const blips = Object.values(state.blips)
         .map((b, index) => Object.assign(b, {index: index + 1}))
       return blips
     }
