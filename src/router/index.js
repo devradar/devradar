@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Radar from '@/components/Radar'
-import History from '@/components/History'
+import List from '@/components/List'
 import Deprecated from '@/components/Deprecated'
 import Login from '@/components/Login'
 import Logout from '@/components/Logout'
@@ -18,9 +18,9 @@ export default new Router({
       component: Radar
     },
     {
-      path: '/history/:search?',
-      name: 'history',
-      component: History,
+      path: '/blips/:search?',
+      name: 'blips',
+      component: List,
       props: true,
       beforeEnter: AuthGuard(user => user.uid)
     },

@@ -55,7 +55,7 @@ export default {
     menuItems: function () {
       const user = this.$store.getters.user || {}
       const items = [
-        { icon: 'history', title: 'History', link: '/history', validator: user => user.uid },
+        { icon: 'list', title: 'Blips', link: '/blips', validator: user => user.uid },
         { icon: 'track_changes', title: 'Radar', link: '/', validator: user => true },
         { icon: 'delete', title: 'Deprecated', link: '/deprecated', validator: user => user.uid },
         { icon: 'exit_to_app', title: 'Logout', link: '/logout', validator: user => user.uid },
