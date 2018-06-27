@@ -14,6 +14,40 @@
                 <v-list-tile-sub-title>last seen: {{ item.lastLogin }}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
+                <v-list-tile-action-text>Viewer</v-list-tile-action-text>
+                <v-btn
+                icon
+                @click="setRole(index, 'viewer', !item.roles.viewer)"
+                v-bind:key="item.roles.viewer"
+                >
+                  <v-icon
+                    v-if="item.roles.viewer"
+                    color="primary darken-1"
+                  >visibility</v-icon>
+                  <v-icon
+                    v-else
+                    color="grey lighten-1"
+                  >visibility</v-icon>
+                </v-btn>
+              </v-list-tile-action>
+              <v-list-tile-action>
+                <v-list-tile-action-text>Editor</v-list-tile-action-text>
+                <v-btn
+                icon
+                @click="setRole(index, 'editor', !item.roles.editor)"
+                v-bind:key="item.roles.editor"
+                >
+                  <v-icon
+                    v-if="item.roles.editor"
+                    color="primary darken-1"
+                  >edit</v-icon>
+                  <v-icon
+                    v-else
+                    color="grey lighten-1"
+                  >edit</v-icon>
+                </v-btn>
+              </v-list-tile-action>
+              <v-list-tile-action>
                 <v-list-tile-action-text>Admin</v-list-tile-action-text>
                 <v-btn
                 icon
@@ -22,12 +56,12 @@
                 >
                   <v-icon
                     v-if="item.roles.admin"
-                    color="yellow darken-2"
+                    color="primary darken-1"
                   >star</v-icon>
                   <v-icon
                     v-else
                     color="grey lighten-1"
-                  >star_border</v-icon>
+                  >star</v-icon>
                 </v-btn>
               </v-list-tile-action>
             </v-list-tile>

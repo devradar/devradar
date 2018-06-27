@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
+import Vue from 'vue'
 
 const ghProvider = new firebase.auth.GithubAuthProvider()
 const twitterProvider = new firebase.auth.TwitterAuthProvider()
@@ -8,7 +9,7 @@ const twitterProvider = new firebase.auth.TwitterAuthProvider()
 export default {
   state: {
     user: {},
-    userList: []
+    userList: {}
   },
   mutations: {
     setUser (state, payload) {
@@ -16,6 +17,9 @@ export default {
     },
     setUserList (state, users) {
       state.userList = users
+    },
+    exchangeUser (state, user) {
+      Vue.set(state.userList, user.id, user)
     }
   },
   actions: {
@@ -43,14 +47,17 @@ export default {
         firebase.firestore().collection('roles').get()
       ])
         .then(([usersSnapshot, rolesSnapshot]) => {
-          const roles = rolesSnapshot.docs.map(d => Object.assign(d.data(), {id: d.id}))
+          const roles = rolesSnapshot.docs
+            .map(d => Object.assign(d.data(), {id: d.id}))
+            .reduce((p, doc) => Object.assign(p, {[doc.id]: doc}), {})
           const users = usersSnapshot.docs
             .map(d => Object.assign(d.data(), {id: d.id}))
             .map(d => {
-              const userRoles = roles.find(r => r.id === d.id) || {}
+              const userRoles = roles[d.id] || {}
               delete userRoles.id
               return Object.assign(d, {roles: userRoles})
             })
+            .reduce((p, doc) => Object.assign(p, {[doc.id]: doc}), {})
           commit('setUserList', users)
         })
         .catch(err => console.error(err))
@@ -60,6 +67,9 @@ export default {
       return coll.doc(targetUser.uid).update(targetUser.roles)
         .catch(() => {
           return coll.doc(targetUser.uid).set(targetUser.roles)
+        })
+        .then(docRef => {
+          commit('exchangeUser', targetUser)
         })
         .catch(err => console.error(err))
     }
