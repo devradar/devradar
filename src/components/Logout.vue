@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <h1>BYE</h1>
   </v-container>
 </template>
 

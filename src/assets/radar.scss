@@ -65,7 +65,7 @@ ul {
   .q1 {
     color: $q1;
     right: -10em;
-    @include smaller($breakpoint-sm) { right: -5em; }
+    @include smaller($breakpoint-sm) { right: -8em; }
     top: -4em;
     position: absolute;
     z-index: 5;
@@ -97,7 +97,7 @@ ul {
     left: -10em;
     @include smaller($breakpoint-sm) { left: -5em; }
     bottom: 10em;
-    @include smaller($breakpoint-sm) { bottom: 5em; }
+    @include smaller($breakpoint-sm) { bottom: -5em; }
     position: absolute;
     z-index: 5;
     a {
@@ -111,9 +111,9 @@ ul {
   .q4 {
     color: $q4;
     right: -10em;
-    @include smaller($breakpoint-sm) { right: -5em; }
+    @include smaller($breakpoint-sm) { right: -8em; }
     bottom: 10em;
-    @include smaller($breakpoint-sm) { bottom: 5em; }
+    @include smaller($breakpoint-sm) { bottom: -5em; }
     position: absolute;
     z-index: 5;
     a {
