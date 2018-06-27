@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" fixed app>
-      <v-list dense>
+1    <v-navigation-drawer v-model="drawer" app clipped scroll-off-screen="true" scroll-toolbar-off-screen="true">
+      <v-list>
         <v-list-tile
         v-for="elm in menuItems"
         v-bind:key="elm.title"
@@ -17,7 +17,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar class="primary" dark fixed app>
+    <v-toolbar class="primary" dark fixed app dense>
       <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
         Techradar 📡
@@ -59,7 +59,7 @@ export default {
         { icon: 'track_changes', title: 'Radar', link: '/', validator: user => true },
         { icon: 'delete', title: 'Deprecated', link: '/deprecated', validator: user => user.uid },
         { icon: 'exit_to_app', title: 'Logout', link: '/logout', validator: user => user.uid },
-        { icon: '', title: 'Users', link: '/users', validator: user => user.uid && user.roles.admin },
+        { icon: 'people', title: 'Users', link: '/users', validator: user => user.uid && user.roles.admin },
         { icon: 'meeting_room', title: 'Login', link: '/login', validator: user => !user.uid }
       ]
       return items.filter(i => i.validator(user))
@@ -71,7 +71,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.toolbar--fixed {
+.toolbar {
   z-index: 23;
+}
+.navigation-drawer {
+  z-index: 24;
 }
 </style>

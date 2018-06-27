@@ -14,7 +14,7 @@
     <v-icon>edit</v-icon>
     </v-btn>
     <v-layout row wrap>
-      <v-flex xs3>
+      <v-flex xs6 sm4 md3>
           <v-icon>search</v-icon>
           <v-text-field
             v-model="searchTitle"
