@@ -9,6 +9,7 @@ import Vuetify from 'vuetify'
 import colors from 'vuetify/es5/util/colors'
 import './stylus/main.styl'
 import {store} from './store'
+import config from './config'
 
 Vue.use(Vuetify, {
   theme: {
@@ -19,6 +20,11 @@ Vue.use(Vuetify, {
   }
 })
 Vue.config.productionTip = false
+
+Vue.prototype.$config = {...config, test: 'blup'}
+Vue.filter('limitString', function (string, limit = Infinity) {
+  return string.slice(0, limit) + (string.length > limit ? '..' : '')
+})
 
 function upsertUser (user) {
   // upsert into user collection

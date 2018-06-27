@@ -12,7 +12,7 @@
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'cloud'">
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
-              {{blip.title}}
+              {{blip.title | limitString($config.blips.titleCutOff)}}
               <span class="blip-status">{{blip.status}}</span>
               </a>
             </li>
@@ -23,7 +23,7 @@
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'tools'">
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
-              {{blip.title}}
+              {{blip.title | limitString($config.blips.titleCutOff)}}
               <span class="blip-status">{{blip.status}}</span>
               </a>
             </li>
@@ -34,7 +34,7 @@
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'backend'">
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
-              {{blip.title}}
+              {{blip.title | limitString($config.blips.titleCutOff)}}
               <span class="blip-status">{{blip.status}}</span>
               </a>
             </li>
@@ -45,7 +45,7 @@
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'datascience'">
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
-              {{blip.title}}
+              {{blip.title | limitString($config.blips.titleCutOff)}}
               <span class="blip-status">{{blip.status}}</span>
               </a>
             </li>
