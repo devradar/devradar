@@ -2,17 +2,8 @@
   <v-container
     fluid
     grid-list-lg>
-    <new-blip v-if="edit"></new-blip>
-    <v-btn
-        @click="edit = !edit"
-        color="secondary"
-        fab
-        fixed
-        bottom
-        left
-    >
+    <new-blip></new-blip>
     <v-icon>edit</v-icon>
-    </v-btn>
     <v-layout row wrap>
       <v-flex xs6 sm4 md3>
           <v-icon>search</v-icon>
@@ -27,36 +18,21 @@
           <v-container fluid grid-list-lg>
             <v-layout row wrap>
               <v-flex xs12 sm6>
-                  <span class="headline" v-if="!isEditMode(blip.id)">
-                    <a v-bind:href="blip.link" target="_blank">{{blip.title}}</a>
+                  <span class="headline" v-if="!isEditMode(blip)">
+                    <a v-bind:href="blip.link" target="_blank">{{blip.title | limitString($config.blips.titleCutOff)}}</a>
                   </span>
                   <v-text-field
                   v-model="editBlips[blip.id].title"
-                  v-if="isEditMode(blip.id)"
+                  v-if="isEditMode(blip)"
                   label="Title"
                   required
                   ></v-text-field>
                   <v-text-field
                   v-model="editBlips[blip.id].link"
-                  v-if="isEditMode(blip.id)"
+                  v-if="isEditMode(blip)"
                   label="Link"
                   required
                   ></v-text-field>
-                    <v-btn icon
-                    v-if="edit && !isEditMode(blip.id)"
-                    v-on:click="deleteBlip(blip)"><v-icon>delete</v-icon></v-btn>
-                    <v-btn icon
-                    v-if="edit && !isEditMode(blip.id)"
-                    v-on:click="editBlip(blip)"><v-icon>edit</v-icon></v-btn>
-                    <v-btn icon
-                    v-if="edit && !isEditMode(blip.id)"
-                    v-on:click="addHistory(blip)"><v-icon>playlist_add</v-icon></v-btn>
-                    <v-btn icon
-                    v-if="edit && isEditMode(blip.id)"
-                    v-on:click="saveBlip(editBlips[blip.id])"><v-icon>done</v-icon></v-btn>
-                    <v-btn icon
-                    v-if="edit && isEditMode(blip.id)"
-                    v-on:click="cancelEditBlip(blip)"><v-icon>clear</v-icon></v-btn>
               </v-flex>
               <v-flex xs12 sm6 text-xs-right>
                 <v-chip small disabled color="cyan" text-color="white">
@@ -75,11 +51,11 @@
             </v-layout>
           </v-container>
           <v-card-title>
-            <span class="body-2" v-if="!isEditMode(blip.id)">{{blip.description}}</span>
+            <span class="body-2" v-if="!isEditMode(blip)">{{blip.description}}</span>
             <v-text-field
               multi-line
               v-model="editBlips[blip.id].description"
-              v-if="isEditMode(blip.id)"
+              v-if="isEditMode(blip)"
               label="Description"
               ></v-text-field>
           </v-card-title>
@@ -91,6 +67,28 @@
               {{change.text}}
             </v-card-text>
           </div>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn icon
+            v-if="!isEditMode(blip)"
+            v-on:click="editBlip(blip)"><v-icon>edit</v-icon></v-btn>
+            <v-btn icon
+            v-if="!isEditMode(blip)"
+            v-on:click="addHistory(blip)"><v-icon>playlist_add</v-icon></v-btn>
+            <v-btn icon
+            v-if="isEditMode(blip)"
+            v-on:click="saveBlip(editBlips[blip.id])"><v-icon>done</v-icon></v-btn>
+            <v-btn icon
+            v-if="isEditMode(blip)"
+            v-on:click="cancelEditBlip(blip)"><v-icon>clear</v-icon></v-btn>
+            <v-btn icon
+            v-if="isEditMode(blip) && !isDeleteMode(blip)"
+            v-on:click="setDeleteMode(blip, true)"><v-icon>delete</v-icon></v-btn>
+            <v-btn icon
+            color="red"
+            v-if="isEditMode(blip) && isDeleteMode(blip)"
+            v-on:click="deleteBlip(blip)"><v-icon>delete</v-icon></v-btn>
+          </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
@@ -123,6 +121,7 @@ export default {
     return {
       edit: false,
       editBlips: {},
+      deleteMode: [],
       editMode: [],
       searchTitle: this.search
     }
@@ -142,16 +141,28 @@ export default {
       this.editMode = this.editMode.filter(id => id !== blip.id)
       delete this.editBlips[blip.id]
       this.$store.dispatch('updateBlip', updatedBlip)
+      this.setDeleteMode(blip, false) // deactivate potential delete mode
     },
     cancelEditBlip (blip) {
       this.editMode = this.editMode.filter(id => id !== blip.id)
       delete this.editBlips[blip.id]
+      this.setDeleteMode(blip, false) // deactivate potential delete mode
     },
-    isEditMode (blipId) {
-      return this.editMode.indexOf(blipId) >= 0
+    isEditMode (blip) {
+      return this.editMode.indexOf(blip.id) >= 0
     },
     searchUpdated () {
       if (this.searchTitle) router.replace({name: 'blips', params: {search: this.searchTitle}})
+    },
+    isDeleteMode (blip) {
+      return this.deleteMode.indexOf(blip.id) >= 0
+    },
+    setDeleteMode (blip, isActive) {
+      if (isActive) {
+        this.deleteMode.push(blip.id)
+      } else {
+        this.deleteMode = this.deleteMode.filter(id => id !== blip.id)
+      }
     }
   }
 }
