@@ -20,7 +20,7 @@
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="description" label="Technology description" multi-line rows="3"></v-text-field>
+                  <v-text-field v-model="description" label="Technology use" multi-line rows="3"></v-text-field>
                 </v-flex>
                 <v-flex sm6 xs12>
                   <v-select :items="categories" v-model="category" label="Category" single-line required :rules="[v => !!v || 'Category is required']"></v-select>
@@ -52,9 +52,9 @@ export default {
       fab: false,
       dialog: false,
       category: null,
-      categories: ['tools', 'cloud', 'backend', 'datascience'],
+      categories: this.$config.categories,
       state: null,
-      states: ['hold', 'assess', 'trial', 'adopt'],
+      states: this.$config.states,
       title: null,
       link: null,
       description: null,
@@ -76,7 +76,8 @@ export default {
         link: this.link,
         status: this.state,
         title: this.title,
-        description: this.description
+        description: this.description,
+        changeText: this.changeText
       }
     }
   }

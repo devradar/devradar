@@ -3,7 +3,7 @@
     fluid
     grid-list-lg>
     <new-blip></new-blip>
-    <v-icon>edit</v-icon>
+    <new-change v-on:submit="submitChange" v-on:cancel="cancelChange" v-on:close="cancelChange"></new-change>
     <v-layout row wrap>
       <v-flex xs6 sm4 md3>
           <v-icon>search</v-icon>
@@ -41,7 +41,7 @@
                   </v-avatar>
                   <span>{{blip.category}}</span>
                 </v-chip>
-                <v-chip small disabled color="green" text-color="white">
+                <v-chip small disabled color="green" text-color="white" v-on:click="showChangeDialog = !showChangeDialog">
                   <v-avatar class="green darken-4">
                     {{['hold', 'assess', 'trial', 'adopt'].indexOf(blip.status) + 1}}
                   </v-avatar>
@@ -74,7 +74,7 @@
             v-on:click="editBlip(blip)"><v-icon>edit</v-icon></v-btn>
             <v-btn icon
             v-if="!isEditMode(blip)"
-            v-on:click="addHistory(blip)"><v-icon>playlist_add</v-icon></v-btn>
+            v-on:click="addChange(blip)"><v-icon>playlist_add</v-icon></v-btn>
             <v-btn icon
             v-if="isEditMode(blip)"
             v-on:click="saveBlip(editBlips[blip.id])"><v-icon>done</v-icon></v-btn>
@@ -97,10 +97,11 @@
 
 <script>
 import NewBlip from './NewBlip'
+import NewChange from './NewChange'
 import router from '../router'
 
 export default {
-  components: { NewBlip },
+  components: { NewBlip, NewChange },
   computed: {
     blips () {
       const blips = this.$store.getters.blips
@@ -122,15 +123,19 @@ export default {
       edit: false,
       editBlips: {},
       deleteMode: [],
+      showChangeDialog: false,
       editMode: [],
-      searchTitle: this.search
+      searchTitle: this.search,
+      blipForChange: null
     }
   },
   methods: {
     deleteBlip (blip) {
       this.$store.dispatch('deleteBlip', blip)
     },
-    addHistory (blip) {
+    addChange (blip) {
+      this.blipForChange = blip
+      this.showChangeDialog = true
     },
     editBlip (blip) {
       this.editBlips[blip.id] = {...blip}
@@ -163,6 +168,16 @@ export default {
       } else {
         this.deleteMode = this.deleteMode.filter(id => id !== blip.id)
       }
+    },
+    submitChange (change) {
+      console.log(change)
+      this.showChangeDialog = false
+      this.blipForChange = null
+    },
+    cancelChange (change) {
+      console.log(change)
+      this.blipForChange = null
+      this.showChangeDialog = false
     }
   }
 }
