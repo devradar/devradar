@@ -129,7 +129,6 @@ export default {
       return blips
     },
     filteredBlips () {
-      if (!this.searchTitle) return this.blips
       const blips = this.blips
       return Object.keys(this.blips)
         .filter(id => new RegExp(this.searchTitle, 'i').exec(blips[id].title))
@@ -138,6 +137,7 @@ export default {
           b.changes = b.changes.sort((a, b) => a.date < b.date)
           return b
         })
+        .sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
     }
   },
   props: {

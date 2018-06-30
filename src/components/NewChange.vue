@@ -2,7 +2,7 @@
   <v-dialog v-model="$parent.showChangeDialog" max-width="80%">
     <v-card>
       <v-card-title class="title">
-        Change blip status
+        Change blip status for {{($parent.blipForChange||{}).title}}
       </v-card-title>
       <v-card-text>
         <v-form v-model="valid" ref="form">
