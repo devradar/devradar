@@ -6,22 +6,16 @@ import 'firebase/firestore'
 import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
-import colors from 'vuetify/es5/util/colors'
 import './stylus/main.styl'
 import {store} from './store'
-import config from './config'
+import appConfig from './config'
 
 Vue.use(Vuetify, {
-  theme: {
-    primary: colors.teal.base,
-    secondary: colors.green.lighten1,
-    accent: colors.shades.black,
-    error: colors.red.accent3
-  }
+  theme: appConfig.theme
 })
 Vue.config.productionTip = false
 
-Vue.prototype.$config = {...config, test: 'blup'}
+Vue.prototype.$config = appConfig
 Vue.filter('limitString', function (string, limit = Infinity) {
   return string.slice(0, limit) + (string.length > limit ? '..' : '')
 })

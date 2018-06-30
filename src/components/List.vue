@@ -46,14 +46,14 @@
                   ></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 text-xs-right>
-                <v-chip small disabled color="cyan" text-color="white">
-                  <v-avatar class="cyan darken-4">
+                <v-chip small disabled color="secondary" text-color="white">
+                  <v-avatar class="secondary darken-2">
                     <v-icon dark>domain</v-icon>
                   </v-avatar>
                   <span>{{blip.category}}</span>
                 </v-chip>
-                <v-chip small disabled color="green" text-color="white" @click.stop="addChange(blip)">
-                  <v-avatar class="green darken-4">
+                <v-chip small disabled color="primary" text-color="white" @click.stop="addChange(blip)">
+                  <v-avatar class="primary darken-2">
                     {{$config.states.indexOf(blip.state) + 1}}
                   </v-avatar>
                   {{blip.state}}
@@ -73,8 +73,8 @@
           <div v-for="change in blip.changes" :key="change.id">
             <v-subheader>
               <span class="subheading">{{change.date}}</span>
-                <v-chip small disabled>
-                  <v-avatar>
+                <v-chip small disabled color="primary" text-color="white">
+                  <v-avatar color="primary darken-2">
                     {{$config.states.indexOf(change.newState) + 1}}
                   </v-avatar>
                   {{change.newState}}
@@ -83,7 +83,7 @@
               v-if="isEditMode(blip)"
               @click.stop="deleteChange(blip, change)"><v-icon>delete</v-icon></v-btn>
               </v-subheader>
-            <v-card-text>
+            <v-card-text class="change-text">
               {{change.text}}
             </v-card-text>
           </div>
@@ -105,7 +105,7 @@
             v-if="isEditMode(blip) && !isDeleteMode(blip)"
             @click.stop="setDeleteMode(blip, true)"><v-icon>delete</v-icon></v-btn>
             <v-btn icon
-            color="red"
+            color="accent"
             v-if="isEditMode(blip) && isDeleteMode(blip)"
             @click.stop="deleteBlip(blip)"><v-icon>delete</v-icon></v-btn>
           </v-card-actions>
@@ -227,5 +227,11 @@ export default {
 .headline a {
   text-decoration: none;
   color: black;
+}
+.subheading {
+  margin-right: 1vw;
+}
+.change-text {
+  margin-left: 1vw;
 }
 </style>
