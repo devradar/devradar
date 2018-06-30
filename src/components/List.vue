@@ -61,7 +61,7 @@
           </v-card-title>
           <div v-for="change in blip.changes" v-bind:key="change.id">
             <v-subheader>
-              <span class="subheading">{{ new Date(change.date.seconds*1000).toISOString().split('T')[0] }}</span>
+              <span class="subheading">{{change.date}}</span>
               </v-subheader>
             <v-card-text>
               {{change.text}}
@@ -158,6 +158,7 @@ export default {
     },
     searchUpdated () {
       if (this.searchTitle) router.replace({name: 'blips', params: {search: this.searchTitle}})
+      else router.replace({name: 'blips'})
     },
     isDeleteMode (blip) {
       return this.deleteMode.indexOf(blip.id) >= 0
@@ -169,13 +170,12 @@ export default {
         this.deleteMode = this.deleteMode.filter(id => id !== blip.id)
       }
     },
-    submitChange (change) {
-      console.log(change)
+    submitChange ({blip, change}) {
+      this.$store.dispatch('addChange', {blip, change})
       this.showChangeDialog = false
       this.blipForChange = null
     },
     cancelChange (change) {
-      console.log(change)
       this.blipForChange = null
       this.showChangeDialog = false
     }

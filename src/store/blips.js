@@ -14,7 +14,7 @@ export default {
       Vue.set(state.blips, blip.id, blip)
     },
     exchangeBlip (state, blip) {
-      state.blips[blip.id] = blip
+      Vue.set(state.blips, blip.id, blip)
     },
     removeBlip (state, blip) {
       Vue.delete(state.blips, blip.id)
@@ -34,7 +34,9 @@ export default {
             const changes = snapshot.docs.map(d => Object.assign(d.data(), {id: d.id}))
             blipsArray[index].changes = changes
           }
-          const blipsObject = blipsArray.reduce((p, blip) => Object.assign(p, {[blip.id]: blip}), {})
+          const blipsObject = blipsArray
+            .filter(b => b.title && b.id)
+            .reduce((p, blip) => Object.assign(p, {[blip.id]: blip}), {})
           commit('setBlips', blipsObject)
         })
     },
@@ -46,6 +48,9 @@ export default {
         })
     },
     updateBlip ({commit}, blip) {
+      const doc = {...blip}
+      delete doc.changes
+      delete doc.index
       firebase.firestore().collection('blips').doc(blip.id).update(blip)
         .then(() => {
           commit('exchangeBlip', blip)
@@ -57,7 +62,7 @@ export default {
           commit('removeBlip', blip)
         })
     },
-    addChange ({commit}, blip, change) {
+    addChange ({commit}, {blip, change}) {
       firebase.firestore().collection(`blips/${blip.id}/changes`).add(change)
         .then(docRef => {
           const id = docRef.id
@@ -65,6 +70,7 @@ export default {
           blip.changes.push(change)
           commit('exchangeBlip', blip)
         })
+      // TODO: set blip state to new one
     }
   },
   getters: {

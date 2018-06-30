@@ -44,20 +44,26 @@ export default {
   methods: {
     submit () {
       if (this.$refs.form.validate()) {
-        this.$emit('submit', this.change)
+        this.$emit('submit', {change: this.change, blip: this.$parent.blipForChange})
+        this.reset()
       }
     },
     cancel () {
-      this.$emit('cancel', this.change)
+      this.$emit('cancel', {change: this.change, blip: this.$parent.blipForChange})
+      this.reset()
+    },
+    reset () {
+      this.state = null
+      this.date = null
+      this.changeText = null
     }
   },
   computed: {
     change () {
       return {
         date: this.date,
-        status: this.state,
-        changeText: this.changeText,
-        blipId: this.$parent.blipForChange.id
+        newStatus: this.state,
+        text: this.changeText
       }
     }
   }
