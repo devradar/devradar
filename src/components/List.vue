@@ -2,6 +2,13 @@
   <v-container
     fluid
     grid-list-lg>
+    <v-snackbar
+      v-model="copiedSnackbar"
+      color="success"
+      :timeout="2000"
+      >
+      <v-icon dark>link</v-icon> URL copied
+    </v-snackbar>
     <new-blip></new-blip>
     <new-change @submit="submitChange" @cancel="cancelChange" @close="cancelChange"></new-change>
     <v-layout row wrap>
@@ -47,7 +54,7 @@
                 </v-chip>
                 <v-chip small disabled color="green" text-color="white" @click.stop="showChangeDialog = !showChangeDialog">
                   <v-avatar class="green darken-4">
-                    {{['hold', 'assess', 'trial', 'adopt'].indexOf(blip.status) + 1}}
+                    {{$config.states.indexOf(blip.status) + 1}}
                   </v-avatar>
                   {{blip.status}}
                 </v-chip>
@@ -66,6 +73,12 @@
           <div v-for="change in blip.changes" :key="change.id">
             <v-subheader>
               <span class="subheading">{{change.date}}</span>
+                <v-chip small disabled>
+                  <v-avatar>
+                    {{$config.states.indexOf(change.newStatus) + 1}}
+                  </v-avatar>
+                  {{change.newStatus}}
+                </v-chip>
               </v-subheader>
             <v-card-text>
               {{change.text}}
@@ -118,6 +131,10 @@ export default {
       return Object.keys(this.blips)
         .filter(id => new RegExp(this.searchTitle, 'i').exec(blips[id].title))
         .map(id => blips[id])
+        .map(b => {
+          b.changes = b.changes.sort((a, b) => a.date < b.date)
+          return b
+        })
     }
   },
   props: {
@@ -131,7 +148,8 @@ export default {
       showChangeDialog: false,
       editMode: [],
       searchTitle: this.search,
-      blipForChange: null
+      blipForChange: null,
+      copiedSnackbar: false
     }
   },
   methods: {
@@ -189,6 +207,11 @@ export default {
     },
     copyUrl (blip) {
       const success = copy(`${window.location.origin}/#/blips/${blip.title}`)
+      if (success) {
+        this.copiedSnackbar = true
+      } else {
+        console.error(success)
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="$parent.showChangeDialog">
+  <v-dialog v-model="$parent.showChangeDialog" max-width="80%">
     <v-card>
       <v-card-title class="title">
         Change blip status
@@ -7,15 +7,19 @@
       <v-card-text>
         <v-form v-model="valid" ref="form">
           <v-container grid-list-md>
-            <v-layout row wrap>
-              <v-flex sm6 xs12>
-                <v-select :items="states" v-model="state" label="Status" single-line required :rules="[v => !!v || 'Status is required']"></v-select>
+            <v-layout row wrap justify-space-around>
+              <v-flex sm6 xs12 d-flex>
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <v-select :items="states" v-model="state" label="Status" single-line required :rules="[v => !!v || 'Status is required']"></v-select>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-text-field v-model="changeText" label="Reason for change" multi-line rows="2"></v-text-field>
+                  </v-flex>
+                </v-layout>
               </v-flex>
-              <v-flex sm6 xs12>
+              <v-flex md4 sm6 xs12>
                 <v-date-picker v-model="date" type="month"></v-date-picker>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field v-model="changeText" label="Reason for change" multi-line rows="2"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
