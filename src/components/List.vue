@@ -79,6 +79,9 @@
                   </v-avatar>
                   {{change.newStatus}}
                 </v-chip>
+              <v-btn icon
+              v-if="isEditMode(blip)"
+              @click.stop="deleteChange(blip, change)"><v-icon>delete</v-icon></v-btn>
               </v-subheader>
             <v-card-text>
               {{change.text}}
@@ -204,6 +207,9 @@ export default {
     cancelChange (change) {
       this.blipForChange = null
       this.showChangeDialog = false
+    },
+    deleteChange (blip, change) {
+      this.$store.dispatch('deleteChange', {blip, change})
     },
     copyUrl (blip) {
       const success = copy(`${window.location.origin}/#/blips/${blip.title}`)

@@ -71,6 +71,13 @@ export default {
           commit('exchangeBlip', blip)
         })
       // TODO: set blip state to new one
+    },
+    deleteChange ({commit}, {blip, change}) {
+      firebase.firestore().collection(`blips/${blip.id}/changes`).doc(change.id).delete()
+        .then(() => {
+          blip.changes = blip.changes.filter(c => c.id !== change.id)
+          commit('exchangeBlip', blip)
+        })
     }
   },
   getters: {
