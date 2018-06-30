@@ -7,9 +7,9 @@
           <span>{{blip.index}}</span>
         </a>
       </div>
-      <div class="q1"><h3>Cloud Technologies</h3>
+      <div :class="'q' + (ix+1)" v-for="(category, ix) in $config.categories" :key="ix"><h3>{{category}}</h3>
         <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'cloud'">
+          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === category">
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title | limitString($config.blips.titleCutOff)}}
@@ -18,40 +18,6 @@
             </li>
         </ul>
       </div>
-      <div class="q2"><h3>Tools</h3>
-        <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'tools'">
-            <a v-bind:href="`#/blips/${blip.title}`">
-              <span class="blip-number">{{blip.index}}</span>
-              {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-state">{{blip.state}}</span>
-              </a>
-            </li>
-        </ul>
-      </div>
-      <div class="q3"><h3>Backend</h3>
-        <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'backend'">
-            <a v-bind:href="`#/blips/${blip.title}`">
-              <span class="blip-number">{{blip.index}}</span>
-              {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-state">{{blip.state}}</span>
-              </a>
-            </li>
-        </ul>
-      </div>
-      <div class="q4"><h3>Datascience</h3>
-        <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === 'datascience'">
-            <a v-bind:href="`#/blips/${blip.title}`">
-              <span class="blip-number">{{blip.index}}</span>
-              {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-state">{{blip.state}}</span>
-              </a>
-            </li>
-        </ul>
-      </div>
-
       <div class="adopt" v-on:click="arrangeBlips()"></div>
       <div class="trial"></div>
       <div class="assess"></div>
@@ -68,7 +34,7 @@ export default {
   computed: {
     blips () {
       return this.$store.getters.blipsArray
-        .filter(b => this.$config.states.indexOf(b.state) < 4)
+        .filter(b => this.$config.states.slice(0, 4).indexOf(b.state) > -1)
     }
   },
   data: () => ({
@@ -79,6 +45,21 @@ export default {
       function getDomWidth (domClass) {
         return document.getElementsByClassName(domClass)[0].clientWidth
       }
+      // generate hash from string
+      function getHash (string) {
+        let h = 0
+        for (const char of string) {
+          h = ((h << 5) - h) + char.charCodeAt(0)
+          h |= 0
+        }
+        return h
+      }
+      // create 0..1 pseudo random from string
+      function getPseudoRand (string) {
+        const h = getHash(string)
+        // convert signed int32 space to 0..1 float
+        return (h + Math.pow(2, 31)) / Math.pow(2, 32)
+      }
       const blips = document.getElementsByClassName('blip')
       for (let b of blips) {
         const bWidth = b.clientWidth
@@ -87,20 +68,21 @@ export default {
 
         // Different radiuses depending on blips
         let width, radius
+        const states = this.$config.states
         switch (state) {
-          case 'hold':
+          case states[0]:
             radius = (getDomWidth('radar') - bWidth) / 2
             width = (getDomWidth('radar') - bWidth) / 2 - (getDomWidth('assess') - bWidth) / 2
             break
-          case 'assess':
+          case states[1]:
             radius = (getDomWidth('assess') - bWidth) / 2
             width = (getDomWidth('assess') - bWidth) / 2 - (getDomWidth('trial') - bWidth) / 2
             break
-          case 'trial':
+          case states[2]:
             radius = (getDomWidth('trial') - bWidth) / 2
             width = (getDomWidth('trial') - bWidth) / 2 - (getDomWidth('adopt') - bWidth) / 2
             break
-          case 'adopt':
+          case states[3]:
             radius = (getDomWidth('adopt') - bWidth) / 2
             width = radius = (getDomWidth('adopt') - bWidth) / 2
             break
@@ -108,17 +90,18 @@ export default {
 
         // Different quadrants depending on area
         let quadrant
+        const categories = this.$config.categories
         switch (category) {
-          case 'cloud':
+          case categories[0]:
             quadrant = 1
             break
-          case 'tools':
+          case categories[1]:
             quadrant = 2
             break
-          case 'backend':
+          case categories[2]:
             quadrant = 3
             break
-          case 'datascience':
+          case categories[3]:
             quadrant = 4
             break
         }
@@ -129,8 +112,8 @@ export default {
 
         let rad = radius - width / 2
         let angle = (quadrant - 1) * Math.PI / 2 + Math.PI / 4
-        rad += (Math.sqrt(Math.random()) - 0.5) * width * 0.9
-        angle += (Math.random() - 0.5) * (Math.PI / 2) * 0.9
+        rad += (Math.sqrt(getPseudoRand(b.title + state)) - 0.5) * width * 0.9
+        angle += (getPseudoRand(b.title) - 0.5) * (Math.PI / 2) * 0.9
 
         let x = rad * Math.cos(angle) + radarx
         let y = -rad * Math.sin(angle) + radary // use negative values to go up instead of down on x/y pane
