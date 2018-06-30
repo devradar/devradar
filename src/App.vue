@@ -20,7 +20,7 @@
     <v-toolbar class="primary" dark fixed app dense>
       <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
-        Techradar 📡
+        {{$config.appTitle}}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
@@ -63,14 +63,7 @@ export default {
   methods: {
     getMenuItems (location) {
       const user = this.$store.getters.user || {}
-      const items = [
-        { icon: 'list', title: 'Blips', link: '/blips', validator: user => user.uid, location: ['navbar', 'toolbar'] },
-        { icon: 'track_changes', title: 'Radar', link: '/', validator: user => true, location: ['navbar', 'toolbar'] },
-        { icon: 'delete', title: 'Deprecated', link: '/deprecated', validator: user => user.uid, location: ['navbar', 'toolbar'] },
-        { icon: 'exit_to_app', title: 'Logout', link: '/logout', validator: user => user.uid, location: ['navbar', 'toolbar-menu'] },
-        { icon: 'people', title: 'Users', link: '/users', validator: user => user.uid && user.roles.admin, location: ['navbar', 'toolbar-menu'] },
-        { icon: 'meeting_room', title: 'Login', link: '/login', validator: user => !user.uid, location: ['navbar', 'toolbar'] }
-      ]
+      const items = this.$config.routes
       return items
         .filter(i => i.validator(user))
         .filter(i => i.location.indexOf(location) > -1)
