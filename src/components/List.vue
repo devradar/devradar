@@ -52,7 +52,7 @@
                   </v-avatar>
                   <span>{{blip.category}}</span>
                 </v-chip>
-                <v-chip small disabled color="green" text-color="white" @click.stop="showChangeDialog = !showChangeDialog">
+                <v-chip small disabled color="green" text-color="white" @click.stop="addChange(blip)">
                   <v-avatar class="green darken-4">
                     {{$config.states.indexOf(blip.status) + 1}}
                   </v-avatar>

@@ -68,6 +68,7 @@ export default {
   computed: {
     blips () {
       return this.$store.getters.blipsArray
+        .filter(b => this.$config.states.indexOf(b.status) < 4)
     }
   },
   data: () => ({

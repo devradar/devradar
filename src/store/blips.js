@@ -36,10 +36,7 @@ export default {
           }
           const blipsObject = blipsArray
             .filter(b => b.title && b.id)
-            .map(b => {
-              // b.state = b.changes.filter((a, b) => a.date > b.date)[0].newState
-              return b
-            })
+            .filter(b => b.changes && b.changes.length > 0)
             .reduce((p, blip) => Object.assign(p, {[blip.id]: blip}), {})
           commit('setBlips', blipsObject)
         })
@@ -92,11 +89,17 @@ export default {
   },
   getters: {
     blips (state) {
-      return state.blips
+      const blips = state.blips
+      let ix = 1
+      for (const id in blips) {
+        const b = blips[id]
+        b.index = ix++
+        b.status = b.changes.sort((a, b) => a.date < b.date)[0].newStatus
+      }
+      return blips
     },
-    blipsArray (state) {
-      const blips = Object.values(state.blips)
-        .map((b, index) => Object.assign(b, {index: index + 1}))
+    blipsArray (state, getters) {
+      const blips = Object.values(getters.blips)
       return blips
     }
   }
