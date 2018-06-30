@@ -4,13 +4,18 @@
 
 ## Features
 
-- [ ] add new blips
-- [ ] modify blips
+- [x] add new blips
+- [x] modify blips
 - [x] render tech blips on radar
-- [ ] show blip history
-- [ ] make radar categories customizable
+- [x] show blip history
+- [x] make radar categories customizable
 - [x] oauth (github, twitter)
 - [x] authorization
+- [ ] setup instructions
+  - customization via config
+  - database snapshot for import
+  - firebase setup + initial auth
+- [ ] user name management
 
 ## Design
 

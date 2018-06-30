@@ -80,7 +80,7 @@
                   {{change.newState}}
                 </v-chip>
               <v-btn icon
-              v-if="isEditMode(blip)"
+              v-if="isEditMode(blip) && blip.changes.length > 1"
               @click.stop="deleteChange(blip, change)"><v-icon>delete</v-icon></v-btn>
               </v-subheader>
             <v-card-text class="change-text">
