@@ -3,17 +3,29 @@
     fluid
     grid-list-lg>
     <new-blip></new-blip>
-    <v-layout row wrap>
-      <v-flex xs6 sm4 md5>
+    <v-layout row wrap justify-space-around>
+      <v-flex xs6 sm6 md6>
         <v-text-field
           v-model="searchTitle"
           label="Search.."
           @input="searchUpdated"
-          :append-icon="searchTitle ? 'clear' : ''"
-          :append-icon-cb="searchClear"
+          clearable
           prepend-icon="search"
         >
         </v-text-field>
+      </v-flex>
+      <v-flex xs5 sm5 md5 dflex>
+        <v-layout row wrap>
+          <v-flex xs6 sm6 md6>
+            <v-slider
+              v-model="settings.maxMonths"
+              thumb-label
+              hint="Show only blips older than N months, 0 to disable"
+              label="Filter outdated"
+              :max="12"
+            ></v-slider>
+          </v-flex>
+        </v-layout>
       </v-flex>
       <v-flex xs12 v-for="blip in filteredBlips" :key="blip.id">
         <blip
@@ -40,12 +52,16 @@ export default {
     filteredBlips () {
       const blips = this.blips
       return Object.keys(this.blips)
-        .filter(id => new RegExp(this.searchTitle, 'i').exec(blips[id].title))
+        .filter(id => new RegExp(this.searchTitle || '', 'i').exec(blips[id].title))
         .map(id => blips[id])
         .map(b => {
           b.changes = b.changes.sort((a, b) => a.date < b.date)
+          const bDate = new Date(b.changes[0].date)
+          const now = new Date()
+          b.age = (now.getFullYear() - bDate.getFullYear()) * 12 + (now.getMonth() - bDate.getMonth())
           return b
         })
+        .filter(b => !this.settings.maxMonths || b.age >= this.settings.maxMonths)
         .sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
     },
     userCanEdit () {
@@ -57,7 +73,10 @@ export default {
   },
   data: function () {
     return {
-      searchTitle: this.search
+      searchTitle: this.search,
+      settings: {
+        maxMonths: 0
+      }
     }
   },
   methods: {
@@ -73,4 +92,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 </style>

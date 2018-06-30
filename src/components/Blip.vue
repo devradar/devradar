@@ -55,6 +55,7 @@
           ></v-text-field>
       </v-card-title>
       <div v-for="change in blip.changes" :key="change.id">
+        <v-divider></v-divider>
         <v-subheader>
           <span class="subheading">{{change.date}}</span>
             <v-chip small disabled color="primary" text-color="white">
