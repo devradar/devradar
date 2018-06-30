@@ -36,8 +36,8 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" flat @click.stop="dialog=false">Cancel</v-btn>
-          <v-btn color="primary" flat @click="submit">Save</v-btn>
+          <v-btn color="primary" flat @click.stop="cancel">Cancel</v-btn>
+          <v-btn color="primary" flat @click.stop="submit">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -66,7 +66,20 @@ export default {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('addBlip', {blip: this.blip, change: this.change})
         this.dialog = false
+        this.clear()
       }
+    },
+    cancel () {
+      this.dialog = false
+      this.clear()
+    },
+    clear () {
+      this.category = null
+      this.state = null
+      this.title = null
+      this.link = null
+      this.description = null
+      this.changeText = null
     }
   },
   computed: {
