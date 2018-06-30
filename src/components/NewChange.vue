@@ -45,6 +45,9 @@ export default {
       changeText: null
     }
   },
+  props: {
+    blip: Object
+  },
   methods: {
     submit () {
       if (this.$refs.form.validate()) {
