@@ -3,23 +3,27 @@
     fluid
     grid-list-lg>
     <new-blip></new-blip>
-    <new-change v-on:submit="submitChange" v-on:cancel="cancelChange" v-on:close="cancelChange"></new-change>
+    <new-change @submit="submitChange" @cancel="cancelChange" @close="cancelChange"></new-change>
     <v-layout row wrap>
-      <v-flex xs6 sm4 md3>
-          <v-icon>search</v-icon>
-          <v-text-field
-            v-model="searchTitle"
-            label="Search.."
-            v-on:input="searchUpdated"
-          ></v-text-field>
+      <v-flex xs6 sm4 md5>
+        <v-text-field
+          v-model="searchTitle"
+          label="Search.."
+          @input="searchUpdated"
+          :append-icon="searchTitle ? 'clear' : ''"
+          :append-icon-cb="searchClear"
+          prepend-icon="search"
+        >
+        </v-text-field>
       </v-flex>
-      <v-flex xs12 v-for="blip in filteredBlips" v-bind:key="blip.id">
+      <v-flex xs12 v-for="blip in filteredBlips" :key="blip.id">
         <v-card>
           <v-container fluid grid-list-lg>
             <v-layout row wrap>
               <v-flex xs12 sm6>
                   <span class="headline" v-if="!isEditMode(blip)">
-                    <a v-bind:href="blip.link" target="_blank">{{blip.title | limitString($config.blips.titleCutOff)}}</a>
+                    <a :href="blip.link" target="_blank">{{blip.title | limitString($config.blips.titleCutOff)}}</a>
+                    <v-btn icon @click.stop="copyUrl(blip)"><v-icon>link</v-icon></v-btn>
                   </span>
                   <v-text-field
                   v-model="editBlips[blip.id].title"
@@ -41,7 +45,7 @@
                   </v-avatar>
                   <span>{{blip.category}}</span>
                 </v-chip>
-                <v-chip small disabled color="green" text-color="white" v-on:click="showChangeDialog = !showChangeDialog">
+                <v-chip small disabled color="green" text-color="white" @click.stop="showChangeDialog = !showChangeDialog">
                   <v-avatar class="green darken-4">
                     {{['hold', 'assess', 'trial', 'adopt'].indexOf(blip.status) + 1}}
                   </v-avatar>
@@ -59,7 +63,7 @@
               label="Description"
               ></v-text-field>
           </v-card-title>
-          <div v-for="change in blip.changes" v-bind:key="change.id">
+          <div v-for="change in blip.changes" :key="change.id">
             <v-subheader>
               <span class="subheading">{{change.date}}</span>
               </v-subheader>
@@ -71,23 +75,23 @@
             <v-spacer></v-spacer>
             <v-btn icon
             v-if="!isEditMode(blip)"
-            v-on:click="editBlip(blip)"><v-icon>edit</v-icon></v-btn>
+            @click.stop="editBlip(blip)"><v-icon>edit</v-icon></v-btn>
             <v-btn icon
             v-if="!isEditMode(blip)"
-            v-on:click="addChange(blip)"><v-icon>playlist_add</v-icon></v-btn>
+            @click.stop="addChange(blip)"><v-icon>playlist_add</v-icon></v-btn>
             <v-btn icon
             v-if="isEditMode(blip)"
-            v-on:click="saveBlip(editBlips[blip.id])"><v-icon>done</v-icon></v-btn>
+            @click.stop="saveBlip(editBlips[blip.id])"><v-icon>done</v-icon></v-btn>
             <v-btn icon
             v-if="isEditMode(blip)"
-            v-on:click="cancelEditBlip(blip)"><v-icon>clear</v-icon></v-btn>
+            @click.stop="cancelEditBlip(blip)"><v-icon>clear</v-icon></v-btn>
             <v-btn icon
             v-if="isEditMode(blip) && !isDeleteMode(blip)"
-            v-on:click="setDeleteMode(blip, true)"><v-icon>delete</v-icon></v-btn>
+            @click.stop="setDeleteMode(blip, true)"><v-icon>delete</v-icon></v-btn>
             <v-btn icon
             color="red"
             v-if="isEditMode(blip) && isDeleteMode(blip)"
-            v-on:click="deleteBlip(blip)"><v-icon>delete</v-icon></v-btn>
+            @click.stop="deleteBlip(blip)"><v-icon>delete</v-icon></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -99,6 +103,7 @@
 import NewBlip from './NewBlip'
 import NewChange from './NewChange'
 import router from '../router'
+import copy from 'clipboard-copy'
 
 export default {
   components: { NewBlip, NewChange },
@@ -160,6 +165,9 @@ export default {
       if (this.searchTitle) router.replace({name: 'blips', params: {search: this.searchTitle}})
       else router.replace({name: 'blips'})
     },
+    searchClear () {
+      this.searchTitle = ''
+    },
     isDeleteMode (blip) {
       return this.deleteMode.indexOf(blip.id) >= 0
     },
@@ -178,6 +186,9 @@ export default {
     cancelChange (change) {
       this.blipForChange = null
       this.showChangeDialog = false
+    },
+    copyUrl (blip) {
+      const success = copy(`${window.location.origin}/#/blips/${blip.title}`)
     }
   }
 }
