@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-btn @click.stop="dialog = true" color="accent" v-model="fab" fab fixed bottom right>
+    <v-btn
+      @click.stop="dialog = true"
+      color="accent" v-model="fab"
+      fab fixed bottom right
+      v-if="userCanEdit"
+    >
       <v-icon>add</v-icon>
     </v-btn>
     <v-dialog v-model="dialog" max-width="500px">
@@ -97,6 +102,9 @@ export default {
         text: this.changeText,
         date: (new Date()).toISOString().split('-').slice(0, 2).join('-')
       }
+    },
+    userCanEdit () {
+      return this.$store.getters.userCanEdit
     }
   }
 }

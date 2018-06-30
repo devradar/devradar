@@ -90,10 +90,10 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn icon
-            v-if="!isEditMode(blip)"
+            v-if="!isEditMode(blip) && userCanEdit"
             @click.stop="editBlip(blip)"><v-icon>edit</v-icon></v-btn>
             <v-btn icon
-            v-if="!isEditMode(blip)"
+            v-if="!isEditMode(blip) && userCanEdit"
             @click.stop="addChange(blip)"><v-icon>playlist_add</v-icon></v-btn>
             <v-btn icon
             v-if="isEditMode(blip)"
@@ -138,6 +138,9 @@ export default {
           return b
         })
         .sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
+    },
+    userCanEdit () {
+      return this.$store.getters.userCanEdit
     }
   },
   props: {
@@ -160,6 +163,7 @@ export default {
       this.$store.dispatch('deleteBlip', blip)
     },
     addChange (blip) {
+      if (!this.userCanEdit) return
       this.blipForChange = blip
       this.showChangeDialog = true
     },

@@ -72,7 +72,7 @@ function init () {
             resolve(user)
           })
       } else { // user is not set (logout)
-        store.commit('setUser', {})
+        store.commit('setUser', {roles: {}})
         resolve({})
       }
     })
