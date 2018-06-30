@@ -9,29 +9,6 @@ $q3: #EC7632;
 $q4: #A13F52;
 
 .radar {
-  .xline {
-    content: '';
-    width: 110%;
-    height: 1px;
-    background: rgba(lighten(black, 55%), .4);
-    position: absolute;
-    left: -5%;
-    top: 50%;
-    z-index: 100;
-  }
-  .yline {
-    content: '';
-    height: 110%;
-    width: 1px;
-    background: rgba(lighten(black, 55%), .4);
-    position: absolute;
-    left: 50%;
-    top: -5%;
-    z-index: 100;
-  }
-}
-
-.radar {
   width: 60em;
   height: 60em;
   @include smaller($breakpoint-sm) { width: 400px; height: 400px; }
@@ -145,8 +122,7 @@ span.blip-state {
 }
 
 .radar {
-  &:before {
-    content: 'Hold';
+  span.state {
     font-size: 1em;
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
@@ -173,8 +149,7 @@ span.blip-state {
   border: 2px solid white;
   background: lighten(black, 85%);
   z-index: 3;
-  &:before {
-    content: 'Adopt';
+  span.state {
     font-size: 1em;
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
@@ -201,8 +176,7 @@ span.blip-state {
   border: 2px solid white;
   background: lighten(black, 90%);
   z-index: 2;
-  &:before {
-    content: 'Trial';
+  span.state {
     font-size: 1em;
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
@@ -228,8 +202,7 @@ span.blip-state {
   border-radius: 50%;
   border: 2px solid white;
   background: lighten(black, 92%);
-  &:before {
-    content: 'Assess';
+  span.state {
     font-size: 1em;
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;

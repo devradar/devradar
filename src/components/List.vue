@@ -183,8 +183,8 @@ export default {
       return this.editMode.indexOf(blip.id) >= 0
     },
     searchUpdated () {
-      if (this.searchTitle) router.replace({name: 'blips', params: {search: this.searchTitle}})
-      else router.replace({name: 'blips'})
+      if (this.searchTitle) router.replace({name: 'List', params: {search: this.searchTitle}})
+      else router.replace({name: 'List'})
     },
     searchClear () {
       this.searchTitle = ''

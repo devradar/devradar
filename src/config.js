@@ -1,6 +1,6 @@
 const {default: colors} = require('vuetify/es5/util/colors')
 
-module.exports = { // needs to be ES6 module so it can be imported by webpack
+const config = { // needs to be ES6 module so it can be imported by webpack
   blips: {
     titleCutOff: 20 // cut off title after N characters (display only)
   },
@@ -9,7 +9,8 @@ module.exports = { // needs to be ES6 module so it can be imported by webpack
   metaTitle: 'anoff\'s Techradar', // meta information title tag
   appTitle: 'Tech I work with 🔧', // title showing in the application titlebar
   routes: [ // configure name, permissions & viewports
-    { view: 'List', icon: 'list', title: 'Blips', path: '/blips/:search?', validator: user => user.uid, location: ['navbar', 'toolbar'] },
+    // do NOT change the view property as this links to the vue component and is used for lookups across the app
+    { view: 'List', icon: 'list', title: 'Blips', path: '/list/:search?', validator: user => user.uid, location: ['navbar', 'toolbar'] },
     { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['navbar', 'toolbar'] },
     { view: 'Logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['navbar', 'toolbar-menu'] },
     { view: 'Users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['navbar', 'toolbar-menu'] },
@@ -25,3 +26,11 @@ module.exports = { // needs to be ES6 module so it can be imported by webpack
     success: colors.green.base
   }
 }
+
+// precalculate some properties for later
+config.routes = config.routes
+  .map(i => {
+    i.rootPath = i.path.split(':')[0] // path property without a potential query param
+    return i
+  })
+module.exports = config

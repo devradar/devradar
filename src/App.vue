@@ -6,7 +6,7 @@
         v-for="elm in getMenuItems('navbar')"
         v-bind:key="elm.title"
         router
-        v-bind:to="elm.link"
+        v-bind:to="elm.rootPath"
         >
           <v-list-tile-action>
             <v-icon>{{elm.icon}}</v-icon>
@@ -28,7 +28,7 @@
         v-for="elm in getMenuItems('toolbar')"
         v-bind:key="elm.title"
         router
-        v-bind:to="elm.link"
+        v-bind:to="elm.rootPath"
         >
           <v-icon left>{{elm.icon}}</v-icon>
           {{elm.title}}
@@ -38,7 +38,7 @@
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>
-            <v-list-tile v-for="elm in getMenuItems('toolbar-menu')" v-bind:key="elm.title" v-bind:to="elm.link" router>
+            <v-list-tile v-for="elm in getMenuItems('toolbar-menu')" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
               <v-list-tile-title>
                 <v-icon left>{{elm.icon}}</v-icon>
                 {{ elm.title }}</v-list-tile-title>

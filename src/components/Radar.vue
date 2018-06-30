@@ -3,25 +3,36 @@
     <new-blip></new-blip>
     <div class="radar" ref="radar">
       <div id="blips">
-        <a v-for="blip in blips" v-bind:key="blip.id" class="blip blip--hidden" rel="tooltip" v-bind:href="`#/blips/${blip.title}`" v-bind:data-category="blip.category" v-bind:data-state="blip.state" v-bind:data-changed="blip.changed" v-bind:title="blip.title">
+        <router-link v-for="blip in blips"
+          v-bind:key="blip.id"
+          class="blip blip--hidden"
+          rel="tooltip"
+          :to="{ name: 'List', params: {search: blip.title}}"
+          :data-category="blip.category"
+          :data-state="blip.state"
+          :data-changed="blip.changed"
+          :title="blip.title"
+        >
           <span>{{blip.index}}</span>
-        </a>
+        </router-link>
       </div>
       <div :class="'q' + (ix+1)" v-for="(category, ix) in $config.categories" :key="ix"><h3>{{category}}</h3>
         <ul>
           <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === category">
-            <a v-bind:href="`#/blips/${blip.title}`">
+            <router-link
+            :to="{ name: 'List', params: {search: blip.title}}"
+            >
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title | limitString($config.blips.titleCutOff)}}
               <span class="blip-state">{{blip.state}}</span>
-              </a>
+              </router-link>
             </li>
         </ul>
       </div>
-      <div class="adopt" v-on:click="arrangeBlips()"></div>
-      <div class="trial"></div>
-      <div class="assess"></div>
-      <div class="hold"></div>
+      <div class="adopt"><span class="state">{{$config.states[3]}}</span></div>
+      <div class="trial"><span class="state">{{$config.states[2]}}</span></div>
+      <div class="assess"><span class="state">{{$config.states[1]}}</span></div>
+      <div class="hold"><span class="state">{{$config.states[0]}}</span></div>
     </div>
   </v-container>
 </template>
