@@ -3,7 +3,7 @@
     <new-blip></new-blip>
     <div class="radar" ref="radar">
       <div id="blips">
-        <a v-for="blip in blips" v-bind:key="blip.id" class="blip blip--hidden" rel="tooltip" v-bind:href="`#/blips/${blip.title}`" v-bind:data-category="blip.category" v-bind:data-status="blip.status" v-bind:data-changed="blip.changed" v-bind:title="blip.title">
+        <a v-for="blip in blips" v-bind:key="blip.id" class="blip blip--hidden" rel="tooltip" v-bind:href="`#/blips/${blip.title}`" v-bind:data-category="blip.category" v-bind:data-state="blip.state" v-bind:data-changed="blip.changed" v-bind:title="blip.title">
           <span>{{blip.index}}</span>
         </a>
       </div>
@@ -13,7 +13,7 @@
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-status">{{blip.status}}</span>
+              <span class="blip-state">{{blip.state}}</span>
               </a>
             </li>
         </ul>
@@ -24,7 +24,7 @@
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-status">{{blip.status}}</span>
+              <span class="blip-state">{{blip.state}}</span>
               </a>
             </li>
         </ul>
@@ -35,7 +35,7 @@
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-status">{{blip.status}}</span>
+              <span class="blip-state">{{blip.state}}</span>
               </a>
             </li>
         </ul>
@@ -46,7 +46,7 @@
             <a v-bind:href="`#/blips/${blip.title}`">
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-status">{{blip.status}}</span>
+              <span class="blip-state">{{blip.state}}</span>
               </a>
             </li>
         </ul>
@@ -68,7 +68,7 @@ export default {
   computed: {
     blips () {
       return this.$store.getters.blipsArray
-        .filter(b => this.$config.states.indexOf(b.status) < 4)
+        .filter(b => this.$config.states.indexOf(b.state) < 4)
     }
   },
   data: () => ({
@@ -83,11 +83,11 @@ export default {
       for (let b of blips) {
         const bWidth = b.clientWidth
         const category = b.dataset.category
-        const status = b.dataset.status
+        const state = b.dataset.state
 
         // Different radiuses depending on blips
         let width, radius
-        switch (status) {
+        switch (state) {
           case 'hold':
             radius = (getDomWidth('radar') - bWidth) / 2
             width = (getDomWidth('radar') - bWidth) / 2 - (getDomWidth('assess') - bWidth) / 2

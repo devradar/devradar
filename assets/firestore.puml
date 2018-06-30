@@ -32,7 +32,7 @@ object blip
 blip : _id : Auto ID
 blip : title : String
 blip : category : String
-blip : status : String
+blip : state : String
 blip : link : String
 blip : changes : change
 

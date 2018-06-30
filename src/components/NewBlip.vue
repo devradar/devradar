@@ -26,7 +26,7 @@
                   <v-select :items="categories" v-model="category" label="Category" single-line required :rules="[v => !!v || 'Category is required']"></v-select>
                 </v-flex>
                 <v-flex sm6 xs12>
-                  <v-select :items="states" v-model="state" label="Status" single-line required :rules="[v => !!v || 'Status is required']"></v-select>
+                  <v-select :items="states" v-model="state" label="State" single-line required :rules="[v => !!v || 'State is required']"></v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field v-model="changeText" label="Reason for change" multi-line rows="2"></v-text-field>
@@ -93,7 +93,7 @@ export default {
     },
     change () {
       return {
-        newStatus: this.state,
+        newState: this.state,
         text: this.changeText,
         date: (new Date()).toISOString().split('-').slice(0, 2).join('-')
       }

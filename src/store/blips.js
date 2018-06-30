@@ -94,7 +94,7 @@ export default {
       for (const id in blips) {
         const b = blips[id]
         b.index = ix++
-        b.status = b.changes.sort((a, b) => a.date < b.date)[0].newStatus
+        b.state = b.changes.sort((a, b) => a.date < b.date)[0].newState
       }
       return blips
     },

@@ -54,9 +54,9 @@
                 </v-chip>
                 <v-chip small disabled color="green" text-color="white" @click.stop="addChange(blip)">
                   <v-avatar class="green darken-4">
-                    {{$config.states.indexOf(blip.status) + 1}}
+                    {{$config.states.indexOf(blip.state) + 1}}
                   </v-avatar>
-                  {{blip.status}}
+                  {{blip.state}}
                 </v-chip>
               </v-flex>
             </v-layout>
@@ -75,9 +75,9 @@
               <span class="subheading">{{change.date}}</span>
                 <v-chip small disabled>
                   <v-avatar>
-                    {{$config.states.indexOf(change.newStatus) + 1}}
+                    {{$config.states.indexOf(change.newState) + 1}}
                   </v-avatar>
-                  {{change.newStatus}}
+                  {{change.newState}}
                 </v-chip>
               <v-btn icon
               v-if="isEditMode(blip)"

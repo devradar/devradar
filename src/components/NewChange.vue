@@ -2,7 +2,7 @@
   <v-dialog v-model="$parent.showChangeDialog" max-width="80%">
     <v-card>
       <v-card-title class="title">
-        Change blip status for {{($parent.blipForChange||{}).title}}
+        Change blip state for {{($parent.blipForChange||{}).title}}
       </v-card-title>
       <v-card-text>
         <v-form v-model="valid" ref="form">
@@ -11,7 +11,7 @@
               <v-flex sm6 xs12 d-flex>
                 <v-layout row wrap>
                   <v-flex xs12>
-                    <v-select :items="states" v-model="state" label="Status" single-line required :rules="[v => !!v || 'Status is required']"></v-select>
+                    <v-select :items="states" v-model="state" label="State" single-line required :rules="[v => !!v || 'State is required']"></v-select>
                   </v-flex>
                   <v-flex xs12>
                     <v-text-field v-model="changeText" label="Reason for change" multi-line rows="2"></v-text-field>
@@ -66,7 +66,7 @@ export default {
     change () {
       return {
         date: this.date,
-        newStatus: this.state,
+        newState: this.state,
         text: this.changeText
       }
     }
