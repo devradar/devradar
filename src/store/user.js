@@ -83,7 +83,7 @@ export default {
     },
     userCanEdit (state, getters) {
       const user = getters.user
-      return user.roles.admin || user.roles.edit
+      return user.roles.admin || user.roles.editor
     }
   }
 }
