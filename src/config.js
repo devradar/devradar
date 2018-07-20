@@ -8,13 +8,14 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   states: ['Hold', 'Assess', 'Trial', 'Adopt', 'Basics', 'Deprecated'], // should be 0 - 3 for tech radar, 4 for in use, 5 for no longer in use
   metaTitle: 'anoff\'s Techradar', // meta information title tag
   appTitle: 'Tech I work with 🔧', // title showing in the application titlebar
+  editPermissions: user => user.roles.admin || user.roles.editor,
   routes: [ // configure name, permissions & viewports
     // do NOT change the view property as this links to the vue component and is used for lookups across the app
-    { view: 'List', icon: 'list', title: 'Blips', path: '/list/:search?', validator: user => user.uid, location: ['navbar', 'toolbar'] },
-    { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['navbar', 'toolbar'] },
-    { view: 'Logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['navbar', 'toolbar-menu'] },
-    { view: 'Users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['navbar', 'toolbar-menu'] },
-    { view: 'Login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['navbar', 'toolbar'] }
+    { view: 'List', icon: 'list', title: 'Blips', path: '/list/:search?', validator: user => user.uid, location: ['toolbar'] },
+    { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
+    { view: 'Logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
+    { view: 'Users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
+    { view: 'Login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar'] }
   ],
   theme: {
     primary: colors.cyan.darken1,

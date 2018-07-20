@@ -1,22 +1,5 @@
 <template>
-  <v-app id="inspire">
-1    <v-navigation-drawer v-model="drawer" app clipped scroll-off-screen="true" scroll-toolbar-off-screen="true">
-      <v-list>
-        <v-list-tile
-        v-for="elm in getMenuItems('navbar')"
-        v-bind:key="elm.title"
-        router
-        v-bind:to="elm.rootPath"
-        >
-          <v-list-tile-action>
-            <v-icon>{{elm.icon}}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>{{elm.title}}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
+  <v-app>
     <v-toolbar class="primary" dark fixed app dense>
       <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
