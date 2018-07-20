@@ -20,6 +20,7 @@ object "role" as role
 role : _id : Firebase UID
 role : admin : Boolean (optional)
 role : editor : Boolean (optional)
+role : viewer : Boolean (optional)
 
 roles o-- role
 role .left. user
