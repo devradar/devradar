@@ -52,11 +52,10 @@ function upsertUser (user) {
 
 function init () {
   firebase.initializeApp({
-    apiKey: 'AIzaSyC3FxfpYywy5ZYpiWuf9nw8_vlbxibpQH8',
-    authDomain: 'techradar-f5834.firebaseapp.com',
-    databaseURL: 'https://techradar-f5834.firebaseio.com',
-    projectId: 'techradar-f5834',
-    storageBucket: 'techradar-f5834.appspot.com'
+    apiKey: appConfig.firebase.key,
+    authDomain: `${appConfig.firebase.project}.firebaseapp.com`,
+    databaseURL: `https://${appConfig.firebase.project}.firebaseio.com`,
+    projectId: `${appConfig.firebase.project}`
   })
   firebase.firestore().settings({timestampsInSnapshots: true})
 

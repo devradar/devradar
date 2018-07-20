@@ -4,6 +4,10 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   blips: {
     titleCutOff: 20 // cut off title after N characters (display only)
   },
+  firebase: {
+    key: 'AIzaSyC3FxfpYywy5ZYpiWuf9nw8_vlbxibpQH8',
+    project: 'techradar-f5834'
+  },
   categories: ['Tools', 'Cloud Technologies', 'Backend', 'Datascience'], // quadrant 1-4
   states: ['Hold', 'Assess', 'Trial', 'Adopt', 'Basics', 'Deprecated'], // should be 0 - 3 for tech radar, 4 for in use, 5 for no longer in use
   metaTitle: 'anoff\'s Techradar', // meta information title tag

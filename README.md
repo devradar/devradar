@@ -80,6 +80,7 @@ docker run --rm caktux/travis-cli encrypt "<token from firebase login:ci>" -r <g
 ```
 
 Copy the resulting token to [the Travis CI config](.travis.yml) under `deploy / token /secure`. Modify `deploy / project` to equal your firebase **Project ID**.
+One mandatory customization to the [config](src/config.js) is to set `firebase.key` and `firebase.project` to your **Web API Key** and **Project ID** respectively.
 
 ## Attributions
 
