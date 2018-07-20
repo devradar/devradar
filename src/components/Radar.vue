@@ -123,7 +123,7 @@ export default {
 
         let rad = radius - width / 2
         let angle = (quadrant - 1) * Math.PI / 2 + Math.PI / 4
-        rad += (Math.sqrt(getPseudoRand(b.title + state)) - 0.5) * width * 0.9
+        rad += (Math.sqrt(getPseudoRand(b.title + state)) - 0.5) * width / 2 * 0.9
         angle += (getPseudoRand(b.title) - 0.5) * (Math.PI / 2) * 0.9
 
         let x = rad * Math.cos(angle) + radarx

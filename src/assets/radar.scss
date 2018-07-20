@@ -127,8 +127,8 @@ span.blip-state {
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
     position: absolute;
-    top: -30px;
-    @include smaller($breakpoint-sm) { top: -20px; }
+    top: 10px;
+    @include smaller($breakpoint-sm) { top: 8px; }
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -142,9 +142,9 @@ span.blip-state {
   left: 0;
   right: 0;
   margin: 0 auto;
-  top: 35%;
-  width: 30%;
-  height: 30%;
+  top: 30%;
+  width: 40%;
+  height: 40%;
   border-radius: 50%;
   border: 2px solid white;
   background: lighten(black, 85%);
@@ -154,8 +154,8 @@ span.blip-state {
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
     position: absolute;
-    top: -30px;
-    @include smaller($breakpoint-sm) { top: -20px; }
+    top: 10px;
+    @include smaller($breakpoint-sm) { top: 8px; }
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -181,8 +181,8 @@ span.blip-state {
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
     position: absolute;
-    top: -30px;
-    @include smaller($breakpoint-sm) { top: -20px; }
+    top: 10px;
+    @include smaller($breakpoint-sm) { top: 6px; }
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -207,8 +207,8 @@ span.blip-state {
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
     position: absolute;
-    top: -30px;
-    @include smaller($breakpoint-sm) { top: -20px; }
+    top: 10px;
+    @include smaller($breakpoint-sm) { top: 6px; }
     left: 0;
     right: 0;
     margin: 0 auto;
