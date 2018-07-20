@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import Vue from 'vue'
+import appConfig from '../config'
 
 const ghProvider = new firebase.auth.GithubAuthProvider()
 const twitterProvider = new firebase.auth.TwitterAuthProvider()
@@ -83,7 +84,7 @@ export default {
     },
     userCanEdit (state, getters) {
       const user = getters.user
-      return this.$config.editPermissions(user)
+      return appConfig.editPermissions(user)
     }
   }
 }

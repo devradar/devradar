@@ -32,7 +32,7 @@ The main part is a static Vue.js application using Firebase as backend and authe
 
 Using OAuth users can signup to the service with a valid Twitter or GitHub account. By default users have no roles assigned. There are three roles that can be assigned to users in the `/users` section: **admin**, **editor**, **viewer**.
 
-These roles can be used to prevent access to sections by setting the [config](#customize)
+These roles can be used to prevent access to sections by setting the [config](#customize). Access to the data itself is controlled by [Firestore security rules](firestore.rules) that make use of the same three roles. Opening/Restricting access to data requires a change in the firestore rules as well.
 
 ## Setup
 
@@ -47,7 +47,7 @@ The easiest way to set up your own radar is to
 
 ### Customize
 
-The two main files to customize are [the config](src/config.js) and [the stylesheet](src/assets/radar.scss). The **theme colors** together with the labels for **categories** and required **permissions** to access specific resources can be found in the config.
+The main files to customize are [the config](src/config.js), [the stylesheet](src/assets/radar.scss) and [database security rules](firestore.rules). The **theme colors** together with the labels for **categories** and required **permissions** to access specific resources can be found in the config.
 
 The stylesheet can be modified to change the **radar colors** or the size/responsiveness.
 
@@ -67,6 +67,8 @@ For each `route` defined in the config a similar function is defined in the `val
 - `user => user.uid` requires a logged in user (users can sign up via OAuth)
 - `user => user.roles.admin` requires users to have an admin role
 
+> Settings should be consistent between the [config](src/config.js) and [firestore security rules](firestore.rules)
+
 ### Set up firebase deployment
 
 After creating a project, create a CI token and encode it for Travis CI use
@@ -78,6 +80,8 @@ firebase login:ci
 # encrypt the token to your project
 docker run --rm caktux/travis-cli encrypt "<token from firebase login:ci>" -r <github repo>
 ```
+
+Log into firebase and initialize an empty **Firestore** database in locked mode.
 
 Copy the resulting token to [the Travis CI config](.travis.yml) under `deploy / token /secure`. Modify `deploy / project` to equal your firebase **Project ID**.
 One mandatory customization to the [config](src/config.js) is to set `firebase.key` and `firebase.project` to your **Web API Key** and **Project ID** respectively.
