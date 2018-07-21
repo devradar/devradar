@@ -8,8 +8,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     key: 'AIzaSyC3FxfpYywy5ZYpiWuf9nw8_vlbxibpQH8',
     project: 'techradar-f5834'
   },
-  categories: ['Tools', 'Techniques', 'Platforms', 'Languages & Frameworks'], // quadrant 1-4
-  states: ['Know of', 'Tested', 'Used', 'Advanced'], // should be 0 - 3 for tech radar, 4 for in use, 5 for no longer in use
+  categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'], // quadrant 1-4
+  states: ['Novice', 'Intermediate', 'Advanced', 'Veteran'], // should be 0 - 3 for tech radar, 4 for in use, 5 for no longer in use
+  // personal proficiency level https://hr.nih.gov/working-nih/competencies/competencies-proficiency-scale
   metaTitle: 'anoff\'s Techradar', // meta information title tag
   appTitle: 'my tech history', // title showing in the application titlebar
   editPermissions: user => user.roles.admin || user.roles.editor,
