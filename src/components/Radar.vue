@@ -3,22 +3,37 @@
     <new-blip></new-blip>
     <div class="radar" ref="radar">
       <div id="blips">
-        <router-link v-for="blip in blips"
-          v-bind:key="blip.id"
-          class="blip blip--hidden"
-          rel="tooltip"
-          :to="{ name: 'List', params: {search: blip.title}}"
-          :data-category="blip.category"
-          :data-state="blip.state"
-          :data-changed="blip.changed"
-          :title="blip.title"
+        <v-tooltip
+        top
+        v-for="blip in blips"
+        v-bind:key="blip.id"
+        v-model="blip.tooltipVisible"
         >
-          <span>{{blip.index}}</span>
-        </router-link>
+          <router-link
+            class="blip blip--hidden"
+            rel="tooltip"
+            :to="{ name: 'List', params: {search: blip.title}}"
+            :data-category="blip.category"
+            :data-state="blip.state"
+            :data-changed="blip.changed"
+            :title="blip.title"
+            slot="activator"
+          >
+            <span
+              >{{blip.index}}</span>
+          </router-link>
+          <span class="tooltip">{{blip.title}}</span>
+        </v-tooltip>
       </div>
       <div :class="'q' + (ix+1)" v-for="(category, ix) in $config.categories" :key="ix"><h3>{{category}}</h3>
         <ul>
-          <li v-for="blip in blips" v-bind:key="blip.id" v-if="blip.category === category">
+          <li
+            v-for="blip in blips"
+            v-bind:key="blip.id"
+            v-if="blip.category === category"
+            @mouseover="blip.tooltipVisible = true"
+            @mouseout="blip.tooltipVisible = false"
+          >
             <router-link
             :to="{ name: 'List', params: {search: blip.title}}"
             >
