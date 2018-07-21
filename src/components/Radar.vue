@@ -11,7 +11,6 @@
         >
           <router-link
             class="blip blip--hidden"
-            rel="tooltip"
             :to="{ name: 'List', params: {search: blip.title}}"
             :data-category="blip.category"
             :data-state="blip.state"
@@ -22,7 +21,7 @@
             <span
               >{{blip.index}}</span>
           </router-link>
-          <span class="tooltip">{{blip.title}}</span>
+          <span class="blipTooltip">{{blip.title}}</span>
         </v-tooltip>
       </div>
       <div :class="'q' + (ix+1)" v-for="(category, ix) in $config.categories" :key="ix"><h3>{{category}}</h3>
