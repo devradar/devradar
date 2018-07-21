@@ -9,10 +9,14 @@
   - [Role based access](#role-based-access)
 - [Setup](#setup)
   - [Customize](#customize)
-  - [Set up firebase deployment](#set-up-firebase-deployment)
+  - [Deployment](#deployment)
 - [Attributions](#attributions)
 
 <!-- /TOC -->
+
+A full open source solution to build a custom technology radar as pioneered by [Thoughtworks](https://www.thoughtworks.com/radar). See [radar-demo.anoff.io](https://radar-demo.anoff.io) for an authentication free test environment.
+
+The master branch of this repository holds a techradar version customized towards showing my [personal technology](https://radar.anoff.io) set. For building a teams or organizations techradar it might be better to stick with the original _Hold_, _Assess_, _Trial_, _Adopt_ style.
 
 ## Features
 
@@ -28,6 +32,12 @@
 
 The main part is a static Vue.js application using Firebase as backend and authentication provider.
 
+![design](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/techradar/master/assets/design.puml)
+
+Database schema
+
+![firestore schema](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/techradar/master/assets/firestore.puml)
+
 ### Role based access
 
 Using OAuth users can signup to the service with a valid Twitter or GitHub account. By default users have no roles assigned. There are three roles that can be assigned to users in the `/users` section: **admin**, **editor**, **viewer**.
@@ -36,12 +46,16 @@ These roles can be used to prevent access to sections by setting the [config](#c
 
 ## Setup
 
+You should be able to get your own version up and running within **15 minutes** and no incurring infrastructure costs.
 The easiest way to set up your own radar is to
 
 1. [fork](https://help.github.com/articles/fork-a-repo/) this repository
 1. create a [firebase project](https://firebase.google.com/)
-1. configure the techradar to your needs
-1. deploy it using [Travis CI](https://travis-ci.com).
+1. create [Twitter app](https://apps.twitter.com/) and configure [firebase sign in method](https://firebase.google.com/docs/auth/web/twitter-login)
+1. create [GitHub app]() and configure [firebase sign in method](https://firebase.google.com/docs/auth/web/github-auth)
+1. [customize](#customize
+) the techradar to your needs
+1. [deploy](#deployment) it using [Travis CI](https://travis-ci.com).
 1. log in using the Twitter or GitHub OAuth provider
 1. access the firebase database and within the `/roles` collection set `admin: true` for your account
 
@@ -69,7 +83,7 @@ For each `route` defined in the config a similar function is defined in the `val
 
 > Settings should be consistent between the [config](src/config.js) and [firestore security rules](firestore.rules)
 
-### Set up firebase deployment
+### Deployment
 
 After creating a project, create a CI token and encode it for Travis CI use
 
