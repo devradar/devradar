@@ -11,10 +11,10 @@ $q4: #A13F52;
 .radar {
   width: 60em;
   height: 60em;
-  @include smaller($breakpoint-sm) { width: 400px; height: 400px; }
-  @include smaller($breakpoint-xs) { width: 250px; height: 250px; }
   margin: 0 auto;
-  margin-top: 4rem;
+  margin-top: 4em;
+  @include smaller($breakpoint-sm) { width: 400px; height: 400px; }
+  @include smaller($breakpoint-xs) { width: 250px; height: 250px; margin-top: 12em; }
   background: lighten(black, 95%);
   border-radius: 50%;
   position: relative;
@@ -41,9 +41,11 @@ ul {
   }
   .q1 {
     color: $q1;
-    right: -10em;
-    @include smaller($breakpoint-sm) { right: -8em; }
+    left: 58em;
+    width: 24em;
     top: -4em;
+    @include smaller($breakpoint-sm) { left: 28em; top: -2em; width: 10em; }
+    @include smaller($breakpoint-xs) { left: 10em; top: -14em; }
     position: absolute;
     z-index: 5;
     a {
@@ -56,8 +58,10 @@ ul {
   }
   .q2 {
     color: $q2;
-    left: -10em;
-    @include smaller($breakpoint-sm) { left: -5em; }
+    left: -22em;
+    width: 24em;
+    @include smaller($breakpoint-sm) { left: -8em; top: -2em; width: 10em; }
+    @include smaller($breakpoint-xs) { left: -2em; top: -14em; }
     top: -4em;
     position: absolute;
     z-index: 5;
@@ -71,10 +75,11 @@ ul {
   }
   .q3 {
     color: $q3;
-    left: -10em;
-    @include smaller($breakpoint-sm) { left: -5em; }
-    bottom: 10em;
-    @include smaller($breakpoint-sm) { bottom: -5em; }
+    left: -22em;
+    top: 38em;
+    width: 24em;
+    @include smaller($breakpoint-sm) { left: -8em; top: 18em; width: 10em; }
+    @include smaller($breakpoint-xs) { left: -2em; top: 18em; }
     position: absolute;
     z-index: 5;
     a {
@@ -87,10 +92,11 @@ ul {
   }
   .q4 {
     color: $q4;
-    right: -10em;
-    @include smaller($breakpoint-sm) { right: -8em; }
-    bottom: 10em;
-    @include smaller($breakpoint-sm) { bottom: -5em; }
+    left: 58em;
+    top: 38em;
+    width: 24em;
+    @include smaller($breakpoint-sm) { left: 28em; top: 18em; width: 10em; }
+    @include smaller($breakpoint-xs) { left: 10em; top: 18em; }
     position: absolute;
     z-index: 5;
     a {
@@ -115,6 +121,7 @@ span.blip-number {
   text-align: center;
 }
 span.blip-state {
+  @include smaller($breakpoint-sm) { display: none; }
   float: right;
   margin-left: 4em;
   text-transform: uppercase;
