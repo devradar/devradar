@@ -46,7 +46,7 @@
         </v-layout>
       </v-container>
       <v-card-title>
-        <span class="body-2" v-if="!isEditMode">{{blip.description}}</span>
+        <span v-if="!isEditMode" v-html="markdown(blip.description)"></span>
         <v-text-field
           multi-line
           v-model="tempBlip.description"
@@ -68,8 +68,7 @@
           v-if="isEditMode && blip.changes.length > 1"
           @click.stop="deleteChange(blip, change)"><v-icon>delete</v-icon></v-btn>
           </v-subheader>
-        <v-card-text class="change-text">
-          {{change.text}}
+        <v-card-text class="change-text" v-html="markdown(change.text)">
         </v-card-text>
       </div>
       <v-card-actions>
@@ -101,7 +100,8 @@
 <script>
 import NewChange from './NewChange'
 import copy from 'clipboard-copy'
-
+import MarkdownIt from 'markdown-it'
+const md = new MarkdownIt()
 export default {
   components: { NewChange },
   computed: {
@@ -170,6 +170,9 @@ export default {
       } else {
         console.error(success)
       }
+    },
+    markdown (string) {
+      return md.render(string)
     }
   }
 }

@@ -13,6 +13,7 @@
   "dependencies": {
     "clipboard-copy": "^2.0.0",
     "firebase": "^5.0.4",
+    "markdown-it": "^8.4.2",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",
     "vue": "^2.5.2",

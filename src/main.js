@@ -9,7 +9,6 @@ import Vuetify from 'vuetify'
 import './stylus/main.styl'
 import {store} from './store'
 import appConfig from './config'
-
 Vue.use(Vuetify, {
   theme: appConfig.theme
 })
