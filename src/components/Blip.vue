@@ -171,7 +171,8 @@ export default {
         console.error(success)
       }
     },
-    markdown (string) {
+    markdown (string = '') {
+      if (!string || string.length === 0) return ''
       return md.render(string)
     }
   }
