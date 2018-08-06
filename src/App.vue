@@ -1,12 +1,11 @@
 <template>
   <v-app>
     <v-toolbar class="primary" dark fixed app dense>
-      <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
         {{$config.appTitle}}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only">
+      <v-toolbar-items>
         <v-btn flat
         v-for="elm in getMenuItems('toolbar')"
         v-bind:key="elm.title"
@@ -14,17 +13,24 @@
         v-bind:to="elm.rootPath"
         >
           <v-icon left>{{elm.icon}}</v-icon>
-          {{elm.title}}
+          <span class="hidden-xs-only">{{elm.title}}</span>
         </v-btn>
         <v-menu bottom left v-if="getMenuItems('toolbar-menu').length">
           <v-btn slot="activator" icon dark>
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>
+            <v-list-tile v-for="elm in getMenuItems('toolbar')" v-bind:key="elm.title" v-bind:to="elm.rootPath" class="hidden-sm-and-up" router>
+              <v-list-tile-title>
+                <v-icon left>{{elm.icon}}</v-icon>
+                {{ elm.title }}
+              </v-list-tile-title>
+            </v-list-tile>
             <v-list-tile v-for="elm in getMenuItems('toolbar-menu')" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
               <v-list-tile-title>
                 <v-icon left>{{elm.icon}}</v-icon>
-                {{ elm.title }}</v-list-tile-title>
+                {{ elm.title }}
+              </v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-menu>
@@ -41,7 +47,6 @@
 <script>
 export default {
   data: () => ({
-    drawer: false
   }),
   methods: {
     getMenuItems (location) {
@@ -58,8 +63,5 @@ export default {
 <style lang="scss" scoped>
 .toolbar {
   z-index: 23;
-}
-.navigation-drawer {
-  z-index: 24;
 }
 </style>
