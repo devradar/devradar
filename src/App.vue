@@ -37,6 +37,14 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
+      <div id="progressContainer">
+        <v-progress-linear
+          height="20"
+          color="accent"
+          indeterminate
+          v-if="loading"
+        ></v-progress-linear>
+      </div>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
@@ -56,6 +64,11 @@ export default {
         .filter(i => i.validator(user))
         .filter(i => i.location.indexOf(location) > -1)
     }
+  },
+  computed: {
+    loading () {
+      return this.$store.getters.isLoading
+    }
   }
 }
 </script>
@@ -63,5 +76,11 @@ export default {
 <style lang="scss" scoped>
 .toolbar {
   z-index: 23;
+}
+#progressContainer {
+  min-height: 20px;
+}
+.progress-linear {
+  margin: 0;
 }
 </style>

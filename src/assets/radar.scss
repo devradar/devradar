@@ -9,8 +9,8 @@ $q3: #EC7632;
 $q4: #A13F52;
 
 .radar {
-  width: 60em;
-  height: 60em;
+  width: 40em;
+  height: 40em;
   margin: 0 auto;
   margin-top: 4em;
   @include smaller($breakpoint-sm) { width: 400px; height: 400px; }
@@ -41,7 +41,7 @@ ul {
   }
   .q1 {
     color: $q1;
-    left: 58em;
+    left: 40em;
     width: 24em;
     top: -4em;
     @include smaller($breakpoint-sm) { left: 28em; top: -2em; width: 10em; }
@@ -58,7 +58,7 @@ ul {
   }
   .q2 {
     color: $q2;
-    left: -22em;
+    left: -24em;
     width: 24em;
     @include smaller($breakpoint-sm) { left: -8em; top: -2em; width: 10em; }
     @include smaller($breakpoint-xs) { left: -2em; top: -14em; }
@@ -75,8 +75,8 @@ ul {
   }
   .q3 {
     color: $q3;
-    left: -22em;
-    top: 38em;
+    left: -24em;
+    top: 22em;
     width: 24em;
     @include smaller($breakpoint-sm) { left: -8em; top: 18em; width: 10em; }
     @include smaller($breakpoint-xs) { left: -2em; top: 18em; }
@@ -92,8 +92,8 @@ ul {
   }
   .q4 {
     color: $q4;
-    left: 58em;
-    top: 38em;
+    left: 40em;
+    top: 22em;
     width: 24em;
     @include smaller($breakpoint-sm) { left: 28em; top: 18em; width: 10em; }
     @include smaller($breakpoint-xs) { left: 10em; top: 18em; }
