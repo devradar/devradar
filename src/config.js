@@ -1,4 +1,4 @@
-const {default: colors} = require('vuetify/es5/util/colors')
+const { default: colors } = require('vuetify/es5/util/colors')
 
 const config = { // needs to be ES6 module so it can be imported by webpack
   blips: {

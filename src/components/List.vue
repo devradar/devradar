@@ -81,8 +81,8 @@ export default {
   },
   methods: {
     searchUpdated () {
-      if (this.searchTitle) router.replace({name: 'List', params: {search: this.searchTitle}})
-      else router.replace({name: 'List'})
+      if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })
+      else router.replace({ name: 'List' })
     },
     searchClear () {
       this.searchTitle = ''

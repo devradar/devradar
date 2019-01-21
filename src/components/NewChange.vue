@@ -51,12 +51,12 @@ export default {
   methods: {
     submit () {
       if (this.$refs.form.validate()) {
-        this.$emit('submit', {change: this.change, blip: this.$parent.blipForChange})
+        this.$emit('submit', { change: this.change, blip: this.$parent.blipForChange })
         this.reset()
       }
     },
     cancel () {
-      this.$emit('cancel', {change: this.change, blip: this.$parent.blipForChange})
+      this.$emit('cancel', { change: this.change, blip: this.$parent.blipForChange })
       this.reset()
     },
     reset () {

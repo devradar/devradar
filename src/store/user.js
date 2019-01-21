@@ -24,7 +24,7 @@ export default {
     }
   },
   actions: {
-    oauthLogin ({commit}, payload) {
+    oauthLogin ({ commit }, payload) {
       let provider
       switch (payload.provider) {
         case 'github':
@@ -42,28 +42,28 @@ export default {
           console.error(error)
         })
     },
-    getUserList ({commit}) {
+    getUserList ({ commit }) {
       Promise.all([
         firebase.firestore().collection('users').get(),
         firebase.firestore().collection('roles').get()
       ])
         .then(([usersSnapshot, rolesSnapshot]) => {
           const roles = rolesSnapshot.docs
-            .map(d => Object.assign(d.data(), {id: d.id}))
-            .reduce((p, doc) => Object.assign(p, {[doc.id]: doc}), {})
+            .map(d => Object.assign(d.data(), { id: d.id }))
+            .reduce((p, doc) => Object.assign(p, { [doc.id]: doc }), {})
           const users = usersSnapshot.docs
-            .map(d => Object.assign(d.data(), {id: d.id}))
+            .map(d => Object.assign(d.data(), { id: d.id }))
             .map(d => {
               const userRoles = roles[d.id] || {}
               delete userRoles.id
-              return Object.assign(d, {roles: userRoles})
+              return Object.assign(d, { roles: userRoles })
             })
-            .reduce((p, doc) => Object.assign(p, {[doc.id]: doc}), {})
+            .reduce((p, doc) => Object.assign(p, { [doc.id]: doc }), {})
           commit('setUserList', users)
         })
         .catch(err => console.error(err))
     },
-    setRoles ({commit}, {targetUser}) {
+    setRoles ({ commit }, { targetUser }) {
       const coll = firebase.firestore().collection('roles')
       return coll.doc(targetUser.uid).update(targetUser.roles)
         .catch(() => {

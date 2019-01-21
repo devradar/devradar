@@ -88,7 +88,7 @@ export default {
     setRole (index, role, value) {
       this.userList[index].roles[role] = value
       const targetUser = this.userList[index]
-      this.$store.dispatch('setRoles', {targetUser})
+      this.$store.dispatch('setRoles', { targetUser })
     }
   },
   mounted () {

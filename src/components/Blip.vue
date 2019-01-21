@@ -132,7 +132,7 @@ export default {
       this.showChangeDialog = true
     },
     editBlip () {
-      this.tempBlip = {...this.blip}
+      this.tempBlip = { ...this.blip }
       this.isEditMode = true
     },
     saveBlip () {
@@ -148,8 +148,8 @@ export default {
     setDeleteMode (isActive) {
       this.isDeleteMode = isActive
     },
-    submitChange ({blip, change}) {
-      this.$store.dispatch('addChange', {blip, change})
+    submitChange ({ blip, change }) {
+      this.$store.dispatch('addChange', { blip, change })
       this.showChangeDialog = false
       this.blipForChange = null
     },
@@ -158,7 +158,7 @@ export default {
       this.showChangeDialog = false
     },
     deleteChange (blip, change) {
-      this.$store.dispatch('deleteChange', {blip, change})
+      this.$store.dispatch('deleteChange', { blip, change })
     },
     copyUrl () {
       const b = this.blip

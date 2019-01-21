@@ -1,5 +1,7 @@
 # Techradar 📡
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/anoff/techradar.svg)](https://greenkeeper.io/)
+
 > single page web app to manage your own techradar
 
 <!-- TOC depthFrom:2 -->

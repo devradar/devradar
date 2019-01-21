@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     onLogin (provider) {
-      this.$store.dispatch('oauthLogin', {provider})
+      this.$store.dispatch('oauthLogin', { provider })
     }
   },
   mounted: function () {
