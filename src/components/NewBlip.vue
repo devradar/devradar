@@ -69,7 +69,7 @@ export default {
   methods: {
     submit () {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch('addBlip', {blip: this.blip, change: this.change})
+        this.$store.dispatch('addBlip', { blip: this.blip, change: this.change })
         this.dialog = false
         this.clear()
       }

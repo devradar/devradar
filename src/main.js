@@ -7,7 +7,7 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import './stylus/main.styl'
-import {store} from './store'
+import { store } from './store'
 import appConfig from './config'
 Vue.use(Vuetify, {
   theme: appConfig.theme
@@ -31,7 +31,7 @@ function upsertUser (user) {
         db.collection('users').doc(user.uid).update(doc) // update server document with time
         return db.collection('roles').doc(user.uid).get()
           .then(rolesSnapshot => {
-            return Object.assign(doc, {roles: rolesSnapshot.data() || {}})
+            return Object.assign(doc, { roles: rolesSnapshot.data() || {} })
           })
       } else { // document does not exist, create new user
         const doc = {
@@ -42,7 +42,7 @@ function upsertUser (user) {
         }
         return db.collection('users').doc(user.uid).set(doc)
           .then(doc => {
-            return Object.assign(doc, {roles: {}})
+            return Object.assign(doc, { roles: {} })
           })
       }
     })
@@ -56,7 +56,7 @@ function init () {
     databaseURL: `https://${appConfig.firebase.project}.firebaseio.com`,
     projectId: `${appConfig.firebase.project}`
   })
-  firebase.firestore().settings({timestampsInSnapshots: true})
+  firebase.firestore().settings({ timestampsInSnapshots: true })
 
   // hook up auth listener to mutate 'user' state
   store.dispatch('getBlips')
@@ -70,7 +70,7 @@ function init () {
             resolve(user)
           })
       } else { // user is not set (logout)
-        store.commit('setUser', {roles: {}})
+        store.commit('setUser', { roles: {} })
         resolve({})
       }
     })

@@ -25,29 +25,29 @@ export default {
     }
   },
   actions: {
-    getBlips ({commit}) {
+    getBlips ({ commit }) {
       commit('setLoading', true)
       let blipsArray
       firebase.firestore().collection('blips').get()
         .then(snapshot => {
           blipsArray = snapshot.docs
-            .map(d => Object.assign(d.data(), {id: d.id}))
+            .map(d => Object.assign(d.data(), { id: d.id }))
           return Promise.all(blipsArray.map(b => firebase.firestore().collection(`blips/${b.id}/changes`).get()))
         })
         .then(snapshotArray => {
           for (const [index, snapshot] of snapshotArray.entries()) {
-            const changes = snapshot.docs.map(d => Object.assign(d.data(), {id: d.id}))
+            const changes = snapshot.docs.map(d => Object.assign(d.data(), { id: d.id }))
             blipsArray[index].changes = changes
           }
           const blipsObject = blipsArray
             .filter(b => b.title && b.id)
             .filter(b => b.changes && b.changes.length > 0)
-            .reduce((p, blip) => Object.assign(p, {[blip.id]: blip}), {})
+            .reduce((p, blip) => Object.assign(p, { [blip.id]: blip }), {})
           commit('setBlips', blipsObject)
           commit('setLoading', false)
         })
     },
-    addBlip ({commit, dispatch}, {blip, change}) {
+    addBlip ({ commit, dispatch }, { blip, change }) {
       // prepend https if nothing is there
       commit('setLoading', true)
       if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
@@ -56,14 +56,14 @@ export default {
           const id = docRef.id
           blip.id = id
           blip.changes = []
-          dispatch('addChange', {blip, change})
+          dispatch('addChange', { blip, change })
           commit('setLoading', false)
         })
     },
-    updateBlip ({commit}, blip) {
+    updateBlip ({ commit }, blip) {
       commit('setLoading', true)
       // create copy of the store object to remove changes array/index for firebase entry
-      const doc = {...blip}
+      const doc = { ...blip }
       // prepend https if nothing is there
       if (blip.link && !/^https?:\/\//i.test(doc.link)) doc.link = 'https://' + doc.link
       delete doc.changes
@@ -74,7 +74,7 @@ export default {
           commit('setLoading', false)
         })
     },
-    deleteBlip ({commit}, blip) {
+    deleteBlip ({ commit }, blip) {
       commit('setLoading', true)
       firebase.firestore().collection('blips').doc(blip.id).delete()
         .then(() => {
@@ -82,18 +82,18 @@ export default {
           commit('setLoading', false)
         })
     },
-    addChange ({commit}, {blip, change}) {
+    addChange ({ commit }, { blip, change }) {
       commit('setLoading', true)
       firebase.firestore().collection(`blips/${blip.id}/changes`).add(change)
         .then(docRef => {
           const id = docRef.id
-          change = Object.assign(change, {id})
+          change = Object.assign(change, { id })
           blip.changes.push(change)
           commit('exchangeBlip', blip)
           commit('setLoading', false)
         })
     },
-    deleteChange ({commit}, {blip, change}) {
+    deleteChange ({ commit }, { blip, change }) {
       commit('setLoading', true)
       firebase.firestore().collection(`blips/${blip.id}/changes`).doc(change.id).delete()
         .then(() => {
