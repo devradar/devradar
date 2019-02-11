@@ -5,6 +5,14 @@
         {{$config.appTitle}}
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <a href="https://anoff.io" target="_blank"
+        v-if="$config.aboutLink">
+        <v-btn flat>
+          <v-icon left>info</v-icon>
+          <span class="hidden-xs-only">About me</span>
+        </v-btn>
+      </a>
+      <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn flat
         v-for="elm in getMenuItems('toolbar')"

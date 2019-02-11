@@ -11,8 +11,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'], // quadrant 1-4
   states: ['Novice', 'Intermediate', 'Advanced', 'Veteran'], // should be 0 - 3 for tech radar, 4 for in use, 5 for no longer in use
   // personal proficiency level https://hr.nih.gov/working-nih/competencies/competencies-proficiency-scale
-  metaTitle: 'anoff\'s Techradar', // meta information title tag
-  appTitle: 'tech skills', // title showing in the application titlebar
+  metaTitle: 'Andreas\' Techradar', // meta information title tag
+  appTitle: 'Andreas\'s technical skills', // title showing in the application titlebar
+  aboutLink: 'https://anoff.io', // link to about me, empty string to hide
   editPermissions: user => user.roles.admin || user.roles.editor,
   routes: [ // configure name, permissions & viewports
     // do NOT change the view property as this links to the vue component and is used for lookups across the app
