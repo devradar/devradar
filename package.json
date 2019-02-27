@@ -11,7 +11,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "clipboard-copy": "^2.0.0",
+    "clipboard-copy": "^3.0.0",
     "firebase": "^5.0.4",
     "markdown-it": "^8.4.2",
     "node-sass": "^4.9.2",
