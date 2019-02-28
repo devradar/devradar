@@ -7,6 +7,7 @@
 <!-- TOC depthFrom:2 -->
 
 - [Features](#features)
+  - [Demo](#demo)
 - [Design](#design)
   - [Role based access](#role-based-access)
 - [Setup](#setup)
@@ -29,6 +30,22 @@ The master branch of this repository holds a techradar version customized toward
 - [x] make radar categories customizable
 - [x] oauth (github, twitter)
 - [ ] user name management
+
+### Demo
+
+Here are a few short demos of how the app can be used
+
+*Browse the radar/list view*
+
+![create a blip](assets/demo-viewer.gif)
+
+*Create a new entry*
+
+![create a blip](assets/demo-create.gif)
+
+*Update or delete an entry*
+
+![create a blip](assets/demo-edit_delete.gif)
 
 ## Design
 
