@@ -260,20 +260,3 @@ a.blip {
 .blip > span {
   color: white;
 }
-
-.blipTooltip {
-  font-size: 1.5em;
-  @include smaller($breakpoint-sm) { font-size: 1em; }
-  &:after {
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 10px solid rgba(#616161, 1);
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: -10px;
-      margin-left: -10px;
-  }
-}
