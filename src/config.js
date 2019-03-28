@@ -24,7 +24,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { view: 'Login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar-menu'] }
   ],
   theme: {
-    primary: colors.indigo.base,
+    primary: '#cc0033',
     secondary: colors.blue.darken1,
     accent: colors.cyan.accent4,
     error: colors.red.base,

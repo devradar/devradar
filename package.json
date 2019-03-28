@@ -1,7 +1,7 @@
 {
   "name": "techradar",
   "version": "1.0.0",
-  "description": "Simple web app to manage your custom tech radar",
+  "description": "Simple web app to manage your personal tech radar",
   "author": "anoff <offenhaeuser@gmail.com>",
   "private": true,
   "scripts": {
