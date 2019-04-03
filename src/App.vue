@@ -64,14 +64,26 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <div id="progressContainer">
-        <v-progress-linear
-          height="20"
-          color="accent"
-          indeterminate
-          v-if="loading"
-        ></v-progress-linear>
-      </div>
+      <v-dialog
+        v-model="isLoading"
+        hide-overlay
+        persistent
+        width="300"
+      >
+        <v-card
+          color="primary"
+          dark
+        >
+          <v-card-text>
+            Loading radar..
+            <v-progress-linear
+              indeterminate
+              color="white"
+              class="mb-0"
+            ></v-progress-linear>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
@@ -93,7 +105,7 @@ export default {
     }
   },
   computed: {
-    loading () {
+    isLoading () {
       return this.$store.getters.isLoading
     }
   }
