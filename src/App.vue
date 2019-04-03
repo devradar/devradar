@@ -1,12 +1,13 @@
 <template>
   <v-app>
-    <v-toolbar class="primary" dark fixed app dense>
+    <v-toolbar class="primary top" dark fixed app dense>
       <v-spacer></v-spacer>
 
       <v-toolbar-title>
         {{$config.appTitle}}
       </v-toolbar-title>
 
+      <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
 
@@ -17,21 +18,7 @@
         <v-icon left>info</v-icon>
         <span class="hidden-xs-only">About me</span>
       </v-btn></a>
-      <a
-        href="//blog.anoff.io"
-        target="_blank"
-      ><v-btn flat>
-        <v-icon left>create</v-icon>
-        <span class="hidden-xs-only">Blog</span>
-      </v-btn></a>
-      <a
-        href="//anoff.github.io/legal/"
-        target="_blank"
-      ><v-btn flat>
-        <span class="hidden-xs-only">Legal</span>
-      </v-btn></a>
 
-      <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn flat
         v-for="elm in getMenuItems('toolbar')"

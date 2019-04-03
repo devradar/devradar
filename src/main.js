@@ -56,7 +56,6 @@ function init () {
     databaseURL: `https://${appConfig.firebase.project}.firebaseio.com`,
     projectId: `${appConfig.firebase.project}`
   })
-  firebase.firestore().settings({ timestampsInSnapshots: true })
 
   // hook up auth listener to mutate 'user' state
   store.dispatch('getBlips')

@@ -25,7 +25,8 @@
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="description" label="Technology use" multi-line rows="3"></v-text-field>
+                  <v-textarea v-model="description" label="Technology use" rows="3">
+                  </v-textarea>
                 </v-flex>
                 <v-flex sm6 xs12>
                   <v-select :items="categories" v-model="category" label="Category" single-line required :rules="[v => !!v || 'Category is required']"></v-select>
@@ -34,7 +35,8 @@
                   <v-select :items="states" v-model="state" label="State" single-line required :rules="[v => !!v || 'State is required']"></v-select>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="changeText" label="Reason for change" multi-line rows="2"></v-text-field>
+                  <v-textarea v-model="changeText" label="Reason for change" rows="2">
+                  </v-textarea>
                 </v-flex>
               </v-layout>
             </v-container>
