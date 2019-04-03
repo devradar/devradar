@@ -40,4 +40,5 @@ config.routes = config.routes
     i.rootPath = i.path.split(':')[0] // path property without a potential query param
     return i
   })
-module.exports = config
+
+export default config
