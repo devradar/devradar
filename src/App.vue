@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar class="primary" dark fixed app dense>
+    <v-toolbar class="primary top" dark fixed app dense>
       <v-spacer></v-spacer>
 
       <v-toolbar-title>
