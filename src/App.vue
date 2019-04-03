@@ -9,6 +9,7 @@
 
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
 
       <a
         href="//anoff.io"
@@ -17,21 +18,7 @@
         <v-icon left>info</v-icon>
         <span class="hidden-xs-only">About me</span>
       </v-btn></a>
-      <a
-        href="//blog.anoff.io"
-        target="_blank"
-      ><v-btn flat>
-        <v-icon left>create</v-icon>
-        <span class="hidden-xs-only">Blog</span>
-      </v-btn></a>
-      <a
-        href="//anoff.github.io/legal/"
-        target="_blank"
-      ><v-btn flat>
-        <span class="hidden-xs-only">Legal</span>
-      </v-btn></a>
 
-      <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn flat
         v-for="elm in getMenuItems('toolbar')"
