@@ -12,7 +12,7 @@
   "dependencies": {
     "clipboard-copy": "^3.0.0",
     "core-js": "^2.6.5",
-    "firebase": "^5.9.2",
+    "firebase": "^6.0.0",
     "markdown-it": "^8.4.2",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
