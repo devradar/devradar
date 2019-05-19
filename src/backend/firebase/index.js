@@ -1,7 +1,11 @@
 import init from './init'
-import store from './store'
+import blips from './store/blips'
+import user from './store/user'
 
 export default {
   init,
-  store
+  store: {
+    blips,
+    user
+  }
 }

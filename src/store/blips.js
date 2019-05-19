@@ -1,7 +1,6 @@
 import Vue from 'vue'
-import fireback from '../backend/firebase/index'
 
-export default {
+export default (backend) => ({
   state: {
     blips: [],
     isLoading: false
@@ -23,7 +22,7 @@ export default {
       state.isLoading = isLoading
     }
   },
-  actions: fireback.store.actions,
+  actions: backend.store.blips.actions,
   getters: {
     blips (state) {
       const blips = state.blips
@@ -43,4 +42,4 @@ export default {
       return state.isLoading
     }
   }
-}
+})
