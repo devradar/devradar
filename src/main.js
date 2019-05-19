@@ -8,7 +8,7 @@ import router from './router'
 import './stylus/main.styl'
 import { store } from './store'
 import appConfig from './config'
-import fireback from './backend/firebase'
+import fireback from './backend/firebase/index'
 
 Vue.use(Vuetify, {
   theme: appConfig.theme

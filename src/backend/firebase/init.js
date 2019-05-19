@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import appConfig from '../config'
+import appConfig from '../../config'
 
 function upsertUser (user) {
   // upsert into user collection
@@ -58,6 +58,4 @@ function init (store) {
   })
 }
 
-export default {
-  init
-}
+export default init
