@@ -25,18 +25,10 @@ export default (backend) => ({
   actions: backend.store.blips.actions,
   getters: {
     blips (state) {
-      const blips = state.blips
-      let ix = 1
-      for (const id in blips) {
-        const b = blips[id]
-        b.index = ix++
-        b.state = b.changes.sort((a, b) => a.date < b.date)[0].newState
-      }
-      return blips
+      return state.blips
     },
     blipsArray (state, getters) {
-      const blips = Object.values(getters.blips)
-      return blips
+      return state.blips
     },
     isLoading (state) {
       return state.isLoading

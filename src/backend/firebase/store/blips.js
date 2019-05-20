@@ -16,11 +16,15 @@ const actions = {
           const changes = snapshot.docs.map(d => Object.assign(d.data(), { id: d.id }))
           blipsArray[index].changes = changes
         }
-        const blipsObject = blipsArray
+        blipsArray = blipsArray
           .filter(b => b.title && b.id)
           .filter(b => b.changes && b.changes.length > 0)
-          .reduce((p, blip) => Object.assign(p, { [blip.id]: blip }), {})
-        commit('setBlips', blipsObject)
+          .map((b, ix) => {
+            b.index = ix + 1
+            b.state = b.changes.sort((a, b) => a.date < b.date)[0].newState
+            return b
+          })
+        commit('setBlips', blipsArray)
         commit('setLoading', false)
       })
   },

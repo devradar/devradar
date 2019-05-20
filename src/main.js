@@ -38,7 +38,6 @@ switch (appConfig.backend.type.toLowerCase()) {
     console.error('No backend defined')
 }
 
-console.log(BLIPS_TOML)
 // only initialize app after auth
 init(store)
   .catch(() => Promise.resolve())

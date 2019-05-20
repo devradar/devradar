@@ -7,7 +7,7 @@
     newState = "Veteran"
 
 [[blips]]
-  category = "Languages & Frameworks"
+  category = "Frameworks"
   name = "Node.js"
   link = "//nodejs.org"
   description = "Javascript in the backend? 🤯"
@@ -21,7 +21,7 @@
     text = "first try"
 
 [[blips]]
-  category = "Languages & Frameworks"
+  category = "Frameworks"
   name = "Go"
   [[blips.changes]]
     date = "2018-12"
@@ -45,3 +45,12 @@
   [[blips.changes]]
     date = "2018-07"
     newState = "Novice"
+
+[[blips]]
+  category = "Techniques"
+  name = "docs as code"
+  description = "Treat your documentation like you treat code, git version, PR review, etc."
+  [[blips.changes]]
+    date = "2019-03"
+    newState = "Advanced"
+    text = "I am so good at this because I use it everywhere!"

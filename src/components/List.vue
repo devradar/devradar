@@ -46,14 +46,13 @@ export default {
   components: { NewBlip, Blip },
   computed: {
     blips () {
-      const blips = this.$store.getters.blips
+      const blips = this.$store.getters.blipsArray
       return blips
     },
     filteredBlips () {
       const blips = this.blips
-      return Object.keys(this.blips)
-        .filter(id => new RegExp(this.searchTitle || '', 'i').exec(blips[id].title))
-        .map(id => blips[id])
+      return blips
+        .filter(blip => new RegExp(this.searchTitle || '', 'i').exec(blip.title))
         .map(b => {
           b.changes = b.changes.sort((a, b) => a.date < b.date)
           const bDate = new Date(b.changes[0].date)
