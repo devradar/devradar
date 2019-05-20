@@ -47,12 +47,11 @@
       </v-container>
       <v-card-title>
         <span v-if="!isEditMode" v-html="markdown(blip.description)"></span>
-        <v-text-field
-          multi-line
+        <v-textarea
           v-model="tempBlip.description"
           v-if="isEditMode"
           label="Description"
-          ></v-text-field>
+          ></v-textarea>
       </v-card-title>
       <div v-for="change in blip.changes" :key="change.id">
         <v-divider></v-divider>

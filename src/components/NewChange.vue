@@ -14,7 +14,7 @@
                     <v-select :items="states" v-model="state" label="State" single-line required :rules="[v => !!v || 'State is required']"></v-select>
                   </v-flex>
                   <v-flex xs12>
-                    <v-text-field v-model="changeText" label="Reason for change" multi-line rows="2"></v-text-field>
+                    <v-textarea v-model="changeText" label="Reason for change" rows="2"></v-textarea>
                   </v-flex>
                 </v-layout>
               </v-flex>
