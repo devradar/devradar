@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+/* global BLIPS_TOML */ // defined in vue.config.js during app build
 import Vue from 'vue'
 // import toml from 'toml'
 import Vuetify from 'vuetify'
@@ -9,6 +10,7 @@ import './stylus/main.styl'
 import { store } from './store'
 import appConfig from './config'
 import fireback from './backend/firebase/index'
+import tomlback from './backend/toml/index'
 
 Vue.use(Vuetify, {
   theme: appConfig.theme
@@ -21,26 +23,22 @@ Vue.filter('limitString', function (string, limit = Infinity) {
 })
 
 let init
-switch (appConfig.backend.type.toLocaleLowerCase()) {
+switch (appConfig.backend.type.toLowerCase()) {
   case 'firebase':
     init = fireback.init
+    break
+  case 'toml':
+    if (!BLIPS_TOML) {
+      console.error('No blips.toml found during build; toml backend misconfigured')
+      break
+    }
+    init = tomlback.init
     break
   default:
     console.error('No backend defined')
 }
 
-// function init () {
-//   if (appConfig.backend.type === 'firebase') {
-
-//   } else {
-//     // local file storage
-//     const content =
-//     const content = fs.readFileSync(appConfig.backend.file, 'utf8')
-//     const data = toml.parse(content)
-//     console.log(data)
-//   }
-// }
-
+console.log(BLIPS_TOML)
 // only initialize app after auth
 init(store)
   .catch(() => Promise.resolve())
