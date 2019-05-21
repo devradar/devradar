@@ -29,7 +29,8 @@ The master branch of this repository holds a techradar version customized toward
 - [x] show blip history
 - [x] make radar categories customizable
 - [x] oauth (github, twitter)
-- [ ] user name management
+- [x] basic user name management
+- [x] choose between firebase & local file backend
 
 ### Demo
 
