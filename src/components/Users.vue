@@ -34,7 +34,7 @@
                 <v-list-tile-action-text>Editor</v-list-tile-action-text>
                 <v-btn
                 icon
-                @click="setRole(index, 'editor', !item.roles.editor)"
+                @click.prevent="setRole(index, 'editor', !item.roles.editor)"
                 v-bind:key="item.roles.editor"
                 >
                   <v-icon
@@ -51,7 +51,7 @@
                 <v-list-tile-action-text>Admin</v-list-tile-action-text>
                 <v-btn
                 icon
-                @click="setRole(index, 'admin', !item.roles.admin)"
+                @click.prevent="setRole(index, 'admin', !item.roles.admin)"
                 v-bind:key="item.roles.admin"
                 >
                   <v-icon
@@ -82,13 +82,21 @@ export default {
   computed: {
     userList () {
       return this.$store.getters.userList
+    },
+    user () {
+      return this.$store.getters.user
     }
   },
   methods: {
     setRole (index, role, value) {
       this.userList[index].roles[role] = value
       const targetUser = this.userList[index]
-      this.$store.dispatch('setRoles', { targetUser })
+      if (targetUser.uid === this.user.uid && role === 'admin') {
+        console.warn('Preventing admin removal for own user')
+        this.$store.dispatch('getUserList')
+      } else {
+        this.$store.dispatch('setRoles', { targetUser })
+      }
     }
   },
   mounted () {

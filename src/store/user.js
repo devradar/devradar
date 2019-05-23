@@ -17,7 +17,7 @@ export default (backend) => ({
       Vue.set(state.userList, user.id, user)
     }
   },
-  actions: backend.store.actions,
+  actions: backend.store.user.actions,
   getters: {
     user (state) {
       return state.user

@@ -1,0 +1,56 @@
+# keep newState and category values consistent with src/config.js
+[[blips]]
+  category = "Tools"
+  name = "GitLab CI"
+  [[blips.changes]]
+    date = "2018-07"
+    newState = "Veteran"
+
+[[blips]]
+  category = "Frameworks"
+  name = "Node.js"
+  link = "//nodejs.org"
+  description = "Javascript in the backend? 🤯"
+  [[blips.changes]]
+    date = "2018-07"
+    newState = "Advanced"
+    text = "moar of this"
+  [[blips.changes]]
+    date = "2014-12"
+    newState = "Novice"
+    text = "first try"
+
+[[blips]]
+  category = "Frameworks"
+  name = "Go"
+  [[blips.changes]]
+    date = "2018-12"
+    newState = "Novice"
+    text = "Superfast, cross-compiled, multi-platform executables"
+
+[[blips]]
+  category = "Platforms"
+  name = "Kubernetes"
+  link = "//kubernetes.io"
+  description = "Containers at scale"
+  [[blips.changes]]
+    date = "2018-07"
+    newState = "Novice"
+
+[[blips]]
+  category = "Platforms"
+  name = "Kubernetes"
+  link = "//kubernetes.io"
+  description = "Containers at scale"
+  [[blips.changes]]
+    date = "2018-07"
+    newState = "Novice"
+
+[[blips]]
+  category = "Techniques"
+  name = "docs as code"
+  description = "Treat your documentation like you treat code, git version, PR review, etc."
+  [[blips.changes]]
+    date = "2019-03"
+    newState = "Advanced"
+    text = "I am so good at this because I use it everywhere!"
