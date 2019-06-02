@@ -1,7 +1,5 @@
 const actions = {
   getBlips ({ commit }) {
-    commit('setBlips', [])
-    commit('setLoading', false)
   },
   addBlip ({ commit, dispatch, getters }, { blip, change }) {
     // prepend https if nothing is there
