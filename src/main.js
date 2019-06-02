@@ -38,17 +38,14 @@ switch (appConfig.backend.type.toLowerCase()) {
     console.error('No backend defined')
 }
 
-// only initialize app after auth
 init(store)
-  .catch(() => Promise.resolve())
-  .then(() => {
-  /* eslint-disable no-new */
-    new Vue({
-      el: '#app',
-      router,
-      store,
-      components: { App },
-      render: h => h(App),
-      template: '<App/>'
-    })
-  })
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  store,
+  components: { App },
+  render: h => h(App),
+  template: '<App/>'
+})
