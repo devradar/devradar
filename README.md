@@ -1,9 +1,11 @@
-# Devradar 📡
+# devradar
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/anoff/devradar.svg)](https://greenkeeper.io/)
+[![Build Status](https://cloud.drone.io/api/badges/anoff/devradar/status.svg)](https://cloud.drone.io/anoff/devradar)
 
 > single page web app to manage your own techradar
 
+<img src="assets/logo-l-g.png">
 <!-- TOC depthFrom:2 -->
 
 - [Features](#features)
