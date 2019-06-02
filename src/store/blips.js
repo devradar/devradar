@@ -32,6 +32,9 @@ export default (backend) => ({
     },
     isLoading (state) {
       return state.isLoading
+    },
+    getNextID (state) {
+      return state.blips.length
     }
   }
 })

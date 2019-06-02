@@ -1,21 +1,31 @@
 const actions = {
   getBlips ({ commit }) {
     commit('setBlips', [])
+    commit('setLoading', false)
   },
-  addBlip ({ commit, dispatch }, { blip, change }) {
-    console.error('Mutating actions not permitted with static backend, this method should not be reachable')
+  addBlip ({ commit, dispatch, getters }, { blip, change }) {
+    // prepend https if nothing is there
+    if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
+    blip.changes = []
+    blip.id = getters.getNextID
+    blip.index = blip.id
+    blip.state = change.newState
+    dispatch('addChange', { blip, change })
   },
   updateBlip ({ commit }, blip) {
-    console.error('Mutating actions not permitted with static backend, this method should not be reachable')
+    commit('exchangeBlip', blip)
   },
   deleteBlip ({ commit }, blip) {
-    console.error('Mutating actions not permitted with static backend, this method should not be reachable')
+    commit('removeBlip', blip)
   },
   addChange ({ commit }, { blip, change }) {
-    console.error('Mutating actions not permitted with static backend, this method should not be reachable')
+    change = Object.assign(change, { id: blip.changes.length })
+    blip.changes.push(change)
+    commit('exchangeBlip', blip)
   },
   deleteChange ({ commit }, { blip, change }) {
-    console.error('Mutating actions not permitted with static backend, this method should not be reachable')
+    blip.changes = blip.changes.filter(c => c.id !== change.id)
+    commit('exchangeBlip', blip)
   }
 }
 
