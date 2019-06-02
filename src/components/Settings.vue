@@ -89,10 +89,15 @@ export default {
     // move content from view to vuex
     loadContent () {
       const string = lzs.decompressFromEncodedURIComponent(this.contentEncoded)
-      console.log(JSON.parse(string))
-      // TODO: actually overwrite the store
-      this.snackbar.text = 'updated local blips + config'
-      this.snackbar.active = true
+      try {
+        const obj = JSON.parse(string)
+        this.$store.dispatch('setBlips', obj.blips)
+        this.$store.dispatch('setMeta', obj.meta)
+        this.snackbar.text = 'updated local blips + config'
+        this.snackbar.active = true
+      } catch (e) {
+        console.error('Error occured trying to decompress content', e)
+      }
     }
   },
   mounted () {

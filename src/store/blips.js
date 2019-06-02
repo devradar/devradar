@@ -28,7 +28,7 @@ export default (backend) => ({
       state.isLoading = isLoading
     },
     setMeta (state, meta) {
-      state.meta = meta
+      state.meta = Object.assign(state.meta, meta)
     }
   },
   actions: backend.store.blips.actions,

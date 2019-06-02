@@ -1,6 +1,9 @@
 const actions = {
   getBlips ({ commit }) {
   },
+  setBlips ({ commit }, blips) {
+    commit('setBlips', blips)
+  },
   addBlip ({ commit, dispatch, getters }, { blip, change }) {
     // prepend https if nothing is there
     if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
@@ -26,6 +29,9 @@ const actions = {
     commit('exchangeBlip', blip)
   },
   getMeta ({ commit }) {
+  },
+  setMeta ({ commit }, meta) {
+    commit('setMeta', meta)
   }
 }
 
