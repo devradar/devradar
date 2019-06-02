@@ -1,6 +1,6 @@
-# Techradar 📡
+# Devradar 📡
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/anoff/techradar.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/anoff/devradar.svg)](https://greenkeeper.io/)
 
 > single page web app to manage your own techradar
 
@@ -19,7 +19,7 @@
 A full open source solution to build a custom technology radar as pioneered by [Thoughtworks](https://www.thoughtworks.com/radar).
 See [radar-demo.anoff.io](https://radar-demo.anoff.io) for an authentication free test environment.
 
-The master branch of this repository holds a techradar version customized towards showing my [personal technology](https://radar.anoff.io) set.
+The master branch of this repository holds a devradar version customized towards showing my [personal technology](https://radar.anoff.io) set.
 For building a teams or organizations techradar it might be better to stick with the original _Hold_, _Assess_, _Trial_, _Adopt_ style.
 
 ## Features
@@ -54,11 +54,11 @@ You can reach an entire demo site where you can try the radar features on [radar
 
 The main part is a static Vue.js application using Firebase as backend and authentication provider.
 
-![design](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/techradar/master/assets/design.puml)
+![design](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/devradar/master/assets/design.puml)
 
 Database schema
 
-![firestore schema](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/techradar/master/assets/firestore.puml)
+![firestore schema](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/devradar/master/assets/firestore.puml)
 
 ## Create your own
 

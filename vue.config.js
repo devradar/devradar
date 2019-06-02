@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const toml = require('toml')
 const webpack = require('webpack')
+const { default: colors } = require('vuetify/es5/util/colors')
 
 const FILEPATH = './blips.toml'
 

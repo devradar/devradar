@@ -75,7 +75,7 @@ Modifying the color of header, buttons etc should happen via this property.
 Hosting a firebase backed radar currently involves a couple of manual steps to leverage the full feature set.
 
 1. [fork](https://help.github.com/articles/fork-a-repo/) this repository
-1. customize  the techradar to your needs
+1. customize devradar to your needs
 1. create a [firebase project](https://firebase.google.com/)
 1. (optional) create [Twitter app](https://apps.twitter.com/) and configure [firebase sign in method](https://firebase.google.com/docs/auth/web/twitter-login)
 1. (optional) create [GitHub app]() and configure [firebase sign in method](https://firebase.google.com/docs/auth/web/github-auth)
@@ -106,7 +106,7 @@ One mandatory customization to the [config](src/config.js) is to set `firebase.k
 ## Local backend
 
 In local file mode authentication features are not supported.
-The default `src/config.js` file allows public viewing of all techradar features, therefore no changes are necessary when using the local backend.
+The default `src/config.js` file allows public viewing of all devradar features, therefore no changes are necessary when using the local backend.
 
 ### Build application locally
 
