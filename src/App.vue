@@ -101,7 +101,7 @@ export default {
 
 <style lang="scss" scoped>
 .toolbar {
-  z-index: 23;
+  z-index: 10;
 }
 #progressContainer {
   min-height: 20px;
