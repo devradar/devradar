@@ -43,12 +43,12 @@
 
 [[blips]]
   category = "Platforms"
-  name = "Kubernetes"
-  link = "//kubernetes.io"
-  description = "Containers at scale"
+  name = "Docker"
+  link = "//docker.io"
+  description = "Container all the things"
   [[blips.changes]]
-    date = "2018-07"
-    newState = "Novice"
+    date = "2019-03"
+    newState = "Advanced"
 
 [[blips]]
   category = "Techniques"
