@@ -5,6 +5,7 @@
       color="accent" v-model="fab"
       fab fixed bottom right
       v-if="userCanEdit"
+      id="floaty"
     >
       <v-icon>add</v-icon>
     </v-btn>
@@ -111,3 +112,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+#floaty {
+  z-index: 10;
+}
+</style>

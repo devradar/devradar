@@ -27,6 +27,7 @@ export default (backend) => ({
     },
     userCanEdit (state, getters) {
       const user = getters.user
+      if (!user || !user.roles) return false
       return appConfig.editPermissions(user)
     }
   }
