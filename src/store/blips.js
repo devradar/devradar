@@ -3,7 +3,13 @@ import Vue from 'vue'
 export default (backend) => ({
   state: {
     blips: [],
-    isLoading: false
+    isLoading: false,
+    meta: {
+      title: '',
+      name: 'Noone',
+      categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'],
+      states: ['Novice', 'Intermediate', 'Advanced', 'Veteran']
+    }
   },
   mutations: {
     setBlips (state, blips) {
@@ -20,6 +26,9 @@ export default (backend) => ({
     },
     setLoading (state, isLoading) {
       state.isLoading = isLoading
+    },
+    setMeta (state, meta) {
+      state.meta = meta
     }
   },
   actions: backend.store.blips.actions,
@@ -35,6 +44,9 @@ export default (backend) => ({
     },
     getNextID (state) {
       return state.blips.length
+    },
+    meta (state) {
+      return state.meta
     }
   }
 })

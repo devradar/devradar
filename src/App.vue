@@ -1,23 +1,13 @@
 <template>
   <v-app>
-    <v-toolbar class="primary top" dark fixed app dense>
-      <v-spacer></v-spacer>
-
+    <v-toolbar class="primary top" fixed app>
       <v-toolbar-title>
-        {{$config.appTitle}}
+        {{ title }}
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
-
-      <a
-        href="//anoff.io"
-        target="_blank"
-      ><v-btn flat>
-        <v-icon left>info</v-icon>
-        <span class="hidden-xs-only">About me</span>
-      </v-btn></a>
 
       <v-toolbar-items>
         <v-btn flat
@@ -49,6 +39,7 @@
           </v-list>
         </v-menu>
       </v-toolbar-items>
+    <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
       <v-dialog
@@ -94,6 +85,16 @@ export default {
   computed: {
     isLoading () {
       return this.$store.getters.isLoading
+    },
+    meta () {
+      return this.$store.getters.meta
+    },
+    title () {
+      if (this.$config.backend.type === 'localstorage') { // devradar mode
+        return `${this.meta.name}'s devradar`
+      } else {
+        return this.meta.title
+      }
     }
   }
 }

@@ -41,6 +41,8 @@ function init (store) {
   })
   // hook up auth listener to mutate 'user' state
   store.dispatch('getBlips')
+  store.dispatch('getMeta')
+
   // resolve after auth status is defined as logged in or not
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {

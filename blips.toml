@@ -1,4 +1,8 @@
-# keep newState and category values consistent with src/config.js
+# keep newState and category values of the blips consistent with the meta.categories/.states
+[meta]
+  title = "Andreas' Tech Skills"
+  categories = ["Tools", "Techniques", "Platforms", "Frameworks"]
+  states = ["Novice", "Intermediate", "Advanced", "Veteran"]
 [[blips]]
   category = "Tools"
   name = "GitLab CI"

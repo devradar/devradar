@@ -32,6 +32,14 @@ const actions = {
   },
   deleteChange ({ commit }, { blip, change }) {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
+  },
+  getMeta ({ commit }) {
+    const meta = BLIPS_TOML.meta
+    console.log(meta)
+    if (!meta) {
+      console.error('No meta data found in blips.toml')
+    }
+    commit('setMeta', meta)
   }
 }
 

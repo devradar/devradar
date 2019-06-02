@@ -40,7 +40,6 @@ export default {
       valid: false,
       dialog: true,
       state: null,
-      states: this.$config.states,
       date: null,
       changeText: null
     }
@@ -72,6 +71,9 @@ export default {
         newState: this.state,
         text: this.changeText
       }
+    },
+    states () {
+      return this.$store.getters.meta.states
     }
   }
 }

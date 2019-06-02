@@ -17,11 +17,16 @@ backendActive.type = appConfig.backend.type.toLowerCase()
 // add local (browser) storage
 const storePlugins = []
 if (backendActive.type === 'localstorage') {
-  console.log('localling')
   storePlugins.push((new VuexPersistence({
     key: 'devradar-blips',
     storage: window.localStorage,
     reducer: (state) => ({ blips: { blips: state.blips.blips } })
+  })).plugin)
+
+  storePlugins.push((new VuexPersistence({
+    key: 'devradar-meta',
+    storage: window.localStorage,
+    reducer: (state) => ({ blips: { meta: state.blips.meta } })
   })).plugin)
 }
 const store = new VueX.Store({

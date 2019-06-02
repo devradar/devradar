@@ -38,7 +38,7 @@
             </v-chip>
             <v-chip small disabled color="primary" text-color="white" @click.stop="addChange(blip)">
               <v-avatar class="primary darken-2">
-                {{$config.states.indexOf(blip.state) + 1}}
+                {{meta.states.indexOf(blip.state) + 1}}
               </v-avatar>
               {{blip.state}}
             </v-chip>
@@ -59,7 +59,7 @@
           <span class="subheading">{{change.date}}</span>
             <v-chip small disabled color="primary" text-color="white">
               <v-avatar color="primary darken-2">
-                {{$config.states.indexOf(change.newState) + 1}}
+                {{meta.states.indexOf(change.newState) + 1}}
               </v-avatar>
               {{change.newState}}
             </v-chip>
@@ -88,7 +88,7 @@
         v-if="isEditMode && !isDeleteMode"
         @click.stop="setDeleteMode(true)"><v-icon>delete</v-icon></v-btn>
         <v-btn icon
-        color="accent"
+        color="error"
         v-if="isEditMode && isDeleteMode"
         @click.stop="deleteBlip()"><v-icon>delete</v-icon></v-btn>
       </v-card-actions>
@@ -106,6 +106,9 @@ export default {
   computed: {
     userCanEdit () {
       return this.$store.getters.userCanEdit
+    },
+    meta () {
+      return this.$store.getters.meta
     }
   },
   props: {

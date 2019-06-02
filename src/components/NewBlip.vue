@@ -2,7 +2,7 @@
   <div>
     <v-btn
       @click.stop="dialog = true"
-      color="accent" v-model="fab"
+      color="secondary" v-model="fab"
       fab fixed bottom right
       v-if="userCanEdit"
       id="floaty"
@@ -44,8 +44,8 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" flat @click.stop="cancel">Cancel</v-btn>
-          <v-btn color="primary" flat @click.stop="submit">Save</v-btn>
+          <v-btn outline @click.stop="cancel">Cancel</v-btn>
+          <v-btn outline @click.stop="submit">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -60,9 +60,7 @@ export default {
       fab: false,
       dialog: false,
       category: null,
-      categories: this.$config.categories,
       state: null,
-      states: this.$config.states,
       title: null,
       link: null,
       description: null,
@@ -108,6 +106,12 @@ export default {
     },
     userCanEdit () {
       return this.$store.getters.userCanEdit
+    },
+    categories () {
+      return this.$store.getters.meta.categories
+    },
+    states () {
+      return this.$store.getters.meta.states
     }
   }
 }

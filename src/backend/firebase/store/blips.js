@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import appConfig from '../../../config'
 
 const actions = {
   getBlips ({ commit }) {
@@ -82,6 +83,12 @@ const actions = {
         commit('exchangeBlip', blip)
         commit('setLoading', false)
       })
+  },
+  getMeta ({ commit }) {
+    const { title, states, categories } = appConfig.backend
+    const meta = { title, states, categories }
+    console.log(meta)
+    commit('setMeta', meta)
   }
 }
 

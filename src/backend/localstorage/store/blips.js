@@ -24,6 +24,8 @@ const actions = {
   deleteChange ({ commit }, { blip, change }) {
     blip.changes = blip.changes.filter(c => c.id !== change.id)
     commit('exchangeBlip', blip)
+  },
+  getMeta ({ commit }) {
   }
 }
 

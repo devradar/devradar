@@ -18,7 +18,7 @@
             >{{blip.index}}</span>
         </router-link>
       </div>
-      <div :class="'q' + (ix+1)" v-for="(category, ix) in $config.categories" :key="ix"><h3>{{category}}</h3>
+      <div :class="'q' + (ix+1)" v-for="(category, ix) in meta.categories" :key="ix"><h3>{{category}}</h3>
         <ul>
           <li
             v-for="blip in blipsByCategory[category]"
@@ -34,10 +34,10 @@
             </li>
         </ul>
       </div>
-      <div class="adopt"><span class="state">{{$config.states[3]}}</span></div>
-      <div class="trial"><span class="state">{{$config.states[2]}}</span></div>
-      <div class="assess"><span class="state">{{$config.states[1]}}</span></div>
-      <div class="hold"><span class="state">{{$config.states[0]}}</span></div>
+      <div class="adopt"><span class="state">{{meta.states[3]}}</span></div>
+      <div class="trial"><span class="state">{{meta.states[2]}}</span></div>
+      <div class="assess"><span class="state">{{meta.states[1]}}</span></div>
+      <div class="hold"><span class="state">{{meta.states[0]}}</span></div>
     </div>
   </v-container>
 </template>
@@ -51,11 +51,11 @@ export default {
   computed: {
     blips () {
       return this.$store.getters.blipsArray
-        .filter(b => this.$config.states.slice(0, 4).indexOf(b.state) > -1)
+        .filter(b => this.meta.states.slice(0, 4).indexOf(b.state) > -1)
     },
     blipsByCategory () {
       return this.$store.getters.blipsArray
-        .filter(b => this.$config.states.slice(0, 4).indexOf(b.state) > -1)
+        .filter(b => this.meta.states.slice(0, 4).indexOf(b.state) > -1)
         .reduce((p, c) => {
           const cat = c.category
           if (p[cat]) {
@@ -65,6 +65,9 @@ export default {
           }
           return p
         }, {})
+    },
+    meta () {
+      return this.$store.getters.meta
     }
   },
   data: () => ({
@@ -83,7 +86,7 @@ export default {
 
         // Different radiuses depending on blips
         let width, radius
-        const states = this.$config.states
+        const states = this.meta.states
         switch (state) {
           case states[0]:
             radius = (getDomWidth('radar') - bWidth) / 2
@@ -105,7 +108,7 @@ export default {
 
         // Different quadrants depending on area
         let quadrant
-        const categories = this.$config.categories
+        const categories = this.meta.categories
         switch (category) {
           case categories[0]:
             quadrant = 1
