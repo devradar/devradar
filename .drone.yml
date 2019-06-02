@@ -1,0 +1,27 @@
+kind: pipeline
+name: publish
+
+steps:
+- name: install
+  image: node:lts-slim
+  commands:
+  - npm ci
+
+- name: build
+  image: node:lts-slim
+  commands:
+  - npm run build
+
+- name: publish
+  image: node:lts-slim
+  environment:
+    FIREBASE_PROJECT:
+      from_secret: FIREBASE_PROJECT
+    FIREBASE_TOKEN:
+      from_secret: FIREBASE_TOKEN
+  commands:
+  - npm i -g firebase-tools
+  - firebase deploy --token "$FIREBASE_TOKEN"
+  when:
+    branch:
+    - master
