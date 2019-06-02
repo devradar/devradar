@@ -3,24 +3,24 @@ import VueX from 'vuex'
 import users from './user'
 import blips from './blips'
 import appConfig from '../config'
-import fireback from '../backend/firebase/index'
-import tomlback from '../backend/toml/index'
+import backend from '../backend/index'
 
 Vue.use(VueX)
 
-let backend
-switch (appConfig.backend.type.toLowerCase()) {
-  case 'firebase':
-    backend = fireback
-    break
-  case 'toml':
-    backend = tomlback
-    break
+const backendActive = backend[appConfig.backend.type.toLowerCase()]
+if (!backendActive) {
+  console.error('No valid backend defined. Please choose:', Object.keys(backend))
 }
+backendActive.type = appConfig.backend.type.toLowerCase()
 
-export const store = new VueX.Store({
+const store = new VueX.Store({
   modules: {
-    users: users(backend),
-    blips: blips(backend)
+    users: users(backendActive),
+    blips: blips(backendActive)
   }
 })
+
+export {
+  store,
+  backendActive as backend
+}
