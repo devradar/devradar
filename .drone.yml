@@ -21,7 +21,7 @@ steps:
       from_secret: FIREBASE_TOKEN
   commands:
   - npm i -g firebase-tools
-  - firebase deploy --token "$FIREBASE_TOKEN"
+  - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
   when:
     branch:
     - master
