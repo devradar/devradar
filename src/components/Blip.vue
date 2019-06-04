@@ -30,13 +30,13 @@
               ></v-text-field>
           </v-flex>
           <v-flex xs12 sm6 text-xs-right>
-            <v-chip small disabled color="secondary" text-color="white">
+            <v-chip small disabled color="secondary" class="text-contrast-color bold">
               <v-avatar class="secondary darken-2">
                 <v-icon dark>domain</v-icon>
               </v-avatar>
               <span>{{blip.category}}</span>
             </v-chip>
-            <v-chip small disabled color="primary" text-color="white" @click.stop="addChange(blip)">
+            <v-chip small disabled color="primary" class="text-contrast-color bold" @click.stop="addChange(blip)">
               <v-avatar class="primary darken-2">
                 {{meta.states.indexOf(blip.state) + 1}}
               </v-avatar>
@@ -57,7 +57,7 @@
         <v-divider></v-divider>
         <v-subheader>
           <span class="subheading">{{change.date}}</span>
-            <v-chip small disabled color="primary" text-color="white">
+            <v-chip small disabled color="primary" class="text-contrast-color">
               <v-avatar color="primary darken-2">
                 {{meta.states.indexOf(change.newState) + 1}}
               </v-avatar>
@@ -182,6 +182,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/common.scss';
+
 .headline a {
   text-decoration: none;
   color: black;

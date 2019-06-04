@@ -1,12 +1,6 @@
 // Area (blip) colors
 @import './responsive.scss';
-
-// Q2 | Q1
-// Q3 | Q4
-$q1: #11aadd;
-$q2: #0DBD0D;
-$q3: #ff7700;
-$q4: #cc0033;
+@import './variables.scss';
 
 #radar-container {
   padding: 0;
