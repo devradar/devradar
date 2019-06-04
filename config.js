@@ -1,9 +1,9 @@
 const { default: colors } = require('vuetify/es5/util/colors')
 
 const config = { // needs to be ES6 module so it can be imported by webpack
-  // backend: {
-  //   type: 'localstorage'
-  // },
+  backend: {
+    type: 'localstorage'
+  },
   // backend: {
   //   type: 'firebase',
   //   key: 'AIzaSyC3FxfpYywy5ZYpiWuf9nw8_vlbxibpQH8',
@@ -13,9 +13,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   //   // personal proficiency level https://hr.nih.gov/working-nih/competencies/competencies-proficiency-scale
   //   title: 'Andreas\' technical skills' // title showing in the application titlebar
   // },
-  backend: {
-    type: 'toml'
-  },
+  // backend: {
+  //   type: 'toml'
+  // },
   editPermissions: user => true,
   routes: [ // configure name, permissions & viewports
     // do NOT change the view property as this links to the vue component and is used for lookups across the app
