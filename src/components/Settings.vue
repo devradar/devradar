@@ -2,14 +2,6 @@
   <v-container
     fluid
     grid-list-lg>
-    <v-snackbar
-      v-model="snackbar.active"
-      color="success"
-      :timeout="2000"
-      >
-      <span><v-icon dark left>check</v-icon>{{ snackbar.text }}</span>
-    </v-snackbar>
-
     <v-card>
       <v-container fluid grid-list-lg>
         <v-layout row>
@@ -61,9 +53,6 @@ export default {
     },
     meta () {
       return this.$store.getters.meta
-    },
-    snackbar () {
-      return this.$store.getters.snackbar
     }
   },
   methods: {
