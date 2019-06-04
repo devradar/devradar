@@ -12,12 +12,14 @@
 
     <v-card>
       <v-container fluid grid-list-lg>
-        <v-layout row wrap>
+        <v-layout row>
           <v-flex xs12>
               <span class="headline">
                 Your devradar content
               </span>
           </v-flex>
+        </v-layout>
+        <v-layout row>
           <v-flex xs12>
             <v-textarea
               name="content-encoded"
@@ -28,10 +30,14 @@
               @focus="$event.target.select()"
               v-model="contentEncoded"
             ></v-textarea>
+          </v-flex>
+        </v-layout>
+        <v-layout row justify-end>
+          <v-flex xs2>
             <v-btn
             @click.end="loadContent()"
             outline>
-              Overwrite local content
+              Update
               <v-icon right>send</v-icon>
             </v-btn>
           </v-flex>
@@ -47,24 +53,17 @@ import lzs from 'lz-string'
 
 export default {
   data: () => ({
-    snackbar: {
-      active: false,
-      text: ''
-    },
     contentEncoded: ''
   }),
   computed: {
-    userList () {
-      return this.$store.getters.userList
-    },
-    user () {
-      return this.$store.getters.user
-    },
     blips () {
       return this.$store.getters.blipsArray
     },
     meta () {
       return this.$store.getters.meta
+    },
+    snackbar () {
+      return this.$store.getters.snackbar
     }
   },
   methods: {
@@ -72,8 +71,7 @@ export default {
       const b = this.contentEncoded
       const success = copy(b)
       if (success) {
-        this.snackbar.text = 'content copied to clipboard'
-        this.snackbar.active = true
+        this.$store.dispatch('showSnackbar', 'content copied to clipboard')
       } else {
         console.error(success)
       }
@@ -93,8 +91,7 @@ export default {
         const obj = JSON.parse(string)
         this.$store.dispatch('setBlips', obj.blips)
         this.$store.dispatch('setMeta', obj.meta)
-        this.snackbar.text = 'updated local blips + config'
-        this.snackbar.active = true
+        this.$store.dispatch('showSnackbar', 'updated local blips + config')
       } catch (e) {
         console.error('Error occured trying to decompress content', e)
       }

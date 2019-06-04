@@ -1,5 +1,22 @@
+import lzs from 'lz-string'
+
 const actions = {
   getBlips ({ commit }) {
+    let r = decodeURI(window.location).split('?')
+    if (r.length < 2) return
+    r = r[1]
+      .split('&')
+      .map(p => p.split('='))
+      .find(([k, v]) => k === 'load')
+    if (!r) return
+    try {
+      const string = lzs.decompressFromEncodedURIComponent(r[1])
+      const obj = JSON.parse(string)
+      commit('setBlips', obj.blips)
+      commit('setMeta', obj.meta)
+    } catch (e) {
+      console.error('Error occurred trying to decompress content', e)
+    }
   },
   setBlips ({ commit }, blips) {
     commit('setBlips', blips)

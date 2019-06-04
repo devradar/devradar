@@ -3,6 +3,7 @@ import VueX from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import users from './user'
 import blips from './blips'
+import comm from './comm'
 import appConfig from '../config'
 import backend from '../backend/index'
 
@@ -32,7 +33,8 @@ if (backendActive.type === 'localstorage') {
 const store = new VueX.Store({
   modules: {
     users: users(backendActive),
-    blips: blips(backendActive)
+    blips: blips(backendActive),
+    comm: comm(backendActive)
   },
   plugins: storePlugins
 })
