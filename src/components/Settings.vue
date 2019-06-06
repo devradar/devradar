@@ -11,9 +11,19 @@
               </span>
           </v-flex>
           <v-flex xs1>
-            <v-btn color="none" icon @click="showToml = !showToml">
-              <v-icon>code</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                  <v-btn
+                  color="none"
+                  icon
+                  @click="showToml = !showToml"
+                  v-on="on"
+                  >
+                    <v-icon>code</v-icon>
+                  </v-btn>
+              </template>
+              <span>Toggle TOML and encoded view</span>
+            </v-tooltip>
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -46,14 +56,14 @@
         <v-layout row justify-end>
           <v-flex xs2>
             <v-btn color="none" outline
-            @click.end="download()">
+            @click.end="downloadToml()">
               <v-icon left>save</v-icon>
               Download as toml
             </v-btn>
           </v-flex>
           <v-flex xs2>
             <v-upload-btn
-            @file-update="update"
+            @file-update="uploadToml"
             color="none"
             title="Upload from file"
             outline>
@@ -140,18 +150,18 @@ export default {
         console.error('Error occured trying to decompress content', e)
       }
     },
-    update (file) {
+    uploadToml (file) {
       const reader = new FileReader()
       if (file) {
         reader.addEventListener('load', () => {
-          this.contentEncoded = reader.result
+          this.contentToml = reader.result
           this.$store.dispatch('showSnackbar', 'file upload successful')
         }, false)
         reader.readAsText(file)
       }
     },
     downloadToml () {
-      saveAs('hello.txt', this.contentToml)
+      saveAs(`devradar-${this.meta.title.replace(/[^a-zA-Z0-9 _-]/g, '')}.toml`, this.contentToml)
     },
     tabber (event) {
       const text = this.contentToml

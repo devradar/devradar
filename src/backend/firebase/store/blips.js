@@ -87,7 +87,6 @@ const actions = {
   getMeta ({ commit }) {
     const { title, states, categories } = appConfig.backend
     const meta = { title, states, categories }
-    console.log(meta)
     commit('setMeta', meta)
   }
 }

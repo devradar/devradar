@@ -35,7 +35,6 @@ const actions = {
   },
   getMeta ({ commit }) {
     const meta = BLIPS_TOML.meta
-    console.log(meta)
     if (!meta) {
       console.error('No meta data found in blips.toml')
     }

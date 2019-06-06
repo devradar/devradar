@@ -14,7 +14,12 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title>
-        {{ title }}
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <span class="radar-title" v-on="on">{{ meta.title }} </span>
+          </template>
+        <span>Change me in the settings tab</span>
+        </v-tooltip>
       </v-toolbar-title>
       <v-tooltip right>
         <template v-slot:activator="{ on }">
@@ -129,13 +134,6 @@ export default {
     meta () {
       return this.$store.getters.meta
     },
-    title () {
-      if (this.$config.backend.type === 'localstorage') { // devradar mode
-        return `${this.meta.name}'s devradar`
-      } else {
-        return this.meta.title
-      }
-    },
     blips () {
       return this.$store.getters.blipsArray
     },
@@ -167,5 +165,9 @@ export default {
 @media (max-width:500px){
   .github-corner:hover .octo-arm{animation:none}
   .github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}
+}
+span.radar-title {
+  font-style: italic;
+  padding-right: 0.2rem;
 }
 </style>
