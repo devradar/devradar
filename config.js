@@ -17,7 +17,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   //   type: 'toml'
   // },
   editPermissions: user => true,
-  routes: [ // configure name, permissions & viewports
+  routes: [ // configure name, permissions & view ports
     // do NOT change the view property as this links to the vue component and is used for lookups across the app
     { view: 'List', icon: 'list', title: 'Blips', path: '/list/:search?', validator: user => true, location: ['toolbar'] },
     { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
