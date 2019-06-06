@@ -11,7 +11,7 @@
               </span>
           </v-flex>
           <v-flex xs1>
-            <v-btn color="none" icon>
+            <v-btn color="none" icon @click="showToml = !showToml">
               <v-icon>code</v-icon>
             </v-btn>
           </v-flex>
@@ -19,11 +19,25 @@
         <v-layout row>
           <v-flex xs12>
             <v-textarea
-              name="content-encoded"
-              box rows="8"
-              label="Encoded"
+              name="content-toml"
+              rows="8"
+              color="secondary"
+              v-if="showToml"
+              label="TOML"
+              @keydown.tab.prevent="tabber($event)"
               append-outer-icon="attach_file"
-              @click:append-outer="copyContent()"
+              @click:append-outer="copyToClipboard(contentToml)"
+              v-model="contentToml"
+            ></v-textarea>
+            <v-textarea
+              name="content-encoded"
+              rows="8"
+              color="secondary"
+              v-else
+              label="Encoded"
+              readonly
+              append-outer-icon="attach_file"
+              @click:append-outer="copyToClipboard(contentEncoded)"
               @focus="$event.target.select()"
               v-model="contentEncoded"
             ></v-textarea>
@@ -60,23 +74,6 @@
         </v-layout>
       </v-container>
     </v-card>
-    &nbsp;
-    <v-card>
-      <v-container fluid grid-list-lg>
-        <v-layout row>
-          <v-flex xs12>
-            <span class="headline">
-              Meta data
-            </span>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs12>
-
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-card>
   </v-container>
 </template>
 
@@ -84,6 +81,7 @@
 import copy from 'clipboard-copy'
 import lzs from 'lz-string'
 import UploadButton from 'vuetify-upload-button'
+import TOML from '@iarna/toml'
 
 function saveAs (filename, text) {
   var element = document.createElement('a')
@@ -98,7 +96,8 @@ function saveAs (filename, text) {
 
 export default {
   data: () => ({
-    contentEncoded: ''
+    contentToml: '',
+    showToml: true
   }),
   computed: {
     blips () {
@@ -106,12 +105,16 @@ export default {
     },
     meta () {
       return this.$store.getters.meta
+    },
+    contentEncoded () {
+      const json = TOML.parse(this.contentToml)
+      const str = JSON.stringify(json)
+      return lzs.compressToEncodedURIComponent(str)
     }
   },
   methods: {
-    copyContent () {
-      const b = this.contentEncoded
-      const success = copy(b)
+    copyToClipboard (content) {
+      const success = copy(content)
       if (success) {
         this.$store.dispatch('showSnackbar', 'content copied to clipboard')
       } else {
@@ -123,14 +126,13 @@ export default {
         meta: this.meta,
         blips: this.blips
       }
-      const string = JSON.stringify(obj)
-      this.contentEncoded = lzs.compressToEncodedURIComponent(string)
+      const str = TOML.stringify(obj)
+      this.contentToml = str
     },
     // move content from view to vuex
     loadContent () {
-      const string = lzs.decompressFromEncodedURIComponent(this.contentEncoded)
       try {
-        const obj = JSON.parse(string)
+        const obj = TOML.parse(this.contentToml)
         this.$store.dispatch('setBlips', obj.blips)
         this.$store.dispatch('setMeta', obj.meta)
         this.$store.dispatch('showSnackbar', 'updated local blips + config')
@@ -150,6 +152,16 @@ export default {
     },
     downloadToml () {
       saveAs('hello.txt', this.contentToml)
+    },
+    tabber (event) {
+      const text = this.contentToml
+      const originalSelectionStart = event.target.selectionStart
+      const textStart = text.slice(0, originalSelectionStart)
+      const textEnd = text.slice(originalSelectionStart)
+
+      this.contentToml = `${textStart}  ${textEnd}`
+      event.target.value = this.contentToml // required to make the cursor stay in place.
+      event.target.selectionEnd = event.target.selectionStart = originalSelectionStart + 2
     }
   },
   mounted () {
