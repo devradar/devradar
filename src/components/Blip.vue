@@ -57,7 +57,7 @@
         <v-divider></v-divider>
         <v-subheader>
           <span class="subheading">{{change.date}}</span>
-            <v-chip small disabled color="primary" class="text-contrast-color">
+            <v-chip small disabled color="primary" class="text-contrast-color bold">
               <v-avatar color="primary darken-2">
                 {{meta.states.indexOf(change.newState) + 1}}
               </v-avatar>
@@ -193,5 +193,8 @@ export default {
 }
 .change-text {
   margin-left: 1vw;
+}
+.bold {
+  font-weight: bold;
 }
 </style>

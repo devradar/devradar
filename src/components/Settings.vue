@@ -58,7 +58,7 @@
         </v-layout>
         <v-layout row justify-end>
           <v-flex xs2>
-            <v-btn color="none" outline
+            <v-btn
             @click.end="downloadToml()">
               <v-icon left>save</v-icon>
               Download as toml
@@ -67,9 +67,8 @@
           <v-flex xs2>
             <v-upload-btn
             @file-update="uploadToml"
-            color="none"
-            title="Upload from file"
-            outline>
+            color="grey lighten-3"
+            title="Upload from file">
               <template slot="icon-left">
                 <v-icon left>cloud_upload</v-icon>
               </template>
@@ -80,7 +79,7 @@
             <v-btn
             :disabled="!contentIsValid"
             @click.end="loadContent()"
-            color="secondary">
+            color="primary">
               <v-icon left>send</v-icon>
               Update
             </v-btn>

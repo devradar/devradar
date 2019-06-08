@@ -24,9 +24,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => true, location: ['toolbar'] } // only use this on localstorage backend for now
   ],
   theme: {
-    primary: '#0ddd0d',
+    primary: '#0DBD0D',
     secondary: '#ff7700',
-    accent: '#cc0033',
+    accent: '#0ddd0d',
     error: colors.red.base,
     warning: colors.yellow.base,
     info: colors.blue.base,

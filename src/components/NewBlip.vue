@@ -2,7 +2,7 @@
   <div>
     <v-btn
       @click.stop="dialog = true"
-      color="secondary" v-model="fab"
+      color="primary" v-model="fab"
       fab fixed bottom right
       v-if="userCanEdit"
       id="floaty"
@@ -44,8 +44,9 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn outline @click.stop="cancel">Cancel</v-btn>
-          <v-btn outline @click.stop="submit">Save</v-btn>
+          <v-btn @click.stop="cancel">Cancel</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn @click.stop="submit" color="primary">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
