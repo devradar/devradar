@@ -1,29 +1,10 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg>
-    <v-card>
-      <v-container fluid grid-list-lg>
-        <v-layout row justify-space-between>
+      <v-container grid-list-lg>
+        <v-layout row>
           <v-flex xs10>
               <span class="headline">
                 Content
               </span>
-          </v-flex>
-          <v-flex xs1>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                  <v-btn
-                  color="none"
-                  icon
-                  @click="showToml = !showToml"
-                  v-on="on"
-                  >
-                    <v-icon>code</v-icon>
-                  </v-btn>
-              </template>
-              <span>Toggle TOML and encoded view</span>
-            </v-tooltip>
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -31,14 +12,14 @@
             <v-form v-model="contentIsValid">
               <v-textarea
                 name="content-toml"
-                rows="8"
+                rows="16"
                 color="secondary"
                 v-if="showToml"
                 label="TOML"
                 :rules="validateToml"
                 @keydown.tab.prevent="tabber($event)"
-                append-outer-icon="attach_file"
-                @click:append-outer="copyToClipboard(contentToml)"
+                append-icon="code"
+                @click:append="showToml = !showToml"
                 v-model="contentToml"
               ></v-textarea>
               <v-textarea
@@ -48,23 +29,23 @@
                 v-else
                 label="Encoded"
                 readonly
-                append-outer-icon="attach_file"
-                @click:append-outer="copyToClipboard(contentEncoded)"
+                append-icon="code"
+                @click:append="showToml = !showToml"
                 @focus="$event.target.select()"
                 v-model="contentEncoded"
               ></v-textarea>
             </v-form>
           </v-flex>
         </v-layout>
-        <v-layout row justify-end>
-          <v-flex xs2>
+        <v-layout row wrap justify-space-between>
+          <v-flex xs8 sm4 lg3 xl2>
             <v-btn
             @click.end="downloadToml()">
               <v-icon left>save</v-icon>
               Download as toml
             </v-btn>
           </v-flex>
-          <v-flex xs2>
+          <v-flex xs9 sm4 lg3 xl2>
             <v-upload-btn
             @file-update="uploadToml"
             color="grey lighten-3"
@@ -75,19 +56,16 @@
             </v-upload-btn>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs1>
+          <v-flex xs5 sm3 lg1 xl1>
             <v-btn
             :disabled="!contentIsValid"
             @click.end="loadContent()"
             color="primary">
-              <v-icon left>send</v-icon>
-              Update
+              Save
             </v-btn>
           </v-flex>
         </v-layout>
       </v-container>
-    </v-card>
-  </v-container>
 </template>
 
 <script>
@@ -196,3 +174,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+div.upload-btn {
+  padding: 0px;
+}
+</style>

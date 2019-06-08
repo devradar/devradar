@@ -26,8 +26,9 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" flat @click.stop="cancel">Cancel</v-btn>
-        <v-btn color="primary" flat @click.stop="submit">Save</v-btn>
+        <v-btn @click.stop="cancel">Cancel</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click.stop="submit">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
