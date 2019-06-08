@@ -28,29 +28,32 @@
         </v-layout>
         <v-layout row>
           <v-flex xs12>
-            <v-textarea
-              name="content-toml"
-              rows="8"
-              color="secondary"
-              v-if="showToml"
-              label="TOML"
-              @keydown.tab.prevent="tabber($event)"
-              append-outer-icon="attach_file"
-              @click:append-outer="copyToClipboard(contentToml)"
-              v-model="contentToml"
-            ></v-textarea>
-            <v-textarea
-              name="content-encoded"
-              rows="8"
-              color="secondary"
-              v-else
-              label="Encoded"
-              readonly
-              append-outer-icon="attach_file"
-              @click:append-outer="copyToClipboard(contentEncoded)"
-              @focus="$event.target.select()"
-              v-model="contentEncoded"
-            ></v-textarea>
+            <v-form v-model="contentIsValid">
+              <v-textarea
+                name="content-toml"
+                rows="8"
+                color="secondary"
+                v-if="showToml"
+                label="TOML"
+                :rules="validateToml"
+                @keydown.tab.prevent="tabber($event)"
+                append-outer-icon="attach_file"
+                @click:append-outer="copyToClipboard(contentToml)"
+                v-model="contentToml"
+              ></v-textarea>
+              <v-textarea
+                name="content-encoded"
+                rows="8"
+                color="secondary"
+                v-else
+                label="Encoded"
+                readonly
+                append-outer-icon="attach_file"
+                @click:append-outer="copyToClipboard(contentEncoded)"
+                @focus="$event.target.select()"
+                v-model="contentEncoded"
+              ></v-textarea>
+            </v-form>
           </v-flex>
         </v-layout>
         <v-layout row justify-end>
@@ -75,6 +78,7 @@
           <v-spacer></v-spacer>
           <v-flex xs1>
             <v-btn
+            :disabled="!contentIsValid"
             @click.end="loadContent()"
             color="secondary">
               <v-icon left>send</v-icon>
@@ -107,7 +111,18 @@ function saveAs (filename, text) {
 export default {
   data: () => ({
     contentToml: '',
-    showToml: true
+    showToml: true,
+    contentIsValid: false,
+    validateToml: [
+      v => {
+        try {
+          TOML.parse(v)
+          return true
+        } catch (e) {
+          return e.toString()
+        }
+      }
+    ]
   }),
   computed: {
     blips () {

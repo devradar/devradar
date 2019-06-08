@@ -5,8 +5,7 @@ export default (backend) => ({
     blips: [],
     isLoading: false,
     meta: {
-      title: '',
-      name: 'Noone',
+      title: 'Rick\'s skillradar',
       categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'],
       states: ['Novice', 'Intermediate', 'Advanced', 'Veteran']
     }
