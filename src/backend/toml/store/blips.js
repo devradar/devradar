@@ -11,9 +11,7 @@ const actions = {
       .filter(b => b.title)
       .filter(b => b.changes && b.changes.length > 0)
       .map((b, ix) => {
-        b.index = ix + 1
-        b.id = ix + 1
-        b.state = b.changes.sort((a, b) => a.date < b.date)[0].newState
+        b.index = ix
         return b
       })
     commit('setBlips', blipsArray)
@@ -32,6 +30,13 @@ const actions = {
   },
   deleteChange ({ commit }, { blip, change }) {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
+  },
+  getMeta ({ commit }) {
+    const meta = BLIPS_TOML.meta
+    if (!meta) {
+      console.error('No meta data found in blips.toml')
+    }
+    commit('setMeta', meta)
   }
 }
 

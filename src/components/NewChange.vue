@@ -1,8 +1,8 @@
 <template>
-  <v-dialog v-model="$parent.showChangeDialog" max-width="80%">
+  <v-dialog v-model="$parent.newChangeModalVisible" max-width="80%">
     <v-card>
       <v-card-title class="title">
-        Change blip state for {{($parent.blipForChange||{}).title}}
+        Add new blip state
       </v-card-title>
       <v-card-text>
         <v-form v-model="valid" ref="form">
@@ -26,8 +26,9 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" flat @click.stop="cancel">Cancel</v-btn>
-        <v-btn color="primary" flat @click.stop="submit">Save</v-btn>
+        <v-btn @click.stop="cancel">Cancel</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click.stop="submit">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -40,28 +41,24 @@ export default {
       valid: false,
       dialog: true,
       state: null,
-      states: this.$config.states,
-      date: null,
+      date: new Date().toISOString().slice(0, 7),
       changeText: null
     }
-  },
-  props: {
-    blip: Object
   },
   methods: {
     submit () {
       if (this.$refs.form.validate()) {
-        this.$emit('submit', { change: this.change, blip: this.$parent.blipForChange })
+        this.$emit('submit', { change: this.change, blip: this.$parent.newChangeBlip })
         this.reset()
       }
     },
     cancel () {
-      this.$emit('cancel', { change: this.change, blip: this.$parent.blipForChange })
+      this.$emit('cancel', { change: this.change, blip: this.$parent.newChangeBlip })
       this.reset()
     },
     reset () {
       this.state = null
-      this.date = null
+      this.date = new Date().toISOString().slice(0, 7)
       this.changeText = null
     }
   },
@@ -72,6 +69,9 @@ export default {
         newState: this.state,
         text: this.changeText
       }
+    },
+    states () {
+      return this.$store.getters.meta.states
     }
   }
 }

@@ -1,4 +1,8 @@
-# keep newState and category values consistent with src/config.js
+# keep newState and category values of the blips consistent with the meta.categories/.states
+[meta]
+  title = "Andreas' Tech Skills"
+  categories = ["Tools", "Techniques", "Platforms", "Frameworks"]
+  states = ["Novice", "Intermediate", "Advanced", "Veteran"]
 [[blips]]
   category = "Tools"
   name = "GitLab CI"
@@ -39,12 +43,12 @@
 
 [[blips]]
   category = "Platforms"
-  name = "Kubernetes"
-  link = "//kubernetes.io"
-  description = "Containers at scale"
+  name = "Docker"
+  link = "//docker.io"
+  description = "Container all the things"
   [[blips.changes]]
-    date = "2018-07"
-    newState = "Novice"
+    date = "2019-03"
+    newState = "Advanced"
 
 [[blips]]
   category = "Techniques"

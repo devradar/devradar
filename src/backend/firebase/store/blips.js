@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import appConfig from '../../../config'
 
 const actions = {
   getBlips ({ commit }) {
@@ -20,8 +21,7 @@ const actions = {
           .filter(b => b.title && b.id)
           .filter(b => b.changes && b.changes.length > 0)
           .map((b, ix) => {
-            b.index = ix + 1
-            b.state = b.changes.sort((a, b) => a.date < b.date)[0].newState
+            b.index = ix
             return b
           })
         commit('setBlips', blipsArray)
@@ -82,6 +82,11 @@ const actions = {
         commit('exchangeBlip', blip)
         commit('setLoading', false)
       })
+  },
+  getMeta ({ commit }) {
+    const { title, states, categories } = appConfig.backend
+    const meta = { title, states, categories }
+    commit('setMeta', meta)
   }
 }
 

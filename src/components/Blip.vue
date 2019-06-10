@@ -1,13 +1,4 @@
 <template>
-  <v-container>
-    <v-snackbar
-      v-model="copiedSnackbar"
-      color="success"
-      :timeout="2000"
-      >
-      <v-icon dark>link</v-icon> URL copied
-    </v-snackbar>
-    <new-change @submit="submitChange" @cancel="cancelChange" @close="cancelChange"></new-change>
     <v-card>
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
@@ -30,15 +21,15 @@
               ></v-text-field>
           </v-flex>
           <v-flex xs12 sm6 text-xs-right>
-            <v-chip small disabled color="secondary" text-color="white">
-              <v-avatar class="secondary darken-2">
+            <v-chip small disabled class="bold">
+              <v-avatar class="primary">
                 <v-icon dark>domain</v-icon>
               </v-avatar>
               <span>{{blip.category}}</span>
             </v-chip>
-            <v-chip small disabled color="primary" text-color="white" @click.stop="addChange(blip)">
-              <v-avatar class="primary darken-2">
-                {{$config.states.indexOf(blip.state) + 1}}
+            <v-chip small disabled class="bold" @click.stop="addChange(blip)">
+              <v-avatar class="primary">
+                {{meta.states.indexOf(blip.state) + 1}}
               </v-avatar>
               {{blip.state}}
             </v-chip>
@@ -53,13 +44,13 @@
           label="Description"
           ></v-textarea>
       </v-card-title>
-      <div v-for="change in blip.changes" :key="change.id">
+      <div v-for="change in blip.changes" :key="change.index">
         <v-divider></v-divider>
         <v-subheader>
           <span class="subheading">{{change.date}}</span>
-            <v-chip small disabled color="primary" text-color="white">
-              <v-avatar color="primary darken-2">
-                {{$config.states.indexOf(change.newState) + 1}}
+            <v-chip small disabled class="bold">
+              <v-avatar color="primary">
+                {{meta.states.indexOf(change.newState) + 1}}
               </v-avatar>
               {{change.newState}}
             </v-chip>
@@ -86,26 +77,26 @@
         @click.stop="cancelEditBlip()"><v-icon>clear</v-icon></v-btn>
         <v-btn icon
         v-if="isEditMode && !isDeleteMode"
-        @click.stop="setDeleteMode(true)"><v-icon>delete</v-icon></v-btn>
+        @click.stop="isDeleteMode = true"><v-icon>delete</v-icon></v-btn>
         <v-btn icon
-        color="accent"
+        color="error"
         v-if="isEditMode && isDeleteMode"
         @click.stop="deleteBlip()"><v-icon>delete</v-icon></v-btn>
       </v-card-actions>
-    </v-card>
-  </v-container>
+  </v-card>
 </template>
 
 <script>
-import NewChange from './NewChange'
 import copy from 'clipboard-copy'
 import MarkdownIt from 'markdown-it'
 const md = new MarkdownIt()
 export default {
-  components: { NewChange },
   computed: {
     userCanEdit () {
       return this.$store.getters.userCanEdit
+    },
+    meta () {
+      return this.$store.getters.meta
     }
   },
   props: {
@@ -117,8 +108,7 @@ export default {
       tempBlip: {},
       isDeleteMode: false,
       showChangeDialog: false,
-      blipForChange: null,
-      copiedSnackbar: false
+      blipForChange: null
     }
   },
   methods: {
@@ -127,8 +117,7 @@ export default {
     },
     addChange () {
       if (!this.userCanEdit) return
-      this.blipForChange = this.blip
-      this.showChangeDialog = true
+      this.$emit('addChange', this.blip.index)
     },
     editBlip () {
       this.tempBlip = { ...this.blip }
@@ -136,6 +125,7 @@ export default {
     },
     saveBlip () {
       const updatedBlip = this.tempBlip
+      updatedBlip.changes = this.blip.changes // update in case changes were deleted
       this.isEditMode = false
       this.$store.dispatch('updateBlip', updatedBlip)
       this.isDeleteMode = false
@@ -143,18 +133,6 @@ export default {
     cancelEditBlip () {
       this.isEditMode = false
       this.isDeleteMode = false
-    },
-    setDeleteMode (isActive) {
-      this.isDeleteMode = isActive
-    },
-    submitChange ({ blip, change }) {
-      this.$store.dispatch('addChange', { blip, change })
-      this.showChangeDialog = false
-      this.blipForChange = null
-    },
-    cancelChange (change) {
-      this.blipForChange = null
-      this.showChangeDialog = false
     },
     deleteChange (blip, change) {
       this.$store.dispatch('deleteChange', { blip, change })
@@ -165,7 +143,7 @@ export default {
       url = url.replace(/([^:]\/)\/+/g, '$1') // remove potential duplicate //, except http(s)://
       const success = copy(url)
       if (success) {
-        this.copiedSnackbar = true
+        this.$store.dispatch('showSnackbar', 'Skill URL copied to clipboard')
       } else {
         console.error(success)
       }
@@ -179,6 +157,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/common.scss';
+
 .headline a {
   text-decoration: none;
   color: black;
@@ -188,5 +168,14 @@ export default {
 }
 .change-text {
   margin-left: 1vw;
+}
+.bold {
+  font-weight: bold;
+}
+.v-chip .v-avatar {
+  color: #fff !important;
+}
+.v-chip {
+  color: #666 !important;
 }
 </style>

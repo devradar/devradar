@@ -5,7 +5,7 @@
       <div id="blips">
         <router-link
           v-for="blip in blips"
-          v-bind:key="blip.id"
+          v-bind:key="blip.index"
           class="blip blip--hidden"
           :to="{ name: 'List', params: {search: blip.title}}"
           :data-category="blip.category"
@@ -18,11 +18,11 @@
             >{{blip.index}}</span>
         </router-link>
       </div>
-      <div :class="'q' + (ix+1)" v-for="(category, ix) in $config.categories" :key="ix"><h3>{{category}}</h3>
+      <div :class="'q' + (ix+1)" v-for="(category, ix) in meta.categories" :key="ix"><h3>{{category}}</h3>
         <ul>
           <li
             v-for="blip in blipsByCategory[category]"
-            v-bind:key="blip.id"
+            v-bind:key="blip.index"
           >
             <router-link
             :to="{ name: 'List', params: {search: blip.title}}"
@@ -34,27 +34,32 @@
             </li>
         </ul>
       </div>
-      <div class="adopt"><span class="state">{{$config.states[3]}}</span></div>
-      <div class="trial"><span class="state">{{$config.states[2]}}</span></div>
-      <div class="assess"><span class="state">{{$config.states[1]}}</span></div>
-      <div class="hold"><span class="state">{{$config.states[0]}}</span></div>
+      <div class="adopt"><span class="state">{{meta.states[3]}}</span></div>
+      <div class="trial"><span class="state">{{meta.states[2]}}</span></div>
+      <div class="assess"><span class="state">{{meta.states[1]}}</span></div>
+      <div class="hold"><span class="state">{{meta.states[0]}}</span></div>
     </div>
   </v-container>
 </template>
 
 <script>
 import NewBlip from './NewBlip'
+import { getPseudoRand } from '../util'
 
 export default {
   components: { NewBlip },
   computed: {
     blips () {
-      return this.$store.getters.blipsArray
-        .filter(b => this.$config.states.slice(0, 4).indexOf(b.state) > -1)
+      const b = JSON.parse(JSON.stringify(this.$store.getters.blips))
+      return b
+        .filter(b => this.meta.states.slice(0, 4).indexOf(b.state) > -1)
+        .map(b => {
+          b.index = b.index + 1 // offset index by one for human display
+          return b
+        })
     },
     blipsByCategory () {
-      return this.$store.getters.blipsArray
-        .filter(b => this.$config.states.slice(0, 4).indexOf(b.state) > -1)
+      return this.blips
         .reduce((p, c) => {
           const cat = c.category
           if (p[cat]) {
@@ -64,6 +69,9 @@ export default {
           }
           return p
         }, {})
+    },
+    meta () {
+      return this.$store.getters.meta
     }
   },
   data: () => ({
@@ -74,21 +82,6 @@ export default {
       function getDomWidth (domClass) {
         return document.getElementsByClassName(domClass)[0].clientWidth
       }
-      // generate hash from string
-      function getHash (string) {
-        let h = 0
-        for (const char of string) {
-          h = ((h << 5) - h) + char.charCodeAt(0)
-          h |= 0
-        }
-        return h
-      }
-      // create 0..1 pseudo random from string
-      function getPseudoRand (string) {
-        const h = getHash(string)
-        // convert signed int32 space to 0..1 float
-        return (h + Math.pow(2, 31)) / Math.pow(2, 32)
-      }
       const blips = document.getElementsByClassName('blip')
       for (let b of blips) {
         const bWidth = b.clientWidth
@@ -97,7 +90,7 @@ export default {
 
         // Different radiuses depending on blips
         let width, radius
-        const states = this.$config.states
+        const states = this.meta.states
         switch (state) {
           case states[0]:
             radius = (getDomWidth('radar') - bWidth) / 2
@@ -119,7 +112,7 @@ export default {
 
         // Different quadrants depending on area
         let quadrant
-        const categories = this.$config.categories
+        const categories = this.meta.categories
         switch (category) {
           case categories[0]:
             quadrant = 1

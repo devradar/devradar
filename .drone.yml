@@ -24,4 +24,4 @@ steps:
   - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
   when:
     branch:
-    - master
+    - anoff

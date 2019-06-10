@@ -5,6 +5,7 @@ import List from '@/components/List'
 import Login from '@/components/Login'
 import Logout from '@/components/Logout'
 import Users from '@/components/Users'
+import Settings from '@/components/Settings'
 import AuthGuard from './auth-guard'
 import appConfig from '@/config'
 
@@ -15,7 +16,8 @@ const components = {
   List,
   Login,
   Logout,
-  Users
+  Users,
+  Settings
 }
 const routes = routesCfg
   .map(r => ({
@@ -27,5 +29,8 @@ const routes = routesCfg
   }))
 
 export default new Router({
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })
