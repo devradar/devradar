@@ -15,13 +15,13 @@ export default (backend) => ({
       state.blips = blips
     },
     addBlip (state, blip) {
-      Vue.set(state.blips, blip.id, blip)
+      state.blips.push(blip)
     },
     exchangeBlip (state, blip) {
-      Vue.set(state.blips, blip.id, blip)
+      state.blips.splice(blip.index, 1, blip)
     },
     removeBlip (state, blip) {
-      Vue.delete(state.blips, blip.id)
+      Vue.delete(state.blips, blip.index)
     },
     setLoading (state, isLoading) {
       state.isLoading = isLoading
@@ -34,20 +34,21 @@ export default (backend) => ({
   getters: {
     blips (state) {
       return state.blips
-        .map(b => {
+        .filter(b => b.changes.length > 0)
+        .map((b, fakeIx) => {
           const changes = b.changes.map(c => {
             const { date, newState, text } = c
             return { date, newState, text }
           })
           const state = changes.sort((a, b) => a.date < b.date)[0].newState
           const { date, category, link, index, description, title } = b
-          return { date, category, link, index, description, title, changes, state }
+          return { date, category, link, index: fakeIx, description, title, changes, state }
         })
     },
     isLoading (state) {
       return state.isLoading
     },
-    getNextID (state) {
+    blipsCount (state) {
       return state.blips.length
     },
     meta (state) {

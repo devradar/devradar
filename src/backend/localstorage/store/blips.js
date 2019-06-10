@@ -24,11 +24,10 @@ const actions = {
   addBlip ({ commit, dispatch, getters }, { blip, change }) {
     // prepend https if nothing is there
     if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
-    blip.changes = []
-    blip.id = getters.getNextID
-    blip.index = blip.id
-    blip.state = change.newState
-    dispatch('addChange', { blip, change })
+    change = Object.assign(change, { index: 0 })
+    blip.changes = [change]
+    blip.index = getters.blipsCount
+    commit('addBlip', blip)
   },
   updateBlip ({ commit }, blip) {
     commit('exchangeBlip', blip)
@@ -37,12 +36,12 @@ const actions = {
     commit('removeBlip', blip)
   },
   addChange ({ commit }, { blip, change }) {
-    change = Object.assign(change, { id: blip.changes.length })
+    change = Object.assign(change, { index: blip.changes.length })
     blip.changes.push(change)
     commit('exchangeBlip', blip)
   },
   deleteChange ({ commit }, { blip, change }) {
-    blip.changes = blip.changes.filter(c => c.id !== change.id)
+    blip.changes = blip.changes.filter(c => c.index !== change.index)
     commit('exchangeBlip', blip)
   },
   getMeta ({ commit }) {

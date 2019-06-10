@@ -5,7 +5,7 @@
       <div id="blips">
         <router-link
           v-for="blip in blips"
-          v-bind:key="blip.id"
+          v-bind:key="blip.index"
           class="blip blip--hidden"
           :to="{ name: 'List', params: {search: blip.title}}"
           :data-category="blip.category"
@@ -15,14 +15,14 @@
           slot="activator"
         >
           <span
-            >{{blip.index}}</span>
+            >{{blip.index + 1}}</span>
         </router-link>
       </div>
       <div :class="'q' + (ix+1)" v-for="(category, ix) in meta.categories" :key="ix"><h3>{{category}}</h3>
         <ul>
           <li
             v-for="blip in blipsByCategory[category]"
-            v-bind:key="blip.id"
+            v-bind:key="blip.index"
           >
             <router-link
             :to="{ name: 'List', params: {search: blip.title}}"

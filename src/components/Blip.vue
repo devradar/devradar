@@ -30,13 +30,13 @@
               ></v-text-field>
           </v-flex>
           <v-flex xs12 sm6 text-xs-right>
-            <v-chip outline disabled class="bold">
+            <v-chip small disabled class="bold">
               <v-avatar class="primary">
                 <v-icon dark>domain</v-icon>
               </v-avatar>
               <span>{{blip.category}}</span>
             </v-chip>
-            <v-chip outline disabled class="bold" @click.stop="addChange(blip)">
+            <v-chip small disabled class="bold" @click.stop="addChange(blip)">
               <v-avatar class="primary">
                 {{meta.states.indexOf(blip.state) + 1}}
               </v-avatar>
@@ -53,11 +53,11 @@
           label="Description"
           ></v-textarea>
       </v-card-title>
-      <div v-for="change in blip.changes" :key="change.id">
+      <div v-for="change in blip.changes" :key="change.index">
         <v-divider></v-divider>
         <v-subheader>
           <span class="subheading">{{change.date}}</span>
-            <v-chip disabled outline class="bold">
+            <v-chip small disabled class="bold">
               <v-avatar color="primary">
                 {{meta.states.indexOf(change.newState) + 1}}
               </v-avatar>
@@ -201,6 +201,6 @@ export default {
   color: #fff !important;
 }
 .v-chip {
-  color: $text !important;
+  color: #666 !important;
 }
 </style>

@@ -41,7 +41,7 @@ export default {
       valid: false,
       dialog: true,
       state: null,
-      date: null,
+      date: new Date().toISOString().slice(0, 7),
       changeText: null
     }
   },
@@ -61,7 +61,7 @@ export default {
     },
     reset () {
       this.state = null
-      this.date = null
+      this.date = new Date().toISOString().slice(0, 7)
       this.changeText = null
     }
   },

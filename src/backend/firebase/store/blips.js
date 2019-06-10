@@ -21,7 +21,7 @@ const actions = {
           .filter(b => b.title && b.id)
           .filter(b => b.changes && b.changes.length > 0)
           .map((b, ix) => {
-            b.index = ix + 1
+            b.index = ix
             return b
           })
         commit('setBlips', blipsArray)

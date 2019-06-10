@@ -23,7 +23,7 @@
           :max="12"
         ></v-slider>
       </v-flex>
-      <v-flex xs12 v-for="blip in filteredBlips" :key="blip.id">
+      <v-flex xs12 v-for="blip in filteredBlips" :key="blip.index">
         <blip
           :blip="blip"
         >
