@@ -22,7 +22,6 @@ const actions = {
           .filter(b => b.changes && b.changes.length > 0)
           .map((b, ix) => {
             b.index = ix + 1
-            b.state = b.changes.sort((a, b) => a.date < b.date)[0].newState
             return b
           })
         commit('setBlips', blipsArray)

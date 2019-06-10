@@ -34,9 +34,15 @@ export default (backend) => ({
   getters: {
     blips (state) {
       return state.blips
-    },
-    blipsArray (state, getters) {
-      return state.blips
+        .map(b => {
+          const changes = b.changes.map(c => {
+            const { date, newState, text } = c
+            return { date, newState, text }
+          })
+          const state = changes.sort((a, b) => a.date < b.date)[0].newState
+          const { date, category, link, index, description, title } = b
+          return { date, category, link, index, description, title, changes, state }
+        })
     },
     isLoading (state) {
       return state.isLoading

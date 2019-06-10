@@ -30,14 +30,14 @@
               ></v-text-field>
           </v-flex>
           <v-flex xs12 sm6 text-xs-right>
-            <v-chip small disabled color="secondary" class="text-contrast-color bold">
-              <v-avatar class="secondary darken-2">
+            <v-chip outline disabled class="bold">
+              <v-avatar class="primary">
                 <v-icon dark>domain</v-icon>
               </v-avatar>
               <span>{{blip.category}}</span>
             </v-chip>
-            <v-chip small disabled color="primary" class="text-contrast-color bold" @click.stop="addChange(blip)">
-              <v-avatar class="primary darken-2">
+            <v-chip outline disabled class="bold" @click.stop="addChange(blip)">
+              <v-avatar class="primary">
                 {{meta.states.indexOf(blip.state) + 1}}
               </v-avatar>
               {{blip.state}}
@@ -57,8 +57,8 @@
         <v-divider></v-divider>
         <v-subheader>
           <span class="subheading">{{change.date}}</span>
-            <v-chip small disabled color="primary" class="text-contrast-color bold">
-              <v-avatar color="primary darken-2">
+            <v-chip disabled outline class="bold">
+              <v-avatar color="primary">
                 {{meta.states.indexOf(change.newState) + 1}}
               </v-avatar>
               {{change.newState}}
@@ -196,5 +196,11 @@ export default {
 }
 .bold {
   font-weight: bold;
+}
+.v-chip .v-avatar {
+  color: #fff !important;
+}
+.v-chip {
+  color: $text !important;
 }
 </style>

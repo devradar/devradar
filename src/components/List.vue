@@ -46,7 +46,7 @@ export default {
   components: { NewBlip, Blip },
   computed: {
     blips () {
-      const blips = this.$store.getters.blipsArray
+      const blips = this.$store.getters.blips
       return blips
     },
     filteredBlips () {

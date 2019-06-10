@@ -134,7 +134,7 @@ export default {
       return this.$store.getters.meta
     },
     blips () {
-      return this.$store.getters.blipsArray
+      return this.$store.getters.blips
     },
     snackbar () {
       return this.$store.getters.snackbar

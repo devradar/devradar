@@ -50,11 +50,11 @@ export default {
   components: { NewBlip },
   computed: {
     blips () {
-      return this.$store.getters.blipsArray
+      return this.$store.getters.blips
         .filter(b => this.meta.states.slice(0, 4).indexOf(b.state) > -1)
     },
     blipsByCategory () {
-      return this.$store.getters.blipsArray
+      return this.$store.getters.blips
         .filter(b => this.meta.states.slice(0, 4).indexOf(b.state) > -1)
         .reduce((p, c) => {
           const cat = c.category

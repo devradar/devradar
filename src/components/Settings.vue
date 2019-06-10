@@ -13,7 +13,7 @@
               <v-textarea
                 name="content-toml"
                 rows="16"
-                color="secondary"
+                color="primary"
                 v-if="showToml"
                 label="TOML"
                 :rules="validateToml"
@@ -25,7 +25,7 @@
               <v-textarea
                 name="content-encoded"
                 rows="8"
-                color="secondary"
+                color="primary"
                 v-else
                 label="Encoded"
                 readonly
@@ -103,7 +103,7 @@ export default {
   }),
   computed: {
     blips () {
-      return this.$store.getters.blipsArray
+      return this.$store.getters.blips
     },
     meta () {
       return this.$store.getters.meta

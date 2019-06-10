@@ -13,7 +13,6 @@ const actions = {
       .map((b, ix) => {
         b.index = ix + 1
         b.id = ix + 1
-        b.state = b.changes.sort((a, b) => a.date < b.date)[0].newState
         return b
       })
     commit('setBlips', blipsArray)
