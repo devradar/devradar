@@ -1,6 +1,4 @@
 <template>
-  <v-container>
-    <new-change @submit="submitChange" @cancel="cancelChange" @close="cancelChange"></new-change>
     <v-card>
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
@@ -85,17 +83,14 @@
         v-if="isEditMode && isDeleteMode"
         @click.stop="deleteBlip()"><v-icon>delete</v-icon></v-btn>
       </v-card-actions>
-    </v-card>
-  </v-container>
+  </v-card>
 </template>
 
 <script>
-import NewChange from './NewChange'
 import copy from 'clipboard-copy'
 import MarkdownIt from 'markdown-it'
 const md = new MarkdownIt()
 export default {
-  components: { NewChange },
   computed: {
     userCanEdit () {
       return this.$store.getters.userCanEdit
@@ -122,8 +117,7 @@ export default {
     },
     addChange () {
       if (!this.userCanEdit) return
-      this.blipForChange = this.blip
-      this.showChangeDialog = true
+      this.$emit('addChange', this.blip.index)
     },
     editBlip () {
       this.tempBlip = { ...this.blip }
@@ -138,15 +132,6 @@ export default {
     cancelEditBlip () {
       this.isEditMode = false
       this.isDeleteMode = false
-    },
-    submitChange ({ blip, change }) {
-      this.$store.dispatch('addChange', { blip, change })
-      this.showChangeDialog = false
-      this.blipForChange = null
-    },
-    cancelChange (change) {
-      this.blipForChange = null
-      this.showChangeDialog = false
     },
     deleteChange (blip, change) {
       this.$store.dispatch('deleteChange', { blip, change })

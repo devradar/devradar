@@ -3,6 +3,10 @@
     fluid
     grid-list-lg>
     <new-blip></new-blip>
+    <new-change
+    @submit="newChangeSubmit"
+    @cancel="newChangeCancel"
+    ></new-change>
     <v-layout row wrap justify-space-around>
       <v-flex xs6>
         <v-text-field
@@ -26,6 +30,7 @@
       <v-flex xs12 v-for="blip in filteredBlips" :key="blip.index">
         <blip
           :blip="blip"
+          @addChange="newChangeOpen"
         >
         </blip>
       </v-flex>
@@ -35,11 +40,12 @@
 
 <script>
 import NewBlip from './NewBlip'
+import NewChange from './NewChange'
 import Blip from './Blip'
 import router from '../router'
 
 export default {
-  components: { NewBlip, Blip },
+  components: { NewBlip, NewChange, Blip },
   computed: {
     blips () {
       const blips = this.$store.getters.blips
@@ -75,14 +81,29 @@ export default {
       searchTitle: this.search,
       settings: {
         maxMonths: 0
-      }
+      },
+      newChangeModalVisible: false,
+      newChangeBlip: null
     }
   },
   methods: {
     searchUpdated () {
       if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })
       else router.replace({ name: 'List' })
-    }
+    },
+    newChangeOpen (blipIndex) {
+      this.newChangeBlip = this.blips[blipIndex]
+      this.newChangeModalVisible = true
+    },
+    newChangeSubmit ({ blip, change }) {
+      this.$store.dispatch('addChange', { blip, change })
+      this.newChangeModalVisible = false
+      this.newChangeBlip = null
+    },
+    newChangeCancel (change) {
+      this.newChangeBlip = null
+      this.newChangeModalVisible = false
+    },
   }
 }
 </script>

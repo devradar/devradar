@@ -1,8 +1,8 @@
 <template>
-  <v-dialog v-model="$parent.showChangeDialog" max-width="80%">
+  <v-dialog v-model="$parent.newChangeModalVisible" max-width="80%">
     <v-card>
       <v-card-title class="title">
-        Change blip state for {{($parent.blipForChange||{}).title}}
+        Add new blip state
       </v-card-title>
       <v-card-text>
         <v-form v-model="valid" ref="form">
@@ -45,18 +45,15 @@ export default {
       changeText: null
     }
   },
-  props: {
-    blip: Object
-  },
   methods: {
     submit () {
       if (this.$refs.form.validate()) {
-        this.$emit('submit', { change: this.change, blip: this.$parent.blipForChange })
+        this.$emit('submit', { change: this.change, blip: this.$parent.newChangeBlip })
         this.reset()
       }
     },
     cancel () {
-      this.$emit('cancel', { change: this.change, blip: this.$parent.blipForChange })
+      this.$emit('cancel', { change: this.change, blip: this.$parent.newChangeBlip })
       this.reset()
     },
     reset () {
