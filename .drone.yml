@@ -2,15 +2,11 @@ kind: pipeline
 name: publish
 
 steps:
-- name: install
+- name: lint
   image: node:lts-slim
   commands:
   - npm ci
-
-- name: build
-  image: node:lts-slim
-  commands:
-  - npm run build
+  - npm run lint
 
 - name: publish
   image: node:lts-slim
@@ -20,8 +16,24 @@ steps:
     FIREBASE_TOKEN:
       from_secret: FIREBASE_TOKEN
   commands:
+  - npm ci
+  - npm run build
   - npm i -g firebase-tools
   - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
   when:
     branch:
     - anoff
+
+- name: docker publish editor
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: DOCKER_USERNAME
+    password:
+      from_secret: DOCKER_PASSWORD
+    repo: anoff/devradar-editor
+    target: editor
+    tags: latest
+  when:
+    branch:
+    - master
