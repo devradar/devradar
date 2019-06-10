@@ -1,0 +1,23 @@
+@startuml devradar-editor
+!define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v2.0.0
+!includeurl ICONURL/common.puml
+!includeurl ICONURL/devicons/nginx.puml
+!includeurl ICONURL/devicons/javascript.puml
+!includeurl ICONURL/devicons/npm.puml
+!includeurl ICONURL/devicons/docker.puml
+!includeurl https://gist.githubusercontent.com/anoff/c531251183cf9590b0f86ac85d5bc353/raw/fancy.plantuml
+skinparam defaultTextAlignment center
+
+DEV_JAVASCRIPT(app, Vue App, node)
+
+DEV_DOCKER(docker, anoff/devradar-editor, file) #DeepSkyBlue {
+  DEV_NGINX(server, web server, node)
+  interface ":80" as port
+  server - port
+}
+
+DEV_NPM(build, bundle, component)
+
+app --> build
+build --> server
+@enduml
