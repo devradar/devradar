@@ -86,7 +86,7 @@
         @click.stop="cancelEditBlip()"><v-icon>clear</v-icon></v-btn>
         <v-btn icon
         v-if="isEditMode && !isDeleteMode"
-        @click.stop="setDeleteMode(true)"><v-icon>delete</v-icon></v-btn>
+        @click.stop="isDeleteMode = true"><v-icon>delete</v-icon></v-btn>
         <v-btn icon
         color="error"
         v-if="isEditMode && isDeleteMode"
@@ -146,9 +146,6 @@ export default {
     cancelEditBlip () {
       this.isEditMode = false
       this.isDeleteMode = false
-    },
-    setDeleteMode (isActive) {
-      this.isDeleteMode = isActive
     },
     submitChange ({ blip, change }) {
       this.$store.dispatch('addChange', { blip, change })

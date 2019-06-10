@@ -51,12 +51,16 @@ export default {
         .filter(blip => new RegExp(this.searchTitle || '', 'i').exec(blip.title))
         .map(b => {
           b.changes = b.changes.sort((a, b) => a.date < b.date)
-          const bDate = new Date(b.changes[0].date)
-          const now = new Date()
-          b.age = (now.getFullYear() - bDate.getFullYear()) * 12 + (now.getMonth() - bDate.getMonth())
           return b
         })
-        .filter(b => !this.settings.maxMonths || b.age <= this.settings.maxMonths)
+        .filter(b => {
+          if (!this.settings.maxMonths) return true
+          const bDate = new Date(b.changes[0].date)
+          const now = new Date()
+          const age = (now.getFullYear() - bDate.getFullYear()) * 12 + (now.getMonth() - bDate.getMonth())
+          if (age <= this.settings.maxMonths) return true
+          return false
+        })
         .sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
     },
     userCanEdit () {
@@ -78,9 +82,6 @@ export default {
     searchUpdated () {
       if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })
       else router.replace({ name: 'List' })
-    },
-    searchClear () {
-      this.searchTitle = ''
     }
   }
 }

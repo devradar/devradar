@@ -18,7 +18,9 @@ export default (backend) => ({
       state.blips.push(blip)
     },
     exchangeBlip (state, blip) {
+      console.log(state.blips, blip)
       state.blips.splice(blip.index, 1, blip)
+      console.log(state.blips)
     },
     removeBlip (state, blip) {
       Vue.delete(state.blips, blip.index)
@@ -36,13 +38,13 @@ export default (backend) => ({
       return state.blips
         .filter(b => b.changes.length > 0)
         .map((b, fakeIx) => {
-          const changes = b.changes.map(c => {
-            const { date, newState, text } = c
-            return { date, newState, text }
+          const changes = b.changes.map((c, fakeCix) => {
+            const { date, newState, text, index } = c
+            return { date, newState, text, index: fakeCix }
           })
           const state = changes.sort((a, b) => a.date < b.date)[0].newState
-          const { date, category, link, index, description, title } = b
-          return { date, category, link, index: fakeIx, description, title, changes, state }
+          const { category, link, index, description, title } = b
+          return { category, link, index: fakeIx, description, title, changes, state }
         })
     },
     isLoading (state) {

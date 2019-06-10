@@ -15,7 +15,7 @@
           slot="activator"
         >
           <span
-            >{{blip.index + 1}}</span>
+            >{{blip.index}}</span>
         </router-link>
       </div>
       <div :class="'q' + (ix+1)" v-for="(category, ix) in meta.categories" :key="ix"><h3>{{category}}</h3>
@@ -50,12 +50,16 @@ export default {
   components: { NewBlip },
   computed: {
     blips () {
-      return this.$store.getters.blips
+      const b = JSON.parse(JSON.stringify(this.$store.getters.blips))
+      return b
         .filter(b => this.meta.states.slice(0, 4).indexOf(b.state) > -1)
+        .map(b => {
+          b.index = b.index + 1 // offset index by one for human display
+          return b
+        })
     },
     blipsByCategory () {
-      return this.$store.getters.blips
-        .filter(b => this.meta.states.slice(0, 4).indexOf(b.state) > -1)
+      return this.blips
         .reduce((p, c) => {
           const cat = c.category
           if (p[cat]) {
