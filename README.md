@@ -5,7 +5,7 @@
 
 > single page web app to manage your own techradar
 
-<img src="assets/logo-l-g.png">
+<img src="assets/title.png">
 <!-- TOC depthFrom:2 -->
 
 - [Features](#features)
