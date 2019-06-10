@@ -1,12 +1,5 @@
 <template>
   <v-container>
-    <v-snackbar
-      v-model="copiedSnackbar"
-      color="success"
-      :timeout="2000"
-      >
-      <v-icon dark>link</v-icon> URL copied
-    </v-snackbar>
     <new-change @submit="submitChange" @cancel="cancelChange" @close="cancelChange"></new-change>
     <v-card>
       <v-container fluid grid-list-lg>
@@ -120,8 +113,7 @@ export default {
       tempBlip: {},
       isDeleteMode: false,
       showChangeDialog: false,
-      blipForChange: null,
-      copiedSnackbar: false
+      blipForChange: null
     }
   },
   methods: {
@@ -165,7 +157,7 @@ export default {
       url = url.replace(/([^:]\/)\/+/g, '$1') // remove potential duplicate //, except http(s)://
       const success = copy(url)
       if (success) {
-        this.copiedSnackbar = true
+        this.$store.dispatch('showSnackbar', 'Skill URL copied to clipboard')
       } else {
         console.error(success)
       }
