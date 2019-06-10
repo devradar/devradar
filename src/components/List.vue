@@ -103,7 +103,7 @@ export default {
     newChangeCancel (change) {
       this.newChangeBlip = null
       this.newChangeModalVisible = false
-    },
+    }
   }
 }
 </script>

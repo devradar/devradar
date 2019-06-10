@@ -125,6 +125,7 @@ export default {
     },
     saveBlip () {
       const updatedBlip = this.tempBlip
+      updatedBlip.changes = this.blip.changes // update in case changes were deleted
       this.isEditMode = false
       this.$store.dispatch('updateBlip', updatedBlip)
       this.isDeleteMode = false

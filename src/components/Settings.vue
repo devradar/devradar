@@ -102,8 +102,8 @@ export default {
     ]
   }),
   computed: {
-    blips () {
-      return this.$store.getters.blips
+    blipsClean () {
+      return this.$store.getters.blipsClean
     },
     meta () {
       return this.$store.getters.meta
@@ -126,7 +126,7 @@ export default {
     fetchContent () {
       const obj = {
         meta: this.meta,
-        blips: this.blips
+        blips: this.blipsClean
       }
       const str = TOML.stringify(obj)
       this.contentToml = str

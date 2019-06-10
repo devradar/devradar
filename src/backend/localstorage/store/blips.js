@@ -41,10 +41,7 @@ const actions = {
     commit('exchangeBlip', blip)
   },
   deleteChange ({ commit }, { blip, change }) {
-    console.log('TRIGGER DELETE')
-    console.log(blip.changes, change.index)
     blip.changes = blip.changes.filter(c => c.index !== change.index)
-    console.log(blip.changes)
     commit('exchangeBlip', blip)
   },
   getMeta ({ commit }) {
