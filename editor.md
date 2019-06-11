@@ -1,6 +1,6 @@
 # devradar &lt;editor/&gt;
 
-[![MicroBadger Size](https://img.shields.io/microbadger/image-size/anoff/devradar-editor.svg)](https://microbadger.com/images/anoff/devradar-editor)
+[![MicroBadger Size](https://img.shields.io/microbadger/image-size/anoff/devradar.svg)](https://microbadger.com/images/anoff/devradar)
 [![Greenkeeper badge](https://badges.greenkeeper.io/anoff/devradar.svg)](https://greenkeeper.io/)
 [![Build Status](https://cloud.drone.io/api/badges/anoff/devradar/status.svg)](https://cloud.drone.io/anoff/devradar)
 
@@ -79,13 +79,13 @@ You can also use the devradar for non-tech related things:
 Hosting your own devradar editor only requires a docker daemon
 
 ```sh
-docker run --rm -p 8080:80 anoff/devradar-editor
+docker run --rm -p 8080:80 anoff/devradar
 ```
 
 ### Tech stack
 
 The devradar itself is build with Vue.js.
-For easier deployment the editor comes pre-built as a docker image [anoff/devradar-editor](https://cloud.docker.com/repository/docker/anoff/devradar-editor).
+For easier deployment the editor comes pre-built as a docker image [anoff/devradar](https://cloud.docker.com/repository/docker/anoff/devradar).
 For the docker image nginx-alpine is used as a base image which brings the final image size to < 15MB.
 
 ![design](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/devradar/master/assets/editor-build.puml)
