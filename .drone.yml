@@ -31,7 +31,7 @@ steps:
       from_secret: DOCKER_USERNAME
     password:
       from_secret: DOCKER_PASSWORD
-    repo: anoff/devradar-editor
+    repo: anoff/devradar
     target: editor
     tags: latest
   when:
