@@ -2,6 +2,8 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/anoff/devradar.svg)](https://greenkeeper.io/)
 [![Build Status](https://cloud.drone.io/api/badges/anoff/devradar/status.svg)](https://cloud.drone.io/anoff/devradar)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9a55cbdb-1b16-4313-b249-ec5102a42922/deploy-status)](https://app.netlify.com/sites/devradar/deploys)
+[![MicroBadger Size](https://img.shields.io/microbadger/image-size/anoff/devradar.svg)](https://microbadger.com/images/anoff/devradar)
 
 > single page web app to manage your own techradar
 
@@ -25,6 +27,8 @@ The master branch of this repository holds a devradar version customized towards
 For building a teams or organizations techradar it might be better to stick with the original _Hold_, _Assess_, _Trial_, _Adopt_ style.
 
 ## Features
+
+See [editor.md](editor.md) for details about the editor view available at [editor.devradar.io](//editor.devradar.io)
 
 - [x] add new blips
 - [x] modify blips
