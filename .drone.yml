@@ -8,7 +8,7 @@ steps:
   - npm ci
   - npm run lint
 
-- name: publish
+- name: radar.anoff.io
   image: node:lts-slim
   environment:
     FIREBASE_PROJECT:
@@ -17,12 +17,13 @@ steps:
       from_secret: FIREBASE_TOKEN
   commands:
   - npm ci
+  - cp -R anoff/ .
   - npm run build
   - npm i -g firebase-tools
   - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
   when:
     branch:
-    - anoff
+    - master
 
 - name: docker publish editor
   image: plugins/docker

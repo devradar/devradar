@@ -32,6 +32,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     info: colors.blue.base,
     success: colors.green.base
   },
+  darkMode: false,
   blips: {
     titleCutOff: 20 // cut off title after N characters (display only)
   }

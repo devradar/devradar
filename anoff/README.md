@@ -1,0 +1,1 @@
+These are the (config) files used to build my personal devradar at radar.anoff.io
