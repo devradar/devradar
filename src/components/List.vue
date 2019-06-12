@@ -8,7 +8,7 @@
     @cancel="newChangeCancel"
     ></new-change>
     <v-layout row wrap justify-space-around>
-      <v-flex xs6>
+      <v-flex xs12 sm5 md4>
         <v-text-field
           v-model="searchTitle"
           label="Search.."
@@ -18,7 +18,7 @@
         >
         </v-text-field>
       </v-flex>
-      <v-flex xs4>
+      <v-flex xs12 sm6 md4>
         <v-slider
           v-model="settings.maxMonths"
           thumb-label
