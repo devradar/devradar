@@ -84,6 +84,17 @@
         temporary
       >
         <v-list>
+          <v-list-tile v-for="elm in getNavEntries()"
+            v-bind:key="elm.title"
+            v-bind:href="elm.url"
+            target="_blank">
+            <v-list-tile-action>
+              <v-icon left>{{elm.icon}}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>{{ elm.title }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
           <v-list-tile v-for="elm in getMenuItems('toolbar')" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
             <v-list-tile-action>
               <v-icon left>{{elm.icon}}</v-icon>
