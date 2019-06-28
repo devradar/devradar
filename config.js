@@ -23,6 +23,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
     { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => true, location: ['toolbar'] } // only use this on localstorage backend for now
   ],
+  navEntries: [
+    { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: user => true }
+  ],
   theme: {
     primary: '#0DBD0D',
     secondary: '#ff7700',

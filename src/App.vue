@@ -45,6 +45,15 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat
+        v-for="elm in getNavEntries()"
+        v-bind:key="elm.title"
+        v-bind:href="elm.url"
+        target="_blank"
+        >
+          <v-icon left>{{elm.icon}}</v-icon>
+          <span class="hidden-md-only">{{elm.title}}</span>
+        </v-btn>
+        <v-btn flat
         v-for="elm in getMenuItems('toolbar')"
         v-bind:key="elm.title"
         router
@@ -135,6 +144,12 @@ export default {
       return items
         .filter(i => i.validator(user))
         .filter(i => i.location.indexOf(location) > -1)
+    },
+    getNavEntries () {
+      const user = this.$store.getters.user || {}
+      const items = this.$config.navEntries
+      return items
+        .filter(i => i.validator(user))
     },
     copyURL () {
       const obj = {
