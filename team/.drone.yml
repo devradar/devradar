@@ -1,0 +1,40 @@
+kind: pipeline
+name: publish
+
+steps:
+- name: lint
+  image: node:lts-slim
+  commands:
+  - npm ci
+  - npm run lint
+
+- name: radar.anoff.io
+  image: node:lts-slim
+  environment:
+    FIREBASE_PROJECT:
+      from_secret: FIREBASE_PROJECT
+    FIREBASE_TOKEN:
+      from_secret: FIREBASE_TOKEN
+  commands:
+  - npm ci
+  - cp -R anoff/** .
+  - npm run build
+  - npm i -g firebase-tools
+  - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
+  when:
+    branch:
+    - master
+
+- name: docker publish editor
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: DOCKER_USERNAME
+    password:
+      from_secret: DOCKER_PASSWORD
+    repo: anoff/devradar
+    target: editor
+    tags: latest
+  when:
+    branch:
+    - master

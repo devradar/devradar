@@ -1,0 +1,65 @@
+{
+  "name": "devradar-teams",
+  "version": "0.0.1",
+  "description": "Build your personal techradar",
+  "author": "Andreas Offenhaeuser <http://anoff.io>",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "start": "npm run serve"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.3",
+    "clipboard-copy": "^3.0.0",
+    "core-js": "^3.1.3",
+    "firebase": "^6.1.0",
+    "lz-string": "^1.4.4",
+    "markdown-it": "^8.4.2",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.6",
+    "vuetify": "^1.5.14",
+    "vuetify-upload-button": "^2.0.0",
+    "vuex": "^3.1.1",
+    "vuex-persist": "^2.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.2",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/standard"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

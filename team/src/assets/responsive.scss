@@ -1,0 +1,19 @@
+// helpers for responsive scss components
+$breakpoint-xs: 600px; // smaller than breakpoint -> xs, taken from https://vuetifyjs.com/en/layout/display
+$breakpoint-sm: 960px;
+$breakpoint-md: 1264px;
+$breakpoint-lg: 1904px;
+
+@mixin smaller($breakpoint) {
+  @media (max-width: $breakpoint) { @content; }
+}
+
+@mixin between($min, $max) {
+  @media (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}
+
+@mixin larger($breakpoint) {
+  @media (min-width: $breakpoint) { @content; }
+}
