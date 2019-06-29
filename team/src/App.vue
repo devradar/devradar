@@ -23,24 +23,7 @@
         width="140rem">
       </v-toolbar-title>
       <v-toolbar-title class="hidden-xs-only">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <span class="radar-title" v-on="on">{{ meta.title }} </span>
-          </template>
-        <span>Change me in the settings tab</span>
-        </v-tooltip>
-        <v-tooltip right>
-          <template v-slot:activator="{ on }">
-            <v-btn
-            icon large
-            v-on="on"
-            @click="copyURL()"
-            >
-              <v-icon>attach_file</v-icon>
-            </v-btn>
-          </template>
-          <span>Copy devradar URL</span>
-        </v-tooltip>
+        <span class="radar-title">Team Management</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">

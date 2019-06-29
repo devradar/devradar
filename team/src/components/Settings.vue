@@ -1,71 +1,69 @@
 <template>
-      <v-container grid-list-lg>
-        <v-layout row>
-          <v-flex xs10>
-              <span class="headline">
-                Content
-              </span>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs12>
-            <v-form v-model="contentIsValid">
-              <v-textarea
-                name="content-toml"
-                rows="16"
-                color="primary"
-                v-if="showToml"
-                label="TOML"
-                :rules="validateToml"
-                @keydown.tab.prevent="tabber($event)"
-                append-icon="code"
-                @click:append="showToml = !showToml"
-                v-model="contentToml"
-              ></v-textarea>
-              <v-textarea
-                name="content-encoded"
-                rows="8"
-                color="primary"
-                v-else
-                label="Encoded"
-                readonly
-                append-icon="code"
-                @click:append="showToml = !showToml"
-                @focus="$event.target.select()"
-                v-model="contentEncoded"
-              ></v-textarea>
-            </v-form>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap justify-space-between>
-          <v-flex xs8 sm4 lg3 xl2>
-            <v-btn
-            @click.end="downloadToml()">
-              <v-icon left>save</v-icon>
-              Download as toml
+  <v-container grid-list-lg>
+    <v-layout row>
+      <v-flex xs12>
+        <v-list two-line subheader>
+          <v-subheader inset>Team competences</v-subheader>
+
+          <v-list-tile
+            v-for="item in items"
+            :key="item.title"
+            avatar
+          >
+            <v-list-tile-avatar>
+              <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
+            </v-list-tile-content>
+
+            <v-list-tile-action>
+              <v-btn icon ripple>
+                <v-icon>publish</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-divider inset></v-divider>
+
+          <v-subheader inset>
+            Developer Skills
+            <v-btn icon ripple>
+              <v-icon>add</v-icon>
             </v-btn>
-          </v-flex>
-          <v-flex xs9 sm4 lg3 xl2>
-            <v-upload-btn
-            @file-update="uploadToml"
-            color="grey lighten-3"
-            title="Upload from file">
-              <template slot="icon-left">
-                <v-icon left>cloud_upload</v-icon>
-              </template>
-            </v-upload-btn>
-          </v-flex>
-          <v-spacer></v-spacer>
-          <v-flex xs5 sm3 lg1 xl1>
-            <v-btn
-            :disabled="!contentIsValid"
-            @click.end="loadContent()"
-            color="primary">
-              Save
-            </v-btn>
-          </v-flex>
-        </v-layout>
-      </v-container>
+          </v-subheader>
+
+          <v-list-tile
+            v-for="item in items2"
+            :key="item.title"
+            avatar
+          >
+            <v-list-tile-avatar>
+              <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
+            </v-list-tile-content>
+
+            <v-list-tile-action>
+              <v-btn icon ripple>
+                <v-icon color="grey lighten-1">delete</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+            <v-list-tile-action>
+              <v-btn icon ripple>
+                <v-icon>publish</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -99,6 +97,13 @@ export default {
           return e.toString()
         }
       }
+    ],
+    items: [
+      { icon: 'explore', iconClass: 'secondary lighten-1 white--text', title: 'teamradar.toml', subtitle: 'Galactic Federation Technology Stack ' }
+    ],
+    items2: [
+      { icon: 'person', iconClass: 'primary white--text', title: 'andreas.toml', subtitle: 'Andreas\'s tech skills' },
+      { icon: 'person', iconClass: 'primary white--text', title: 'oli.toml', subtitle: 'Oliver Schwarz' }
     ]
   }),
   computed: {
