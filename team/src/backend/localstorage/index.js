@@ -1,11 +1,9 @@
 import init from './init'
-import blips from './store/blips'
-import user from './store/user'
+import items from './store/items'
 
 export default {
   init,
   store: {
-    blips,
-    user
+    items
   }
 }

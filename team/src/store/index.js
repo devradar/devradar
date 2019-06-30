@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueX from 'vuex'
 import VuexPersistence from 'vuex-persist'
-import blips from './blips'
+import items from './items'
 import comm from './comm'
 import appConfig from '../config'
 import backend from '../backend/index'
@@ -18,20 +18,14 @@ backendActive.type = appConfig.backend.type.toLowerCase()
 const storePlugins = []
 if (backendActive.type === 'localstorage') {
   storePlugins.push((new VuexPersistence({
-    key: 'devradar-blips',
+    key: 'devradar-teams',
     storage: window.localStorage,
-    reducer: (state) => ({ blips: { blips: state.blips.blips } })
-  })).plugin)
-
-  storePlugins.push((new VuexPersistence({
-    key: 'devradar-meta',
-    storage: window.localStorage,
-    reducer: (state) => ({ blips: { meta: state.blips.meta } })
+    reducer: (state) => ({ items: { items: state.items.items } })
   })).plugin)
 }
 const store = new VueX.Store({
   modules: {
-    blips: blips(backendActive),
+    items: items(backendActive),
     comm: comm(backendActive)
   },
   plugins: storePlugins

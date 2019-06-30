@@ -9,6 +9,7 @@
   - [Deployment](#deployment)
 - [Local backend](#local-backend)
   - [Build application locally](#build-application-locally)
+- [Run with docker](#run-with-docker)
 
 <!-- /TOC -->
 
@@ -23,6 +24,13 @@ Choose your backend by setting the `.backend.type` property to either **firebase
 ## Firebase backend
 
 Before deploying you first need to configure your instance of the techradar repository.
+The main part is a static Vue.js application using Firebase as backend and authentication provider.
+
+![design](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/devradar/master/assets/design.puml)
+
+Database schema
+
+![firestore schema](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/devradar/master/assets/firestore.puml)
 
 ### Configure Role Based Access
 
@@ -122,3 +130,11 @@ npm run build # build the application
 
 The resulting `dist/` folder can be served with any webserver.
 If you want to run it in the internet [GitHub pages](https://pages.github.com/) could do this job.
+
+## Run with docker
+
+The editor configured with `local-storage` backend (state stored in browser) can be run via docker.
+
+```sh
+docker run --rm -p 8080:80 anoff/devradar
+```
