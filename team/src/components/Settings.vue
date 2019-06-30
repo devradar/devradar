@@ -2,65 +2,68 @@
   <v-container grid-list-lg>
     <v-layout row>
       <v-flex xs12>
-        <v-list two-line subheader>
-          <v-subheader inset>Team competences</v-subheader>
+        <v-card>
+          <v-card-title><h3 class="headline">Team setup</h3></v-card-title>
+          <v-list two-line subheader>
+            <v-subheader inset>Team competences</v-subheader>
 
-          <v-list-tile
-            v-for="item in items"
-            :key="item.title"
-            avatar
-          >
-            <v-list-tile-avatar>
-              <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
-            </v-list-tile-avatar>
+            <v-list-tile
+              v-for="item in items"
+              :key="item.title"
+              avatar
+            >
+              <v-list-tile-avatar>
+                <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
+              </v-list-tile-avatar>
 
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
-            </v-list-tile-content>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
+              </v-list-tile-content>
 
-            <v-list-tile-action>
+              <v-list-tile-action>
+                <v-btn icon ripple>
+                  <v-icon>publish</v-icon>
+                </v-btn>
+              </v-list-tile-action>
+            </v-list-tile>
+
+            <v-divider inset></v-divider>
+
+            <v-subheader inset>
+              Developer Skills
               <v-btn icon ripple>
-                <v-icon>publish</v-icon>
+                <v-icon>add</v-icon>
               </v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
+            </v-subheader>
 
-          <v-divider inset></v-divider>
+            <v-list-tile
+              v-for="item in items2"
+              :key="item.title"
+              avatar
+            >
+              <v-list-tile-avatar>
+                <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
+              </v-list-tile-avatar>
 
-          <v-subheader inset>
-            Developer Skills
-            <v-btn icon ripple>
-              <v-icon>add</v-icon>
-            </v-btn>
-          </v-subheader>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
+              </v-list-tile-content>
 
-          <v-list-tile
-            v-for="item in items2"
-            :key="item.title"
-            avatar
-          >
-            <v-list-tile-avatar>
-              <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
-            </v-list-tile-avatar>
-
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
-            </v-list-tile-content>
-
-            <v-list-tile-action>
-              <v-btn icon ripple>
-                <v-icon color="grey lighten-1">delete</v-icon>
-              </v-btn>
-            </v-list-tile-action>
-            <v-list-tile-action>
-              <v-btn icon ripple>
-                <v-icon>publish</v-icon>
-              </v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list>
+              <v-list-tile-action>
+                <v-btn icon ripple>
+                  <v-icon color="grey lighten-1">delete</v-icon>
+                </v-btn>
+              </v-list-tile-action>
+              <v-list-tile-action>
+                <v-btn icon ripple>
+                  <v-icon>publish</v-icon>
+                </v-btn>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>

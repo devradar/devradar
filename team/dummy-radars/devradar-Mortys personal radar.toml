@@ -1,0 +1,156 @@
+[meta]
+title = "Mortys personal~ radar"
+categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
+states = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
+name = "Noone"
+
+[[blips]]
+category = "Tools"
+title = "GitLab CI"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2018-07"
+  newState = "Veteran"
+
+[[blips]]
+category = "Frameworks"
+title = "Go"
+state = "Novice"
+
+  [[blips.changes]]
+  date = "2018-12"
+  newState = "Novice"
+  text = "Superfast, cross-compiled, multi-platform executables"
+
+[[blips]]
+category = "Platforms"
+link = "//kubernetes.io"
+description = "Containers at scale"
+title = "Kubernetes"
+state = "Novice"
+
+  [[blips.changes]]
+  date = "2018-07"
+  newState = "Novice"
+
+[[blips]]
+category = "Platforms"
+link = "//docker.io"
+description = "Container all the things"
+title = "Docker"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-03"
+  newState = "Advanced"
+
+[[blips]]
+category = "Techniques"
+description = "Treat your documentation like you treat code, git version, PR review, etc."
+title = "docs as code"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-03"
+  newState = "Advanced"
+  text = "I am so good at this because I use it everywhere!"
+
+[[blips]]
+category = "Tools"
+title = "Matlab"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Frameworks"
+title = "OpenCV"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Frameworks"
+title = "Python"
+state = "Intermediate"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Intermediate"
+
+[[blips]]
+category = "Frameworks"
+title = "Javascript"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Advanced"
+
+[[blips]]
+category = "Frameworks"
+title = "CSS"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Techniques"
+title = "Design"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Techniques"
+title = "Deep Learning"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Advanced"
+
+[[blips]]
+category = "Platforms"
+title = "Blockchain"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Advanced"
+
+[[blips]]
+category = "Tools"
+title = "Ansible"
+state = "Novice"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Novice"
+
+[[blips]]
+category = "Tools"
+title = "Azure RM"
+state = "Intermediate"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Intermediate"
+
+[[blips]]
+category = "Tools"
+title = "Chef"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Advanced"

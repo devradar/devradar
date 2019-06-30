@@ -1,0 +1,140 @@
+[meta]
+title = "Tammy's devradar"
+categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
+states = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
+name = "Noone"
+
+[[blips]]
+category = "Frameworks"
+title = "Javascript"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Advanced"
+
+[[blips]]
+category = "Frameworks"
+title = "CSS"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Techniques"
+title = "Design"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Platforms"
+title = "GitHub"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Tools"
+title = "Circle CI"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Tools"
+title = "Drone CI"
+state = "Intermediate"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Intermediate"
+
+[[blips]]
+category = "Tools"
+title = "Netlify"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Advanced"
+
+[[blips]]
+category = "Platforms"
+title = "zeit.now"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Techniques"
+title = "Web Development"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Frameworks"
+title = "HTML"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Frameworks"
+title = "Material Design"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Advanced"
+
+[[blips]]
+category = "Frameworks"
+title = "Angular"
+state = "Veteran"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Veteran"
+
+[[blips]]
+category = "Frameworks"
+title = "React"
+state = "Intermediate"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Intermediate"
+
+[[blips]]
+category = "Frameworks"
+title = "Vue.js"
+state = "Novice"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Novice"
+
+[[blips]]
+category = "Platforms"
+title = "Heroku"
+state = "Advanced"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Advanced"

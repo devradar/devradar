@@ -1,0 +1,202 @@
+[meta]
+title = "Galactic Federation Technology Stack"
+categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
+states = [ "Hold", "Assess", "Trial", "Adopt" ]
+name = "Noone"
+
+[[blips]]
+category = "Tools"
+title = "GitLab CI"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2018-07"
+  newState = "Adopt"
+
+[[blips]]
+category = "Frameworks"
+link = "//nodejs.org"
+description = "Javascript in the backend? 🤯"
+title = "Node.js"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2018-07"
+  newState = "Adopt"
+  text = "made it into the common toolstack"
+
+  [[blips.changes]]
+  date = "2014-12"
+  newState = "Trial"
+  text = "test it with this new backend"
+
+[[blips]]
+category = "Platforms"
+link = "//kubernetes.io"
+description = "Containers at scale"
+title = "Kubernetes"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2018-07"
+  newState = "Adopt"
+  text = "de facto standard for all our container orchestration needs"
+
+[[blips]]
+category = "Platforms"
+link = "//docker.io"
+description = "Container all the things"
+title = "Docker"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2019-03"
+  newState = "Adopt"
+
+[[blips]]
+category = "Techniques"
+description = "Treat your documentation like you treat code, git version, PR review, etc."
+title = "docs as code"
+state = "Trial"
+
+  [[blips.changes]]
+  date = "2019-03"
+  newState = "Trial"
+  text = "This seems like a good idea, we should do more of it"
+
+[[blips]]
+category = "Frameworks"
+description = "Scripting and stuff"
+title = "Python"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Adopt"
+  text = ""
+
+[[blips]]
+category = "Techniques"
+title = "CI/CD"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Adopt"
+
+[[blips]]
+category = "Tools"
+title = "Azure DevOps"
+state = "Assess"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Assess"
+
+[[blips]]
+category = "Frameworks"
+title = "Vue.js"
+state = "Trial"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Trial"
+
+[[blips]]
+category = "Frameworks"
+title = "Angular"
+state = "Trial"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Trial"
+
+[[blips]]
+category = "Tools"
+title = "Jenkins"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Adopt"
+
+[[blips]]
+category = "Techniques"
+title = "Infrastructure as Code"
+state = "Trial"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Trial"
+
+[[blips]]
+category = "Tools"
+title = "Terraform"
+state = "Trial"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Trial"
+
+[[blips]]
+category = "Tools"
+title = "Ansible"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Adopt"
+
+[[blips]]
+category = "Techniques"
+title = "Web Design"
+state = "Trial"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Trial"
+
+[[blips]]
+category = "Frameworks"
+title = "C++"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Adopt"
+
+[[blips]]
+category = "Platforms"
+title = "Azure IaaS"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Adopt"
+
+[[blips]]
+category = "Platforms"
+title = "Azure P/SaaS"
+state = "Trial"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Trial"
+
+[[blips]]
+category = "Platforms"
+title = "GitHub"
+state = "Assess"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Assess"
+
+[[blips]]
+category = "Platforms"
+title = "BitBucket"
+state = "Adopt"
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = "Adopt"
