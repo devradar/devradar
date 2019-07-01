@@ -9,7 +9,6 @@ steps:
   - cd editor
   - npm ci
   - npm run lint
-
 - name: radar.anoff.io
   image: node:lts-slim
   environment:
@@ -27,7 +26,6 @@ steps:
   when:
     branch:
     - master
-
 - name: docker publish editor
   image: plugins/docker
   settings:
@@ -42,6 +40,20 @@ steps:
   when:
     branch:
     - master
+- name: netlify deploy
+  image: node:lts-alpine
+  environment:
+    NETLIFY_SITE_ID:
+      from_secret: NETLIFY_EDITOR_ID
+    NETLIFY_AUTH_TOKEN:
+      from_secret: NETLIFY_TOKEN
+  commands:
+    - npm install -g netlify-cli
+    - netlify deploy --dir=_site --prod
+  when:
+    branch:
+  - master
+
 
 ---
 kind: pipeline
@@ -54,3 +66,16 @@ steps:
   - cd teams
   - npm ci
   - npm run lint
+- name: netlify deploy
+  image: node:lts-alpine
+  environment:
+    NETLIFY_SITE_ID:
+      from_secret: NETLIFY_TEAMS_ID
+    NETLIFY_AUTH_TOKEN:
+      from_secret: NETLIFY_TOKEN
+  commands:
+    - npm install -g netlify-cli
+    - netlify deploy --dir=_site --prod
+  when:
+    branch:
+  - master
