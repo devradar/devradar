@@ -9,20 +9,23 @@ steps:
   - cd editor
   - npm ci
   - npm run lint
-- name: radar.anoff.io
+- name: build
   image: node:lts-slim
-  environment:
-    FIREBASE_PROJECT:
-      from_secret: FIREBASE_PROJECT
-    FIREBASE_TOKEN:
-      from_secret: FIREBASE_TOKEN
   commands:
   - cd editor
   - npm ci
-  - cp -R anoff/** .
   - npm run build
-  - npm i -g firebase-tools
-  - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
+- name: netlify deploy
+  image: node:lts-alpine
+  environment:
+    NETLIFY_SITE_ID:
+      from_secret: NETLIFY_EDITOR_ID
+    NETLIFY_AUTH_TOKEN:
+      from_secret: NETLIFY_TOKEN
+  commands:
+    - cd editor
+    - npm install -g netlify-cli
+    - netlify deploy --dir=dist --prod
   when:
     branch:
     - master
@@ -40,19 +43,23 @@ steps:
   when:
     branch:
     - master
-- name: netlify deploy
-  image: node:lts-alpine
+- name: radar.anoff.io
+  image: node:lts-slim
   environment:
-    NETLIFY_SITE_ID:
-      from_secret: NETLIFY_EDITOR_ID
-    NETLIFY_AUTH_TOKEN:
-      from_secret: NETLIFY_TOKEN
+    FIREBASE_PROJECT:
+      from_secret: FIREBASE_PROJECT
+    FIREBASE_TOKEN:
+      from_secret: FIREBASE_TOKEN
   commands:
-    - npm install -g netlify-cli
-    - netlify deploy --dir=_site --prod
+  - cd editor
+  - npm ci
+  - cp -R anoff/** .
+  - npm run build
+  - npm i -g firebase-tools
+  - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
   when:
     branch:
-  - master
+    - master
 
 
 ---
@@ -66,6 +73,12 @@ steps:
   - cd teams
   - npm ci
   - npm run lint
+- name: build
+  image: node:lts-slim
+  commands:
+  - cd teams
+  - npm ci
+  - npm run build
 - name: netlify deploy
   image: node:lts-alpine
   environment:
@@ -74,8 +87,9 @@ steps:
     NETLIFY_AUTH_TOKEN:
       from_secret: NETLIFY_TOKEN
   commands:
+    - cd teams
     - npm install -g netlify-cli
-    - netlify deploy --dir=_site --prod
+    - netlify deploy --dir=dist --prod
   when:
     branch:
-  - master
+    - master
