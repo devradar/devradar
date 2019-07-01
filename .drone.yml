@@ -40,6 +40,7 @@ steps:
     target: editor
     tags: latest
     dockerfile: editor/Dockerfile
+    context: editor/
   when:
     branch:
     - master
