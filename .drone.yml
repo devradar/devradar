@@ -1,10 +1,12 @@
+---
 kind: pipeline
-name: publish
+name: editor
 
 steps:
 - name: lint
   image: node:lts-slim
   commands:
+  - cd editor
   - npm ci
   - npm run lint
 
@@ -16,6 +18,7 @@ steps:
     FIREBASE_TOKEN:
       from_secret: FIREBASE_TOKEN
   commands:
+  - cd editor
   - npm ci
   - cp -R anoff/** .
   - npm run build
@@ -35,6 +38,19 @@ steps:
     repo: anoff/devradar
     target: editor
     tags: latest
+    dockerfile: editor/Dockerfile
   when:
     branch:
     - master
+
+---
+kind: pipeline
+name: teams
+
+steps:
+- name: lint
+  image: node:lts-slim
+  commands:
+  - cd teams
+  - npm ci
+  - npm run lint

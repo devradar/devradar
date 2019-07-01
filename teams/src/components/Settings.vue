@@ -72,7 +72,7 @@
 <script>
 import copy from 'clipboard-copy'
 import lzs from 'lz-string'
-import UploadButton from 'vuetify-upload-button'
+// import UploadButton from 'vuetify-upload-button'
 import TOML from '@iarna/toml'
 
 function saveAs (filename, text) {
@@ -178,7 +178,7 @@ export default {
     this.fetchContent()
   },
   components: {
-    'v-upload-btn': UploadButton
+    // 'v-upload-btn': UploadButton
   }
 }
 </script>
