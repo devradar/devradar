@@ -6,7 +6,8 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   routes: [ // configure name, permissions & view ports
     // do NOT change the view property as this links to the vue component and is used for lookups across the app
-    { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
+    { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/radar', validator: user => true, location: ['toolbar'] },
+    { view: 'Chart', icon: 'track_changes', title: 'Chart', path: '/', validator: user => true, location: ['toolbar'] },
     { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => true, location: ['toolbar'] } // only use this on localstorage backend for now
   ],
   navEntries: [
