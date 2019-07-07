@@ -11,6 +11,7 @@
 
 <script>
 import * as d3 from 'd3'
+import d3Tip from 'd3-tip'
 
 // d3 sample from https://codesandbox.io/s/blazing-pine-9vjw1
 function barchart (selector, data, options = { yLabel: 'Count', xLabel: 'Category' }) {
@@ -28,7 +29,7 @@ function barchart (selector, data, options = { yLabel: 'Count', xLabel: 'Categor
 
   const y = d3
     .scaleLinear()
-    .domain([0, 100])
+    .domain([0, 50])
     .range([height - margin.bottom, margin.top])
 
   //  Defining the actual axes here
@@ -39,6 +40,13 @@ function barchart (selector, data, options = { yLabel: 'Count', xLabel: 'Categor
     .select(selector)
     .attr('width', width)
     .attr('height', height)
+
+  // add tooltip
+  const tip = d3Tip()
+    .attr('class', 'd3-tip')
+    .html(e => e.value.toFixed(2) + ' %')
+    .offset([-10, 0])
+  chart.call(tip)
 
   chart
     .append('g')
@@ -53,18 +61,20 @@ function barchart (selector, data, options = { yLabel: 'Count', xLabel: 'Categor
     .call(yAxis)
 
   chart
-    .selectAll('rect')
+    .selectAll('.bar')
     .data(data)
     .join('rect')
     .attr('x', d => {
       return x(d.key)
     })
     .attr('y', d => {
-      return y(d.value)
+      return y(d.value) + margin.bottom
     })
     .attr('width', x.bandwidth())
-    .attr('height', d => height - y(d.value))
-    .style('fill', '#0ddd0d')
+    .attr('height', d => height - y(d.value) - margin.bottom)
+    .attr('class', 'd3-bar')
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
 
   chart
     .append('text')
@@ -83,6 +93,20 @@ function barchart (selector, data, options = { yLabel: 'Count', xLabel: 'Categor
     .text(options.yLabel)
 }
 
+function dataToPercentage (data) {
+  const sum = data
+    .reduce((p, c) => {
+      p += c.value
+      return p
+    }, 0)
+  const pct = data
+    .map(e => {
+      e.value /= sum
+      e.value *= 100
+      return e
+    })
+  return pct
+}
 export default {
   computed: {
     stats () {
@@ -121,12 +145,54 @@ export default {
   methods: {
   },
   mounted: function () {
-    barchart ('#categories', this.stats.categories, { yLabel: 'Count', xLabel: 'Category' })
-    barchart ('#states', this.stats.states, { yLabel: 'Count', xLabel: 'State' })
+    barchart('#categories', dataToPercentage(this.stats.categories), { yLabel: 'Count', xLabel: 'Category' })
+    barchart('#states', dataToPercentage(this.stats.states), { yLabel: 'Count', xLabel: 'State' })
   }
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
 
+.d3-bar {
+  fill: #0DBD0D;
+  padding-top: 0px;
+}
+.d3-bar:hover {
+  fill: #ff7700;
+}
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
 </style>

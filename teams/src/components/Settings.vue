@@ -99,7 +99,7 @@ export default {
       return this.$store.getters.devs
     },
     team () {
-      return this.$store.getters.team || { filename: 'N/A', title: 'Upload team competence radar on the right ➡️'}
+      return this.$store.getters.team || { filename: 'N/A', title: 'Upload team competence radar on the right ➡️' }
     }
   },
   methods: {
