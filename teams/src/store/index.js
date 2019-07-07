@@ -20,7 +20,7 @@ if (backendActive.type === 'localstorage') {
   storePlugins.push((new VuexPersistence({
     key: 'devradar-teams',
     storage: window.localStorage,
-    reducer: (state) => ({ items: { items: state.items.items } })
+    reducer: (state) => ({ items: state.items })
   })).plugin)
 }
 const store = new VueX.Store({
