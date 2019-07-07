@@ -22,7 +22,8 @@
               <v-list-tile-action>
                 <v-upload-btn
                   @file-update="uploadToml($event, 'team')"
-                  color="none"
+                  color=""
+                  accept=".toml"
                   icon round>
                   <template slot="icon">
                     <v-icon>publish</v-icon>
@@ -38,6 +39,7 @@
               <v-upload-btn
                 @file-update="uploadToml($event, 'devs')"
                 color=""
+                accept=".toml"
                 icon ripple>
                 <template slot="icon">
                   <v-icon color="black">add</v-icon>
@@ -69,7 +71,8 @@
               <v-list-tile-action>
                 <v-upload-btn
                   @file-update="uploadToml($event, 'devs', index)"
-                  color="none"
+                  color=""
+                  accept=".toml"
                   icon ripple>
                   <template slot="icon">
                     <v-icon>publish</v-icon>
