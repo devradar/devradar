@@ -53,7 +53,7 @@ The upper four categories of this scale are the defaults when you create a new d
 [meta]
 title = "Rick's Radar"
 categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
-states = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
+states = [ "Novice", "Intermediate", "Advanced", "Expert" ]
 ```
 
 ### devradar for teams and organizations
