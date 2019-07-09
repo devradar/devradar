@@ -1,154 +1,66 @@
 <template>
-  <v-container grid-list-lg>
-    <v-layout row>
-      <v-flex xs12>
-        <v-card>
-          <v-card-title><h3 class="headline">Team setup</h3></v-card-title>
-          <v-list two-line subheader>
-            <v-subheader inset>Team competences</v-subheader>
+  <v-stepper v-model="stepperCount">
+    <v-stepper-header>
+      <v-stepper-step :complete="stepperCount > 1" step="1">Import team radars</v-stepper-step>
 
-            <v-list-tile
-              avatar
-            >
-              <v-list-tile-avatar>
-                <v-icon class="secondary lighten-1 white--text">explore</v-icon>
-              </v-list-tile-avatar>
+      <v-divider></v-divider>
 
-              <v-list-tile-content :class="{ missing: team.filename === 'N/A'}">
-                <v-list-tile-title>{{ team.filename }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ team.title }}</v-list-tile-sub-title>
-              </v-list-tile-content>
+      <v-stepper-step :complete="stepperCount > 2" step="2">Map categories</v-stepper-step>
 
-              <v-list-tile-action>
-                <v-upload-btn
-                  @file-update="uploadToml($event, 'team')"
-                  color=""
-                  accept=".toml"
-                  icon round>
-                  <template slot="icon">
-                    <v-icon>publish</v-icon>
-                  </template>
-                </v-upload-btn>
-              </v-list-tile-action>
-            </v-list-tile>
+      <v-divider></v-divider>
 
-            <v-divider inset></v-divider>
+      <v-stepper-step step="3">Select blips</v-stepper-step>
+    </v-stepper-header>
 
-            <v-subheader inset>
-              Developer Skills
-              <v-upload-btn
-                @file-update="uploadToml($event, 'devs')"
-                color=""
-                accept=".toml"
-                icon ripple>
-                <template slot="icon">
-                  <v-icon color="black">add</v-icon>
-                </template>
-              </v-upload-btn>
-            </v-subheader>
+    <v-stepper-items>
+      <v-stepper-content step="1">
+        <import-items></import-items>
+        <v-btn
+        @click="stepperCount++"
+        ripple color="primary">
+          Next
+        </v-btn>
+      </v-stepper-content>
 
-            <v-list-tile
-              v-for="(item, index) in devs"
-              :key="item.title"
-              avatar
-            >
-              <v-list-tile-avatar>
-                <v-icon class="primary white--text">person</v-icon>
-              </v-list-tile-avatar>
+      <v-stepper-content step="2">
+        <map-categories></map-categories>
+        <v-btn
+        @click="stepperCount++"
+        ripple color="primary">
+          Next
+        </v-btn>
+      </v-stepper-content>
 
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.filename }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ item.title }}</v-list-tile-sub-title>
-              </v-list-tile-content>
+      <v-stepper-content step="3">
+        <v-btn
+        @click="stepperCount++"
+        ripple color="primary">
+          Next
+        </v-btn>
+      </v-stepper-content>
+    </v-stepper-items>
 
-              <v-list-tile-action>
-                <v-btn
-                @click="removeDev(index)"
-                icon ripple>
-                  <v-icon color="grey lighten-1">delete</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-              <v-list-tile-action>
-                <v-upload-btn
-                  @file-update="uploadToml($event, 'devs', index)"
-                  color=""
-                  accept=".toml"
-                  icon ripple>
-                  <template slot="icon">
-                    <v-icon>publish</v-icon>
-                  </template>
-                </v-upload-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  </v-stepper>
 </template>
 
 <script>
-import UploadButton from 'vuetify-upload-button'
-import TOML from '@iarna/toml'
-
+import ImportItems from './settings/ImportItems.vue'
+import MapCategories from './settings/MapCategories.vue'
 export default {
   data: () => ({
+    stepperCount: 0
   }),
   computed: {
-    devs () {
-      return this.$store.getters.devs
-    },
-    team () {
-      return this.$store.getters.team || { filename: 'N/A', title: 'Upload team competence radar on the right ➡️' }
-    }
   },
   methods: {
-    uploadToml (file, target = 'devs', index) {
-      const reader = new FileReader()
-      if (file) {
-        reader.addEventListener('load', () => {
-          let object
-          try {
-            object = TOML.parse(reader.result)
-            this.$store.dispatch('showSnackbar', 'file upload successful')
-          } catch (e) {
-            console.error('Could not read uploaded file as TOML', e)
-            return 1
-          }
-          const item = {
-            filename: file.name,
-            title: object.meta.title,
-            payload: object
-          }
-          switch (target) {
-            case 'team':
-              this.$store.dispatch('uploadTeam', item)
-              break
-            case 'devs':
-              this.$store.dispatch('uploadDev', item, index)
-          }
-        }, false)
-        reader.readAsText(file)
-      }
-    },
-    removeDev (index) {
-      this.$store.dispatch('deleteDev', index)
-    }
-  },
-  mounted () {
   },
   components: {
-    'v-upload-btn': UploadButton
+    ImportItems,
+    MapCategories
   }
 }
 </script>
 
 <style lang="scss" scoped>
-div.upload-btn {
-  padding: 0px;
-}
-.missing {
-  font-style: italic;
-  color: gray;
-}
+
 </style>
