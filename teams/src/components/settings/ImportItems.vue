@@ -81,17 +81,17 @@
 <script>
 import UploadButton from 'vuetify-upload-button'
 import TOML from '@iarna/toml'
+import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
   }),
   computed: {
-    devs () {
-      return this.$store.getters.devs
-    },
-    team () {
-      return this.$store.getters.team || { filename: 'N/A', title: 'Upload team competence radar on the right ➡️' }
-    }
+    ...mapGetters([
+      'team',
+      'devs',
+      'hasItems'
+    ])
   },
   methods: {
     uploadToml (file, target = 'devs', index) {
@@ -118,15 +118,25 @@ export default {
             case 'devs':
               this.$store.dispatch('uploadDev', item, index)
           }
+          this.checkComplete()
         }, false)
         reader.readAsText(file)
       }
     },
     removeDev (index) {
       this.$store.dispatch('deleteDev', index)
+      this.checkComplete()
+    },
+    checkComplete () {
+      if (this.hasItems) {
+        this.$emit('isComplete', true)
+      } else {
+        this.$emit('isComplete', false)
+      }
     }
   },
   mounted () {
+    this.checkComplete()
   },
   components: {
     'v-upload-btn': UploadButton
