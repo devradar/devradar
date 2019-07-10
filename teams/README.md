@@ -1,6 +1,6 @@
 # devradar teams
 
-<img src="assets/logo-text.png">
+<img src="../assets/logo-text.png">
 
 > Visit [devradar.io](https://devradar.io) for an introduction
 

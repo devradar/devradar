@@ -5,7 +5,7 @@
 [![Build Status](https://cloud.drone.io/api/badges/anoff/devradar/status.svg)](https://cloud.drone.io/anoff/devradar)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9a55cbdb-1b16-4313-b249-ec5102a42922/deploy-status)](https://app.netlify.com/sites/devradar/deploys)
 
-<img src="assets/logo-text.png">
+<img src="../assets/logo-text.png">
 
 > Visit [devradar.io](https://devradar.io) for an introduction
 
@@ -71,7 +71,7 @@ states = [ "Hold", "Assess", "Trial", "Adopt" ]
 
 You can also use the devradar for non-tech related things:
 
-![World domination scheme](assets/meta-rick.png)
+![World domination scheme](../assets/meta-rick.png)
 
 ## Setup
 
