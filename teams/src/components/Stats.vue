@@ -1,12 +1,16 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap v-if="hasItems">
-      <h1>Blips by Category</h1>
-      <svg class="chart" id="categories" viewBox="0 0 800 600">
-      </svg>
-      <h1>Blips by State</h1>
-      <svg class="chart" id="states" viewBox="0 0 800 600">
-      </svg>
+      <v-flex xs12>
+        <h6 class="title">Blips by Category</h6>
+        <svg class="chart" id="categories" viewBox="0 0 800 500">
+        </svg>
+      </v-flex>
+      <v-flex xs12>
+        <h6 class="title">Blips by State</h6>
+        <svg class="chart" id="states" viewBox="0 0 800 500">
+        </svg>
+      </v-flex>
     </v-layout>
     <v-layout v-else justify-space-around>
       <v-flex xs12>
@@ -30,8 +34,8 @@ import d3Tip from 'd3-tip'
 
 // d3 sample from https://codesandbox.io/s/blazing-pine-9vjw1
 function barchart (selector, data, options = { yLabel: 'Count', xLabel: 'Category' }) {
-  const height = 500
-  const width = 960
+  const height = 400
+  const width = 800
   const margin = { top: 30, right: 60, bottom: 30, left: 60 }
   const keys = data.map(e => e.key)
 

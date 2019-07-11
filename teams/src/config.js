@@ -6,9 +6,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   routes: [ // configure name, permissions & view ports
     // do NOT change the view property as this links to the vue component and is used for lookups across the app
-    { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/radar', validator: user => true, location: ['toolbar'] },
-    { view: 'Chart', icon: 'track_changes', title: 'Chart', path: '/', validator: user => true, location: ['toolbar'] },
-    { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => true, location: ['toolbar'] } // only use this on localstorage backend for now
+    { view: 'Settings', icon: 'settings', title: 'Settings', path: '/', validator: user => true, location: ['toolbar'] },
+    { view: 'Stats', icon: 'bar_chart', title: 'Stats', path: '/stats', validator: user => true, location: ['toolbar'] },
+    { view: 'Spider', icon: 'pie_chart', title: 'Graph', path: '/graph', validator: user => true, location: ['toolbar'] }
   ],
   navEntries: [
     { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: user => true }

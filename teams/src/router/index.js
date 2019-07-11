@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Radar from '@/components/Radar'
-import Chart from '@/components/Chart'
+import Stats from '@/components/Stats'
+import Spider from '@/components/Spider'
 import Settings from '@/components/Settings'
 import appConfig from '@/config'
 
 Vue.use(Router)
 const routesCfg = appConfig.routes
 const components = {
-  Chart,
+  Stats,
+  Spider,
   Radar,
   Settings
 }
