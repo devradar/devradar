@@ -12,20 +12,36 @@
     <v-stepper-items>
       <v-stepper-content step="1">
         <import-items @isComplete="val => val ? isComplete(2) : isComplete(1)"></import-items>
-        <v-btn
-        :disabled="!canProgress"
-        @click="stepperCount++"
-        ripple color="primary">
-          Next
-        </v-btn>
+        <v-flex xs12 text-xs-right>
+          <v-btn
+          :disabled="true"
+          @click="stepperCount--"
+          ripple>
+            Back
+          </v-btn>
+          <v-btn
+          :disabled="!canProgress"
+          @click="stepperCount++"
+          ripple color="primary">
+            Next
+          </v-btn>
+        </v-flex>
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <v-btn
-        @click="stepperCount++"
-        ripple color="primary">
-          Next
-        </v-btn>
+        <select-blips @isComplete="val => val ? isComplete(2) : isComplete(1)"></select-blips>
+        <v-flex xs12 text-xs-right>
+          <v-btn
+          @click="stepperCount--"
+          ripple>
+            Back
+          </v-btn>
+          <v-btn
+          @click="stepperCount++"
+          ripple color="primary">
+            Next
+          </v-btn>
+        </v-flex>
       </v-stepper-content>
 
       <v-stepper-content step="3">
@@ -42,10 +58,11 @@
 
 <script>
 import ImportItems from './settings/ImportItems.vue'
+import SelectBlips from './settings/SelectBlips.vue'
 
 export default {
   data: () => ({
-    stepperCount: 1,
+    stepperCount: 2,
     stepperComplete: 0 // needs to be 2 to switch stepperCount from 1->2
   }),
   computed: {
@@ -59,7 +76,8 @@ export default {
     }
   },
   components: {
-    ImportItems
+    ImportItems,
+    SelectBlips
   }
 }
 </script>
