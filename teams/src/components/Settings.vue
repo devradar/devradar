@@ -29,7 +29,7 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <select-blips @isComplete="val => val ? isComplete(2) : isComplete(1)"></select-blips>
+        <select-blips @isComplete="val => val ? isComplete(3) : isComplete(2)"></select-blips>
         <v-flex xs12 text-xs-right>
           <v-btn
           @click="stepperCount--"

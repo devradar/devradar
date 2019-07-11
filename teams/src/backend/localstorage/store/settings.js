@@ -5,8 +5,11 @@ const actions = {
   setStates ({ commit }, array) {
     commit('setStates', array)
   },
-  addBlip ({ commit }, item) {
-    commit('addBlip', item)
+  selectBlip ({ commit }, item) {
+    commit('selectBlip', item)
+  },
+  deselectBlip ({ commit }, item) {
+    commit('deselectBlip', item)
   }
 }
 

@@ -13,10 +13,11 @@ export default (backend) => ({
     setStates (state, array) {
       state.states = array
     },
-    addBlip (state, item) {
+    selectBlip (state, item) {
       state.blips.push(item)
     },
-    deleteBlip (state, ix) {
+    deselectBlip (state, item) {
+      const ix = state.blips.findIndex(e => e.title.toLowerCase() === item.title.toLowerCase())
       Vue.delete(state.blips, ix)
     }
   },

@@ -40,7 +40,8 @@
             outline
             color="black"
             v-for="blip in blipsByCategory(activeItemIx, categoryIx)"
-            :key="blip.title">
+            :key="blip.title"
+            @click="toggleBlip(blip)">
             <v-avatar>
               <v-icon v-if="isSelected(blip)" color="primary">star</v-icon>
               <v-icon v-else>star_border</v-icon>
@@ -86,7 +87,7 @@ export default {
   },
   methods: {
     checkComplete () {
-      if (this.hasItems) {
+      if (this.activeItemIx >= this.items.length - 1) {
         this.$emit('isComplete', true)
       } else {
         this.$emit('isComplete', false)
@@ -96,7 +97,14 @@ export default {
       this.activeItemIx = ++value
     },
     isSelected (blip) {
-      return false
+      return !!this.selectedBlips.find(e => e.title.toLowerCase() === blip.title.toLowerCase())
+    },
+    toggleBlip (blip) {
+      if (this.isSelected(blip)) {
+        this.$store.dispatch('deselectBlip', blip)
+      } else {
+        this.$store.dispatch('selectBlip', blip)
+      }
     }
   },
   mounted () {
