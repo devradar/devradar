@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueX from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import items from './items'
+import settings from './settings'
 import comm from './comm'
 import appConfig from '../config'
 import backend from '../backend/index'
@@ -20,13 +21,14 @@ if (backendActive.type === 'localstorage') {
   storePlugins.push((new VuexPersistence({
     key: 'devradar-teams',
     storage: window.localStorage,
-    reducer: (state) => ({ items: state.items })
+    reducer: (state) => ({ items: state.items, settings: state.settings })
   })).plugin)
 }
 const store = new VueX.Store({
   modules: {
     items: items(backendActive),
-    comm: comm(backendActive)
+    comm: comm(backendActive),
+    settings: settings(backendActive)
   },
   plugins: storePlugins
 })
