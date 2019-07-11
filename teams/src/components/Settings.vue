@@ -21,7 +21,6 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-
         <v-btn
         @click="stepperCount++"
         ripple color="primary">
@@ -50,7 +49,7 @@ export default {
     stepperComplete: 0 // needs to be 2 to switch stepperCount from 1->2
   }),
   computed: {
-    canProgress() {
+    canProgress () {
       return this.stepperComplete > this.stepperCount
     }
   },

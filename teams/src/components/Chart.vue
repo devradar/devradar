@@ -1,15 +1,30 @@
 <template>
-  <v-container>
-    <h1>Blips by Category</h1>
-    <svg class="chart" id="categories" viewBox="0 0 800 600">
-    </svg>
-    <h1>Blips by State</h1>
-    <svg class="chart" id="states" viewBox="0 0 800 600">
-    </svg>
+  <v-container grid-list-md>
+    <v-layout row wrap v-if="hasItems">
+      <h1>Blips by Category</h1>
+      <svg class="chart" id="categories" viewBox="0 0 800 600">
+      </svg>
+      <h1>Blips by State</h1>
+      <svg class="chart" id="states" viewBox="0 0 800 600">
+      </svg>
+    </v-layout>
+    <v-layout v-else justify-space-around>
+      <v-flex xs12>
+      <v-card>
+        <v-alert
+          :value="true"
+          type="info"
+        >
+          <span class="alert">Head to the <router-link to="/settings">Settings</router-link> and add configure your team first</span>
+        </v-alert>
+      </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as d3 from 'd3'
 import d3Tip from 'd3-tip'
 
@@ -109,8 +124,15 @@ function dataToPercentage (data) {
 }
 export default {
   computed: {
+    ...mapGetters([
+      'team',
+      'devs',
+      'hasItems'
+    ]),
     stats () {
-      const items = JSON.parse(JSON.stringify(this.$store.getters.devs)).concat(JSON.parse(JSON.stringify(this.$store.getters.team)))
+      const items = this.devs.concat(this.team)
+      const masterCategories = this.team.payload.meta.categories
+      const masterStates = this.team.payload.meta.states
       const blips = items
         .map(e => e.payload.blips)
         .reduce((p, c) => p.concat(c), [])
@@ -124,7 +146,7 @@ export default {
           return p
         }, {})
       categories = Object.keys(categories)
-        .map(e => ({ value: categories[e], key: e }))
+        .map(e => ({ value: categories[e], key: masterCategories[e] }))
       let states = blips
         .reduce((p, c) => {
           const state = c.changes.sort((a, b) => a.date < b.date)[0].newState
@@ -136,7 +158,7 @@ export default {
           return p
         }, {})
       states = Object.keys(states)
-        .map(e => ({ value: states[e], key: e }))
+        .map(e => ({ value: states[e], key: masterStates[e] }))
       return { categories, states }
     }
   },
@@ -145,8 +167,10 @@ export default {
   methods: {
   },
   mounted: function () {
-    barchart('#categories', dataToPercentage(this.stats.categories), { yLabel: 'Count', xLabel: 'Category' })
-    barchart('#states', dataToPercentage(this.stats.states), { yLabel: 'Count', xLabel: 'State' })
+    if (this.hasItems) {
+      barchart('#categories', dataToPercentage(this.stats.categories), { yLabel: 'Count', xLabel: 'Category' })
+      barchart('#states', dataToPercentage(this.stats.states), { yLabel: 'Count', xLabel: 'State' })
+    }
   }
 }
 </script>
@@ -194,5 +218,12 @@ export default {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+}
+
+.alert {
+  font-size: 1.5rem;
+  a {
+    color: white;
+  }
 }
 </style>
