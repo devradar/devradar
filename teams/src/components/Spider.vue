@@ -2,14 +2,8 @@
   <v-container grid-list-md>
     <v-layout row wrap v-if="hasItems">
       <v-flex xs12>
-        <h6 class="title">Blips by Category</h6>
-        <svg class="chart" id="categories" viewBox="0 0 800 600">
-        </svg>
-      </v-flex>
-      <v-flex xs12>
-        <h6 class="title">Blips by State</h6>
-        <svg class="chart" id="states" viewBox="0 0 800 600">
-        </svg>
+        <h6 class="title">Radar Chart</h6>
+        <div id="chart"></div>
       </v-flex>
     </v-layout>
     <v-layout v-else justify-space-around>
@@ -19,7 +13,7 @@
           :value="true"
           type="info"
         >
-          <span class="alert">Head to the <router-link to="/settings">Settings</router-link> and add configure your team first</span>
+          <span class="alert">Head to the <router-link to="/">Settings</router-link> and add configure your team first</span>
         </v-alert>
       </v-card>
       </v-flex>
@@ -30,141 +24,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as d3 from 'd3'
-import d3Tip from 'd3-tip'
+import RadarChart from './lib/radarchart'
 
-// d3 sample from https://codesandbox.io/s/blazing-pine-9vjw1
-function barchart (selector, data, options = { yLabel: 'Count', xLabel: 'Category' }) {
-  const height = 500
-  const width = 960
-  const margin = { top: 30, right: 60, bottom: 30, left: 60 }
-  const keys = data.map(e => e.key)
-
-  //  Defining the scales for the axes here
-  const x = d3
-    .scaleBand()
-    .domain([...keys])
-    .range([margin.left, width - margin.right])
-    .padding(0.3)
-
-  const y = d3
-    .scaleLinear()
-    .domain([0, 50])
-    .range([height - margin.bottom, margin.top])
-
-  //  Defining the actual axes here
-  const xAxis = d3.axisBottom(x)
-  const yAxis = d3.axisLeft(y)
-
-  const chart = d3
-    .select(selector)
-    .attr('width', width)
-    .attr('height', height)
-
-  // add tooltip
-  const tip = d3Tip()
-    .attr('class', 'd3-tip')
-    .html(e => e.value.toFixed(2) + ' %')
-    .offset([-10, 0])
-  chart.call(tip)
-
-  chart
-    .append('g')
-    .attr('transform', `translate(0, ${height})`)
-    .style('font-size', '16px')
-    .call(xAxis)
-
-  chart
-    .append('g')
-    .attr('transform', `translate(${margin.left}, ${margin.bottom})`)
-    .style('font-size', '16px')
-    .call(yAxis)
-
-  chart
-    .selectAll('.bar')
-    .data(data)
-    .join('rect')
-    .attr('x', d => {
-      return x(d.key)
-    })
-    .attr('y', d => {
-      return y(d.value) + margin.bottom
-    })
-    .attr('width', x.bandwidth())
-    .attr('height', d => height - y(d.value) - margin.bottom)
-    .attr('class', 'd3-bar')
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide)
-
-  chart
-    .append('text')
-    .attr('x', width / 2)
-    .attr('y', height + margin.top + 20)
-    .style('font-size', '20px')
-    .style('text-anchor', 'middle')
-    .text(options.xLabel)
-
-  chart
-    .append('text')
-    .attr('transform', 'rotate(-90)')
-    .attr('x', -height / 2)
-    .attr('y', 0)
-    .style('font-size', '20px')
-    .text(options.yLabel)
-}
-
-function dataToPercentage (data) {
-  const sum = data
-    .reduce((p, c) => {
-      p += c.value
-      return p
-    }, 0)
-  const pct = data
-    .map(e => {
-      e.value /= sum
-      e.value *= 100
-      return e
-    })
-  return pct
-}
 export default {
   computed: {
     ...mapGetters([
       'team',
       'devs',
       'hasItems'
-    ]),
-    stats () {
-      const items = this.devs.concat(this.team)
-      const masterCategories = this.team.payload.meta.categories
-      const masterStates = this.team.payload.meta.states
-      const blips = items
-        .map(e => e.payload.blips)
-        .reduce((p, c) => p.concat(c), [])
-      let categories = blips
-        .reduce((p, c) => {
-          if (p[c.category]) {
-            p[c.category]++
-          } else {
-            p[c.category] = 1
-          }
-          return p
-        }, {})
-      categories = Object.keys(categories)
-        .map(e => ({ value: categories[e], key: masterCategories[e] }))
-      let states = blips
-        .reduce((p, c) => {
-          const state = c.changes.sort((a, b) => a.date < b.date)[0].newState
-          if (p[state]) {
-            p[state]++
-          } else {
-            p[state] = 1
-          }
-          return p
-        }, {})
-      states = Object.keys(states)
-        .map(e => ({ value: states[e], key: masterStates[e] }))
-      return { categories, states }
-    }
+    ])
   },
   data: () => ({
   }),
@@ -172,62 +40,131 @@ export default {
   },
   mounted: function () {
     if (this.hasItems) {
-      barchart('#categories', dataToPercentage(this.stats.categories), { yLabel: 'Count', xLabel: 'Category' })
-      barchart('#states', dataToPercentage(this.stats.states), { yLabel: 'Count', xLabel: 'State' })
+      var w = 500
+      var h = 500
+
+      // var colorscale = d3.scale.category10()
+
+      // Legend titles
+      var LegendOptions = ['Smartphone', 'Tablet']
+
+      // Data
+      var d = [
+        [
+          { axis: 'Email', value: 0.59 },
+          { axis: 'Social Networks', value: 0.56 },
+          { axis: 'Internet Banking', value: 0.42 },
+          { axis: 'News Sportsites', value: 0.34 },
+          { axis: 'Search Engine', value: 0.48 },
+          { axis: 'View Shopping sites', value: 0.14 },
+          { axis: 'Paying Online', value: 0.11 },
+          { axis: 'Buy Online', value: 0.05 },
+          { axis: 'Stream Music', value: 0.07 },
+          { axis: 'Online Gaming', value: 0.12 },
+          { axis: 'Navigation', value: 0.27 },
+          { axis: 'App connected to TV program', value: 0.03 },
+          { axis: 'Offline Gaming', value: 0.12 },
+          { axis: 'Photo Video', value: 0.4 },
+          { axis: 'Reading', value: 0.03 },
+          { axis: 'Listen Music', value: 0.22 },
+          { axis: 'Watch TV', value: 0.03 },
+          { axis: 'TV Movies Streaming', value: 0.03 },
+          { axis: 'Listen Radio', value: 0.07 },
+          { axis: 'Sending Money', value: 0.18 },
+          { axis: 'Other', value: 0.07 },
+          { axis: 'Use less Once week', value: 0.08 }
+        ], [
+          { axis: 'Email', value: 0.48 },
+          { axis: 'Social Networks', value: 0.41 },
+          { axis: 'Internet Banking', value: 0.27 },
+          { axis: 'News Sportsites', value: 0.28 },
+          { axis: 'Search Engine', value: 0.46 },
+          { axis: 'View Shopping sites', value: 0.29 },
+          { axis: 'Paying Online', value: 0.11 },
+          { axis: 'Buy Online', value: 0.14 },
+          { axis: 'Stream Music', value: 0.05 },
+          { axis: 'Online Gaming', value: 0.19 },
+          { axis: 'Navigation', value: 0.14 },
+          { axis: 'App connected to TV program', value: 0.06 },
+          { axis: 'Offline Gaming', value: 0.24 },
+          { axis: 'Photo Video', value: 0.17 },
+          { axis: 'Reading', value: 0.15 },
+          { axis: 'Listen Music', value: 0.12 },
+          { axis: 'Watch TV', value: 0.1 },
+          { axis: 'TV Movies Streaming', value: 0.14 },
+          { axis: 'Listen Radio', value: 0.06 },
+          { axis: 'Sending Money', value: 0.16 },
+          { axis: 'Other', value: 0.07 },
+          { axis: 'Use less Once week', value: 0.17 }
+        ]
+      ]
+
+      // Options for the Radar chart, other than default
+      var mycfg = {
+        w: w,
+        h: h,
+        maxValue: 0.6,
+        levels: 6,
+        ExtraWidthX: 300
+      }
+
+      // Call function to draw the Radar chart
+      // Will expect that data is in %'s
+      RadarChart.draw(d3, '#chart', d, mycfg)
+
+      /// /////////////////////////////////////////
+      /// //////// Initiate legend ////////////////
+      /// /////////////////////////////////////////
+
+      var svg = d3.select('#body')
+        .selectAll('svg')
+        .append('svg')
+        .attr('width', w + 300)
+        .attr('height', h)
+
+      // Create the title for the legend
+      svg.append('text')
+        .attr('class', 'title')
+        .attr('transform', 'translate(90,0)')
+        .attr('x', w - 70)
+        .attr('y', 10)
+        .attr('font-size', '12px')
+        .attr('fill', '#404040')
+        .text('What % of owners use a specific service in a week')
+
+      // Initiate Legend
+      var legend = svg.append('g')
+        .attr('class', 'legend')
+        .attr('height', 100)
+        .attr('width', 200)
+        .attr('transform', 'translate(90,20)')
+
+      // Create colour squares
+      legend.selectAll('rect')
+        .data(LegendOptions)
+        .enter()
+        .append('rect')
+        .attr('x', w - 65)
+        .attr('y', function (d, i) { return i * 20 })
+        .attr('width', 10)
+        .attr('height', 10)
+        .style('fill', function (d, i) { return '#00f' /* colorscale(i) */ })
+
+      // Create text next to squares
+      legend.selectAll('text')
+        .data(LegendOptions)
+        .enter()
+        .append('text')
+        .attr('x', w - 52)
+        .attr('y', function (d, i) { return i * 20 + 9 })
+        .attr('font-size', '11px')
+        .attr('fill', '#737373')
+        .text(function (d) { return d })
     }
   }
 }
 </script>
 
 <style lang='scss'>
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
 
-.d3-bar {
-  fill: #0DBD0D;
-  padding-top: 0px;
-}
-.d3-bar:hover {
-  fill: #ff7700;
-}
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-  font-family: "Roboto", sans-serif;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-
-.alert {
-  font-size: 1.5rem;
-  a {
-    color: white;
-  }
-}
 </style>
