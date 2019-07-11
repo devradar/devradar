@@ -29,6 +29,8 @@ steps:
   when:
     branch:
     - master
+    event:
+    - push
 - name: docker publish editor
   image: plugins/docker
   settings:
@@ -44,6 +46,8 @@ steps:
   when:
     branch:
     - master
+    event:
+    - push
 - name: radar.anoff.io
   image: node:lts-slim
   environment:
@@ -61,7 +65,8 @@ steps:
   when:
     branch:
     - master
-
+    event:
+    - push
 
 ---
 kind: pipeline
@@ -94,3 +99,5 @@ steps:
   when:
     branch:
     - master
+    event:
+    - push
