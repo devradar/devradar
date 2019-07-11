@@ -31,6 +31,24 @@
       </v-list>
     </v-flex>
     <v-flex xs6>
+      <v-flex
+      v-for="(category, categoryIx) in categories"
+      :key="category">
+        <v-subheader inset>{{ category }}</v-subheader>
+        <div class="chips">
+          <v-chip
+            outline
+            color="black"
+            v-for="blip in blipsByCategory(activeItemIx, categoryIx)"
+            :key="blip.title">
+            <v-avatar>
+              <v-icon v-if="isSelected(blip)" color="primary">star</v-icon>
+              <v-icon v-else>star_border</v-icon>
+              </v-avatar>
+            {{blip.title}}
+          </v-chip>
+        </div>
+      </v-flex>
     </v-flex>
   </v-layout>
 </template>
@@ -40,16 +58,30 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
-    activeItemIx: 2
+    activeItemIx: 0,
+    chip: true
   }),
   computed: {
     ...mapGetters([
       'team',
       'devs',
-      'hasItems'
+      'hasItems',
+      'selectedBlips'
     ]),
     items () {
       return [this.team].concat(this.devs)
+    },
+    categories () {
+      return this.team.payload.meta.categories
+    },
+    blipsByCategory () {
+      return (itemIx, categoryIx) => {
+        if (itemIx > this.items.length - 1) {
+          return []
+        }
+        return this.items[itemIx].payload.blips
+          .filter(e => e.category === categoryIx)
+      }
     }
   },
   methods: {
@@ -62,6 +94,9 @@ export default {
     },
     itemDone (value) {
       this.activeItemIx = ++value
+    },
+    isSelected (blip) {
+      return false
     }
   },
   mounted () {

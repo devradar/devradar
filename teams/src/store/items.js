@@ -15,17 +15,22 @@ function string2enum (item) {
       if (typeof b.category === 'string') {
         b.category = cats.indexOf(b.category)
       }
-      b.changes = b.changes
-        .map(c => {
-          if (typeof c.newState === 'string') {
-            c.newState = states.indexOf(c.newState)
-          }
-          return c
-        })
+      if (b.changes && b.changes.length) {
+        b.changes = b.changes
+          .map(c => {
+            if (typeof c.newState === 'string') {
+              c.newState = states.indexOf(c.newState)
+            }
+            return c
+          })
+      }
       return b
     })
   return item
 }
+
+// flatten blips by copying latest change into blip
+// TODO
 
 export default (backend) => ({
   state: {

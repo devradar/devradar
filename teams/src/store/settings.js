@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export default (backend) => ({
   state: {
     categories: [],
@@ -13,6 +15,9 @@ export default (backend) => ({
     },
     addBlip (state, item) {
       state.blips.push(item)
+    },
+    deleteBlip (state, ix) {
+      Vue.delete(state.blips, ix)
     }
   },
   actions: backend.store.settings.actions,
@@ -23,7 +28,7 @@ export default (backend) => ({
     states (state) {
       return state.states
     },
-    blips (state) {
+    selectedBlips (state) {
       return state.blips
     }
   }
