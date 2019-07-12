@@ -87,7 +87,7 @@ For the docker image nginx-alpine is used as a base image which brings the final
 
 ## License & Attributions
 
-Copyright 2009 Andreas Offenhaeuser <https://anoff.io>
+Copyright 2019 Andreas Offenhaeuser <https://anoff.io>
 
 All devradar code is licensed under [AGPL-3.0](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/gnu-affero-general-public-license-v3-(agpl-3.0)) for a quick overview of what this means.
 
