@@ -19,6 +19,7 @@
     "lz-string": "^1.4.4",
     "markdown-it": "^8.4.2",
     "vue": "^2.6.10",
+    "vue-analytics": "^5.17.0",
     "vue-router": "^3.0.6",
     "vuetify": "^1.5.14",
     "vuetify-upload-button": "^2.0.0",
@@ -26,9 +27,9 @@
     "vuex-persist": "^2.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.8.0",
-    "@vue/cli-plugin-eslint": "^3.8.0",
-    "@vue/cli-service": "^3.8.0",
+    "@vue/cli-plugin-babel": "^3.9.2",
+    "@vue/cli-plugin-eslint": "^3.9.2",
+    "@vue/cli-service": "^3.9.2",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
