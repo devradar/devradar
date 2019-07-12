@@ -1,0 +1,28 @@
+{{ define "main" }}
+  <!-- empty section to block space for navbar -->
+  <section class="section bg-primary">
+  </section>
+
+  <section class="section" style="padding-bottom: 0;">
+  <div class="toc">
+    <h5>Items on this page</h5>
+    <ul>
+      {{ range where .Site.RegularPages "Type" "howto" }}
+        <li>
+          <a href="#{{ .Title | urlize }}">{{ .Title | humanize }}</a>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+  </section>
+
+  <section class="section howto">
+    <div class="container">
+      {{ range where .Site.RegularPages "Type" "howto" }}
+        <a class="toc-anchor" id="{{ .Title | urlize }}"></a>
+        {{ partial "content-type/card" . }}
+      {{ end }}
+    </div>
+  </section>
+
+{{ end }}

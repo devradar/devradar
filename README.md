@@ -10,8 +10,9 @@
 
 This repository holds the individual projects making up the devradar ecosystem:
 
-* [editor](editor/): track and visualize tech skills
-* [teams](teams/): manage skills across an entire team
+* [editor](editor/): track and visualize tech skills (Vue)
+* [teams](teams/): manage skills across an entire team (Vue)
+* [web](web/): devradar landing page at [devradar.io](//devradar.io) (Hugo)
 
 
 ## Demo

@@ -1,0 +1,52 @@
+@import './responsive.scss';
+@import './variables.scss';
+@import './common.scss';
+
+.toc {
+  position: relative;
+  left: 10%;
+  li {
+    font-size: 1.3rem;
+  }
+}
+
+.howto .card-text {
+  h1 {
+    margin: 2rem 0rem;
+    font-size: 2.2rem;
+    @include smaller($breakpoint-sm) { font-size: 1.8rem; }
+    @include smaller($breakpoint-xs) { font-size: 1.6rem; }
+  }
+  h2 {
+    font-size: 2rem;
+    @include smaller($breakpoint-sm) { font-size: 1.6rem; }
+  }
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  h4 {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  h5 {
+    font-weight: bold;
+  }
+  h6 {
+    font-weight: bold;
+  }
+}
+
+section.howto img {
+  max-width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section.howto video {
+  max-width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

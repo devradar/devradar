@@ -1,0 +1,66 @@
+baseURL = "http://localhost:1313"
+languageCode = "en-us"
+title = "devradar.io | manage your skills"
+theme = "anoff-project-gen"
+summaryLength = "10"
+
+# Plugins
+[params.plugins]
+
+  # CSS Plugins
+  [[params.plugins.css]]
+  URL = "plugins/bootstrap/bootstrap.min.css"
+  [[params.plugins.css]]
+  URL = "plugins/slick/slick.css"
+  [[params.plugins.css]]
+  URL = "plugins/themify-icons/themify-icons.css"
+  [[params.plugins.css]]
+  URL = "//cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css"
+
+  # JS Plugins
+  [[params.plugins.js]]
+  URL = "plugins/jQuery/jquery.min.js"
+  [[params.plugins.js]]
+  URL = "plugins/bootstrap/bootstrap.min.js"
+  [[params.plugins.js]]
+  URL = "plugins/slick/slick.min.js"
+  [[params.plugins.js]]
+  URL = "//cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
+  [[params.plugins.js]]
+  URL = "init-cookieconsent.js"
+  
+# navigation
+[params.nav]
+  [[params.nav.link]]
+  URL = "/"
+  Name = "Home"
+  [[params.nav.link]]
+  URL = "/howto"
+  Name = "How To"
+  [[params.nav.link]]
+  URL = "//editor.devradar.io"
+  Name = "Editor"
+  NewTab = true
+  # [[params.nav.link]]
+  # URL = "//docs.devradar.io"
+  # Name = "Docs"
+  # NewTab = true
+
+[params]
+logo = "images/devradar-b.png"
+home = "Home"
+# Meta data
+description = "Skill management for individuals and teams"
+author = "Andreas Offenhaeuser"
+
+# Google Analitycs
+googleAnalitycsID = "UA-143788127-1"
+
+  # github (fork) corner
+  [params.github]
+  enable = true
+  URL = "//github.com/anoff/devradar"
+
+  # Preloader
+  [params.preloader]
+  enable = true

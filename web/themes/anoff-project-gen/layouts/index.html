@@ -1,0 +1,154 @@
+{{ define "main" }}
+
+  <!-- hero area -->
+  <section class="hero-area bg-primary" id="parallax">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-11 mx-auto">
+          <h1 class="text-dark bold">{{ .Site.Data.homepage.banner.title | safeHTML }}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="layer-bg w-100">
+      <img class="img-fluid w-100" src="{{`images/illustrations/overlay-top.png` | relURL}}" alt="bg-shape">
+    </div>
+    <div id="radar-trans">
+        <img class="img-fluid" src="{{`images/illustrations/radar-transparent.png` | relURL}}" alt="bg-shape">
+      </div>
+    <div class="layer" id="l1">
+    </div>
+    <div class="layer" id="l2">
+        <img src="{{`images/illustrations/blip-cogs.png` | relURL}}" alt="radar blip">
+    </div>
+    <div class="layer" id="l3">
+      <img src="{{`images/illustrations/blip-brain.png` | relURL}}" alt="radar blip">
+    </div>
+    <div class="layer" id="l4">
+        <img src="{{`images/illustrations/blip-wrench.png` | relURL}}" alt="radar blip">
+    </div>
+    <div class="layer" id="l5">
+    </div>
+    <div class="layer" id="l6">
+    </div>
+    <div class="layer" id="l7">
+      <img src="{{`images/illustrations/blip-shapes.png` | relURL}}" alt="radar blip">
+    </div>
+    <div class="layer" id="l8">
+      <img src="{{`images/illustrations/blip-net.png` | relURL}}" alt="radar blip">
+    </div>
+    <div class="layer" id="l9">
+    </div>
+  </section>
+  <!-- /hero area -->
+
+  {{ if .Site.Data.homepage.about.enable }}
+  <!-- about -->
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 mx-auto text-center">
+          {{ with .Site.Data.homepage.about }}
+            <p class="lead text-dark">{{.content | markdownify}}</p>
+            <ul class="lead">
+              {{ range .item }}
+              <li>
+                {{ .text | markdownify }}
+              </li>
+              {{ end }}
+            </ul>
+            {{ with .button }}
+            <a href="{{ .URL | absURL }}" class="btn btn-transparent">{{.btnText}}</a>
+            {{ end }}
+            {{ with .video }}
+              <video autoplay loop muted width="100%">
+                <source src="{{ . | absURL }}" type="video/webm">
+                Sorry, your browser doesn't support embedded videos.
+              </video>
+            {{ end }}
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /about -->
+  {{ end }}
+
+
+  {{ if .Site.Data.homepage.usecases.enable }}
+  <!-- usecases -->
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="section-title">Use cases</h2>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center">
+        {{ range .Site.Data.homepage.usecases.item }}
+        <div class="d-inline-flex col-xl-5 col-lg-6 col-sm-8 col-11 mb-4">
+          <div class="position-relative rounded hover-wrapper">
+            <img src="{{.image | absURL }}" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
+            <div class="feature-overlay">
+              <h4 class="feature-title">{{ .title }}</h4>
+            </div>
+            <div class="hover-overlay">
+              <div class="hover-content">
+                <span>{{ .text | safeHTML }}</span>
+                <a class="btn btn-light" href="{{ .URL }}">Open Example</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  <!-- /portfolio -->
+  {{ end }}
+
+  {{ if .Site.Data.homepage.features.enable }}
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="section-title">{{ .Site.Data.homepage.features.title }}</h2>
+        </div>
+      </div>
+      {{ range where .Site.RegularPages "Type" "feature" }}
+        {{ partial "content-type/card" . }}
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ if .Site.Data.homepage.tiles.enable }}
+  <!-- tiles -->
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="section-title">{{ .Site.Data.homepage.tiles.title }}</h2>
+        </div>
+        {{ range .Site.Data.homepage.tiles.item }}
+        <div class="col-md-4 mb-4">
+          <div class="card {{if .highlighted }} active-bg-primary {{end}} hover-shadow shadow">
+            <div class="card-body text-center px-4 py-5">
+              <i class="{{.icon }} icon mb-5 d-inline-block"></i>
+              <h4 class="mb-4">{{.title}}</h4>
+              <p>{{.content | markdownify}}</p>
+              {{ if .URL }}
+              <a role="button" class="btn btn-dark" href="{{ .URL | absURL }}">{{ if .URLtitle }} {{ .URLtitle }} {{ else }} Learn More {{ end }}</a>
+              {{ end }}
+            </div>
+          </div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  <!-- /tiles -->
+  {{ end }}
+
+
+
+{{ end }}
