@@ -20,6 +20,7 @@
     "markdown-it": "^8.4.2",
     "vue": "^2.6.10",
     "vue-analytics": "^5.17.0",
+    "vue-cookie-law": "^1.10.0",
     "vue-router": "^3.0.6",
     "vuetify": "^1.5.14",
     "vuetify-upload-button": "^2.0.0",

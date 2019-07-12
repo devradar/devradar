@@ -137,12 +137,18 @@
         <router-view></router-view>
       </v-container>
     </v-content>
+  <cookie-law theme="devradar">
+    <div slot="message">
+      This website uses cookies to ensure you get the best experience on our website. <a href="https://www.cookiesandyou.com/" target="_blank">Learn more</a>
+    </div>
+  </cookie-law>
   </v-app>
 </template>
 
 <script>
 import lzs from 'lz-string'
 import copy from 'clipboard-copy'
+import CookieLaw from 'vue-cookie-law'
 
 export default {
   data: () => ({
@@ -191,11 +197,12 @@ export default {
     snackbar () {
       return this.$store.getters.snackbar
     }
-  }
+  },
+  components: { CookieLaw }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 nav.v-toolbar {
   z-index: 10;
   padding-right: 3rem !important;
@@ -224,5 +231,28 @@ span.radar-title {
 }
 .invert-image {
   filter: invert(1);
+}
+// cookie consent component
+.Cookie--devradar {
+  background: #0ddd0d;
+  color: #000;
+  padding: 1rem;
+  font-size: 1.4rem;
+  min-height: 6rem;
+}
+.Cookie--devradar a {
+  color: #000;
+}
+.Cookie--devradar .Cookie__button {
+  background: #000;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0;
+  border: 0;
+  font-size: 1em;
+  font-weight: bold;
+}
+.Cookie--devradar div.Cookie__button:hover {
+  background: darken(#000, 10%);
 }
 </style>
