@@ -18,6 +18,15 @@
       </v-card>
       </v-flex>
     </v-layout>
+    <v-layout row wrap v-if="hasItems">
+      <v-chip
+        outline
+        color="black"
+        v-for="blip in selectedBlips"
+        :key="blip.title">
+        {{blip.title}}
+      </v-chip>
+    </v-layout>
   </v-container>
 </template>
 
@@ -31,80 +40,51 @@ export default {
     ...mapGetters([
       'team',
       'devs',
-      'hasItems'
-    ])
+      'hasItems',
+      'selectedBlips'
+    ]),
+    items () {
+      return [this.team].concat(this.devs)
+    }
   },
   data: () => ({
   }),
   methods: {
+    isSelectedBlip (blip) {
+      return !!this.selectedBlips.find(e => e.title.toLowerCase() === blip.title.toLowerCase())
+    }
   },
   mounted: function () {
     if (this.hasItems) {
-      var w = 500
-      var h = 500
+      const w = 500
+      const h = 500
 
-      // var colorscale = d3.scale.category10()
-
-      // Legend titles
-      var LegendOptions = ['Smartphone', 'Tablet']
-
+      // helper for data collection
+      const formatBlips = e => ({
+        axis: e.title,
+        value: e.state
+      })
+      const addMissingBlips = e => {
+        const existingBlips = e.map(o => o.axis.toLowerCase())
+        const missing = this.selectedBlips
+          .filter(s => existingBlips.indexOf(s.title.toLowerCase()) === -1)
+          .map(s => ({ axis: s.title, value: 0 }))
+        return e.concat(missing)
+      }
       // Data
-      var d = [
-        [
-          { axis: 'Email', value: 0.59 },
-          { axis: 'Social Networks', value: 0.56 },
-          { axis: 'Internet Banking', value: 0.42 },
-          { axis: 'News Sportsites', value: 0.34 },
-          { axis: 'Search Engine', value: 0.48 },
-          { axis: 'View Shopping sites', value: 0.14 },
-          { axis: 'Paying Online', value: 0.11 },
-          { axis: 'Buy Online', value: 0.05 },
-          { axis: 'Stream Music', value: 0.07 },
-          { axis: 'Online Gaming', value: 0.12 },
-          { axis: 'Navigation', value: 0.27 },
-          { axis: 'App connected to TV program', value: 0.03 },
-          { axis: 'Offline Gaming', value: 0.12 },
-          { axis: 'Photo Video', value: 0.4 },
-          { axis: 'Reading', value: 0.03 },
-          { axis: 'Listen Music', value: 0.22 },
-          { axis: 'Watch TV', value: 0.03 },
-          { axis: 'TV Movies Streaming', value: 0.03 },
-          { axis: 'Listen Radio', value: 0.07 },
-          { axis: 'Sending Money', value: 0.18 },
-          { axis: 'Other', value: 0.07 },
-          { axis: 'Use less Once week', value: 0.08 }
-        ], [
-          { axis: 'Email', value: 0.48 },
-          { axis: 'Social Networks', value: 0.41 },
-          { axis: 'Internet Banking', value: 0.27 },
-          { axis: 'News Sportsites', value: 0.28 },
-          { axis: 'Search Engine', value: 0.46 },
-          { axis: 'View Shopping sites', value: 0.29 },
-          { axis: 'Paying Online', value: 0.11 },
-          { axis: 'Buy Online', value: 0.14 },
-          { axis: 'Stream Music', value: 0.05 },
-          { axis: 'Online Gaming', value: 0.19 },
-          { axis: 'Navigation', value: 0.14 },
-          { axis: 'App connected to TV program', value: 0.06 },
-          { axis: 'Offline Gaming', value: 0.24 },
-          { axis: 'Photo Video', value: 0.17 },
-          { axis: 'Reading', value: 0.15 },
-          { axis: 'Listen Music', value: 0.12 },
-          { axis: 'Watch TV', value: 0.1 },
-          { axis: 'TV Movies Streaming', value: 0.14 },
-          { axis: 'Listen Radio', value: 0.06 },
-          { axis: 'Sending Money', value: 0.16 },
-          { axis: 'Other', value: 0.07 },
-          { axis: 'Use less Once week', value: 0.17 }
-        ]
-      ]
+      const d = this.items
+        .map(item => item.payload.blips
+          .filter(this.isSelectedBlip)
+          .map(formatBlips)
+        )
+        .map(addMissingBlips)
 
       // Options for the Radar chart, other than default
-      var mycfg = {
+      const mycfg = {
         w: w,
         h: h,
-        maxValue: 0.6,
-        levels: 6,
+        maxValue: 3,
+        levels: 3,
         ExtraWidthX: 300
       }
 
@@ -115,8 +95,10 @@ export default {
       /// /////////////////////////////////////////
       /// //////// Initiate legend ////////////////
       /// /////////////////////////////////////////
+      const colorscale = d3.scaleOrdinal(d3.schemeCategory10)
+      const legendTitles = this.items.map(e => e.title)
 
-      var svg = d3.select('#body')
+      const svg = d3.select('#chart')
         .selectAll('svg')
         .append('svg')
         .attr('width', w + 300)
@@ -126,14 +108,14 @@ export default {
       svg.append('text')
         .attr('class', 'title')
         .attr('transform', 'translate(90,0)')
-        .attr('x', w - 70)
-        .attr('y', 10)
+        .attr('x', w)
+        .attr('y', 15)
         .attr('font-size', '12px')
         .attr('fill', '#404040')
-        .text('What % of owners use a specific service in a week')
+        .text('Team setup')
 
       // Initiate Legend
-      var legend = svg.append('g')
+      const legend = svg.append('g')
         .attr('class', 'legend')
         .attr('height', 100)
         .attr('width', 200)
@@ -141,25 +123,25 @@ export default {
 
       // Create colour squares
       legend.selectAll('rect')
-        .data(LegendOptions)
+        .data(legendTitles)
         .enter()
         .append('rect')
-        .attr('x', w - 65)
-        .attr('y', function (d, i) { return i * 20 })
+        .attr('x', w + 5)
+        .attr('y', (d, i) => i * 20 + 10)
         .attr('width', 10)
         .attr('height', 10)
-        .style('fill', function (d, i) { return '#00f' /* colorscale(i) */ })
+        .style('fill', colorscale)
 
       // Create text next to squares
       legend.selectAll('text')
-        .data(LegendOptions)
+        .data(legendTitles)
         .enter()
         .append('text')
-        .attr('x', w - 52)
-        .attr('y', function (d, i) { return i * 20 + 9 })
+        .attr('x', w + 18)
+        .attr('y', (d, i) => i * 20 + 19)
         .attr('font-size', '11px')
         .attr('fill', '#737373')
-        .text(function (d) { return d })
+        .text(d => d)
     }
   }
 }

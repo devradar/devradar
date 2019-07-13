@@ -12,8 +12,81 @@
 // For a bit of extra information check the blog about it:
 // http://nbremer.blogspot.nl/2013/09/making-d3-radar-chart-look-bit-better.html
 
+let d3
+
+function drawCircles (element, cfg, allAxis) {
+  const radius = cfg.factor * Math.min(cfg.w / 2, cfg.h / 2)
+  const total = allAxis.length
+  for (let j = 0; j < cfg.levels - 1; j++) {
+    let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels)
+    element.selectAll('.levels')
+      .data(allAxis)
+      .enter()
+      .append('svg:line')
+      .attr('x1', function (d, i) { return levelFactor * (1 - cfg.factor * Math.sin(i * cfg.radians / total)) })
+      .attr('y1', function (d, i) { return levelFactor * (1 - cfg.factor * Math.cos(i * cfg.radians / total)) })
+      .attr('x2', function (d, i) { return levelFactor * (1 - cfg.factor * Math.sin((i + 1) * cfg.radians / total)) })
+      .attr('y2', function (d, i) { return levelFactor * (1 - cfg.factor * Math.cos((i + 1) * cfg.radians / total)) })
+      .attr('class', 'line')
+      .style('stroke', 'grey')
+      .style('stroke-opacity', '0.75')
+      .style('stroke-width', '0.3px')
+      .attr('transform', 'translate(' + (cfg.w / 2 - levelFactor) + ', ' + (cfg.h / 2 - levelFactor) + ')')
+  }
+}
+
+// Text indicating at what % each level is
+function drawTextLabels (element, cfg) {
+  const radius = cfg.factor * Math.min(cfg.w / 2, cfg.h / 2)
+  for (let j = 0; j < cfg.levels; j++) {
+    let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels)
+    element.selectAll('.levels')
+      .data([1]) // dummy data
+      .enter()
+      .append('svg:text')
+      .attr('x', function (d) { return levelFactor * (1 - cfg.factor * Math.sin(0)) })
+      .attr('y', function (d) { return levelFactor * (1 - cfg.factor * Math.cos(0)) })
+      .attr('class', 'legend')
+      .style('font-family', 'sans-serif')
+      .style('font-size', '10px')
+      .attr('transform', 'translate(' + (cfg.w / 2 - levelFactor + cfg.ToRight) + ', ' + (cfg.h / 2 - levelFactor) + ')')
+      .attr('fill', '#737373')
+      .text(((j + 1) * cfg.maxValue / cfg.levels))
+  }
+}
+
+function drawAxis (element, cfg, allAxis) {
+  const total = allAxis.length
+  const axis = element.selectAll('.axis')
+    .data(allAxis)
+    .enter()
+    .append('g')
+    .attr('class', 'axis')
+
+  axis.append('line')
+    .attr('x1', cfg.w / 2)
+    .attr('y1', cfg.h / 2)
+    .attr('x2', function (d, i) { return cfg.w / 2 * (1 - cfg.factor * Math.sin(i * cfg.radians / total)) })
+    .attr('y2', function (d, i) { return cfg.h / 2 * (1 - cfg.factor * Math.cos(i * cfg.radians / total)) })
+    .attr('class', 'line')
+    .style('stroke', 'grey')
+    .style('stroke-width', '1px')
+
+  axis.append('text')
+    .attr('class', 'legend')
+    .text(function (d) { return d })
+    .style('font-family', 'sans-serif')
+    .style('font-size', '14px')
+    .attr('text-anchor', 'middle')
+    .attr('dy', '1.5em')
+    .attr('transform', function (d, i) { return 'translate(0, -10)' })
+    .attr('x', function (d, i) { return cfg.w / 2 * (1 - cfg.factorLegend * Math.sin(i * cfg.radians / total)) - 60 * Math.sin(i * cfg.radians / total) })
+    .attr('y', function (d, i) { return cfg.h / 2 * (1 - Math.cos(i * cfg.radians / total)) - 20 * Math.cos(i * cfg.radians / total) })
+}
+
 export default {
-  draw: function (d3, id, d, options) {
+  draw: function (d3_, id, d, options) {
+    d3 = d3_ // populate hacky module wide variable
     const cfg = {
       radius: 5,
       w: 600,
@@ -29,7 +102,7 @@ export default {
       TranslateY: 30,
       ExtraWidthX: 100,
       ExtraWidthY: 100,
-      color: () => '#f6f' // d3.scale.category10()
+      color: d3.scaleOrdinal(d3.schemeCategory10) // d3.scale.category10()
     }
 
     if (typeof options !== 'undefined') {
@@ -40,10 +113,8 @@ export default {
       }
     }
     cfg.maxValue = Math.max(cfg.maxValue, d3.max(d, function (i) { return d3.max(i.map(function (o) { return o.value })) }))
-    let allAxis = (d[0].map(function (i, j) { return i.axis }))
-    let total = allAxis.length
-    let radius = cfg.factor * Math.min(cfg.w / 2, cfg.h / 2)
-    let Format = d3.format('%')
+    const allAxis = d[0].map(i => i.axis)
+    const total = allAxis.length
     d3.select(id).select('svg').remove()
 
     const g = d3.select(id)
@@ -55,69 +126,12 @@ export default {
 
     var tooltip
 
-    // Circular segments
-    for (let j = 0; j < cfg.levels - 1; j++) {
-      let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels)
-      g.selectAll('.levels')
-        .data(allAxis)
-        .enter()
-        .append('svg:line')
-        .attr('x1', function (d, i) { return levelFactor * (1 - cfg.factor * Math.sin(i * cfg.radians / total)) })
-        .attr('y1', function (d, i) { return levelFactor * (1 - cfg.factor * Math.cos(i * cfg.radians / total)) })
-        .attr('x2', function (d, i) { return levelFactor * (1 - cfg.factor * Math.sin((i + 1) * cfg.radians / total)) })
-        .attr('y2', function (d, i) { return levelFactor * (1 - cfg.factor * Math.cos((i + 1) * cfg.radians / total)) })
-        .attr('class', 'line')
-        .style('stroke', 'grey')
-        .style('stroke-opacity', '0.75')
-        .style('stroke-width', '0.3px')
-        .attr('transform', 'translate(' + (cfg.w / 2 - levelFactor) + ', ' + (cfg.h / 2 - levelFactor) + ')')
-    }
-
-    // Text indicating at what % each level is
-    for (let j = 0; j < cfg.levels; j++) {
-      let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels)
-      g.selectAll('.levels')
-        .data([1]) // dummy data
-        .enter()
-        .append('svg:text')
-        .attr('x', function (d) { return levelFactor * (1 - cfg.factor * Math.sin(0)) })
-        .attr('y', function (d) { return levelFactor * (1 - cfg.factor * Math.cos(0)) })
-        .attr('class', 'legend')
-        .style('font-family', 'sans-serif')
-        .style('font-size', '10px')
-        .attr('transform', 'translate(' + (cfg.w / 2 - levelFactor + cfg.ToRight) + ', ' + (cfg.h / 2 - levelFactor) + ')')
-        .attr('fill', '#737373')
-        .text(Format((j + 1) * cfg.maxValue / cfg.levels))
-    }
+    // draw axis + circles
+    drawCircles(g, cfg, allAxis)
+    drawTextLabels(g, cfg)
+    drawAxis(g, cfg, allAxis)
 
     let series = 0
-
-    var axis = g.selectAll('.axis')
-      .data(allAxis)
-      .enter()
-      .append('g')
-      .attr('class', 'axis')
-
-    axis.append('line')
-      .attr('x1', cfg.w / 2)
-      .attr('y1', cfg.h / 2)
-      .attr('x2', function (d, i) { return cfg.w / 2 * (1 - cfg.factor * Math.sin(i * cfg.radians / total)) })
-      .attr('y2', function (d, i) { return cfg.h / 2 * (1 - cfg.factor * Math.cos(i * cfg.radians / total)) })
-      .attr('class', 'line')
-      .style('stroke', 'grey')
-      .style('stroke-width', '1px')
-
-    axis.append('text')
-      .attr('class', 'legend')
-      .text(function (d) { return d })
-      .style('font-family', 'sans-serif')
-      .style('font-size', '11px')
-      .attr('text-anchor', 'middle')
-      .attr('dy', '1.5em')
-      .attr('transform', function (d, i) { return 'translate(0, -10)' })
-      .attr('x', function (d, i) { return cfg.w / 2 * (1 - cfg.factorLegend * Math.sin(i * cfg.radians / total)) - 60 * Math.sin(i * cfg.radians / total) })
-      .attr('y', function (d, i) { return cfg.h / 2 * (1 - Math.cos(i * cfg.radians / total)) - 20 * Math.cos(i * cfg.radians / total) })
-
     let dataValues = []
     d.forEach(function (y, x) {
       dataValues = []
@@ -189,7 +203,7 @@ export default {
           tooltip
             .attr('x', newX)
             .attr('y', newY)
-            .text(Format(d.value))
+            .text(d.value)
             .transition(200)
             .style('opacity', 1)
 
