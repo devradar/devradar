@@ -42,11 +42,14 @@
             v-for="blip in blipsByCategory(activeItemIx, categoryIx)"
             :key="blip.title"
             @click="toggleBlip(blip)">
-            <v-avatar>
-              <v-icon v-if="isSelected(blip)" color="primary">star</v-icon>
-              <v-icon v-else>star_border</v-icon>
-              </v-avatar>
-            {{blip.title}}
+            <v-badge right color="grey">
+              <template v-slot:badge>
+                <span>{{getBlipCount(blip)}}</span>
+              </template>
+                <v-icon v-if="isSelected(blip)" color="primary" left>star</v-icon>
+                <v-icon v-else left>star_border</v-icon>
+                {{blip.title}}
+            </v-badge>
           </v-chip>
         </div>
       </v-flex>
@@ -105,6 +108,12 @@ export default {
       } else {
         this.$store.dispatch('selectBlip', blip)
       }
+    },
+    getBlipCount (blip) {
+      return this.items
+        .map(i => i.payload.blips.filter(e => e.title.toLowerCase() === blip.title.toLowerCase()))
+        .flat()
+        .length
     }
   },
   mounted () {
