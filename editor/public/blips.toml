@@ -1,0 +1,155 @@
+[meta]
+title = "Mortys personal~ radar"
+categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
+states = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
+
+[[blips]]
+category = 0
+title = "GitLab CI"
+state = 3
+
+  [[blips.changes]]
+  date = "2018-07"
+  newState = 3
+
+[[blips]]
+category = 3
+title = "Go"
+state = 0
+
+  [[blips.changes]]
+  date = "2018-12"
+  newState = 0
+  text = "Superfast, cross-compiled, multi-platform executables"
+
+[[blips]]
+category = 2
+link = "https:////kubernetes.io"
+description = "Containers at scale"
+title = "Kubernetes"
+state = 0
+
+  [[blips.changes]]
+  date = "2018-07"
+  newState = 0
+
+[[blips]]
+category = 2
+link = "https:////docker.io"
+description = "Container all the things"
+title = "Docker"
+state = 2
+
+  [[blips.changes]]
+  date = "2019-03"
+  newState = 2
+
+[[blips]]
+category = 1
+description = "Treat your documentation like you treat code, git version, PR review, etc."
+title = "docs as code"
+state = 2
+
+  [[blips.changes]]
+  date = "2019-03"
+  newState = 2
+  text = "I am so good at this because I use it everywhere!"
+
+[[blips]]
+category = 0
+title = "Matlab"
+state = 3
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 3
+
+[[blips]]
+category = 3
+title = "OpenCV"
+state = 3
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 3
+
+[[blips]]
+category = 3
+title = "Python"
+state = 1
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 1
+
+[[blips]]
+category = 3
+title = "Javascript"
+state = 2
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 2
+
+[[blips]]
+category = 3
+title = "CSS"
+state = 3
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 3
+
+[[blips]]
+category = 1
+title = "Design"
+state = 3
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 3
+
+[[blips]]
+category = 1
+title = "Deep Learning"
+state = 2
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 2
+
+[[blips]]
+category = 2
+title = "Blockchain"
+state = 2
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 2
+
+[[blips]]
+category = 0
+title = "Ansible"
+state = 0
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 0
+
+[[blips]]
+category = 0
+title = "Azure RM"
+state = 1
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 1
+
+[[blips]]
+category = 0
+title = "Chef"
+state = 2
+
+  [[blips.changes]]
+  date = "2019-06"
+  newState = 2

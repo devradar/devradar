@@ -47,9 +47,6 @@ const actions = {
   addBlip ({ commit }, blip) {
     // prepend https if nothing is there
     if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
-    blip.changes = blip.changes
-      .map(c => Object.assign(c, { id: getUUID() }))
-    blip.id = getUUID()
     commit('addBlip', blip)
   },
   updateBlip ({ commit }, blip) {

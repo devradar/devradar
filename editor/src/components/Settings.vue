@@ -49,6 +49,7 @@
             <v-upload-btn
             @file-update="uploadToml"
             color="grey lighten-3"
+            :disabled="!userCanEdit"
             title="Upload from file">
               <template slot="icon-left">
                 <v-icon left>cloud_upload</v-icon>
@@ -58,7 +59,7 @@
           <v-spacer></v-spacer>
           <v-flex xs5 sm3 lg1 xl1>
             <v-btn
-            :disabled="!contentIsValid"
+            :disabled="!contentIsValid || !userCanEdit"
             @click.end="loadContent()"
             color="primary">
               Save
@@ -73,6 +74,7 @@ import copy from 'clipboard-copy'
 import lzs from 'lz-string'
 import UploadButton from 'vuetify-upload-button'
 import TOML from '@iarna/toml'
+import { mapGetters } from 'vuex'
 
 function saveAs (filename, text) {
   var element = document.createElement('a')
@@ -110,6 +112,10 @@ export default {
     ]
   }),
   computed: {
+    ...mapGetters([
+      'meta',
+      'userCanEdit'
+    ]),
     blipsClean () {
       return this.$store.getters.blipsClean
         .map(stripIds)
@@ -144,8 +150,8 @@ export default {
     loadContent () {
       try {
         const obj = TOML.parse(this.contentToml)
-        this.$store.dispatch('setBlips', obj.blips)
         this.$store.dispatch('setMeta', obj.meta)
+        this.$store.dispatch('setBlips', obj.blips)
         this.$store.dispatch('showSnackbar', 'updated local blips + config')
       } catch (e) {
         console.error('Error occured trying to decompress content', e)
@@ -180,6 +186,11 @@ export default {
   },
   components: {
     'v-upload-btn': UploadButton
+  },
+  watch: {
+    blipsClean () {
+      this.fetchContent()
+    }
   }
 }
 </script>

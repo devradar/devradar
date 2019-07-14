@@ -1,18 +1,26 @@
-/* global BLIPS_TOML */ // gets pre filled by vue.config.js via Webpack plugin
+import axios from 'axios'
+import TOML from '@iarna/toml'
+import { cleanBlip } from '../../../util'
+import appConfig from '../../../config'
 
 const actions = {
-  getBlips ({ commit }) {
-    let blipsArray = BLIPS_TOML.blips
-      .map(b => {
-        b.title = b.name
-        delete b.name
-        return b
+  getBlips ({ commit, dispatch }) {
+    axios.get(appConfig.backend.blipsUrl)
+      .then(res => {
+        try {
+          const obj = TOML.parse(res.data)
+          commit('setMeta', obj.meta)
+          commit('dropBlips')
+          obj.blips
+            .map(cleanBlip)
+            .forEach(b => commit('addBlip', b))
+          commit('setSnackbar', 'updated local blips + config')
+        } catch (e) {
+          console.error('Error occurred trying to decompress content', e)
+        }
       })
-      .filter(b => b.title)
-      .filter(b => b.changes && b.changes.length > 0)
-    commit('setBlips', blipsArray)
   },
-  addBlip ({ commit, dispatch }, { blip, change }) {
+  addBlip ({ commit, dispatch }, blip) {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
   },
   updateBlip ({ commit }, blip) {
@@ -26,13 +34,6 @@ const actions = {
   },
   deleteChange ({ commit }, { blip, change }) {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
-  },
-  getMeta ({ commit }) {
-    const meta = BLIPS_TOML.meta
-    if (!meta) {
-      console.error('No meta data found in blips.toml')
-    }
-    commit('setMeta', meta)
   }
 }
 

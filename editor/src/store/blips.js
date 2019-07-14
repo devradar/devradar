@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { cleanBlip } from '../util'
+import { getUUID, cleanBlip } from '../util'
 
 export default (backend) => ({
   state: {
@@ -16,6 +16,9 @@ export default (backend) => ({
       state.blips = []
     },
     addBlip (state, blip) {
+      blip.id = blip.id || getUUID()
+      blip.changes = blip.changes
+        .map(c => Object.assign({ id: getUUID() }, c)) // make sure an existing ID has priority by correct assign order
       state.blips.push(blip)
     },
     exchangeBlip (state, blip) {
@@ -29,7 +32,8 @@ export default (backend) => ({
       state.isLoading = isLoading
     },
     setMeta (state, meta) {
-      state.meta = Object.assign(state.meta, meta)
+      const { title, categories, states } = meta
+      state.meta = { title, categories, states }
     }
   },
   actions: backend.store.blips.actions,
