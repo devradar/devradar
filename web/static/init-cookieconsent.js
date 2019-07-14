@@ -1,6 +1,5 @@
 // https://cookieconsent.insites.com/download/#
 window.addEventListener('load', function () {
-  console.log('INIT')
   window.cookieconsent.initialise({
     'palette': {
       'popup': {

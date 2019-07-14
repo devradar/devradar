@@ -27,7 +27,7 @@
           :max="12"
         ></v-slider>
       </v-flex>
-      <v-flex xs12 v-for="blip in filteredBlips" :key="blip.index">
+      <v-flex xs12 v-for="blip in filteredBlips" :key="blip.id">
         <blip
           :blip="blip"
           @addChange="newChangeOpen"
@@ -48,7 +48,7 @@ export default {
   components: { NewBlip, NewChange, Blip },
   computed: {
     blips () {
-      const blips = this.$store.getters.blips
+      const blips = this.$store.getters.blipsWithIndex
       return blips
     },
     filteredBlips () {
@@ -91,8 +91,8 @@ export default {
       if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })
       else router.replace({ name: 'List' })
     },
-    newChangeOpen (blipIndex) {
-      this.newChangeBlip = this.blips[blipIndex]
+    newChangeOpen (blipId) {
+      this.newChangeBlip = this.blips.find(b => b.id === blipId)
       this.newChangeModalVisible = true
     },
     newChangeSubmit ({ blip, change }) {

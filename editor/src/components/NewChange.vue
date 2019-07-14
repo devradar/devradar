@@ -66,7 +66,7 @@ export default {
     change () {
       return {
         date: this.date,
-        newState: this.state,
+        newState: this.states.indexOf(this.state),
         text: this.changeText
       }
     },

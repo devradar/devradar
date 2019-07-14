@@ -1,4 +1,5 @@
 import lzs from 'lz-string'
+import { getUUID, cleanBlip } from '../../../util'
 
 const actions = {
   getBlips ({ commit }) {
@@ -18,15 +19,18 @@ const actions = {
       console.error('Error occurred trying to decompress content', e)
     }
   },
-  setBlips ({ commit }, blips) {
-    commit('setBlips', blips)
+  setBlips ({ commit, dispatch }, blips) {
+    commit('dropBlips')
+    blips
+      .map(cleanBlip)
+      .forEach(b => dispatch('addBlip', b))
   },
-  addBlip ({ commit, dispatch, getters }, { blip, change }) {
+  addBlip ({ commit }, blip) {
     // prepend https if nothing is there
     if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
-    change = Object.assign(change, { index: 0 })
-    blip.changes = [change]
-    blip.index = getters.blipsCount
+    blip.changes = blip.changes
+      .map(c => Object.assign(c, { id: getUUID() }))
+    blip.id = getUUID()
     commit('addBlip', blip)
   },
   updateBlip ({ commit }, blip) {
@@ -36,12 +40,12 @@ const actions = {
     commit('removeBlip', blip)
   },
   addChange ({ commit }, { blip, change }) {
-    change = Object.assign(change, { index: blip.changes.length })
+    change = Object.assign(change, { id: getUUID() })
     blip.changes.push(change)
     commit('exchangeBlip', blip)
   },
   deleteChange ({ commit }, { blip, change }) {
-    blip.changes = blip.changes.filter(c => c.index !== change.index)
+    blip.changes = blip.changes.filter(c => c.id !== change.id)
     commit('exchangeBlip', blip)
   },
   getMeta ({ commit }) {

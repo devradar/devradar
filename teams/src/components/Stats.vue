@@ -135,8 +135,6 @@ export default {
       'items'
     ]),
     stats () {
-      console.log(this.items)
-      console.log(this.team)
       const masterCategories = this.team.payload.meta.categories
       const masterStates = this.team.payload.meta.states
       const blips = this.items

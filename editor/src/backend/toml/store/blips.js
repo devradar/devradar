@@ -10,10 +10,6 @@ const actions = {
       })
       .filter(b => b.title)
       .filter(b => b.changes && b.changes.length > 0)
-      .map((b, ix) => {
-        b.index = ix
-        return b
-      })
     commit('setBlips', blipsArray)
   },
   addBlip ({ commit, dispatch }, { blip, change }) {

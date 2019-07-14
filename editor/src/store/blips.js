@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { cleanBlip } from '../util'
 
 export default (backend) => ({
   state: {
@@ -11,17 +12,18 @@ export default (backend) => ({
     }
   },
   mutations: {
-    setBlips (state, blips) {
-      state.blips = blips
+    dropBlips (state) {
+      state.blips = []
     },
     addBlip (state, blip) {
       state.blips.push(blip)
     },
     exchangeBlip (state, blip) {
-      state.blips.splice(blip.index, 1, blip)
+      const index = state.blips.findIndex(b => b.id === blip.id)
+      state.blips.splice(index, 1, blip)
     },
     removeBlip (state, blip) {
-      Vue.delete(state.blips, blip.index)
+      Vue.delete(state.blips, state.blips.findIndex(b => b.id === blip.id))
     },
     setLoading (state, isLoading) {
       state.isLoading = isLoading
@@ -32,21 +34,23 @@ export default (backend) => ({
   },
   actions: backend.store.blips.actions,
   getters: {
-    blips (state) {
+    blipsWithIndex (state) {
       return state.blips
         .filter(b => b.changes.length > 0)
+        .map(cleanBlip)
         .map((b, bIndex) => {
           const changes = b.changes.map((c, cIndex) => {
-            const { date, newState, text } = c
-            return { date, newState, text, index: cIndex }
+            c.index = cIndex // append a 'fake' index that is used for visuals only e.g. blip# in radar view
+            return c
           })
           const state = changes.sort((a, b) => a.date < b.date)[0].newState
-          const { category, link, description, title } = b
-          return { category, link, index: bIndex, description, title, changes, state }
+          b.state = state
+          b.index = bIndex
+          return b
         })
     },
     blipsClean (state, getters) {
-      const blips = JSON.parse(JSON.stringify(getters.blips))
+      const blips = JSON.parse(JSON.stringify(getters.blipsWithIndex))
       return blips
         .map(b => {
           delete b.index
@@ -59,9 +63,6 @@ export default (backend) => ({
     },
     isLoading (state) {
       return state.isLoading
-    },
-    blipsCount (state) {
-      return state.blips.length
     },
     meta (state) {
       return state.meta

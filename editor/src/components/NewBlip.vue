@@ -71,7 +71,7 @@ export default {
   methods: {
     submit () {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch('addBlip', { blip: this.blip, change: this.change })
+        this.$store.dispatch('addBlip', Object.assign(this.blip, { changes: [this.change] }))
         this.dialog = false
         this.clear()
       }
@@ -92,7 +92,7 @@ export default {
   computed: {
     blip () {
       return {
-        category: this.category,
+        category: this.categories.indexOf(this.category),
         link: this.link,
         title: this.title,
         description: this.description
@@ -100,7 +100,7 @@ export default {
     },
     change () {
       return {
-        newState: this.state,
+        newState: this.states.indexOf(this.state),
         text: this.changeText,
         date: (new Date()).toISOString().split('-').slice(0, 2).join('-')
       }

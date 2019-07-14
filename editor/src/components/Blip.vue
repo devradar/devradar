@@ -25,13 +25,13 @@
               <v-avatar class="primary">
                 <v-icon dark>domain</v-icon>
               </v-avatar>
-              <span>{{blip.category}}</span>
+              <span>{{meta.categories[blip.category]}}</span>
             </v-chip>
             <v-chip small disabled class="bold" @click.stop="addChange(blip)">
               <v-avatar class="primary">
-                {{meta.states.indexOf(blip.state) + 1}}
+                {{blip.state}}
               </v-avatar>
-              {{blip.state}}
+              {{meta.states[blip.state]}}
             </v-chip>
           </v-flex>
         </v-layout>
@@ -44,15 +44,15 @@
           label="Description"
           ></v-textarea>
       </v-card-title>
-      <div v-for="change in blip.changes" :key="change.index">
+      <div v-for="change in blip.changes" :key="change.id">
         <v-divider></v-divider>
         <v-subheader>
           <span class="subheading">{{change.date}}</span>
             <v-chip small disabled class="bold">
               <v-avatar color="primary">
-                {{meta.states.indexOf(change.newState) + 1}}
+                {{change.newState}}
               </v-avatar>
-              {{change.newState}}
+              {{meta.states[change.newState]}}
             </v-chip>
           <v-btn icon
           v-if="isEditMode && blip.changes.length > 1"
@@ -117,7 +117,7 @@ export default {
     },
     addChange () {
       if (!this.userCanEdit) return
-      this.$emit('addChange', this.blip.index)
+      this.$emit('addChange', this.blip.id)
     },
     editBlip () {
       this.tempBlip = { ...this.blip }

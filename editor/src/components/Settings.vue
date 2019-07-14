@@ -85,6 +85,14 @@ function saveAs (filename, text) {
   document.body.removeChild(element)
 }
 
+function stripIds (blip) {
+  blip.changes.map(c => {
+    delete c.id
+    return c
+  })
+  delete blip.id
+  return blip
+}
 export default {
   data: () => ({
     contentToml: '',
@@ -104,6 +112,7 @@ export default {
   computed: {
     blipsClean () {
       return this.$store.getters.blipsClean
+        .map(stripIds)
     },
     meta () {
       return this.$store.getters.meta
@@ -135,7 +144,7 @@ export default {
     loadContent () {
       try {
         const obj = TOML.parse(this.contentToml)
-        this.$store.dispatch('setBlips', obj.blips)
+        this.$store.dispatch('setBlips', obj.blips) // TODO: use individual blip adds
         this.$store.dispatch('setMeta', obj.meta)
         this.$store.dispatch('showSnackbar', 'updated local blips + config')
       } catch (e) {

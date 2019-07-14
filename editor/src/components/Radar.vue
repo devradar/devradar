@@ -21,15 +21,15 @@
       <div :class="'q' + (ix+1)" v-for="(category, ix) in meta.categories" :key="ix"><h3>{{category}}</h3>
         <ul>
           <li
-            v-for="blip in blipsByCategory[category]"
-            v-bind:key="blip.index"
+            v-for="blip in blipsByCategory[ix]"
+            v-bind:key="blip.id"
           >
             <router-link
             :to="{ name: 'List', params: {search: blip.title}}"
             >
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-state">{{blip.state}}</span>
+              <span class="blip-state">{{meta.states[blip.state]}}</span>
               </router-link>
             </li>
         </ul>
@@ -50,9 +50,9 @@ export default {
   components: { NewBlip },
   computed: {
     blips () {
-      const b = JSON.parse(JSON.stringify(this.$store.getters.blips))
+      const b = JSON.parse(JSON.stringify(this.$store.getters.blipsWithIndex))
       return b
-        .filter(b => this.meta.states.slice(0, 4).indexOf(b.state) > -1)
+        .filter(b => b.state >= 0 && b.state <= 3)
         .map(b => {
           b.index = b.index + 1 // offset index by one for human display
           return b
@@ -85,48 +85,32 @@ export default {
       const blips = document.getElementsByClassName('blip')
       for (let b of blips) {
         const bWidth = b.clientWidth
-        const category = b.dataset.category
-        const state = b.dataset.state
+        const category = parseInt(b.dataset.category)
+        const state = parseInt(b.dataset.state)
 
         // Different radiuses depending on blips
         let width, radius
-        const states = this.meta.states
         switch (state) {
-          case states[0]:
+          case 0:
             radius = (getDomWidth('radar') - bWidth) / 2
             width = (getDomWidth('radar') - bWidth) / 2 - (getDomWidth('assess') - bWidth) / 2
             break
-          case states[1]:
+          case 1:
             radius = (getDomWidth('assess') - bWidth) / 2
             width = (getDomWidth('assess') - bWidth) / 2 - (getDomWidth('trial') - bWidth) / 2
             break
-          case states[2]:
+          case 2:
             radius = (getDomWidth('trial') - bWidth) / 2
             width = (getDomWidth('trial') - bWidth) / 2 - (getDomWidth('adopt') - bWidth) / 2
             break
-          case states[3]:
+          case 3:
             radius = (getDomWidth('adopt') - bWidth) / 2
             width = radius = (getDomWidth('adopt') - bWidth) / 2
             break
         }
 
         // Different quadrants depending on area
-        let quadrant
-        const categories = this.meta.categories
-        switch (category) {
-          case categories[0]:
-            quadrant = 1
-            break
-          case categories[1]:
-            quadrant = 2
-            break
-          case categories[2]:
-            quadrant = 3
-            break
-          case categories[3]:
-            quadrant = 4
-            break
-        }
+        const quadrant = category + 1
 
         // Calculate things
         const radarx = (getDomWidth('radar') / 2) // TODO: maybe use height?
@@ -134,7 +118,7 @@ export default {
 
         let rad = radius - width / 2
         let angle = (quadrant - 1) * Math.PI / 2 + Math.PI / 4
-        rad += (Math.sqrt(getPseudoRand(b.title + state)) - 0.5) * width / 2 * 0.9
+        rad += (Math.sqrt(getPseudoRand(b.title)) - 0.5) * width / 2 * 0.9
         angle += (getPseudoRand(b.title) - 0.5) * (Math.PI / 2) * 0.9
 
         let x = rad * Math.cos(angle) + radarx
