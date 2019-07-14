@@ -2,7 +2,6 @@
 title = "Galactic Federation Technology Stack"
 categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
 states = [ "Hold", "Assess", "Trial", "Adopt" ]
-name = "Noone"
 
 [[blips]]
 category = "Tools"

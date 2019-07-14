@@ -2,7 +2,6 @@
 title = "Tammy's devradar"
 categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
 states = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
-name = "Noone"
 
 [[blips]]
 category = "Frameworks"
