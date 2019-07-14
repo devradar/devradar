@@ -1,0 +1,1 @@
+Config for the editor.devradar.io and anoff/devradar docker image

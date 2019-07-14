@@ -13,6 +13,7 @@ steps:
   image: node:lts-slim
   commands:
   - cd editor
+  - cp -R .build/editor/** .
   - npm ci
   - npm run build
 - name: netlify deploy
@@ -58,7 +59,7 @@ steps:
   commands:
   - cd editor
   - npm ci
-  - cp -R anoff/** .
+  - cp -R .build/anoff/** .
   - npm run build
   - npm i -g firebase-tools
   - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT

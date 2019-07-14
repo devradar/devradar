@@ -1,0 +1,1 @@
+Config for the static (GitHub pages) starter for building personal devradar with toml backend
