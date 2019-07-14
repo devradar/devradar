@@ -39,9 +39,6 @@ function init (store) {
     databaseURL: `https://${appConfig.backend.project}.firebaseio.com`,
     projectId: `${appConfig.backend.project}`
   })
-  // hook up auth listener to mutate 'user' state
-  store.dispatch('getBlips')
-  store.dispatch('getMeta')
 
   // resolve after auth status is defined as logged in or not
   return new Promise((resolve, reject) => {
@@ -56,6 +53,8 @@ function init (store) {
         store.commit('setUser', { roles: {} })
         resolve({})
       }
+      store.dispatch('getBlips')
+      store.dispatch('getMeta')
     })
   })
 }

@@ -2,8 +2,40 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import appConfig from '../../../config'
 
+function migrateToEnum (blip) {
+  const b = JSON.parse(JSON.stringify(blip)) // create hard copy
+  let updateRequired = false
+  if (typeof b.category === 'string') {
+    b.category = appConfig.backend.categories.indexOf(b.category)
+    updateRequired = true
+  }
+  if (typeof b.state === 'string') {
+    b.state = appConfig.backend.states.indexOf(b.state)
+    updateRequired = true
+  }
+  b.changes = b.changes
+    .map(change => {
+      if (typeof change.newState === 'string') {
+        change.newState = appConfig.backend.states.indexOf(change.newState)
+        //
+        const document = change.id
+        delete change.id
+        console.log('updating change', change)
+        firebase.firestore().collection(`blips/${b.id}/changes`).doc(document).update(change)
+      }
+      return change
+    })
+  if (updateRequired) {
+    const document = b.id
+    delete b.id
+    delete b.changes
+    console.log('updating blip', blip)
+    firebase.firestore().collection('blips').doc(document).update(blip)
+  }
+}
+
 const actions = {
-  getBlips ({ commit }) {
+  getBlips ({ commit, getters, state }) {
     commit('setLoading', true)
     let blipsArray
     firebase.firestore().collection('blips').get()
@@ -20,32 +52,41 @@ const actions = {
         blipsArray = blipsArray
           .filter(b => b.title && b.id)
           .filter(b => b.changes && b.changes.length > 0)
-        commit('setBlips', blipsArray)
+
+        // migrate from string category/state to enums
+        if (getters.userCanEdit) {
+          blipsArray.forEach(migrateToEnum)
+        }
+
+        blipsArray.forEach(blip => commit('addBlip', blip))
         commit('setLoading', false)
       })
   },
-  addBlip ({ commit, dispatch }, { blip, change }) {
-    // prepend https if nothing is there
+  addBlip ({ commit, dispatch }, blip) {
     commit('setLoading', true)
-    if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
-    firebase.firestore().collection('blips').add(blip)
+    // prepend https if nothing is there
+    const { category, description, title } = blip
+    let link = blip.link
+    if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link
+    // handle each change separately to create valid documents
+    const changes = blip.changes
+    delete blip.changes
+    firebase.firestore().collection('blips').add({ category, description, title, link })
       .then(docRef => {
-        const id = docRef.id
-        blip.id = id
+        blip.id = docRef.id
         blip.changes = []
-        dispatch('addChange', { blip, change })
+        changes.forEach(change => dispatch('addChange', { blip, change }))
         commit('setLoading', false)
       })
   },
   updateBlip ({ commit }, blip) {
     commit('setLoading', true)
     // create copy of the store object to remove changes array/index for firebase entry
-    const doc = { ...blip }
+    const { category, description, title } = blip
+    let link = blip.link
     // prepend https if nothing is there
-    if (blip.link && !/^https?:\/\//i.test(doc.link)) doc.link = 'https://' + doc.link
-    delete doc.changes
-    delete doc.index
-    firebase.firestore().collection('blips').doc(blip.id).update(doc)
+    if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link
+    firebase.firestore().collection('blips').doc(blip.id).update({ category, description, title, link })
       .then(() => {
         commit('exchangeBlip', blip)
         commit('setLoading', false)
@@ -61,10 +102,10 @@ const actions = {
   },
   addChange ({ commit }, { blip, change }) {
     commit('setLoading', true)
-    firebase.firestore().collection(`blips/${blip.id}/changes`).add(change)
+    const { date, newState, text } = change
+    firebase.firestore().collection(`blips/${blip.id}/changes`).add({ date, newState, text })
       .then(docRef => {
-        const id = docRef.id
-        change = Object.assign(change, { id })
+        change.id = docRef.id
         blip.changes.push(change)
         commit('exchangeBlip', blip)
         commit('setLoading', false)
