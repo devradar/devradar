@@ -4,241 +4,241 @@ categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
 states = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
 
 [[blips]]
-category = "Tools"
+category = 0.0
 link = "https://terraform.io"
 description = "Use cloud-agnostic syntax to define target infrastructure setups in cloud environments."
 title = "Terraform"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Advanced"
+  newState = 2
   text = "Several months working with the Azure provider, building modules, working with remote states etc."
 
   [[blips.changes]]
   date = "2018-03"
-  newState = "Intermediate"
+  newState = 1
   text = "Using a lot of deployment for Azure functions I created and published my first [Terraform module for Azure functions](https://github.com/anoff/terraform-azurerm-functionapp)"
 
 [[blips]]
-category = "Frameworks"
+category = 3
 description = "Building SPA web apps"
 title = "Vue"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Intermediate"
+  newState = 1
   text = "I built several smaller web UIs using vue in 2018. Got into concepts like vuex and data stores to some extent but never used it in larger codebases."
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = "Extending my fondness for automation from CI/CD to bringing infrastructure automation also into CI pipelines."
 title = "Infrastructure as Code"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Intermediate"
+  newState = 1
   text = "Several months of experience building terraform recipes and automation using CLI commands for Azure services."
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = "Automate everything that is possible - and reasonable."
 title = "CI/CD"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Advanced"
+  newState = 2
   text = "Several years experience implementing automated tests, code analysis and deployment using various platforms."
 
   [[blips.changes]]
   date = "2014-11"
-  newState = "Intermediate"
+  newState = 1
   text = "Introducing automated testing and build to a Node.js project using Jenkins."
 
   [[blips.changes]]
   date = "2011-04"
-  newState = "Novice"
+  newState = 0.0
   text = "Learning the basics of testing in general. Developing test guidelines, environments and test cases for ECU software. My main goal was already then to automate as much as possible and being able to create reproducable results."
 
 [[blips]]
-category = "Tools"
+category = 0.0
 description = "Creating diagrams to visualize data flow, architecture or use case patterns."
 title = "PlantUML"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Veteran"
+  newState = 3
   text = "Heavy user of plantuml to help in creating, discussing and documenting various concepts."
 
 [[blips]]
-category = "Frameworks"
+category = 3
 link = "http://www.ros.org/"
 description = "Using the [Robot Operating System](https://en.wikipedia.org/wiki/Robot_Operating_System) framework to control complex robots with various kinematic and sensoric interfaces."
 title = "ROS"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2018-11"
-  newState = "Novice"
+  newState = 0.0
   text = """
 During a Hackathon in October 2018 within a group of 4 I was in charge of prototyping and developing a control interface for a ROS based humanoid robot arm by Festo. As an interface the ROS web bridge (web sockets) was used. This gave insights into how the framework is structured into topics, services etc as well as first experience in what a good ROS architecture looks like.
 
 By delivering a working prototype with a valid new use case for the existing product we won the Festo challenge. The source code as well as a demo video can be found on the [R.I.C GitHub repository](https://github.com/anoff/ric)"""
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = "I try to apply tdd principles to various aspects of my coding and architecture work."
 title = "Test Driven Development"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Advanced"
+  newState = 2
 
 [[blips]]
-category = "Tools"
+category = 0.0
 link = "https://www.docker.com/"
 description = """
 Container technology used for running various tools on my local machine without having to install plethora of compilers and drivers.
 Also used for hosting services on Virtual Machines."""
 title = "Docker"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2019-03"
-  newState = "Advanced"
+  newState = 2
   text = "Setting up and operating a multi-machine development environment on Azure gave me a lot new insights into using Docker and docker-compose to run applications with minimal bootstrapping of the VM."
 
   [[blips.changes]]
   date = "2017-01"
-  newState = "Intermediate"
+  newState = 1
   text = "Using Docker heavily to guarantee consistent software behavior across various developer machines as well as production systems. By this time I maintain several Docker images - most based on Node.js."
 
   [[blips.changes]]
   date = "2016-04"
-  newState = "Novice"
+  newState = 0.0
   text = "Becoming a Docker _user_ at work, running images provided by others with slight modifications and some custom builds."
 
 [[blips]]
-category = "Frameworks"
+category = 3
 description = "Writing smaller scripts, grep-ing, sed-ing and piping stdouts around to make sure things work correctly."
 title = "bash"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2017-12"
-  newState = "Intermediate"
+  newState = 1
   text = "Switched my default terminal to zsh using [oh-my-zsh](https://github.com/anoff/dotfiles)"
 
   [[blips.changes]]
   date = "2017-06"
-  newState = "Intermediate"
+  newState = 1
   text = "Through increased involvement in defining CI/CD workloads and jobs I had to deepen my knowledge of bash and shell scripting."
 
   [[blips.changes]]
   date = "2016-10"
-  newState = "Novice"
+  newState = 0.0
   text = "Switching from Windows to MacOS results in a lot more bash usage and even creating custom [dotfiles](https://github.com/anoff/dotfiles)"
 
 [[blips]]
-category = "Tools"
+category = 0.0
 description = """
 Several years experience building frameworks and GUI applications in Matlab for data handling, manipulation, simulation, analysis etc.
 Lots of experience with making graphs and interactive visualizations."""
 title = "Matlab"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Intermediate"
+  newState = 1
   text = "Haven't used it in a long time but still know when to use it and what patterns should be obeyed when writing Matlab functions."
 
   [[blips.changes]]
   date = "2014-08"
-  newState = "Veteran"
+  newState = 3
   text = "Using Matlab for several years in my daily professional life I am very experienced and know how to build functions, libraries and scripts for various use cases."
 
 [[blips]]
-category = "Frameworks"
+category = 3
 description = "Mostly use C/C++ in the context of microcontrollers. No extensive professional experience so far."
 title = "c++"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2018-04"
-  newState = "Novice"
+  newState = 0.0
   text = "During a demo conference I build my first [3D demo](https://github.com/anoff/demo-one) written in C++ without the usage of any 3D libraries."
 
 [[blips]]
-category = "Tools"
+category = 0.0
 description = "IDE of choice for everything."
 title = "VS Code"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Advanced"
+  newState = 2
   text = "I have a set of extensions I make extensive use of and even written my own theme available on the marketplace."
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = "A structured approach to solving problems."
 title = "Software Architecture"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-11"
-  newState = "Advanced"
+  newState = 2
   text = """
 After doing software and solution architecture for several years in multiple domains (ECU, software, cloud solutions) I decided to get an introduction into the _official_ world of software architecture by visiting a 4 day onsite training by the german company Oose that specialices in IT trainings.
 As expected the training helped me structure my existing tools and approaches towards problem solving by putting individual architectural steps like definition of constraints, system context, component/deployment views into relation with each other and giving me a better idea which stakeholders are responsible to develop the individual artefacts."""
 
 [[blips]]
-category = "Platforms"
+category = 2
 description = "Hosting 12 factor applications"
 title = "Cloudfoundry"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2017-11"
-  newState = "Advanced"
+  newState = 2
   text = "After several months of developing applications in a microservice approach for a cloudfoundry runtime I was quite familiar with the environment and optimized my local toolset to be able to work efficiently with cloudfoundry."
 
   [[blips.changes]]
   date = "2015-07"
-  newState = "Novice"
+  newState = 0.0
   text = "My first contact with Cloudfoundry. I was in charge of designing a solution on top of Cloudfoundry and come up with a Microservice architecture derived from business requirements."
 
 [[blips]]
-category = "Platforms"
+category = 2
 description = "Hosting docker solutions in (managed) Kubernetes environments."
 title = "Kubernetes"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Novice"
+  newState = 0.0
   text = "My only experience with K8s is working on Azures AKS offering. Most of the things I have done so far are only in the proof of concept area. I am familiar with some parts of the ecosystem like using kubectl or helm charts"
 
 [[blips]]
-category = "Frameworks"
+category = 3
 link = "https://nodejs.org/en/"
 description = "My go-to language for building solutions on cloud platforms, web solutions (like this tech radar) or CLIs is currently node due to its huge ecosystem of libraries that makes it super easy to build new things."
 title = "Node.JS"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Veteran"
+  newState = 3
   text = "I am using node since 2014 and have used it daily since. My main uses are web applications, serverless functions and smaller scripts/tools. I am familiar with latest JS features and event driven programming."
 
   [[blips.changes]]
   date = "2015-03"
-  newState = "Intermediate"
+  newState = 1
   text = """
 In 2015 I started building a larger project with node and also lead an increasing team of developers. Around the time that node started to mature and come around with LTS plans it seemed like a perfect fit to invest more heavily into the language.
 
@@ -246,299 +246,299 @@ I started building larger side projects and familiarize myself with the node eco
 
   [[blips.changes]]
   date = "2014-06"
-  newState = "Novice"
+  newState = 0.0
   text = "My first contact with node was while developing a prototype for a connected vehicle at work."
 
 [[blips]]
-category = "Platforms"
+category = 2
 description = "Building serverless webapps."
 title = "Google Firebase"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Intermediate"
+  newState = 1
   text = "Using firebase & firestore for several of my private projects I a familiar with implementing secure access rules for firestore, oauth providers and hosting static content on firebase. Some experience with developing functions."
 
   [[blips.changes]]
   date = "2017-04"
-  newState = "Novice"
+  newState = 0.0
   text = "During a hackathon I built my [first project](https://github.com/anoff/microllaborators) using firebase as a serverless backend for web applications."
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = ""
 title = "Deeplearning"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2018-02"
-  newState = "Novice"
+  newState = 0.0
   text = "Some experience using tools like Tensorflow, Keras to implement neural networks for image classification, text generation and image generation using GAN approach. Mostly due to my deeplearning and AI nanodegree in Udacity."
 
 [[blips]]
-category = "Frameworks"
+category = 3
 link = "https://www.python.org/"
 description = "My main use of python is in the context of datascience and deep learning as well as computer vision. List comprehensions are my favorite 😇"
 title = "Python"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-01"
-  newState = "Advanced"
+  newState = 2
   text = "I developed a deeper understanding of the Python language and its patterns through two Udacity nanodegree programs in the field of AI"
 
   [[blips.changes]]
   date = "2017-01"
-  newState = "Intermediate"
+  newState = 1
   text = "Interested in data analytics I started using python and analytics libraries like scikitlearn or numpy to analyze different personal datasets."
 
 [[blips]]
-category = "Tools"
+category = 0.0
 description = "Playground for python and AI that can also be directly rendered in GitHub."
 title = "Jupyter"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Intermediate"
+  newState = 1
   text = "Used extensively during my Udacity courses in 2017-2018 I got a good understanding of what the Jupyter platform is capable of and which use cases it can cover."
 
 [[blips]]
-category = "Platforms"
+category = 2
 description = "I use the Arduino platform for a lot of my side projects and have knowledge in sensor communication and serial protocols."
 title = "Arduino"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Intermediate"
+  newState = 1
   text = "My latest project is [plantbuddy](https://github.com/anoff/plantbuddy) which is actually based on the nodeMCU chip but also programmed using the Arduino IDE."
 
   [[blips.changes]]
   date = "2017-04"
-  newState = "Intermediate"
+  newState = 1
   text = "Interested in self driving cars I started building my own based platform named [robby5](https://github.com/anoff/robby5) based on cheap components and a hybrid setup between Arduino and Raspberry Pi for controlling the car autonomously."
 
   [[blips.changes]]
   date = "2010-03"
-  newState = "Advanced"
+  newState = 2
   text = "During my time in university I build several projects in university and in free time with friends with more complex programs. One example was a signal processing application that used a microphone to detect clapping."
 
 [[blips]]
-category = "Platforms"
+category = 2
 description = "Micro-workloads and simple applications. Also anything CRON triggered."
 title = "Azure Functions"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Advanced"
+  newState = 2
   text = "I am experienced in building Javascript based serverless functions."
 
   [[blips.changes]]
   date = "2017-06"
-  newState = "Novice"
+  newState = 0.0
   text = "Building a [tiny serverless app](https://github.com/anoff/cryptobooks) in the context of cryptocurrencies."
 
 [[blips]]
-category = "Platforms"
+category = 2
 description = "Writing smart contracts and distributed applications."
 title = "Ethereum"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2017-08"
-  newState = "Novice"
+  newState = 0.0
   text = "I spent some time building a smart contract using truffle for the OpenMined project."
 
 [[blips]]
-category = "Tools"
+category = 0.0
 link = "https://asciidoctor.org/docs/what-is-asciidoc/"
 description = "Document software architecture and decisions in larger projects. For small projects I still prefer to use markdown."
 title = "asciidoc"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2019-01"
-  newState = "Novice"
+  newState = 0.0
   text = "During the [advent of code 2018](https://aoc-2018.netlify.com/#_solutions_by_coder) challenge I documented all my approaches in asciidoc with plantuml diagrams."
 
   [[blips.changes]]
-  newState = "Intermediate"
+  newState = 1
   text = "Introducing docs-as-code with AsciiDoc + plantUML in a multi-repo scneario at work made me work with a lot more tooling around asciidoc files. Especially Node.js based tools like Antora and various plugins for asciidoctor.js"
 
 [[blips]]
-category = "Techniques"
+category = 1
 title = "Data Analytics"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2018-02"
-  newState = "Intermediate"
+  newState = 1
   text = "Through the Udacity Artificial Intelligence program I refreshed my knowledge in data analytics and got introduced to current state of the art tools in the Python ecosystem."
 
   [[blips.changes]]
   date = "2012-08"
-  newState = "Intermediate"
+  newState = 1
   text = "One of the main tasks in my job as function developer was to identify patterns in data and explain system behavior in certain situations. My main tool to do this was Matlab with a self-developed framework for data handling, evaluation and visualization. "
 
 [[blips]]
-category = "Tools"
+category = 0.0
 description = "Static site generator for various projects. Using it with markdown and asciidoc content."
 title = "Hugo"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Intermediate"
+  newState = 1
   text = "For devradar.io I built a heavily customized theme and got a look into the underlying concepts of types, categories and how the rendering takes place."
 
 [[blips]]
-category = "Tools"
+category = 0.0
 description = "Draw icons and logos for my private projects. Create stickers every now and then for our team."
 title = "Affinity Designer"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2018-04"
-  newState = "Novice"
+  newState = 0.0
   text = "Creating icons for several open source projects and designing stickers for personal use."
 
 [[blips]]
-category = "Frameworks"
+category = 3
 link = "https://golang.org/"
 description = "Mainly using Go for pet projects in backend space or data handling."
 title = "go"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2019-01"
-  newState = "Intermediate"
+  newState = 1
   text = "Participating in the #adventOfCode2018 in a joint [social coding project](https://github.com/anoff/aoc-2018) I solved each day using go and [learned more](https://aoc-2018.netlify.com/#_today_i_learned) about the language each day."
 
 [[blips]]
-category = "Platforms"
+category = 2
 link = "https://github.com"
 description = "All my private projects are hosted on GitHub."
 title = "GitHub"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Advanced"
+  newState = 2
   text = "Starting rather late in the GitHub game I quickly learned how the  platform and its users work together and am now familiar with navigating the projects, hosting my own, contributing to other repositories and community design aspects."
 
   [[blips.changes]]
   date = "2016-04"
-  newState = "Novice"
+  newState = 0.0
   text = "In 2016 I published my first private project on GitHub. Before that I hosted a few projects on private BitBucket repositories."
 
 [[blips]]
-category = "Platforms"
+category = 2
 description = "Using the Microsoft ☁️ offering in professional and private solutions."
 title = "Azure"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Advanced"
+  newState = 2
   text = "Focusing on PaaS and serverless based solutions I have built applications using most of the base services. Large focus on JavaScript based functions and solution architecture."
 
   [[blips.changes]]
   date = "2018-01"
-  newState = "Intermediate"
+  newState = 1
   text = "First complete solution architecture for a service on Azure using managed only services."
 
   [[blips.changes]]
   date = "2017-06"
-  newState = "Novice"
+  newState = 0.0
   text = "First contact with Azure and figuring out how to host a Node.js application. Did a [presentation](https://github.com/anoff/azure-fns-demo) at the Node.js meetup about Azure functions."
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = "Building websites was never something I particularly enjoyed but it is the most versatile UI a developer can use for it's software."
 title = "Web Design"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Advanced"
+  newState = 2
   text = "Building devradar.io and trying to get a consistent branding across multiple web platforms taught me a lot about css and HTML."
 
 [[blips]]
-category = "Tools"
+category = 0.0
 description = "Computer Vision for hobby projects."
 title = "OpenCV"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Novice"
+  newState = 0.0
   text = "Introduced to it shortly in an AI nanodegree I used it in a few occassion for smaller side projects to detect movement in images, basic emotion detection etc."
 
 [[blips]]
-category = "Techniques"
+category = 1
 link = "https://www.staticgen.com/"
 description = "Instead of using complex CMS tools or handcrafted websites I rely on markup languages and generated sites for my personal websites/blogs. This also fits my _git everything_ approach as I can keep all my content (sources) on GitHub."
 title = "Static Site Generators"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2019-02"
-  newState = "Advanced"
+  newState = 2
   text = "Moving my blog from [Jekyll](https://jekyllrb.com/) to [Hugo](https://gohugo.io/) I learned more about customizing static site builds and gained experience in another generator technology."
 
   [[blips.changes]]
   date = "2018-04"
-  newState = "Intermediate"
+  newState = 1
   text = "Starting my own blog I dug deeper into the workings of Jekyll and hosting possibilities in the Open Source space."
 
   [[blips.changes]]
   date = "2017-03"
-  newState = "Novice"
+  newState = 0.0
   text = "I set up the initial version of my personal website [anoff.io](//anoff.io) using Jekyll hosted via GitHub pages."
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = "Using ascii based documentation methods and keeping all system documentation versioned within git alongside the source code."
 title = "Docs as Code"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2019-03"
-  newState = "Advanced"
+  newState = 2
   text = """
 Starting march I introduced AsciiDoc based documentation to a new project for all engineering documents.
 Working with a lot of diagrams in PlantUML and multi repository builds using Antora site generator."""
 
   [[blips.changes]]
   date = "2018-08"
-  newState = "Intermediate"
+  newState = 1
   text = "Deprecated all other documentation tools besides pure markdown early 2018 and evaluating a markdown only approach."
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = "I am a strong believer and evangelist of the DevOps mindset and have experience applying those principles in all stages of a product development lifecycle."
 title = "DevOps"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2018-02"
-  newState = "Veteran"
+  newState = 3
   text = "Drawing from previous experience and a wide network of DevOps practicioners I strongly influenced our teams decision regarding team setup, development processes and priority of component development. This meant bridging classic automotive processes to a DevOps mindset."
 
   [[blips.changes]]
   date = "2016-11"
-  newState = "Advanced"
+  newState = 2
   text = "Being responsible for a joint development mindset for a team of ~10 developers I often came back to things like [DevOps Topologies](https://web.devopstopologies.com/) to find possible solutions to issues in our working mode. Spanning multiple products and technical skillsets resulted in a more generic view of DevOps practices in general instead of mapping them directly to explicit problems for a given product development."
 
   [[blips.changes]]
   date = "2015-08"
-  newState = "Intermediate"
+  newState = 1
   text = "Starting development with a PaaS cloud lead to an increased complexity regarding solution architecture (microservices) and deployment models. Rethinking our previous processes brought us back to the DevOps core principles and come up with a set of adapted guidelines."
 
   [[blips.changes]]
   date = "2014-11"
-  newState = "Novice"
+  newState = 0.0
   text = "Having experienced people consult our project quickly lead to very high standards regarding automation, operational responsibility and deployment patterns in our team."

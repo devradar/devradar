@@ -4,198 +4,198 @@ categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
 states = [ "Hold", "Assess", "Trial", "Adopt" ]
 
 [[blips]]
-category = "Tools"
+category = 0
 title = "GitLab CI"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2018-07"
-  newState = "Adopt"
+  newState = 3
 
 [[blips]]
-category = "Frameworks"
-link = "//nodejs.org"
+category = 3
+link = "https:////nodejs.org"
 description = "Javascript in the backend? 🤯"
 title = "Node.js"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2018-07"
-  newState = "Adopt"
+  newState = 3
   text = "made it into the common toolstack"
 
   [[blips.changes]]
   date = "2014-12"
-  newState = "Trial"
+  newState = 2
   text = "test it with this new backend"
 
 [[blips]]
-category = "Platforms"
-link = "//kubernetes.io"
+category = 2
+link = "https:////kubernetes.io"
 description = "Containers at scale"
 title = "Kubernetes"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2018-07"
-  newState = "Adopt"
+  newState = 3
   text = "de facto standard for all our container orchestration needs"
 
 [[blips]]
-category = "Platforms"
-link = "//docker.io"
+category = 2
+link = "https:////docker.io"
 description = "Container all the things"
 title = "Docker"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2019-03"
-  newState = "Adopt"
+  newState = 3
 
 [[blips]]
-category = "Techniques"
+category = 1
 description = "Treat your documentation like you treat code, git version, PR review, etc."
 title = "docs as code"
-state = "Trial"
+state = 2
 
   [[blips.changes]]
   date = "2019-03"
-  newState = "Trial"
+  newState = 2
   text = "This seems like a good idea, we should do more of it"
 
 [[blips]]
-category = "Frameworks"
+category = 3
 description = "Scripting and stuff"
 title = "Python"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Adopt"
+  newState = 3
   text = ""
 
 [[blips]]
-category = "Techniques"
+category = 1
 title = "CI/CD"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Adopt"
+  newState = 3
 
 [[blips]]
-category = "Tools"
+category = 0
 title = "Azure DevOps"
-state = "Assess"
+state = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Assess"
+  newState = 1
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "Vue.js"
-state = "Trial"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Trial"
+  newState = 2
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "Angular"
-state = "Trial"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Trial"
+  newState = 2
 
 [[blips]]
-category = "Tools"
+category = 0
 title = "Jenkins"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Adopt"
+  newState = 3
 
 [[blips]]
-category = "Techniques"
+category = 1
 title = "Infrastructure as Code"
-state = "Trial"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Trial"
+  newState = 2
 
 [[blips]]
-category = "Tools"
+category = 0
 title = "Terraform"
-state = "Trial"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Trial"
+  newState = 2
 
 [[blips]]
-category = "Tools"
+category = 0
 title = "Ansible"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Adopt"
+  newState = 3
 
 [[blips]]
-category = "Techniques"
+category = 1
 title = "Web Design"
-state = "Trial"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Trial"
+  newState = 2
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "C++"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Adopt"
+  newState = 3
 
 [[blips]]
-category = "Platforms"
+category = 2
 title = "Azure IaaS"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Adopt"
+  newState = 3
 
 [[blips]]
-category = "Platforms"
+category = 2
 title = "Azure P/SaaS"
-state = "Trial"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Trial"
+  newState = 2
 
 [[blips]]
-category = "Platforms"
+category = 2
 title = "GitHub"
-state = "Assess"
+state = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Assess"
+  newState = 1
 
 [[blips]]
-category = "Platforms"
+category = 2
 title = "BitBucket"
-state = "Adopt"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Adopt"
+  newState = 3

@@ -4,136 +4,136 @@ categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
 states = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "Javascript"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Advanced"
+  newState = 2
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "CSS"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Veteran"
+  newState = 3
 
 [[blips]]
-category = "Techniques"
+category = 1
 title = "Design"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Veteran"
+  newState = 3
 
 [[blips]]
-category = "Platforms"
+category = 2
 title = "GitHub"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Veteran"
+  newState = 3
 
 [[blips]]
-category = "Tools"
+category = 0.0
 title = "Circle CI"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Veteran"
+  newState = 3
 
 [[blips]]
-category = "Tools"
+category = 0.0
 title = "Drone CI"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Intermediate"
+  newState = 1
 
 [[blips]]
-category = "Tools"
+category = 0.0
 title = "Netlify"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Advanced"
+  newState = 2
 
 [[blips]]
-category = "Platforms"
+category = 2
 title = "zeit.now"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Veteran"
+  newState = 3
 
 [[blips]]
-category = "Techniques"
+category = 1
 title = "Web Development"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Veteran"
+  newState = 3
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "HTML"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Veteran"
+  newState = 3
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "Material Design"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Advanced"
+  newState = 2
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "Angular"
-state = "Veteran"
+state = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Veteran"
+  newState = 3
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "React"
-state = "Intermediate"
+state = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Intermediate"
+  newState = 1
 
 [[blips]]
-category = "Frameworks"
+category = 3
 title = "Vue.js"
-state = "Novice"
+state = 0.0
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Novice"
+  newState = 0.0
 
 [[blips]]
-category = "Platforms"
+category = 2
 title = "Heroku"
-state = "Advanced"
+state = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = "Advanced"
+  newState = 2
