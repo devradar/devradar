@@ -41,11 +41,9 @@ export default {
       'team',
       'devs',
       'hasItems',
-      'selectedBlips'
-    ]),
-    items () {
-      return [this.team].concat(this.devs)
-    }
+      'selectedBlips',
+      'items'
+    ])
   },
   data: () => ({
   }),

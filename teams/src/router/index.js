@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Radar from '@/components/Radar'
 import Stats from '@/components/Stats'
 import Spider from '@/components/Spider'
 import Settings from '@/components/Settings'
@@ -11,7 +10,6 @@ const routesCfg = appConfig.routes
 const components = {
   Stats,
   Spider,
-  Radar,
   Settings
 }
 const routes = routesCfg

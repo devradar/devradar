@@ -131,13 +131,15 @@ export default {
     ...mapGetters([
       'team',
       'devs',
-      'hasItems'
+      'hasItems',
+      'items'
     ]),
     stats () {
-      const items = this.devs.concat(this.team)
+      console.log(this.items)
+      console.log(this.team)
       const masterCategories = this.team.payload.meta.categories
       const masterStates = this.team.payload.meta.states
-      const blips = items
+      const blips = this.items
         .map(e => e.payload.blips)
         .reduce((p, c) => p.concat(c), [])
       let categories = blips
@@ -153,11 +155,10 @@ export default {
         .map(e => ({ value: categories[e], key: masterCategories[e] }))
       let states = blips
         .reduce((p, c) => {
-          const state = c.changes.sort((a, b) => a.date < b.date)[0].newState
-          if (p[state]) {
-            p[state]++
+          if (p[c.state]) {
+            p[c.state]++
           } else {
-            p[state] = 1
+            p[c.state] = 1
           }
           return p
         }, {})

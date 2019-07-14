@@ -29,8 +29,11 @@ function string2enum (item) {
   return item
 }
 
-// flatten blips by copying latest change into blip
-// TODO
+function flattenChanges (item) {
+  item.payload.blips = item.payload.blips
+    .map(b => ({ category: b.category, state: b.changes && b.changes.length ? b.changes.sort((a, b) => a.date < b.date)[0].newState : b.state, title: b.title }))
+  return item
+}
 
 export default (backend) => ({
   state: {
@@ -61,6 +64,11 @@ export default (backend) => ({
     },
     hasItems (state) {
       return state.team && state.team.filename !== 'N/A' && !!state.devs.length
+    },
+    items (state) {
+      return [state.team].concat(state.devs)
+        .map(string2enum)
+        .map(flattenChanges)
     }
   }
 })
