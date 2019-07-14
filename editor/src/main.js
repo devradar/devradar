@@ -21,12 +21,10 @@ if (appConfig.googleAnalytics && appConfig.googleAnalytics.id) {
     debug: {
       // turn on only in prod https://github.com/MatteoGabriele/vue-analytics/blob/9b7125472dc1313823e6c03538434d22b4edad8a/docs/turn-off-development.md
       sendHitTask: process.env.NODE_ENV === 'production'
-    }
+    },
+    router
   })
 }
-
-// TODO: remove some time soon
-console.log(process.env.NODE_ENV)
 
 Vue.prototype.$config = appConfig
 Vue.filter('limitString', function (string, limit = Infinity) {
