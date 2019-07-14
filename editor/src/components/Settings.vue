@@ -144,7 +144,7 @@ export default {
     loadContent () {
       try {
         const obj = TOML.parse(this.contentToml)
-        this.$store.dispatch('setBlips', obj.blips) // TODO: use individual blip adds
+        this.$store.dispatch('setBlips', obj.blips)
         this.$store.dispatch('setMeta', obj.meta)
         this.$store.dispatch('showSnackbar', 'updated local blips + config')
       } catch (e) {

@@ -1,6 +1,24 @@
 import lzs from 'lz-string'
 import { getUUID, cleanBlip } from '../../../util'
 
+// allow migration for files happening before issue#54
+function migrateToEnum (blip, meta) {
+  if (typeof blip.category === 'string' && meta.categories.length) {
+    blip.category = meta.categories.indexOf(blip.category)
+  }
+  if (typeof blip.state === 'string' && meta.states.length) {
+    blip.state = meta.states.indexOf(blip.state)
+  }
+  blip.changes = blip.changes
+    .map(change => {
+      if (typeof change.newState === 'string' && meta.states.length) {
+        change.newState = meta.states.indexOf(change.newState)
+      }
+      return change
+    })
+  return blip
+}
+
 const actions = {
   getBlips ({ commit }) {
     let r = decodeURI(window.location).split('?')
@@ -19,9 +37,10 @@ const actions = {
       console.error('Error occurred trying to decompress content', e)
     }
   },
-  setBlips ({ commit, dispatch }, blips) {
+  setBlips ({ commit, dispatch, getters }, blips) {
     commit('dropBlips')
     blips
+      .map(b => migrateToEnum(b, getters.meta))
       .map(cleanBlip)
       .forEach(b => dispatch('addBlip', b))
   },
@@ -47,8 +66,6 @@ const actions = {
   deleteChange ({ commit }, { blip, change }) {
     blip.changes = blip.changes.filter(c => c.id !== change.id)
     commit('exchangeBlip', blip)
-  },
-  getMeta ({ commit }) {
   },
   setMeta ({ commit }, meta) {
     commit('setMeta', meta)
