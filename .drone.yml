@@ -114,16 +114,14 @@ steps:
   - cd web
   - hugo --gc --minify -d _site --baseURL //devradar.io
   - touch _site/.nojekyll
-- name: netlify deploy
-  image: node:lts-alpine
-  environment:
-    NETLIFY_SITE_ID:
-      from_secret: NETLIFY_WEB_ID
-    NETLIFY_AUTH_TOKEN:
-      from_secret: NETLIFY_TOKEN
-  commands:
-    - npm install -g netlify-cli
-    - netlify deploy --dir=web/_site --prod
+- name: publish  
+  image: plugins/gh-pages
+  settings:
+    username:
+      from_secret: github_username
+    password:
+      from_secret: github_token
+    pages_directory: _site
   when:
     branch:
     - master
