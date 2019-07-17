@@ -85,19 +85,23 @@
       </div>
       <div class="row d-flex justify-content-center">
         {{ range .Site.Data.homepage.usecases.item }}
-        <div class="d-inline-flex col-xl-5 col-lg-6 col-sm-8 col-11 mb-4">
+        <div class="d-inline-flex col-xl-5 col-lg-6 col-sm-11 mb-4">
           <div class="position-relative rounded hover-wrapper">
             <img src="{{.image | absURL }}" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
             <div class="feature-overlay">
               <h4 class="feature-title">{{ .title }}</h4>
             </div>
-            <div class="hover-overlay">
+            <div class="hover-overlay d-none d-md-block">
               <div class="hover-content">
                 <span>{{ .text | safeHTML }}</span>
-                <a class="btn btn-light" href="{{ .URL }}">Open Example</a>
+                <a role="button" class="btn btn-light" href="{{ .URL }}">Open Example</a>
               </div>
             </div>
           </div>
+        </div>
+        <div class="d-inline-flex d-md-none col-sm-11 mb-4 usecase-details">
+          <p class="pr-4" align="justify">{{ .text | safeHTML }}</p>
+          <a role="button" class="btn btn-dark" href="{{ .URL }}">Open Example</a>
         </div>
         {{ end }}
       </div>
