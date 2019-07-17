@@ -9,6 +9,13 @@
   {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
   {{ hugo.Generator }}
 
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@anoff_io" />
+  <meta property="og:url" content="https://devradar.io" />
+  <meta property="og:title" content="{{ .Site.Title }}" />
+  <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}" />
+  <meta property="og:image" content="{{`images/logo-text.png` | absURL}}" />
+
   {{ "<!-- plugins -->" | safeHTML }}
   {{ range .Site.Params.plugins.css }}
   <link rel="stylesheet" href="{{ .URL | absURL }}">
