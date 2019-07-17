@@ -121,7 +121,7 @@ steps:
       from_secret: github_username
     password:
       from_secret: github_token
-    pages_directory: _site
+    pages_directory: web/_site
   when:
     branch:
     - master
