@@ -308,6 +308,11 @@ header.navigation.nav-bg {
   color: #333
 }
 
+.navbar-collapse {
+  @include smaller($breakpoint-md) {
+    background-color: #0DDD0D;
+  }
+}
 .hero-area {
   padding: 15rem 0 10rem;
   position: relative
