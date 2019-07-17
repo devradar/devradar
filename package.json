@@ -1,0 +1,25 @@
+{
+  "name": "devradar",
+  "description": "mono repo holding all devradar components",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anoff/devradar.git"
+  },
+  "author": "",
+  "license": "AGPL-3.0, MIT",
+  "bugs": {
+    "url": "https://github.com/anoff/devradar/issues"
+  },
+  "homepage": "https://github.com/anoff/devradar#readme",
+  "config": {
+    "cz-conventional-kawaii": {
+        "scopes": [
+            "web",
+            "editor",
+            "teams"
+        ],
+        "quick": false
+    }
+  }
+}
