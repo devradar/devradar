@@ -192,7 +192,7 @@ export default {
       return this.$store.getters.meta
     },
     blips () {
-      return this.$store.getters.blips
+      return this.$store.getters.blipsClean
     },
     snackbar () {
       return this.$store.getters.snackbar

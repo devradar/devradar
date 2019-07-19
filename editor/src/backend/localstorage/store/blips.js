@@ -20,7 +20,7 @@ function migrateToEnum (blip, meta) {
 }
 
 const actions = {
-  getBlips ({ commit }) {
+  getBlips ({ commit, dispatch }) {
     let r = decodeURI(window.location).split('?')
     if (r.length < 2) return
     r = r[1]
@@ -31,8 +31,8 @@ const actions = {
     try {
       const string = lzs.decompressFromEncodedURIComponent(r[1])
       const obj = JSON.parse(string)
-      commit('setBlips', obj.blips)
       commit('setMeta', obj.meta)
+      dispatch('setBlips', obj.blips)
     } catch (e) {
       console.error('Error occurred trying to decompress content', e)
     }

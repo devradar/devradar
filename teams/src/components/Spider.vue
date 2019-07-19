@@ -1,9 +1,35 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap v-if="hasItems">
-      <v-flex xs12>
+      <v-flex xs9>
         <h6 class="title">Radar Chart</h6>
         <div id="chart"></div>
+      </v-flex>
+      <v-flex xs3>
+        <v-list>
+          <v-subheader inset>Blips</v-subheader>
+          <v-list-tile
+            v-for="(item, index) in selectedBlips"
+            :key="item.title"
+            avatar
+          >
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            </v-list-tile-content>
+
+            <v-list-tile-action>
+              <v-btn
+              @click="itemDone(index)"
+              v-if="index >= activeItemIx"
+              :disabled="index !== activeItemIx"
+              icon ripple>
+                <v-icon>check_box_outline_blank</v-icon>
+              </v-btn>
+              <v-icon v-else>check_box</v-icon>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
       </v-flex>
     </v-layout>
     <v-layout v-else justify-space-around>
