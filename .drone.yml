@@ -9,14 +9,35 @@ steps:
   - cd editor
   - npm ci
   - npm run lint
-- name: build
+- name: build release
+  image: node:lts-slim
+  commands:
+  - cd editor
+  - cp -R .build/static/** .
+  - npm ci
+  - npm run build
+- name: publish release
+  image: plugins/github-release
+  settings:
+    api_key:
+      from_secret: GITHUB_TOKEN
+    files: dist/*
+    checksum:
+      - md5
+    prerelease: true
+  when:
+    branch:
+    - master
+    event:
+    - tag
+- name: build editor.devradar.io
   image: node:lts-slim
   commands:
   - cd editor
   - cp -R .build/editor/** .
   - npm ci
   - npm run build
-- name: netlify deploy
+- name: deploy editor.devradar.io
   image: node:lts-alpine
   environment:
     NETLIFY_SITE_ID:
@@ -49,7 +70,7 @@ steps:
     - master
     event:
     - push
-- name: radar.anoff.io
+- name: build & deploy radar.anoff.io
   image: node:lts-slim
   environment:
     FIREBASE_PROJECT:
