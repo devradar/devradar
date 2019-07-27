@@ -9,13 +9,36 @@ steps:
   - cd editor
   - npm ci
   - npm run lint
-- name: build release
+
+- name: build static release
   image: node:lts-slim
   commands:
   - cd editor
   - cp -R .build/static/** .
   - npm ci
   - npm run build
+  - sed -i.bk -E -e "s^href=([\"']?)/([^/]+)^href=\1\2^g" -e "s^src=([\"']?)/([^/]+)^src=\1\2^g" dist/index.html # make resource includes relative to support non-root hosting
+  - rm dist/index.html.bk
+- name: deploy to devradar-static:gh-pages
+  image: alpine/git
+  environment:
+    username:
+      from_secret: GITHUB_USERNAME
+    password:
+      from_secret: GITHUB_TOKEN
+  commands:
+  - export tmpdir=/drone/src/.pages_tmp
+  - apk add rsync
+  - mkdir $tmpdir
+  - git clone -b gh-pages --single-branch https://$username:$password@github.com/anoff/devradar-static.git $tmpdir
+  - rsync --delete --exclude .git -r /drone/src/editor/dist/ $tmpdir/
+  - cd $tmpdir
+  - git status --porcelain
+  - git add .
+  - git config user.email ""
+  - git config user.name "CI Joe" 
+  - git diff-index --quiet HEAD || git commit -m "commit static devradar"
+  - git push origin HEAD:gh-pages
 - name: publish release
   image: plugins/github-release
   settings:
@@ -26,10 +49,9 @@ steps:
       - md5
     prerelease: true
   when:
-    branch:
-    - master
     event:
     - tag
+
 - name: build editor.devradar.io
   image: node:lts-slim
   commands:
@@ -70,6 +92,7 @@ steps:
     - master
     event:
     - push
+
 - name: build & deploy radar.anoff.io
   image: node:lts-slim
   environment:
