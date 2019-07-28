@@ -23,4 +23,4 @@ You need to create individual devradars for each team member to use the teams to
 
 Copyright 2019 Andreas Offenhaeuser <https://anoff.io>
 
-All devradar code is licensed under [AGPL-3.0](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/gnu-affero-general-public-license-v3-(agpl-3.0)) for a quick overview of what this means.
+All devradar code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.
