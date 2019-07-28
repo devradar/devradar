@@ -2,27 +2,14 @@ const { default: colors } = require('vuetify/es5/util/colors')
 
 const config = { // needs to be ES6 module so it can be imported by webpack
   backend: {
-    type: 'localstorage'
+    type: 'toml',
+    blipsUrl: '/devradar.toml'
   },
-  // backend: {
-  //   type: 'firebase',
-  //   key: 'abcdefg',
-  //   project: 'xyz',
-  //   categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'], // quadrant 1-4
-  //   states: ['Novice', 'Intermediate', 'Advanced', 'Veteran'], // should be 0 - 3 for tech radar, 4 for in use, 5 for no longer in use
-  //   // personal proficiency level https://hr.nih.gov/working-nih/competencies/competencies-proficiency-scale
-  //   title: 'Andreas\' technical skills' // title showing in the application titlebar
-  // },
-  // backend: {
-  // type: 'toml',
-  // blipsUrl: '/blips.toml'
-  // },
-  editPermissions: user => true,
+  editPermissions: user => false,
   routes: [ // configure name, permissions & view ports
     // do NOT change the view property as this links to the vue component and is used for lookups across the app
     { view: 'List', icon: 'list', title: 'Blips', path: '/list/:search?', validator: user => true, location: ['toolbar'] },
-    { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
-    { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => true, location: ['toolbar'] } // only use this on localstorage backend for now
+    { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] }
   ],
   navEntries: [
     { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: user => true }
@@ -42,7 +29,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   googleAnalytics: {
     enabled: false,
-    id: 'UA-xyz'
+    id: 'UA-XYZ'
   }
 }
 

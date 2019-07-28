@@ -9,14 +9,64 @@ steps:
   - cd editor
   - npm ci
   - npm run lint
-- name: build
+
+- name: build static release
+  image: node:lts-slim
+  commands:
+  - cd editor
+  - cp -R .build/static/** .
+  - npm ci
+  - npm run build
+  - sed -i.bk -E -e "s^href=([\"']?)/([^/]+)^href=\1\2^g" -e "s^src=([\"']?)/([^/]+)^src=\1\2^g" dist/index.html # make resource includes relative to support non-root hosting
+  - rm dist/index.html.bk
+- name: deploy to devradar-static:gh-pages
+  image: alpine/git
+  environment:
+    username:
+      from_secret: GITHUB_USERNAME
+    password:
+      from_secret: GITHUB_TOKEN
+  commands:
+  - export tmpdir=/drone/src/.pages_tmp
+  - apk add rsync
+  - mkdir $tmpdir
+  - git clone -b gh-pages --single-branch https://$username:$password@github.com/anoff/devradar-static.git $tmpdir
+  - rsync --delete --exclude .git -r /drone/src/editor/dist/ $tmpdir/
+  - cd $tmpdir
+  - git status --porcelain
+  - git add .
+  - git config user.email ""
+  - git config user.name "CI Joe" 
+  - git diff-index --quiet HEAD || git commit -m "commit static devradar"
+  - git push origin HEAD:gh-pages
+  when:
+    branch:
+    - master
+    event:
+    - push
+- name: publish release
+  image: plugins/github-release
+  settings:
+    api_key:
+      from_secret: GITHUB_TOKEN
+    files: dist/*
+    checksum:
+      - md5
+    prerelease: true
+  when:
+    event:
+    - tag
+    branch:
+    - master
+
+- name: build editor.devradar.io
   image: node:lts-slim
   commands:
   - cd editor
   - cp -R .build/editor/** .
   - npm ci
   - npm run build
-- name: netlify deploy
+- name: deploy editor.devradar.io
   image: node:lts-alpine
   environment:
     NETLIFY_SITE_ID:
@@ -49,7 +99,8 @@ steps:
     - master
     event:
     - push
-- name: radar.anoff.io
+
+- name: build & deploy radar.anoff.io
   image: node:lts-slim
   environment:
     FIREBASE_PROJECT:
