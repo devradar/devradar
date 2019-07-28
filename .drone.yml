@@ -39,6 +39,11 @@ steps:
   - git config user.name "CI Joe" 
   - git diff-index --quiet HEAD || git commit -m "commit static devradar"
   - git push origin HEAD:gh-pages
+  when:
+    branch:
+    - master
+    event:
+    - push
 - name: publish release
   image: plugins/github-release
   settings:
@@ -51,6 +56,8 @@ steps:
   when:
     event:
     - tag
+    branch:
+    - master
 
 - name: build editor.devradar.io
   image: node:lts-slim
