@@ -92,5 +92,3 @@ Copyright 2019 Andreas Offenhaeuser <https://anoff.io>
 All devradar code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.
 
 The radar visualization is inspired by [Urban Sanden](https://github.com/urre/radar/), licensed under [MIT](https://github.com/urre/radar/blob/502b57332467e68819ce69eeb65f8432129d69b9/LICENSE).
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_large)

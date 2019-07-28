@@ -33,9 +33,11 @@ tiles:
       URLtitle: Open editor
       highlighted : true
 
-    - title : "Docker Server"
+    - title : "GitHub Pages"
       icon : "ti-file"
-      content : "Run devradar in a Docker container to let others browse your skills. Requires a TOML file created via the editor web app."
+      content : "If you have a GitHub account, forking this repository is the easiest way to present your tech skills on a personalized devradar instance."
+      URL: //github.com/anoff/devradar-static
+      URLtitle: Fork on GitHub
       highlighted : false
 
 usecases:
