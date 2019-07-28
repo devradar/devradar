@@ -4,7 +4,7 @@
   "description": "Build your personal techradar",
   "author": "Andreas Offenhaeuser <http://anoff.io>",
   "private": true,
-  "license": "AGPL-3.0",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
