@@ -59,6 +59,10 @@ steps:
     branch:
     - master
 
+- name: git reset
+  image: alpine/git
+  commands:
+  - git reset --hard
 - name: build editor.devradar.io
   image: node:lts-slim
   commands:
@@ -100,6 +104,10 @@ steps:
     event:
     - push
 
+- name: git reset
+  image: alpine/git
+  commands:
+  - git reset --hard
 - name: build & deploy radar.anoff.io
   image: node:lts-slim
   environment:
