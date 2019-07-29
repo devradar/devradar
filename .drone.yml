@@ -59,7 +59,7 @@ steps:
     branch:
     - master
 
-- name: git reset
+- name: git reset.
   image: alpine/git
   commands:
   - git reset --hard
@@ -104,7 +104,7 @@ steps:
     event:
     - push
 
-- name: git reset
+- name: git reset..
   image: alpine/git
   commands:
   - git reset --hard
