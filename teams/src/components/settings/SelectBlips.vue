@@ -2,7 +2,7 @@
   <v-layout row wrap>
     <v-flex xs4>
       <v-list>
-        <v-subheader inset>Team</v-subheader>
+        <v-subheader>Team</v-subheader>
         <v-list-tile
           v-for="(item, index) in items"
           :key="item.title"
@@ -81,7 +81,8 @@ export default {
     blipsByCategory () {
       return (itemIx, categoryIx) => {
         if (itemIx > this.items.length - 1) {
-          return []
+          return this.selectedBlips
+            .filter(e => e.category === categoryIx)
         }
         return this.items[itemIx].payload.blips
           .filter(e => e.category === categoryIx)
@@ -90,7 +91,7 @@ export default {
   },
   methods: {
     checkComplete () {
-      if (this.activeItemIx >= this.items.length - 1) {
+      if (this.activeItemIx > this.items.length - 1) {
         this.$emit('isComplete', true)
       } else {
         this.$emit('isComplete', false)
@@ -98,6 +99,7 @@ export default {
     },
     itemDone (value) {
       this.activeItemIx = ++value
+      this.checkComplete()
     },
     isSelected (blip) {
       return !!this.selectedBlips.find(e => e.title.toLowerCase() === blip.title.toLowerCase())
@@ -125,5 +127,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.chips {
+  margin-left: 8rem;
+}
 </style>

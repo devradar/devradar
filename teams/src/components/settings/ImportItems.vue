@@ -1,7 +1,12 @@
 <template>
   <v-list two-line subheader>
     <v-subheader inset>Team competences</v-subheader>
-
+    <v-btn
+    @click="loadDummyData()"
+    color="secondary"
+    ripple>
+      Load Dummies
+    </v-btn>
     <v-list-tile
       avatar
     >
@@ -133,6 +138,9 @@ export default {
       } else {
         this.$emit('isComplete', false)
       }
+    },
+    loadDummyData () {
+      this.$store.dispatch('loadDummyData')
     }
   },
   mounted () {

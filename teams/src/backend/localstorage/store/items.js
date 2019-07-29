@@ -1,3 +1,5 @@
+import dummy from './dummydata'
+
 const actions = {
   uploadTeam ({ commit }, payload) {
     commit('setTeam', payload)
@@ -11,6 +13,10 @@ const actions = {
   },
   deleteDev ({ commit }, ix) {
     commit('deleteDev', ix)
+  },
+  loadDummyData ({ commit }) {
+    commit('setTeam', dummy.items.team)
+    dummy.items.devs.forEach(i => commit('addDev', i))
   }
 }
 

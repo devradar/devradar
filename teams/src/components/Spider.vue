@@ -21,8 +21,7 @@
             <v-list-tile-action>
               <v-btn
               @click="itemDone(index)"
-              v-if="index >= activeItemIx"
-              :disabled="index !== activeItemIx"
+              v-if="false"
               icon ripple>
                 <v-icon>check_box_outline_blank</v-icon>
               </v-btn>

@@ -11,7 +11,7 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <import-items @isComplete="val => val ? isComplete(2) : isComplete(1)"></import-items>
+        <import-items @isComplete="val => isComplete(1, val)"></import-items>
         <v-flex xs12 text-xs-right>
           <v-btn
           :disabled="true"
@@ -29,7 +29,7 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <select-blips @isComplete="val => val ? isComplete(3) : isComplete(2)"></select-blips>
+        <select-blips @isComplete="val => isComplete(2, val)"></select-blips>
         <v-flex xs12 text-xs-right>
           <v-btn
           @click="stepperCount--"
@@ -37,6 +37,7 @@
             Back
           </v-btn>
           <v-btn
+          :disabled="!canProgress"
           @click="stepperCount++"
           ripple color="primary">
             Next
@@ -62,17 +63,21 @@ import SelectBlips from './settings/SelectBlips.vue'
 
 export default {
   data: () => ({
-    stepperCount: 2,
-    stepperComplete: 0 // needs to be 2 to switch stepperCount from 1->2
+    stepperCount: 1,
+    stepperComplete: 0 // needs to be 1 to switch stepperCount from 1->2
   }),
   computed: {
     canProgress () {
-      return this.stepperComplete > this.stepperCount
+      return this.stepperComplete >= this.stepperCount
     }
   },
   methods: {
-    isComplete (value) {
-      this.stepperComplete = value
+    isComplete (step, value) {
+      if (step === this.stepperCount) {
+        if (value) {
+          this.stepperComplete = step
+        }
+      }
     }
   },
   components: {
