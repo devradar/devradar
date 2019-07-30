@@ -1,12 +1,7 @@
 <template>
   <v-list two-line subheader>
     <v-subheader inset>Team competences</v-subheader>
-    <v-btn
-    @click="loadDummyData()"
-    color="secondary"
-    ripple>
-      Load Dummies
-    </v-btn>
+
     <v-list-tile
       avatar
     >
@@ -80,6 +75,14 @@
         </v-upload-btn>
       </v-list-tile-action>
     </v-list-tile>
+    <v-btn
+    @click="loadDummyData()"
+    color="secondary"
+    v-if="!hasItems"
+    ripple>
+      Load Dummydata
+    </v-btn>
+    <v-spacer></v-spacer>
   </v-list>
 </template>
 
