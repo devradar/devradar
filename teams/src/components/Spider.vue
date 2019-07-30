@@ -85,15 +85,16 @@ export default {
       // helper for data collection
       const formatBlips = e => ({
         axis: e.title,
-        value: e.state
+        value: e.state + 1
       })
       const addMissingBlips = e => {
         const existingBlips = e.map(o => o.axis.toLowerCase())
         const missing = this.selectedBlips
           .filter(s => existingBlips.indexOf(s.title.toLowerCase()) === -1)
-          .map(s => ({ axis: s.title, value: 0 }))
+          .map(s => ({ axis: s.title, value: 0.5 }))
         return e.concat(missing)
       }
+      const sortByAxis = e => e.sort((a, b) => a.axis > b.axis)
       // Data
       const d = this.items
         .map(item => item.payload.blips
@@ -101,13 +102,16 @@ export default {
           .map(formatBlips)
         )
         .map(addMissingBlips)
+        .map(sortByAxis)
+
+      console.log(d)
 
       // Options for the Radar chart, other than default
       const mycfg = {
         w: w,
         h: h,
-        maxValue: 3,
-        levels: 3,
+        maxValue: 4,
+        levels: 4,
         ExtraWidthX: 300
       }
 

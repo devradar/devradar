@@ -12,21 +12,31 @@
 // For a bit of extra information check the blog about it:
 // http://nbremer.blogspot.nl/2013/09/making-d3-radar-chart-look-bit-better.html
 
-let d3
-
+function rad2cart (radius, angle) {
+  return {
+    x: (1 - radius * Math.sin(angle)),
+    y: (1 - radius * Math.cos(angle))
+  }
+}
+function value2pixelPos (value, index, cfg) {
+  const { x, y } = rad2cart(parseFloat(value) / cfg.maxValue, index * cfg.radians / cfg.elementCount)
+  return {
+    x: cfg.w / 2 * x,
+    y: cfg.h / 2 * y
+  }
+}
 function drawCircles (element, cfg, allAxis) {
   const radius = cfg.factor * Math.min(cfg.w / 2, cfg.h / 2)
-  const total = allAxis.length
   for (let j = 0; j < cfg.levels - 1; j++) {
     let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels)
     element.selectAll('.levels')
       .data(allAxis)
       .enter()
       .append('svg:line')
-      .attr('x1', function (d, i) { return levelFactor * (1 - cfg.factor * Math.sin(i * cfg.radians / total)) })
-      .attr('y1', function (d, i) { return levelFactor * (1 - cfg.factor * Math.cos(i * cfg.radians / total)) })
-      .attr('x2', function (d, i) { return levelFactor * (1 - cfg.factor * Math.sin((i + 1) * cfg.radians / total)) })
-      .attr('y2', function (d, i) { return levelFactor * (1 - cfg.factor * Math.cos((i + 1) * cfg.radians / total)) })
+      .attr('x1', function (d, i) { return levelFactor * rad2cart(1, i * cfg.radians / cfg.elementCount).x })
+      .attr('y1', function (d, i) { return levelFactor * rad2cart(1, i * cfg.radians / cfg.elementCount).y })
+      .attr('x2', function (d, i) { return levelFactor * rad2cart(1, (i + 1) * cfg.radians / cfg.elementCount).x })
+      .attr('y2', function (d, i) { return levelFactor * rad2cart(1, (i + 1) * cfg.radians / cfg.elementCount).y })
       .attr('class', 'line')
       .style('stroke', 'grey')
       .style('stroke-opacity', '0.75')
@@ -44,8 +54,8 @@ function drawTextLabels (element, cfg) {
       .data([1]) // dummy data
       .enter()
       .append('svg:text')
-      .attr('x', function (d) { return levelFactor * (1 - cfg.factor * Math.sin(0)) })
-      .attr('y', function (d) { return levelFactor * (1 - cfg.factor * Math.cos(0)) })
+      .attr('x', function (d) { return levelFactor * rad2cart(1, 0).x })
+      .attr('y', function (d) { return levelFactor * rad2cart(1, 0).y })
       .attr('class', 'legend')
       .style('font-family', 'sans-serif')
       .style('font-size', '10px')
@@ -85,8 +95,7 @@ function drawAxis (element, cfg, allAxis) {
 }
 
 export default {
-  draw: function (d3_, id, d, options) {
-    d3 = d3_ // populate hacky module wide variable
+  draw: function (d3, id, d, options) {
     const cfg = {
       radius: 5,
       w: 600,
@@ -94,7 +103,7 @@ export default {
       factor: 1,
       factorLegend: 0.85,
       levels: 3,
-      maxValue: 0,
+      maxValue: 10,
       radians: 2 * Math.PI,
       opacityArea: 0.5,
       ToRight: 5,
@@ -112,9 +121,11 @@ export default {
         }
       }
     }
+
     cfg.maxValue = Math.max(cfg.maxValue, d3.max(d, function (i) { return d3.max(i.map(function (o) { return o.value })) }))
     const allAxis = d[0].map(i => i.axis)
     const total = allAxis.length
+    cfg.elementCount = total
     d3.select(id).select('svg').remove()
 
     const g = d3.select(id)
@@ -133,14 +144,13 @@ export default {
 
     let series = 0
     let dataValues = []
+    // draw polygons
     d.forEach(function (y, x) {
       dataValues = []
       g.selectAll('.nodes')
         .data(y, function (j, i) {
-          dataValues.push([
-            cfg.w / 2 * (1 - (parseFloat(Math.max(j.value, 0)) / cfg.maxValue) * cfg.factor * Math.sin(i * cfg.radians / total)),
-            cfg.h / 2 * (1 - (parseFloat(Math.max(j.value, 0)) / cfg.maxValue) * cfg.factor * Math.cos(i * cfg.radians / total))
-          ])
+          const { x, y } = value2pixelPos(j.value, i, cfg)
+          dataValues.push([x, y])
         })
       dataValues.push(dataValues[0])
       g.selectAll('.area')
@@ -175,8 +185,9 @@ export default {
         })
       series++
     })
-    series = 0
 
+    // draw dots
+    series = 0
     d.forEach(function (y, x) {
       g.selectAll('.nodes')
         .data(y).enter()
