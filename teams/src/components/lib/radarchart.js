@@ -35,14 +35,17 @@ chart.draw = function (d3, id, data, options) {
   cfg.elementCount = data.axis.length
   cfg.radius = Math.min(cfg.w / 2, cfg.h / 2)
 
-  // scale helpers
+  // ### helpers ###
+  // scale level 0..4 to pixels
   const rScale = d3.scaleLinear()
     .range([0, cfg.radius])
     .domain([0, cfg.maxValue])
+  // (interpolate) a line from polar coordinates
   const radarLine = d3.lineRadial()
     .curve(d3.curveCardinalClosed.tension(0.5)) // smoothen https://github.com/d3/d3-shape/blob/v1.3.4/README.md#curves (use closed curves only)
     .radius(function (d) { return rScale(d) })
     .angle(function (d, i) { return i * 2 * Math.PI / cfg.elementCount })
+  // convert single polar coordinates used in data point placement
   const pol2xy = (value, i) => {
     return {
       x: rScale(value) * Math.cos(i * 2 * Math.PI / cfg.elementCount - Math.PI / 2),
@@ -59,7 +62,9 @@ chart.draw = function (d3, id, data, options) {
     .append('g')
     .attr('transform', 'translate(' + (cfg.w / 2 + cfg.margin.left) + ',' + (cfg.h / 2 + cfg.margin.top) + ')')
 
+  // #############
   // ###  Grid ###
+  // #############
   const gridWrapper = g.append('g').attr('class', 'gridWrapper')
 
   // background circles
@@ -115,7 +120,9 @@ chart.draw = function (d3, id, data, options) {
     .attr('y', (d, i) => pol2xy(cfg.maxValue * 1.15, i).y)
     .text(d => d)
 
+  // ###################
   // ### Data points ###
+  // ###################
   const radarWrapper = g.selectAll('.radarWrapper')
     .data(data.items)
     .enter().append('g')
