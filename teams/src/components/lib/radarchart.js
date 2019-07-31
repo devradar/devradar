@@ -1,248 +1,183 @@
-// modified by Andreas Offenhaeuser to make ES6 compatible for Vue
+// based on http://bl.ocks.org/nbremer/21746a9668ffdf6d8242 on 2019-07-31 under MIT license
+//  modified by Andreas Offenhaeuser to make ES6 and d3 v5 compatible
 
-// taken from https://gist.github.com/nbremer/6506614 on 2019-07-10 under [MIT license](https://gist.github.com/nbremer/6506614#file-block-L2)
-// Original header/attribution by Nadieh Bremer:
-// Practically all this code comes from https://github.com/alangrafu/radar-chart-d3
-// I only made some additions and aesthetic adjustments to make the chart look better
-// (of course, that is only my point of view)
-// Such as a better placement of the titles at each line end,
-// adding numbers that reflect what each circular level stands for
-// Not placing the last level and slight differences in color
-//
-// For a bit of extra information check the blog about it:
-// http://nbremer.blogspot.nl/2013/09/making-d3-radar-chart-look-bit-better.html
+const chart = { }
+chart.draw = function (d3, id, data, options) {
+  chart._d3 = d3
+  const cfg = {
+    radius: 5,
+    w: 600,
+    h: 600,
+    factor: 1,
+    factorLegend: 0.85,
+    levels: 3,
+    maxValue: 10,
+    opacityArea: 0.5,
+    transitionDurationMs: 500,
+    margin: {
+      top: 100,
+      right: 200,
+      bottom: 50,
+      left: 60
+    },
+    color: d3.scaleOrdinal(d3.schemeCategory10)
+  }
 
-function rad2cart (radius, angle) {
-  return {
-    x: (1 - radius * Math.sin(angle)),
-    y: (1 - radius * Math.cos(angle))
+  if (options) {
+    for (let i in options) {
+      if (options[i]) {
+        cfg[i] = options[i]
+      }
+    }
   }
-}
-function value2pixelPos (value, index, cfg) {
-  const { x, y } = rad2cart(parseFloat(value) / cfg.maxValue, index * cfg.radians / cfg.elementCount)
-  return {
-    x: cfg.w / 2 * x,
-    y: cfg.h / 2 * y
-  }
-}
-function drawCircles (element, cfg, allAxis) {
-  const radius = cfg.factor * Math.min(cfg.w / 2, cfg.h / 2)
-  for (let j = 0; j < cfg.levels - 1; j++) {
-    let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels)
-    element.selectAll('.levels')
-      .data(allAxis)
-      .enter()
-      .append('svg:line')
-      .attr('x1', function (d, i) { return levelFactor * rad2cart(1, i * cfg.radians / cfg.elementCount).x })
-      .attr('y1', function (d, i) { return levelFactor * rad2cart(1, i * cfg.radians / cfg.elementCount).y })
-      .attr('x2', function (d, i) { return levelFactor * rad2cart(1, (i + 1) * cfg.radians / cfg.elementCount).x })
-      .attr('y2', function (d, i) { return levelFactor * rad2cart(1, (i + 1) * cfg.radians / cfg.elementCount).y })
-      .attr('class', 'line')
-      .style('stroke', 'grey')
-      .style('stroke-opacity', '0.75')
-      .style('stroke-width', '0.3px')
-      .attr('transform', 'translate(' + (cfg.w / 2 - levelFactor) + ', ' + (cfg.h / 2 - levelFactor) + ')')
-  }
-}
 
-// Text indicating at what % each level is
-function drawTextLabels (element, cfg) {
-  const radius = cfg.factor * Math.min(cfg.w / 2, cfg.h / 2)
-  for (let j = 0; j < cfg.levels; j++) {
-    let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels)
-    element.selectAll('.levels')
-      .data([1]) // dummy data
-      .enter()
-      .append('svg:text')
-      .attr('x', function (d) { return levelFactor * rad2cart(1, 0).x })
-      .attr('y', function (d) { return levelFactor * rad2cart(1, 0).y })
-      .attr('class', 'legend')
-      .style('font-family', 'sans-serif')
-      .style('font-size', '10px')
-      .attr('transform', 'translate(' + (cfg.w / 2 - levelFactor + cfg.ToRight) + ', ' + (cfg.h / 2 - levelFactor) + ')')
-      .attr('fill', '#737373')
-      .text(((j + 1) * cfg.maxValue / cfg.levels))
-  }
-}
+  cfg.maxValue = Math.max(cfg.maxValue, ...data.items.map(e => e.values).flat()) // (lower) limit maxValue by data
+  cfg.elementCount = data.axis.length
+  cfg.radius = Math.min(cfg.w / 2, cfg.h / 2)
 
-function drawAxis (element, cfg, allAxis) {
-  const total = allAxis.length
-  const axis = element.selectAll('.axis')
-    .data(allAxis)
+  // scale helpers
+  const rScale = d3.scaleLinear()
+    .range([0, cfg.radius])
+    .domain([0, cfg.maxValue])
+  const radarLine = d3.lineRadial()
+    .curve(d3.curveCardinalClosed.tension(0.5)) // smoothen https://github.com/d3/d3-shape/blob/v1.3.4/README.md#curves (use closed curves only)
+    .radius(function (d) { return rScale(d) })
+    .angle(function (d, i) { return i * 2 * Math.PI / cfg.elementCount })
+  const pol2xy = (value, i) => {
+    return {
+      x: rScale(value) * Math.cos(i * 2 * Math.PI / cfg.elementCount - Math.PI / 2),
+      y: rScale(value) * Math.sin(i * 2 * Math.PI / cfg.elementCount - Math.PI / 2)
+    }
+  }
+
+  // create a reference object with radar center being 0,0
+  d3.select(id).select('svg').remove()
+  const g = d3.select(id)
+    .append('svg')
+    .attr('width', cfg.w + cfg.margin.left + cfg.margin.right)
+    .attr('height', cfg.h + cfg.margin.top + cfg.margin.bottom)
+    .append('g')
+    .attr('transform', 'translate(' + (cfg.w / 2 + cfg.margin.left) + ',' + (cfg.h / 2 + cfg.margin.top) + ')')
+
+  // ###  Grid ###
+  const gridWrapper = g.append('g').attr('class', 'gridWrapper')
+
+  // background circles
+  gridWrapper.selectAll('.levels')
+    .data(d3.range(1, (cfg.levels + 1)).reverse())
+    .enter()
+    .append('circle')
+    .attr('class', 'gridCircle')
+    .attr('r', function (d, i) { return cfg.radius / cfg.levels * d })
+    .style('fill', '#CDCDCD')
+    .style('stroke', '#fafafa')
+    .style('stroke-width', 3)
+    .style('fill-opacity', 0.3)
+
+  // circle label
+  gridWrapper.selectAll('.gridLabel')
+    .data(d3.range(1, (cfg.levels + 1)))
+    .enter().append('text')
+    .attr('class', 'gridLabel')
+    .attr('width', '30px')
+    .attr('text-anchor', 'middle')
+    .attr('x', 4)
+    .attr('y', function (d) { return -d * cfg.radius / cfg.levels })
+    .attr('dy', '1em')
+    .style('font-size', '12px')
+    .attr('fill', '#333')
+    .text((d, i) => i + 1)
+
+  // labels + axis
+  const axisWrapper = gridWrapper.selectAll('.axis')
+    .data(data.axis)
     .enter()
     .append('g')
     .attr('class', 'axis')
 
-  axis.append('line')
-    .attr('x1', cfg.w / 2)
-    .attr('y1', cfg.h / 2)
-    .attr('x2', function (d, i) { return cfg.w / 2 * (1 - cfg.factor * Math.sin(i * cfg.radians / total)) })
-    .attr('y2', function (d, i) { return cfg.h / 2 * (1 - cfg.factor * Math.cos(i * cfg.radians / total)) })
+  // axis grid
+  axisWrapper.append('line')
+    .attr('x1', (d, i) => pol2xy(cfg.maxValue * 0.99, i).x)
+    .attr('y1', (d, i) => pol2xy(cfg.maxValue * 0.99, i).y)
+    .attr('x2', (d, i) => pol2xy(cfg.maxValue * 1.04, i).x)
+    .attr('y2', (d, i) => pol2xy(cfg.maxValue * 1.04, i).y)
     .attr('class', 'line')
-    .style('stroke', 'grey')
-    .style('stroke-width', '1px')
+    .style('stroke', '#999')
+    .style('stroke-width', '2px')
 
-  axis.append('text')
+  // axis labels
+  axisWrapper.append('text')
     .attr('class', 'legend')
-    .text(function (d) { return d })
-    .style('font-family', 'sans-serif')
-    .style('font-size', '14px')
+    .style('font-size', '11px')
     .attr('text-anchor', 'middle')
-    .attr('dy', '1.5em')
-    .attr('transform', function (d, i) { return 'translate(0, -10)' })
-    .attr('x', function (d, i) { return cfg.w / 2 * (1 - cfg.factorLegend * Math.sin(i * cfg.radians / total)) - 60 * Math.sin(i * cfg.radians / total) })
-    .attr('y', function (d, i) { return cfg.h / 2 * (1 - Math.cos(i * cfg.radians / total)) - 20 * Math.cos(i * cfg.radians / total) })
-}
+    .attr('dy', '0.35em')
+    .attr('x', (d, i) => pol2xy(cfg.maxValue * 1.15, i).x)
+    .attr('y', (d, i) => pol2xy(cfg.maxValue * 1.15, i).y)
+    .text(d => d)
 
-export default {
-  draw: function (d3, id, d, options) {
-    const cfg = {
-      radius: 5,
-      w: 600,
-      h: 600,
-      factor: 1,
-      factorLegend: 0.85,
-      levels: 3,
-      maxValue: 10,
-      radians: 2 * Math.PI,
-      opacityArea: 0.5,
-      ToRight: 5,
-      TranslateX: 80,
-      TranslateY: 30,
-      ExtraWidthX: 100,
-      ExtraWidthY: 100,
-      color: d3.scaleOrdinal(d3.schemeCategory10) // d3.scale.category10()
-    }
+  // ### Data points ###
+  const radarWrapper = g.selectAll('.radarWrapper')
+    .data(data.items)
+    .enter().append('g')
+    .attr('class', 'radarWrapper')
+    .attr('data-index', (d, i) => i)
 
-    if (typeof options !== 'undefined') {
-      for (let i in options) {
-        if (typeof options[i] !== 'undefined') {
-          cfg[i] = options[i]
-        }
-      }
-    }
+  // Tooltip
+  const tooltip = g.append('text')
+    .style('opacity', 0)
+    .style('font-family', 'sans-serif')
+    .style('font-size', '13px')
 
-    cfg.maxValue = Math.max(cfg.maxValue, d3.max(d, function (i) { return d3.max(i.map(function (o) { return o.value })) }))
-    const allAxis = d[0].map(i => i.axis)
-    const total = allAxis.length
-    cfg.elementCount = total
-    d3.select(id).select('svg').remove()
+  // data points
+  radarWrapper.selectAll('.radarCircle')
+    .data(function (d, i) { return d.values })
+    .enter().append('circle')
+    .attr('class', 'radarCircle')
+    .attr('r', 3)
+    .attr('cx', (d, i) => pol2xy(d, i).x) // Math.cos(angleSlice*i - Math.PI/2)
+    .attr('cy', (d, i) => pol2xy(d, i).y)
+    .style('fill', function (d, i) { // https://stackoverflow.com/questions/38233003/d3-js-v4-how-to-access-parent-groups-datum-index/38235820
+      const lineIx = this.parentNode.getAttribute('data-index')
+      return cfg.color(lineIx)
+    })
 
-    const g = d3.select(id)
-      .append('svg')
-      .attr('width', cfg.w + cfg.ExtraWidthX)
-      .attr('height', cfg.h + cfg.ExtraWidthY)
-      .append('g')
-      .attr('transform', 'translate(' + cfg.TranslateX + ',' + cfg.TranslateY + ')')
+  // filled area
+  radarWrapper
+    .append('path')
+    .attr('class', 'radarArea')
+    .attr('d', (d, i) => radarLine(d.values))
+    .style('fill', (d, i) => cfg.color(i))
+    .style('fill-opacity', cfg.opacityArea)
+    .style('stroke-width', 2)
+    .style('stroke', (d, i) => cfg.color(i))
+    .on('mouseover', function () {
+    // Dim all blobs
+      d3.selectAll('.radarArea')
+        .transition().duration(cfg.transitionDurationMs)
+        .style('fill-opacity', 0.1)
+      // Bring back the hovered over blob
+      d3.select(this)
+        .transition().duration(cfg.transitionDurationMs)
+        .style('fill-opacity', 0.7)
+    })
+    .on('mousemove', function (d) {
+      const newX = d3.mouse(this)[0] - 10
+      const newY = d3.mouse(this)[1] - 10
 
-    var tooltip
-
-    // draw axis + circles
-    drawCircles(g, cfg, allAxis)
-    drawTextLabels(g, cfg)
-    drawAxis(g, cfg, allAxis)
-
-    let series = 0
-    let dataValues = []
-    // draw polygons
-    d.forEach(function (y, x) {
-      dataValues = []
-      g.selectAll('.nodes')
-        .data(y, function (j, i) {
-          const { x, y } = value2pixelPos(j.value, i, cfg)
-          dataValues.push([x, y])
-        })
-      dataValues.push(dataValues[0])
-      g.selectAll('.area')
-        .data([dataValues])
-        .enter()
-        .append('polygon')
-        .attr('class', 'radar-chart-serie' + series)
-        .style('stroke-width', '2px')
-        .style('stroke', cfg.color(series))
-        .attr('points', function (d) {
-          var str = ''
-          for (var pti = 0; pti < d.length; pti++) {
-            str = str + d[pti][0] + ',' + d[pti][1] + ' '
-          }
-          return str
-        })
-        .style('fill', function (j, i) { return cfg.color(series) })
+      tooltip
+        .attr('x', newX)
+        .attr('y', newY)
+        .text(d.name)
+        .transition().duration(cfg.transitionDurationMs)
+        .style('opacity', 1)
+    })
+    .on('mouseout', function () {
+    // Bring back all blobs
+      d3.selectAll('.radarArea')
+        .transition().duration(cfg.transitionDurationMs)
         .style('fill-opacity', cfg.opacityArea)
-        .on('mouseover', function (d) {
-          const z = 'polygon.' + d3.select(this).attr('class')
-          g.selectAll('polygon')
-            .transition(200)
-            .style('fill-opacity', 0.1)
-          g.selectAll(z)
-            .transition(200)
-            .style('fill-opacity', 0.7)
-        })
-        .on('mouseout', function () {
-          g.selectAll('polygon')
-            .transition(200)
-            .style('fill-opacity', cfg.opacityArea)
-        })
-      series++
+      tooltip.transition().duration(cfg.transitionDurationMs)
+        .style('opacity', 0)
     })
-
-    // draw dots
-    series = 0
-    d.forEach(function (y, x) {
-      g.selectAll('.nodes')
-        .data(y).enter()
-        .append('svg:circle')
-        .attr('class', 'radar-chart-serie' + series)
-        .attr('r', cfg.radius)
-        .attr('alt', function (j) { return Math.max(j.value, 0) })
-        .attr('cx', function (j, i) {
-          dataValues.push([
-            cfg.w / 2 * (1 - (parseFloat(Math.max(j.value, 0)) / cfg.maxValue) * cfg.factor * Math.sin(i * cfg.radians / total)),
-            cfg.h / 2 * (1 - (parseFloat(Math.max(j.value, 0)) / cfg.maxValue) * cfg.factor * Math.cos(i * cfg.radians / total))
-          ])
-          return cfg.w / 2 * (1 - (Math.max(j.value, 0) / cfg.maxValue) * cfg.factor * Math.sin(i * cfg.radians / total))
-        })
-        .attr('cy', function (j, i) {
-          return cfg.h / 2 * (1 - (Math.max(j.value, 0) / cfg.maxValue) * cfg.factor * Math.cos(i * cfg.radians / total))
-        })
-        .attr('data-id', function (j) { return j.axis })
-        .style('fill', cfg.color(series)).style('fill-opacity', 0.9)
-        .on('mouseover', function (d) {
-          const newX = parseFloat(d3.select(this).attr('cx')) - 10
-          const newY = parseFloat(d3.select(this).attr('cy')) - 5
-
-          tooltip
-            .attr('x', newX)
-            .attr('y', newY)
-            .text(d.value)
-            .transition(200)
-            .style('opacity', 1)
-
-          const z = 'polygon.' + d3.select(this).attr('class')
-          g.selectAll('polygon')
-            .transition(200)
-            .style('fill-opacity', 0.1)
-          g.selectAll(z)
-            .transition(200)
-            .style('fill-opacity', 0.7)
-        })
-        .on('mouseout', function () {
-          tooltip
-            .transition(200)
-            .style('opacity', 0)
-          g.selectAll('polygon')
-            .transition(200)
-            .style('fill-opacity', cfg.opacityArea)
-        })
-        .append('svg:title')
-        .text(function (j) { return Math.max(j.value, 0) })
-
-      series++
-    })
-    // Tooltip
-    tooltip = g.append('text')
-      .style('opacity', 0)
-      .style('font-family', 'sans-serif')
-      .style('font-size', '13px')
-  }
 }
+export default chart

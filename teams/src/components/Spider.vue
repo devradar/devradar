@@ -95,17 +95,31 @@ export default {
         return e.concat(missing)
       }
       const sortByAxis = e => e.sort((a, b) => a.axis > b.axis)
-      // Data
-      const d = this.items
-        .map(item => item.payload.blips
-          .filter(this.isSelectedBlip)
-          .map(formatBlips)
-        )
-        .map(addMissingBlips)
-        .map(sortByAxis)
 
-      console.log(d)
+      const data = {
+        axis: this.selectedBlips.map(e => e.title),
+        levels: ['Adopt', 'Trial', 'Assess', 'Hold'],
+        items: this.items
+          .map(item => item.payload.blips
+            .filter(this.isSelectedBlip)
+            .map(formatBlips)
+          )
+          .map(addMissingBlips)
+          .map(sortByAxis)
+          .map((item, ix) => ({ values: item.map(e => e.value), name: this.items[ix].title }))
+      }
 
+      // const data = {
+      //   axis: ['a', 'b', 'c'],
+      //   items: [{
+      //     name: 'blup',
+      //     values: [1,2,3,4,5]
+      //   },
+      //   {
+      //     name: 'bert',
+      //     values: [4,2,5,2,1]
+      //   }]
+      // }
       // Options for the Radar chart, other than default
       const mycfg = {
         w: w,
@@ -117,7 +131,7 @@ export default {
 
       // Call function to draw the Radar chart
       // Will expect that data is in %'s
-      RadarChart.draw(d3, '#chart', d, mycfg)
+      RadarChart.draw(d3, '#chart', data, mycfg)
 
       /// /////////////////////////////////////////
       /// //////// Initiate legend ////////////////
