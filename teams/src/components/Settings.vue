@@ -5,7 +5,7 @@
 
       <v-divider></v-divider>
 
-      <v-stepper-step :complete="stepperCount > 2" step="2">Match blips</v-stepper-step>
+      <v-stepper-step :complete="stepperCount > 2" step="2">Select blips</v-stepper-step>
 
     </v-stepper-header>
 
@@ -36,21 +36,14 @@
           ripple>
             Back
           </v-btn>
-          <v-btn
-          :disabled="!canProgress"
-          @click="stepperCount++"
-          ripple color="primary">
-            Next
-          </v-btn>
+          <router-link :to="canProgress ? {name: 'Spider'} : { name: null }">
+            <v-btn
+            :disabled="!canProgress"
+            ripple color="primary">
+              Next
+            </v-btn>
+          </router-link>
         </v-flex>
-      </v-stepper-content>
-
-      <v-stepper-content step="3">
-        <v-btn
-        @click="stepperCount++"
-        ripple color="primary">
-          Next
-        </v-btn>
       </v-stepper-content>
     </v-stepper-items>
 
