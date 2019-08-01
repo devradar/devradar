@@ -144,6 +144,7 @@ export default {
     },
     loadDummyData () {
       this.$store.dispatch('loadDummyData')
+      this.checkComplete()
     }
   },
   mounted () {
