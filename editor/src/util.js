@@ -23,12 +23,12 @@ function getUUID () {
 // return a new object that only contains the pure blip data
 function cleanBlip (blip) {
   const changes = blip.changes.map((c, cIndex) => {
-    const { date, newState, text, id } = c
-    return { date, newState, text, id }
+    const { date, newLevel, text, id } = c
+    return { date, newLevel, text, id }
   })
-  const state = changes.sort((a, b) => a.date < b.date)[0].newState
+  const level = changes.sort((a, b) => a.date < b.date)[0].newLevel
   const { category, link, description, title, id } = blip
-  return { category, link, description, title, changes, state, id }
+  return { category, link, description, title, changes, level, id }
 }
 export {
   getHash,

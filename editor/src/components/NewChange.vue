@@ -2,7 +2,7 @@
   <v-dialog v-model="$parent.newChangeModalVisible" max-width="80%">
     <v-card>
       <v-card-title class="title">
-        Add new blip state
+        Add new blip level
       </v-card-title>
       <v-card-text>
         <v-form v-model="valid" ref="form">
@@ -11,7 +11,7 @@
               <v-flex sm6 xs12 d-flex>
                 <v-layout row wrap>
                   <v-flex xs12>
-                    <v-select :items="states" v-model="state" label="State" single-line required :rules="[v => !!v || 'State is required']"></v-select>
+                    <v-select :items="levels" v-model="level" label="Level" single-line required :rules="[v => !!v || 'Level is required']"></v-select>
                   </v-flex>
                   <v-flex xs12>
                     <v-textarea v-model="changeText" label="Reason for change" rows="2"></v-textarea>
@@ -40,7 +40,7 @@ export default {
     return {
       valid: false,
       dialog: true,
-      state: null,
+      level: null,
       date: new Date().toISOString().slice(0, 7),
       changeText: null
     }
@@ -57,7 +57,7 @@ export default {
       this.reset()
     },
     reset () {
-      this.state = null
+      this.level = null
       this.date = new Date().toISOString().slice(0, 7)
       this.changeText = null
     }
@@ -66,12 +66,12 @@ export default {
     change () {
       return {
         date: this.date,
-        newState: this.states.indexOf(this.state),
+        newLevel: this.levels.indexOf(this.level),
         text: this.changeText
       }
     },
-    states () {
-      return this.$store.getters.meta.states
+    levels () {
+      return this.$store.getters.meta.levels
     }
   }
 }

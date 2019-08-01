@@ -11,8 +11,8 @@ A new history entry can be created from the **List view** by clicking the add bu
 Each entry in a blips history has three elements:
 
 1. **Date**: date of the skill change
-1. **State**: the blip state at this date
-1. **Reason for change**: what lead to the specific change in blip state
+1. **Level**: the blip level at this date
+1. **Reason for change**: what lead to the specific change in blip level
 
 <video controls autoplay loop muted>
     <source src="/videos/history.webm" type="video/webm">

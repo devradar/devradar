@@ -11,10 +11,10 @@ By clicking the button a dialog window will pop up and ask you for the blip deta
 
 * **Title**
 * **Category**: quadrant
-* **State**: adoption level
+* **Level**: adoption level
 * **Link** (opt.)
 * **Technology Use**: descriptive text how you use this skill/technology (opt.)
-* **Reason for change**: why you put it in its current state (opt.)
+* **Reason for change**: why you put it in its current level (opt.)
 
 <video controls autoplay loop muted>
     <source src="/videos/add.webm" type="video/webm">

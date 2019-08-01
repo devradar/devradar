@@ -123,7 +123,7 @@ span.blip-number {
   margin-right: 5px;
   text-align: center;
 }
-span.blip-state {
+span.blip-level {
   @include smaller($breakpoint-sm) { display: none; }
   float: right;
   margin-left: 4em;
@@ -132,7 +132,7 @@ span.blip-state {
 }
 
 .radar {
-  span.state {
+  span.level {
     font-size: 1em;
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
@@ -159,7 +159,7 @@ span.blip-state {
   border: 2px solid white;
   background: lighten(black, 85%);
   z-index: 3;
-  span.state {
+  span.level {
     font-size: 1em;
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
@@ -186,7 +186,7 @@ span.blip-state {
   border: 2px solid white;
   background: lighten(black, 90%);
   z-index: 2;
-  span.state {
+  span.level {
     font-size: 1em;
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;
@@ -212,7 +212,7 @@ span.blip-state {
   border-radius: 50%;
   border: 2px solid white;
   background: lighten(black, 92%);
-  span.state {
+  span.level {
     font-size: 1em;
     @include smaller($breakpoint-sm) { font-size: 0.7em; }
     text-transform: uppercase;

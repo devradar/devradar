@@ -6,13 +6,13 @@ function migrateToEnum (blip, meta) {
   if (typeof blip.category === 'string' && meta.categories.length) {
     blip.category = meta.categories.indexOf(blip.category)
   }
-  if (typeof blip.state === 'string' && meta.states.length) {
-    blip.state = meta.states.indexOf(blip.state)
+  if (typeof blip.level === 'string' && meta.levels.length) {
+    blip.level = meta.levels.indexOf(blip.level)
   }
   blip.changes = blip.changes
     .map(change => {
-      if (typeof change.newState === 'string' && meta.states.length) {
-        change.newState = meta.states.indexOf(change.newState)
+      if (typeof change.newLevel === 'string' && meta.levels.length) {
+        change.newLevel = meta.levels.indexOf(change.newLevel)
       }
       return change
     })

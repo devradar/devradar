@@ -29,9 +29,9 @@
             </v-chip>
             <v-chip small disabled class="bold" @click.stop="addChange(blip)">
               <v-avatar class="primary">
-                {{blip.state}}
+                {{blip.level}}
               </v-avatar>
-              {{meta.states[blip.state]}}
+              {{meta.levels[blip.level]}}
             </v-chip>
           </v-flex>
         </v-layout>
@@ -50,9 +50,9 @@
           <span class="subheading">{{change.date}}</span>
             <v-chip small disabled class="bold">
               <v-avatar color="primary">
-                {{change.newState}}
+                {{change.newLevel}}
               </v-avatar>
-              {{meta.states[change.newState]}}
+              {{meta.levels[change.newLevel]}}
             </v-chip>
           <v-btn icon
           v-if="isEditMode && blip.changes.length > 1"

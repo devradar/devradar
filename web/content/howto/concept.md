@@ -13,7 +13,7 @@ Each quadrant represents a certain group of skills, classical quadrants are _tec
 The distance from blip to the radar center indicates the `adoption level` (B) for a certain skill.
 In addition to the center radar graph all skills are listed by name and their respective ID in the corresponding quadrant (C).
 
-The **radar** view is best used to get an overview of the current state of competence.
+The **radar** view is best used to get an overview of the current level of competence.
 
 ![](/images/howto/radar-elements.png)
 

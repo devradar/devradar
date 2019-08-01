@@ -1,16 +1,16 @@
 import Vue from 'vue'
 
-// convert to numeric state/category
+// convert to numeric level/category
 function string2enum (item) {
   if (!((item || {}).payload || {}).meta) {
     return item
   }
-  const states = item.payload.meta.states
+  const levels = item.payload.meta.levels
   const cats = item.payload.meta.categories
   item.payload.blips = item.payload.blips
     .map(b => {
-      if (typeof b.state === 'string') {
-        b.state = states.indexOf(b.state)
+      if (typeof b.level === 'string') {
+        b.level = levels.indexOf(b.level)
       }
       if (typeof b.category === 'string') {
         b.category = cats.indexOf(b.category)
@@ -18,8 +18,8 @@ function string2enum (item) {
       if (b.changes && b.changes.length) {
         b.changes = b.changes
           .map(c => {
-            if (typeof c.newState === 'string') {
-              c.newState = states.indexOf(c.newState)
+            if (typeof c.newLevel === 'string') {
+              c.newLevel = levels.indexOf(c.newLevel)
             }
             return c
           })
@@ -31,7 +31,7 @@ function string2enum (item) {
 
 function flattenChanges (item) {
   item.payload.blips = item.payload.blips
-    .map(b => ({ category: b.category, state: b.changes && b.changes.length ? b.changes.sort((a, b) => a.date < b.date)[0].newState : b.state, title: b.title }))
+    .map(b => ({ category: b.category, level: b.changes && b.changes.length ? b.changes.sort((a, b) => a.date < b.date)[0].newLevel : b.level, title: b.title }))
   return item
 }
 

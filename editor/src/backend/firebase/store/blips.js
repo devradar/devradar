@@ -9,14 +9,14 @@ function migrateToEnum (blip) {
     b.category = appConfig.backend.categories.indexOf(b.category)
     updateRequired = true
   }
-  if (typeof b.state === 'string') {
-    b.state = appConfig.backend.states.indexOf(b.state)
+  if (typeof b.level === 'string') {
+    b.level = appConfig.backend.levels.indexOf(b.level)
     updateRequired = true
   }
   b.changes = b.changes
     .map(change => {
-      if (typeof change.newState === 'string') {
-        change.newState = appConfig.backend.states.indexOf(change.newState)
+      if (typeof change.newLevel === 'string') {
+        change.newLevel = appConfig.backend.levels.indexOf(change.newLevel)
         //
         const document = change.id
         delete change.id
@@ -34,8 +34,37 @@ function migrateToEnum (blip) {
   }
 }
 
+function migrateToLevel (blip) {
+  const b = JSON.parse(JSON.stringify(blip)) // create hard copy
+  let updateRequired = false
+  if (typeof b.state !== 'undefined') {
+    b.level = b.state
+    delete b.state
+    updateRequired = true
+  }
+  b.changes = b.changes
+    .map(change => {
+      if (typeof change.newState !== 'undefined') {
+        change.newLevel = change.newState
+        delete change.newState
+        const document = change.id
+        delete change.id
+        console.log('updating change', change)
+        firebase.firestore().collection(`blips/${b.id}/changes`).doc(document).set(change)
+      }
+      return change
+    })
+  if (updateRequired) {
+    const document = b.id
+    delete b.id
+    delete b.changes
+    console.log('updating blip', b)
+    firebase.firestore().collection('blips').doc(document).set(b)
+  }
+}
+
 const actions = {
-  getBlips ({ commit, getters, state }) {
+  getBlips ({ commit, getters, level }) {
     commit('setLoading', true)
     let blipsArray
     firebase.firestore().collection('blips').get()
@@ -53,9 +82,10 @@ const actions = {
           .filter(b => b.title && b.id)
           .filter(b => b.changes && b.changes.length > 0)
 
-        // migrate from string category/state to enums
+        // migrate from string category/level to enums
         if (getters.userCanEdit) {
           blipsArray.forEach(migrateToEnum)
+          blipsArray.forEach(migrateToLevel)
         }
 
         blipsArray.forEach(blip => commit('addBlip', blip))
@@ -102,8 +132,8 @@ const actions = {
   },
   addChange ({ commit }, { blip, change }) {
     commit('setLoading', true)
-    const { date, newState, text } = change
-    firebase.firestore().collection(`blips/${blip.id}/changes`).add({ date, newState, text })
+    const { date, newLevel, text } = change
+    firebase.firestore().collection(`blips/${blip.id}/changes`).add({ date, newLevel, text })
       .then(docRef => {
         change.id = docRef.id
         blip.changes.push(change)
@@ -121,8 +151,8 @@ const actions = {
       })
   },
   getMeta ({ commit }) {
-    const { title, states, categories } = appConfig.backend
-    const meta = { title, states, categories }
+    const { title, levels, categories } = appConfig.backend
+    const meta = { title, levels, categories }
     commit('setMeta', meta)
   }
 }

@@ -85,7 +85,7 @@ export default {
       // helper for data collection
       const formatBlips = e => ({
         axis: e.title,
-        value: e.state + 1
+        value: e.level + 1
       })
       const addMissingBlips = e => {
         const existingBlips = e.map(o => o.axis.toLowerCase())

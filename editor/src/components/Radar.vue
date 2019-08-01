@@ -9,7 +9,7 @@
           class="blip blip--hidden"
           :to="{ name: 'List', params: {search: blip.title}}"
           :data-category="blip.category"
-          :data-state="blip.state"
+          :data-level="blip.level"
           :data-changed="blip.changed"
           :title="blip.title"
           slot="activator"
@@ -29,15 +29,15 @@
             >
               <span class="blip-number">{{blip.index}}</span>
               {{blip.title | limitString($config.blips.titleCutOff)}}
-              <span class="blip-state">{{meta.states[blip.state]}}</span>
+              <span class="blip-level">{{meta.levels[blip.level]}}</span>
               </router-link>
             </li>
         </ul>
       </div>
-      <div class="adopt"><span class="state">{{meta.states[3]}}</span></div>
-      <div class="trial"><span class="state">{{meta.states[2]}}</span></div>
-      <div class="assess"><span class="state">{{meta.states[1]}}</span></div>
-      <div class="hold"><span class="state">{{meta.states[0]}}</span></div>
+      <div class="adopt"><span class="level">{{meta.levels[3]}}</span></div>
+      <div class="trial"><span class="level">{{meta.levels[2]}}</span></div>
+      <div class="assess"><span class="level">{{meta.levels[1]}}</span></div>
+      <div class="hold"><span class="level">{{meta.levels[0]}}</span></div>
     </div>
   </v-container>
 </template>
@@ -52,7 +52,7 @@ export default {
     blips () {
       const b = JSON.parse(JSON.stringify(this.$store.getters.blipsWithIndex))
       return b
-        .filter(b => b.state >= 0 && b.state <= 3)
+        .filter(b => b.level >= 0 && b.level <= 3)
         .map(b => {
           b.index = b.index + 1 // offset index by one for human display
           return b
@@ -86,11 +86,11 @@ export default {
       for (let b of blips) {
         const bWidth = b.clientWidth
         const category = parseInt(b.dataset.category)
-        const state = parseInt(b.dataset.state)
+        const level = parseInt(b.dataset.level)
 
         // Different radiuses depending on blips
         let width, radius
-        switch (state) {
+        switch (level) {
           case 0:
             radius = (getDomWidth('radar') - bWidth) / 2
             width = (getDomWidth('radar') - bWidth) / 2 - (getDomWidth('assess') - bWidth) / 2
@@ -146,7 +146,7 @@ export default {
     }
   },
   mounted: function () {
-    this.$store.subscribe((mutation, state) => {
+    this.$store.subscribe((mutation, level) => {
       if (['setBlips', 'addBlip', 'exchangeBlip', 'deleteBlip'].indexOf(mutation.type) > -1) {
         setTimeout(() => this.arrangeBlips(), 50) // delay because blobs aren't in DOM yet
       }
