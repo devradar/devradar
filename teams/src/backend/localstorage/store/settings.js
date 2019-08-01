@@ -2,8 +2,8 @@ const actions = {
   setCategories ({ commit }, array) {
     commit('setCategories', array)
   },
-  setStates ({ commit }, array) {
-    commit('setStates', array)
+  setLevels ({ commit }, array) {
+    commit('setLevels', array)
   },
   selectBlip ({ commit }, item) {
     commit('selectBlip', item)

@@ -3,14 +3,14 @@ import Vue from 'vue'
 export default (backend) => ({
   state: {
     categories: [],
-    states: [],
+    levels: [],
     blips: []
   },
   mutations: {
     setCategories (state, array) {
       state.categories = array
     },
-    setStates (state, array) {
+    setLevels (state, array) {
       state.states = array
     },
     selectBlip (state, item) {
@@ -26,8 +26,8 @@ export default (backend) => ({
     categories (state) {
       return state.categories
     },
-    states (state) {
-      return state.states
+    levels (state) {
+      return state.levels
     },
     selectedBlips (state) {
       return state.blips

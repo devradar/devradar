@@ -6,7 +6,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     key: 'AIzaSyC3FxfpYywy5ZYpiWuf9nw8_vlbxibpQH8',
     project: 'techradar-f5834',
     categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'], // quadrant 1-4
-    states: ['Novice', 'Intermediate', 'Advanced', 'Veteran'], // should be 0 - 3 for tech radar, 4 for in use, 5 for no longer in use
+    levels: ['Novice', 'Intermediate', 'Advanced', 'Veteran'], // should be 0 - 3 for tech radar, 4 for in use, 5 for no longer in use
     // personal proficiency level https://hr.nih.gov/working-nih/competencies/competencies-proficiency-scale
     title: 'Andreas\' technical skills' // title showing in the application titlebar
   },

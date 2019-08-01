@@ -7,8 +7,8 @@
         </svg>
       </v-flex>
       <v-flex xs12>
-        <h6 class="title">Blips by State</h6>
-        <svg class="chart" id="states" viewBox="0 0 800 500">
+        <h6 class="title">Blips by Level</h6>
+        <svg class="chart" id="levels" viewBox="0 0 800 500">
         </svg>
       </v-flex>
     </v-layout>
@@ -136,7 +136,7 @@ export default {
     ]),
     stats () {
       const masterCategories = this.team.payload.meta.categories
-      const masterStates = this.team.payload.meta.states
+      const masterLevels = this.team.payload.meta.levels
       const blips = this.items
         .map(e => e.payload.blips)
         .reduce((p, c) => p.concat(c), [])
@@ -151,18 +151,18 @@ export default {
         }, {})
       categories = Object.keys(categories)
         .map(e => ({ value: categories[e], key: masterCategories[e] }))
-      let states = blips
+      let levels = blips
         .reduce((p, c) => {
-          if (p[c.state]) {
-            p[c.state]++
+          if (p[c.level]) {
+            p[c.level]++
           } else {
-            p[c.state] = 1
+            p[c.level] = 1
           }
           return p
         }, {})
-      states = Object.keys(states)
-        .map(e => ({ value: states[e], key: masterStates[e] }))
-      return { categories, states }
+      levels = Object.keys(levels)
+        .map(e => ({ value: levels[e], key: masterLevels[e] }))
+      return { categories, levels }
     }
   },
   data: () => ({
@@ -172,7 +172,7 @@ export default {
   mounted: function () {
     if (this.hasItems) {
       barchart('#categories', dataToPercentage(this.stats.categories), { yLabel: 'Count', xLabel: 'Category' })
-      barchart('#states', dataToPercentage(this.stats.states), { yLabel: 'Count', xLabel: 'State' })
+      barchart('#levels', dataToPercentage(this.stats.levels), { yLabel: 'Count', xLabel: 'Level' })
     }
   }
 }

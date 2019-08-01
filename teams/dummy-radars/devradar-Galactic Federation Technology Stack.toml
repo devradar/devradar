@@ -1,32 +1,32 @@
 [meta]
 title = "Galactic Federation Technology Stack"
 categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
-states = [ "Hold", "Assess", "Trial", "Adopt" ]
+levels = [ "Hold", "Assess", "Trial", "Adopt" ]
 
 [[blips]]
 category = 0
 title = "GitLab CI"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2018-07"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 3
 link = "https:////nodejs.org"
 description = "Javascript in the backend? 🤯"
 title = "Node.js"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2018-07"
-  newState = 3
+  newLevel = 3
   text = "made it into the common toolstack"
 
   [[blips.changes]]
   date = "2014-12"
-  newState = 2
+  newLevel = 2
   text = "test it with this new backend"
 
 [[blips]]
@@ -34,11 +34,11 @@ category = 2
 link = "https:////kubernetes.io"
 description = "Containers at scale"
 title = "Kubernetes"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2018-07"
-  newState = 3
+  newLevel = 3
   text = "de facto standard for all our container orchestration needs"
 
 [[blips]]
@@ -46,156 +46,156 @@ category = 2
 link = "https:////docker.io"
 description = "Container all the things"
 title = "Docker"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-03"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 1
 description = "Treat your documentation like you treat code, git version, PR review, etc."
 title = "docs as code"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-03"
-  newState = 2
+  newLevel = 2
   text = "This seems like a good idea, we should do more of it"
 
 [[blips]]
 category = 3
 description = "Scripting and stuff"
 title = "Python"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
   text = ""
 
 [[blips]]
 category = 1
 title = "CI/CD"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 0
 title = "Azure DevOps"
-state = 1
+level = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 1
+  newLevel = 1
 
 [[blips]]
 category = 3
 title = "Vue.js"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 3
 title = "Angular"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 0
 title = "Jenkins"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 1
 title = "Infrastructure as Code"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 0
 title = "Terraform"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 0
 title = "Ansible"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 1
 title = "Web Design"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 3
 title = "C++"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 2
 title = "Azure IaaS"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 2
 title = "Azure P/SaaS"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 2
 title = "GitHub"
-state = 1
+level = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 1
+  newLevel = 1
 
 [[blips]]
 category = 2
 title = "BitBucket"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3

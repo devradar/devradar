@@ -33,7 +33,7 @@ object blip
 blip : _id : Auto ID
 blip : title : String
 blip : category : String
-blip : state : String
+blip : level : String
 blip : link : String
 blip : changes : change
 
@@ -42,7 +42,7 @@ blips o-- blip
 object change
 change : _id : Auto ID
 change : date : String
-change : newState : String
+change : newLevel : String
 change : text : String
 change : author : Firebase UID
 

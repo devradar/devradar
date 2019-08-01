@@ -1,139 +1,139 @@
 [meta]
 title = "Tammy's devradar"
 categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
-states = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
+levels = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
 
 [[blips]]
 category = 3
 title = "Javascript"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 3
 title = "CSS"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 1
 title = "Design"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 2
 title = "GitHub"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 0.0
 title = "Circle CI"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 0.0
 title = "Drone CI"
-state = 1
+level = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 1
+  newLevel = 1
 
 [[blips]]
 category = 0.0
 title = "Netlify"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 2
 title = "zeit.now"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 1
 title = "Web Development"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 3
 title = "HTML"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 3
 title = "Material Design"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2
 
 [[blips]]
 category = 3
 title = "Angular"
-state = 3
+level = 3
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 3
+  newLevel = 3
 
 [[blips]]
 category = 3
 title = "React"
-state = 1
+level = 1
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 1
+  newLevel = 1
 
 [[blips]]
 category = 3
 title = "Vue.js"
-state = 0.0
+level = 0.0
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 0.0
+  newLevel = 0.0
 
 [[blips]]
 category = 2
 title = "Heroku"
-state = 2
+level = 2
 
   [[blips.changes]]
   date = "2019-06"
-  newState = 2
+  newLevel = 2

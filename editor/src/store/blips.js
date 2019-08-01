@@ -8,7 +8,7 @@ export default (backend) => ({
     meta: {
       title: 'Rick\'s skillradar',
       categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'],
-      states: ['Novice', 'Intermediate', 'Advanced', 'Veteran']
+      levels: ['Novice', 'Intermediate', 'Advanced', 'Veteran']
     }
   },
   mutations: {
@@ -32,8 +32,8 @@ export default (backend) => ({
       state.isLoading = isLoading
     },
     setMeta (state, meta) {
-      const { title, categories, states } = meta
-      state.meta = { title, categories, states }
+      const { title, categories, levels } = meta
+      state.meta = { title, categories, levels }
     }
   },
   actions: backend.store.blips.actions,
@@ -47,8 +47,8 @@ export default (backend) => ({
             c.index = cIndex // append a 'fake' index that is used for visuals only e.g. blip# in radar view
             return c
           })
-          const state = changes.sort((a, b) => a.date < b.date)[0].newState
-          b.state = state
+          const level = changes.sort((a, b) => a.date < b.date)[0].newLevel
+          b.level = level
           b.index = bIndex
           return b
         })

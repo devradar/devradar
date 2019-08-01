@@ -12,7 +12,7 @@
 This repository holds the Web Application for the devradar editor.
 An online editor to create your own personal techradar - for individuals and teams.
 The devradar editor provides a GUI to manage **blips** (items on the radar e.g. _C++_, _SCRUM_).
-Instead of assigning a static level of expertise for a given blip the devradar uses an iterative approach, where you define **changes** to a blip by providing a _date_, _new state_ and _reasoning_ how your expertise changed.
+Instead of assigning a static level of expertise for a given blip the devradar uses an iterative approach, where you define **changes** to a blip by providing a _date_, _new level_ and _reasoning_ how your expertise changed.
 
 <!-- TOC depthFrom:2 -->
 
@@ -53,7 +53,7 @@ The upper four categories of this scale are the defaults when you create a new d
 [meta]
 title = "Rick's Radar"
 categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
-states = [ "Novice", "Intermediate", "Advanced", "Expert" ]
+levels = [ "Novice", "Intermediate", "Advanced", "Expert" ]
 ```
 
 ### devradar for teams and organizations
@@ -66,7 +66,7 @@ The classic Thoughtworks categories make a good start if you want to create a de
 [meta]
 title = "ACME devradar"
 categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
-states = [ "Hold", "Assess", "Trial", "Adopt" ]
+levels = [ "Hold", "Assess", "Trial", "Adopt" ]
 ```
 
 You can also use the devradar for non-tech related things:

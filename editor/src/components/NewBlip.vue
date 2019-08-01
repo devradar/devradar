@@ -33,7 +33,7 @@
                   <v-select :items="categories" v-model="category" label="Category" single-line required :rules="[v => !!v || 'Category is required']"></v-select>
                 </v-flex>
                 <v-flex sm6 xs12>
-                  <v-select :items="states" v-model="state" label="State" single-line required :rules="[v => !!v || 'State is required']"></v-select>
+                  <v-select :items="levels" v-model="level" label="Level" single-line required :rules="[v => !!v || 'Level is required']"></v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-textarea v-model="changeText" label="Reason for change" rows="2">
@@ -61,7 +61,7 @@ export default {
       fab: false,
       dialog: false,
       category: null,
-      state: null,
+      level: null,
       title: null,
       link: null,
       description: null,
@@ -82,7 +82,7 @@ export default {
     },
     clear () {
       this.category = null
-      this.state = null
+      this.level = null
       this.title = null
       this.link = null
       this.description = null
@@ -100,7 +100,7 @@ export default {
     },
     change () {
       return {
-        newState: this.states.indexOf(this.state),
+        newLevel: this.levels.indexOf(this.level),
         text: this.changeText,
         date: (new Date()).toISOString().split('-').slice(0, 2).join('-')
       }
@@ -111,8 +111,8 @@ export default {
     categories () {
       return this.$store.getters.meta.categories
     },
-    states () {
-      return this.$store.getters.meta.states
+    levels () {
+      return this.$store.getters.meta.levels
     }
   }
 }
