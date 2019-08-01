@@ -34,6 +34,35 @@ function migrateToEnum (blip) {
   }
 }
 
+function migrateToLevel (blip) {
+  const b = JSON.parse(JSON.stringify(blip)) // create hard copy
+  let updateRequired = false
+  if (typeof b.state !== 'undefined') {
+    b.level = b.state
+    delete b.state
+    updateRequired = true
+  }
+  b.changes = b.changes
+    .map(change => {
+      if (typeof change.newState !== 'undefined') {
+        change.newLevel = change.newState
+        delete change.newState
+        const document = change.id
+        delete change.id
+        console.log('updating change', change)
+        firebase.firestore().collection(`blips/${b.id}/changes`).doc(document).set(change)
+      }
+      return change
+    })
+  if (updateRequired) {
+    const document = b.id
+    delete b.id
+    delete b.changes
+    console.log('updating blip', b)
+    firebase.firestore().collection('blips').doc(document).set(b)
+  }
+}
+
 const actions = {
   getBlips ({ commit, getters, level }) {
     commit('setLoading', true)
@@ -56,6 +85,7 @@ const actions = {
         // migrate from string category/level to enums
         if (getters.userCanEdit) {
           blipsArray.forEach(migrateToEnum)
+          blipsArray.forEach(migrateToLevel)
         }
 
         blipsArray.forEach(blip => commit('addBlip', blip))
