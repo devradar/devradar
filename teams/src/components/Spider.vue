@@ -9,23 +9,24 @@
         <v-list>
           <v-subheader inset>Blips</v-subheader>
           <v-list-tile
-            v-for="(item, index) in selectedBlips"
+            v-for="item in selectedBlips"
             :key="item.title"
             avatar
           >
 
-            <v-list-tile-content>
+            <v-list-tile-content
+              class="blip-list"
+              @click="toggleBlipVisibility(item)">
               <v-list-tile-title>{{ item.title }}</v-list-tile-title>
             </v-list-tile-content>
 
             <v-list-tile-action>
               <v-btn
-              @click="itemDone(index)"
-              v-if="false"
+              @click="toggleBlipVisibility(item)"
               icon ripple>
-                <v-icon>check_box_outline_blank</v-icon>
+                <v-icon v-if="!isVisibleBlip(item)">check_box_outline_blank</v-icon>
+                <v-icon v-else>check_box</v-icon>
               </v-btn>
-              <v-icon v-else>check_box</v-icon>
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
@@ -42,15 +43,6 @@
         </v-alert>
       </v-card>
       </v-flex>
-    </v-layout>
-    <v-layout row wrap v-if="hasItems">
-      <v-chip
-        outline
-        color="black"
-        v-for="blip in selectedBlips"
-        :key="blip.title">
-        {{blip.title}}
-      </v-chip>
     </v-layout>
   </v-container>
 </template>
@@ -71,123 +63,147 @@ export default {
     ])
   },
   data: () => ({
+    hiddenBlips: []
   }),
   methods: {
     isSelectedBlip (blip) {
       return !!this.selectedBlips.find(e => e.title.toLowerCase() === blip.title.toLowerCase())
+    },
+    isVisibleBlip (blip) {
+      return !this.hiddenBlips.find(e => e.title === blip.title)
+    },
+    toggleBlipVisibility (blip) {
+      const ix = this.hiddenBlips.findIndex(e => e.title === blip.title)
+      if (ix > -1) {
+        this.hiddenBlips.splice(ix, 1)
+      } else {
+        this.hiddenBlips.push(blip)
+      }
+      this.renderChart()
+    },
+    renderChart () {
+      if (this.hasItems) {
+        const w = 500
+        const h = 500
+
+        // helper for data collection
+        const formatBlips = e => ({
+          axis: e.title,
+          value: e.level + 1
+        })
+        const addMissingBlips = e => {
+          const existingBlips = e.map(o => o.axis.toLowerCase())
+          const missing = this.selectedBlips
+            .filter(this.isVisibleBlip)
+            .filter(s => existingBlips.indexOf(s.title.toLowerCase()) === -1)
+            .map(s => ({ axis: s.title, value: 0.5 }))
+          return e.concat(missing)
+        }
+        const sortByAxis = e => e.sort((a, b) => a.axis > b.axis)
+
+        const data = {
+          axis: this.selectedBlips
+            .filter(this.isVisibleBlip)
+            .map(e => e.title)
+            .sort((a, b) => a > b),
+          levels: ['Adopt', 'Trial', 'Assess', 'Hold'],
+          items: this.items
+            .map(item => item.payload.blips
+              .filter(this.isSelectedBlip)
+              .filter(this.isVisibleBlip)
+              .map(formatBlips)
+            )
+            .map(addMissingBlips)
+            .map(sortByAxis)
+            .map((item, ix) => ({ values: item.map(e => e.value), name: this.items[ix].title }))
+        }
+
+        // const data = {
+        //   axis: ['a', 'b', 'c'],
+        //   items: [{
+        //     name: 'blup',
+        //     values: [1,2,3,4,5]
+        //   },
+        //   {
+        //     name: 'bert',
+        //     values: [4,2,5,2,1]
+        //   }]
+        // }
+        // Options for the Radar chart, other than default
+        const mycfg = {
+          w: w,
+          h: h,
+          maxValue: 4,
+          levels: 4,
+          ExtraWidthX: 300
+        }
+
+        // Call function to draw the Radar chart
+        // Will expect that data is in %'s
+        RadarChart.draw(d3, '#chart', data, mycfg)
+
+        /// /////////////////////////////////////////
+        /// //////// Initiate legend ////////////////
+        /// /////////////////////////////////////////
+        const colorscale = d3.scaleOrdinal(d3.schemeCategory10)
+        const legendTitles = this.items.map(e => e.title)
+
+        const svg = d3.select('#chart')
+          .selectAll('svg')
+          .append('svg')
+          .attr('width', w + 300)
+          .attr('height', h)
+
+        // Create the title for the legend
+        svg.append('text')
+          .attr('class', 'title')
+          .attr('transform', 'translate(90,0)')
+          .attr('x', w)
+          .attr('y', 15)
+          .attr('font-size', '12px')
+          .attr('fill', '#404040')
+          .text('Team setup')
+
+        // Initiate Legend
+        const legend = svg.append('g')
+          .attr('class', 'legend')
+          .attr('height', 100)
+          .attr('width', 200)
+          .attr('transform', 'translate(90,20)')
+
+        // Create colour squares
+        legend.selectAll('rect')
+          .data(legendTitles)
+          .enter()
+          .append('rect')
+          .attr('x', w + 5)
+          .attr('y', (d, i) => i * 20 + 10)
+          .attr('width', 10)
+          .attr('height', 10)
+          .style('fill', colorscale)
+
+        // Create text next to squares
+        legend.selectAll('text')
+          .data(legendTitles)
+          .enter()
+          .append('text')
+          .attr('x', w + 18)
+          .attr('y', (d, i) => i * 20 + 19)
+          .attr('font-size', '11px')
+          .attr('fill', '#737373')
+          .text(d => d)
+      }
     }
   },
   mounted: function () {
-    if (this.hasItems) {
-      const w = 500
-      const h = 500
-
-      // helper for data collection
-      const formatBlips = e => ({
-        axis: e.title,
-        value: e.level + 1
-      })
-      const addMissingBlips = e => {
-        const existingBlips = e.map(o => o.axis.toLowerCase())
-        const missing = this.selectedBlips
-          .filter(s => existingBlips.indexOf(s.title.toLowerCase()) === -1)
-          .map(s => ({ axis: s.title, value: 0.5 }))
-        return e.concat(missing)
-      }
-      const sortByAxis = e => e.sort((a, b) => a.axis > b.axis)
-
-      const data = {
-        axis: this.selectedBlips.map(e => e.title),
-        levels: ['Adopt', 'Trial', 'Assess', 'Hold'],
-        items: this.items
-          .map(item => item.payload.blips
-            .filter(this.isSelectedBlip)
-            .map(formatBlips)
-          )
-          .map(addMissingBlips)
-          .map(sortByAxis)
-          .map((item, ix) => ({ values: item.map(e => e.value), name: this.items[ix].title }))
-      }
-
-      // const data = {
-      //   axis: ['a', 'b', 'c'],
-      //   items: [{
-      //     name: 'blup',
-      //     values: [1,2,3,4,5]
-      //   },
-      //   {
-      //     name: 'bert',
-      //     values: [4,2,5,2,1]
-      //   }]
-      // }
-      // Options for the Radar chart, other than default
-      const mycfg = {
-        w: w,
-        h: h,
-        maxValue: 4,
-        levels: 4,
-        ExtraWidthX: 300
-      }
-
-      // Call function to draw the Radar chart
-      // Will expect that data is in %'s
-      RadarChart.draw(d3, '#chart', data, mycfg)
-
-      /// /////////////////////////////////////////
-      /// //////// Initiate legend ////////////////
-      /// /////////////////////////////////////////
-      const colorscale = d3.scaleOrdinal(d3.schemeCategory10)
-      const legendTitles = this.items.map(e => e.title)
-
-      const svg = d3.select('#chart')
-        .selectAll('svg')
-        .append('svg')
-        .attr('width', w + 300)
-        .attr('height', h)
-
-      // Create the title for the legend
-      svg.append('text')
-        .attr('class', 'title')
-        .attr('transform', 'translate(90,0)')
-        .attr('x', w)
-        .attr('y', 15)
-        .attr('font-size', '12px')
-        .attr('fill', '#404040')
-        .text('Team setup')
-
-      // Initiate Legend
-      const legend = svg.append('g')
-        .attr('class', 'legend')
-        .attr('height', 100)
-        .attr('width', 200)
-        .attr('transform', 'translate(90,20)')
-
-      // Create colour squares
-      legend.selectAll('rect')
-        .data(legendTitles)
-        .enter()
-        .append('rect')
-        .attr('x', w + 5)
-        .attr('y', (d, i) => i * 20 + 10)
-        .attr('width', 10)
-        .attr('height', 10)
-        .style('fill', colorscale)
-
-      // Create text next to squares
-      legend.selectAll('text')
-        .data(legendTitles)
-        .enter()
-        .append('text')
-        .attr('x', w + 18)
-        .attr('y', (d, i) => i * 20 + 19)
-        .attr('font-size', '11px')
-        .attr('fill', '#737373')
-        .text(d => d)
-    }
+    this.renderChart()
   }
 }
 </script>
 
 <style lang='scss'>
 
+.blip-list {
+  cursor: default;
+}
 </style>

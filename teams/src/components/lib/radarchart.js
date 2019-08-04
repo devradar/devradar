@@ -140,13 +140,17 @@ chart.draw = function (d3, id, data, options) {
     .data(function (d, i) { return d.values })
     .enter().append('circle')
     .attr('class', 'radarCircle')
-    .attr('r', 3)
-    .attr('cx', (d, i) => pol2xy(d, i).x) // Math.cos(angleSlice*i - Math.PI/2)
+    .attr('r', 5)
+    .attr('cx', (d, i) => pol2xy(d, i).x)
     .attr('cy', (d, i) => pol2xy(d, i).y)
     .style('fill', function (d, i) { // https://stackoverflow.com/questions/38233003/d3-js-v4-how-to-access-parent-groups-datum-index/38235820
       const lineIx = this.parentNode.getAttribute('data-index')
       return cfg.color(lineIx)
     })
+    // .on('mouseover', function (d, i) {
+    //   const ix = this.parentNode.getAttribute('data-index')
+    //   console.log('hit', data.items[ix].values[i], data.axis[i])
+    // })
 
   // filled area
   radarWrapper
@@ -179,7 +183,7 @@ chart.draw = function (d3, id, data, options) {
         .style('opacity', 1)
     })
     .on('mouseout', function () {
-    // Bring back all blobs
+      // Bring back all blobs
       d3.selectAll('.radarArea')
         .transition().duration(cfg.transitionDurationMs)
         .style('fill-opacity', cfg.opacityArea)
