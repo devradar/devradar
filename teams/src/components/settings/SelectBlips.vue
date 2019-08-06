@@ -7,26 +7,17 @@
           v-for="(item, index) in items"
           :key="item.title"
           avatar
+          @click="activeItemIx = index"
+          :class="index === activeItemIx ? 'active-radar' : ''"
         >
           <v-list-tile-avatar>
             <v-icon v-if="index == 0" class="secondary lighten-1 white--text">explore</v-icon>
-            <v-icon v-else class="primary white--text">person</v-icon>
+            <v-icon v-else class="grey darken-3 white--text">person</v-icon>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile-content>
-
-          <v-list-tile-action>
-            <v-btn
-            @click="itemDone(index)"
-            v-if="index >= activeItemIx"
-            :disabled="index !== activeItemIx"
-            icon ripple>
-              <v-icon>check_box_outline_blank</v-icon>
-            </v-btn>
-            <v-icon v-else>check_box</v-icon>
-          </v-list-tile-action>
         </v-list-tile>
       </v-list>
     </v-flex>
@@ -37,16 +28,15 @@
         <v-subheader inset>{{ category }}</v-subheader>
         <div class="chips">
           <v-chip
-            outline
-            color="black"
+            :color="isSelected(blip) ? 'primary' : 'grey lighten-3'"
             v-for="blip in blipsByCategory(activeItemIx, categoryIx)"
             :key="blip.title"
             @click="toggleBlip(blip)">
-            <v-badge right color="grey">
+            <v-badge right color="grey darken-3">
               <template v-slot:badge>
                 <span>{{getBlipCount(blip)}}</span>
               </template>
-                <v-icon v-if="isSelected(blip)" color="primary" left>star</v-icon>
+                <v-icon v-if="isSelected(blip)" color="black" left>star</v-icon>
                 <v-icon v-else left>star_border</v-icon>
                 {{blip.title}}
             </v-badge>
@@ -80,10 +70,6 @@ export default {
     },
     blipsByCategory () {
       return (itemIx, categoryIx) => {
-        if (itemIx > this.items.length - 1) {
-          return this.selectedBlips
-            .filter(e => e.category === categoryIx)
-        }
         return this.items[itemIx].payload.blips
           .filter(e => e.category === categoryIx)
       }
@@ -91,7 +77,7 @@ export default {
   },
   methods: {
     checkComplete () {
-      if (this.activeItemIx > this.items.length - 1) {
+      if (this.selectedBlips.length > 0) {
         this.$emit('isComplete', true)
       } else {
         this.$emit('isComplete', false)
@@ -116,9 +102,15 @@ export default {
         .map(i => i.payload.blips.filter(e => e.title.toLowerCase() === blip.title.toLowerCase()))
         .flat()
         .length
+    },
+    initSelectedBlips () {
+      if (this.selectedBlips.length < 1) {
+        this.team.payload.blips.forEach(b => this.$store.dispatch('selectBlip', b))
+      }
     }
   },
   mounted () {
+    this.initSelectedBlips()
     this.checkComplete()
   },
   components: {
@@ -129,5 +121,9 @@ export default {
 <style lang="scss" scoped>
 .chips {
   margin-left: 8rem;
+}
+
+.active-radar {
+  background-color: #0DBD0D;
 }
 </style>
