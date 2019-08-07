@@ -1,35 +1,32 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap v-if="hasItems">
-      <v-flex xs9>
+      <v-flex xs8>
         <h6 class="title">Radar Chart</h6>
         <div id="chart"></div>
       </v-flex>
-      <v-flex xs3>
-        <v-list>
-          <v-subheader inset>Blips</v-subheader>
-          <v-list-tile
-            v-for="item in selectedBlips"
-            :key="item.title"
-            avatar
-          >
-
-            <v-list-tile-content
-              class="blip-list"
-              @click="toggleBlipVisibility(item)">
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile-content>
-
-            <v-list-tile-action>
+      <v-flex xs4>
+        <v-data-table
+          :headers="headers"
+          :items="selectedBlips"
+          class="elevation-1"
+          hide-actions
+          :pagination.sync="pagination"
+        >
+          <template v-slot:items="props">
+            <td>
               <v-btn
-              @click="toggleBlipVisibility(item)"
+              @click="toggleBlipVisibility( props.item)"
               icon ripple>
-                <v-icon v-if="!isVisibleBlip(item)">check_box_outline_blank</v-icon>
+                <v-icon v-if="!isVisibleBlip( props.item)">check_box_outline_blank</v-icon>
                 <v-icon v-else>check_box</v-icon>
               </v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list>
+            </td>
+            <td>{{ props.item.title }}</td>
+            <td class="text-xs-right">{{ team.payload.meta.categories[props.item.category] }}</td>
+            <td class="text-xs-right">{{ team.payload.meta.levels[props.item.level] }}</td>
+          </template>
+        </v-data-table>
       </v-flex>
     </v-layout>
     <v-layout v-else justify-space-around>
@@ -60,10 +57,22 @@ export default {
       'hasItems',
       'selectedBlips',
       'items'
-    ])
+    ]),
+    headers () {
+      return [
+        { text: 'Visible', value: 'visible' },
+        { text: 'Skill', value: 'title' },
+        { text: 'Category', value: 'category' },
+        { text: 'Level', value: 'level' }
+      ]
+    }
   },
   data: () => ({
-    hiddenBlips: []
+    hiddenBlips: [],
+    pagination: {
+      sortBy: 'category',
+      rowsPerPage: -1
+    }
   }),
   methods: {
     isSelectedBlip (blip) {
