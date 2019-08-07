@@ -96,6 +96,7 @@ export default {
       } else {
         this.$store.dispatch('selectBlip', blip)
       }
+      this.checkComplete()
     },
     getBlipCount (blip) {
       return this.items
@@ -111,7 +112,6 @@ export default {
   },
   mounted () {
     this.initSelectedBlips()
-    this.checkComplete()
   },
   components: {
   }

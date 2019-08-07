@@ -21,7 +21,7 @@
           </v-btn>
           <v-btn
           :disabled="!canProgress"
-          @click="stepperCount++"
+          @click="() => stepperCount++ && stepperComplete++"
           ripple color="primary">
             Next
           </v-btn>
@@ -69,6 +69,8 @@ export default {
       if (step === this.stepperCount) {
         if (value) {
           this.stepperComplete = step
+        } else {
+          this.stepperComplete = step - 1
         }
       }
     }
