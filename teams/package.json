@@ -20,6 +20,7 @@
     "firebase": "^6.1.0",
     "lz-string": "^1.4.4",
     "markdown-it": "^8.4.2",
+    "sortablejs": "^1.10.0-rc3",
     "vue": "^2.6.10",
     "vue-router": "^3.0.6",
     "vuetify": "^1.5.14",

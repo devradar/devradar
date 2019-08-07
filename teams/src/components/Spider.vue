@@ -8,17 +8,18 @@
       <v-flex xs4>
         <v-data-table
           :headers="headers"
-          :items="selectedBlips"
+          :items="skills"
           class="elevation-1"
           hide-actions
           :pagination.sync="pagination"
+          item-key="title"
         >
           <template v-slot:items="props">
             <td>
               <v-btn
-              @click="toggleBlipVisibility( props.item)"
+              @click="toggleBlipVisibility(props.item)"
               icon ripple>
-                <v-icon v-if="!isVisibleBlip( props.item)">check_box_outline_blank</v-icon>
+                <v-icon v-if="!isVisibleBlip(props.item)">check_box_outline_blank</v-icon>
                 <v-icon v-else>check_box</v-icon>
               </v-btn>
             </td>
@@ -47,6 +48,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as d3 from 'd3'
+import Sortable from 'sortablejs'
 import RadarChart from './lib/radarchart'
 
 export default {
@@ -68,26 +70,25 @@ export default {
     }
   },
   data: () => ({
-    hiddenBlips: [],
     pagination: {
       sortBy: 'category',
       rowsPerPage: -1
-    }
+    },
+    skills: []
   }),
   methods: {
     isSelectedBlip (blip) {
       return !!this.selectedBlips.find(e => e.title.toLowerCase() === blip.title.toLowerCase())
     },
     isVisibleBlip (blip) {
-      return !this.hiddenBlips.find(e => e.title === blip.title)
+      const b = this.skills
+        .find(e => e.title === blip.title)
+      if (!b) return false
+      return b.visible
     },
     toggleBlipVisibility (blip) {
-      const ix = this.hiddenBlips.findIndex(e => e.title === blip.title)
-      if (ix > -1) {
-        this.hiddenBlips.splice(ix, 1)
-      } else {
-        this.hiddenBlips.push(blip)
-      }
+      const b = this.skills.find(e => e.title === blip.title)
+      b.visible = !b.visible
       this.renderChart()
     },
     renderChart () {
@@ -205,7 +206,20 @@ export default {
     }
   },
   mounted: function () {
+    this.skills = this.selectedBlips
+      .map(s => {
+        s.visible = true
+        return s
+      })
+
     this.renderChart()
+    const table = document.querySelector('.v-datatable tbody')
+    Sortable.create(table, {
+      onEnd: ({ newIndex, oldIndex }) => {
+        const row = this.skills.splice(oldIndex, 1)[0]
+        this.skills.splice(newIndex, 0, row)
+      }
+    })
   }
 }
 </script>
