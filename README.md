@@ -1,8 +1,8 @@
 # devradar
 
 [![MicroBadger Size](https://img.shields.io/microbadger/image-size/anoff/devradar.svg)](https://microbadger.com/images/anoff/devradar)
-[![Greenkeeper badge](https://badges.greenkeeper.io/anoff/devradar.svg)](https://greenkeeper.io/)
 [![Build Status](https://cloud.drone.io/api/badges/anoff/devradar/status.svg)](https://cloud.drone.io/anoff/devradar)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
 
 <img src="assets/logo-text.png">
 
