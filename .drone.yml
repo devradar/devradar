@@ -17,6 +17,7 @@ steps:
   - cp -R .build/static/** .
   - npm ci
   - npm run build
+  - npx yarn import # generate yarn.lock
   - npx yarn licenses generate-disclaimer > dist/DISCLAIMER
   - sed -i.bk -E -e "s^href=([\"']?)/([^/]+)^href=\1\2^g" -e "s^src=([\"']?)/([^/]+)^src=\1\2^g" dist/index.html # make resource includes relative to support non-root hosting
   - rm dist/index.html.bk
