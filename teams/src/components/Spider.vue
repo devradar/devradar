@@ -206,7 +206,7 @@ export default {
       this.renderChart.call(this)
     },
     reorderSkills({ newIndex, oldIndex }) {
-      console.log('reorder', { newIndex, oldIndex })
+      this.renderChart.call(this)
     }
   },
   mounted: function () {
