@@ -2,35 +2,21 @@ import Vue from 'vue'
 
 export default (backend) => ({
   state: {
-    categories: [],
-    levels: [],
-    blips: []
+    selectedBlips: [] // only title
   },
   mutations: {
-    setCategories (state, array) {
-      state.categories = array
+    selectBlip (state, blip) {
+      state.selectedBlips.push(blip.title)
     },
-    setLevels (state, array) {
-      state.states = array
-    },
-    selectBlip (state, item) {
-      state.blips.push(item)
-    },
-    deselectBlip (state, item) {
-      const ix = state.blips.findIndex(e => e.title.toLowerCase() === item.title.toLowerCase())
-      Vue.delete(state.blips, ix)
+    deselectBlip (state, blip) {
+      const ix = state.selectedBlips.findIndex(e => e.toLowerCase() === blip.title.toLowerCase())
+      Vue.delete(state.selectedBlips, ix)
     }
   },
   actions: backend.store.settings.actions,
   getters: {
-    categories (state) {
-      return state.categories
-    },
-    levels (state) {
-      return state.levels
-    },
-    selectedBlips (state) {
-      return state.blips
+    selectedBlipTitles (state) {
+      return state.selectedBlips
     }
   }
 })

@@ -91,7 +91,7 @@ chart.draw = function (d3, id, data, options) {
     .attr('dy', '1em')
     .style('font-size', '12px')
     .attr('fill', '#333')
-    .text((d, i) => i + 1)
+    .text((d, i) => data.levels[i])
 
   // labels + axis
   const axisWrapper = gridWrapper.selectAll('.axis')

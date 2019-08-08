@@ -14,8 +14,9 @@ const actions = {
   deleteDev ({ commit }, ix) {
     commit('deleteDev', ix)
   },
-  loadDummyData ({ commit }) {
+  loadDummyData ({ commit, dispatch }) {
     commit('setTeam', dummy.items.team)
+    dummy.items.team.payload.blips.forEach(blip => dispatch('selectBlip', blip))
     dummy.items.devs.forEach(i => commit('addDev', i))
   }
 }

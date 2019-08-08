@@ -60,13 +60,13 @@ export default {
       'team',
       'devs',
       'hasItems',
-      'selectedBlips'
+      'selectedBlipTitles'
     ]),
     items () {
-      return [this.team].concat(this.devs)
+      return this.hasItems ? [this.team].concat(this.devs) : []
     },
     categories () {
-      return this.team.payload.meta.categories
+      return this.hasItems ? this.team.payload.meta.categories : []
     },
     blipsByCategory () {
       return (itemIx, categoryIx) => {
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     checkComplete () {
-      if (this.selectedBlips.length > 0) {
+      if (this.selectedBlipTitles.length > 0) {
         this.$emit('isComplete', true)
       } else {
         this.$emit('isComplete', false)
@@ -88,7 +88,7 @@ export default {
       this.checkComplete()
     },
     isSelected (blip) {
-      return !!this.selectedBlips.find(e => e.title.toLowerCase() === blip.title.toLowerCase())
+      return !!this.selectedBlipTitles.find(e => e.toLowerCase() === blip.title.toLowerCase())
     },
     toggleBlip (blip) {
       if (this.isSelected(blip)) {
@@ -105,7 +105,7 @@ export default {
         .length
     },
     initSelectedBlips () {
-      if (this.selectedBlips.length < 1) {
+      if (this.selectedBlipTitles.length < 1 && this.hasItems) {
         this.team.payload.blips.forEach(b => this.$store.dispatch('selectBlip', b))
       }
     }

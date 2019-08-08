@@ -11,18 +11,12 @@
           :items="skills"
           class="elevation-1"
           hide-actions
+          must-sort
           :pagination.sync="pagination"
           item-key="title"
+          @update:pagination="updatePagination"
         >
           <template v-slot:items="props">
-            <td>
-              <v-btn
-              @click="toggleBlipVisibility(props.item)"
-              icon ripple>
-                <v-icon v-if="!isVisibleBlip(props.item)">check_box_outline_blank</v-icon>
-                <v-icon v-else>check_box</v-icon>
-              </v-btn>
-            </td>
             <td>{{ props.item.title }}</td>
             <td class="text-xs-right">{{ team.payload.meta.categories[props.item.category] }}</td>
             <td class="text-xs-right">{{ team.payload.meta.levels[props.item.level] }}</td>
@@ -51,18 +45,27 @@ import * as d3 from 'd3'
 import Sortable from 'sortablejs'
 import RadarChart from './lib/radarchart'
 
+const sortFunctionCurry = (sortBy, inverted) => {
+  return (a, b) => {
+    // TODO: use toLowerCase() in case argument is a string for case-insensitive sort
+    if (a[sortBy] < b[sortBy])
+      return inverted ? -1 : 1
+    if (a[sortBy] > b[sortBy])
+      return inverted ? 1 : -1
+    return 0
+  }
+}
 export default {
   computed: {
     ...mapGetters([
       'team',
       'devs',
       'hasItems',
-      'selectedBlips',
+      'selectedBlipTitles',
       'items'
     ]),
     headers () {
       return [
-        { text: 'Visible', value: 'visible' },
         { text: 'Skill', value: 'title' },
         { text: 'Category', value: 'category' },
         { text: 'Level', value: 'level' }
@@ -78,21 +81,10 @@ export default {
   }),
   methods: {
     isSelectedBlip (blip) {
-      return !!this.selectedBlips.find(e => e.title.toLowerCase() === blip.title.toLowerCase())
-    },
-    isVisibleBlip (blip) {
-      const b = this.skills
-        .find(e => e.title === blip.title)
-      if (!b) return false
-      return b.visible
-    },
-    toggleBlipVisibility (blip) {
-      const b = this.skills.find(e => e.title === blip.title)
-      b.visible = !b.visible
-      this.renderChart()
+      return !!this.selectedBlipTitles.find(e => e.toLowerCase() === blip.title.toLowerCase())
     },
     renderChart () {
-      if (this.hasItems) {
+      if (this.hasItems && this.skills.length) {
         const w = 500
         const h = 500
 
@@ -103,28 +95,32 @@ export default {
         })
         const addMissingBlips = e => {
           const existingBlips = e.map(o => o.axis.toLowerCase())
-          const missing = this.selectedBlips
-            .filter(this.isVisibleBlip)
-            .filter(s => existingBlips.indexOf(s.title.toLowerCase()) === -1)
-            .map(s => ({ axis: s.title, value: 0.5 }))
+          const missing = this.selectedBlipTitles
+            .filter(s => existingBlips.indexOf(s.toLowerCase()) === -1)
+            .map(s => ({ axis: s, value: 0 }))
           return e.concat(missing)
         }
         const sortByAxis = e => e.sort((a, b) => a.axis > b.axis)
 
         const data = {
-          axis: this.selectedBlips
-            .filter(this.isVisibleBlip)
-            .map(e => e.title)
-            .sort((a, b) => a > b),
+          axis: this.skills
+            .map(e => e.title),
           levels: ['Adopt', 'Trial', 'Assess', 'Hold'],
           items: this.items
             .map(item => item.payload.blips
               .filter(this.isSelectedBlip)
-              .filter(this.isVisibleBlip)
               .map(formatBlips)
             )
             .map(addMissingBlips)
-            .map(sortByAxis)
+            .map(item => { // recreate order from this.skills (table sort)
+              item.sort((a, b) => {
+                const aIx = this.skills.findIndex(s => s.title === a.axis)
+                const bIx = this.skills.findIndex(s => s.title === b.axis)
+                if (aIx > bIx) return 1
+                return -1
+              })
+              return item
+            })
             .map((item, ix) => ({ values: item.map(e => e.value), name: this.items[ix].title }))
         }
 
@@ -203,21 +199,39 @@ export default {
           .attr('fill', '#737373')
           .text(d => d)
       }
+    },
+    updatePagination (obj) {
+      this.skills
+        .sort(sortFunctionCurry(this.pagination.sortBy, !this.pagination.descending))
+      this.renderChart.call(this)
+    },
+    reorderSkills({ newIndex, oldIndex }) {
+      console.log('reorder', { newIndex, oldIndex })
     }
   },
   mounted: function () {
-    this.skills = this.selectedBlips
-      .map(s => {
-        s.visible = true
-        return s
-      })
-
+    if (this.hasItems) {
+      const blips = this.selectedBlipTitles
+        .map(title => {
+          const devHits = this.devs
+            .flatMap(item => item.payload.blips)
+            .filter(blip => blip.title === title)
+          const teamHit = this.team.payload.blips
+            .find(blip => blip.title === title)
+          if (teamHit) return teamHit // prioritize matching team blip
+          return devHits
+            .sort((a, b) => a.level < b.level)[0]
+        })
+      this.skills = blips
+        .sort(sortFunctionCurry(this.pagination.sortBy, !this.pagination.descending)) // sort by existing pagination
+    }
     this.renderChart()
     const table = document.querySelector('.v-datatable tbody')
     Sortable.create(table, {
       onEnd: ({ newIndex, oldIndex }) => {
         const row = this.skills.splice(oldIndex, 1)[0]
         this.skills.splice(newIndex, 0, row)
+        this.reorderSkills({ newIndex, oldIndex })
       }
     })
   }
