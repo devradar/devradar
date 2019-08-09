@@ -48,11 +48,11 @@ import RadarChart from './lib/radarchart'
 const sortFunctionCurry = (sortBy, inverted) => {
   return (a, b) => {
     // TODO: use toLowerCase() in case argument is a string for case-insensitive sort
-    if (a[sortBy] < b[sortBy])
+    if (a[sortBy] < b[sortBy]) {
       return inverted ? -1 : 1
-    if (a[sortBy] > b[sortBy])
+    } else {
       return inverted ? 1 : -1
-    return 0
+    }
   }
 }
 export default {
@@ -100,7 +100,6 @@ export default {
             .map(s => ({ axis: s, value: 0 }))
           return e.concat(missing)
         }
-        const sortByAxis = e => e.sort((a, b) => a.axis > b.axis)
 
         const data = {
           axis: this.skills
@@ -203,10 +202,10 @@ export default {
     updatePagination (obj) {
       this.skills
         .sort(sortFunctionCurry(this.pagination.sortBy, !this.pagination.descending))
-      this.renderChart.call(this)
+      this.renderChart()
     },
-    reorderSkills({ newIndex, oldIndex }) {
-      this.renderChart.call(this)
+    reorderSkills ({ newIndex, oldIndex }) {
+      this.renderChart()
     }
   },
   mounted: function () {
