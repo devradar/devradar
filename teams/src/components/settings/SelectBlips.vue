@@ -47,20 +47,20 @@
   </v-layout>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
+import { Blip, Item } from '@/types/domain'
 
-export default {
-  data: () => ({
-    activeItemIx: 0,
-    chip: true
-  }),
+@Component({
   computed: {
-    ...mapGetters([
+    ...mapGetters('items', [
       'team',
       'devs',
-      'hasItems',
-      'selectedBlipTitles'
+      'hasItems'
+    ]),
+    ...mapGetters('settings', [
+      'selectedBlipsTitle'
     ]),
     items () {
       return this.hasItems ? [this.team].concat(this.devs) : []
@@ -74,48 +74,66 @@ export default {
           .filter(e => e.category === categoryIx)
       }
     }
-  },
-  methods: {
-    checkComplete () {
-      if (this.selectedBlipTitles.length > 0) {
-        this.$emit('isComplete', true)
-      } else {
-        this.$emit('isComplete', false)
-      }
-    },
-    itemDone (value) {
-      this.activeItemIx = ++value
-      this.checkComplete()
-    },
-    isSelected (blip) {
-      return !!this.selectedBlipTitles.find(e => e.toLowerCase() === blip.title.toLowerCase())
-    },
-    toggleBlip (blip) {
-      if (this.isSelected(blip)) {
-        this.$store.dispatch('deselectBlip', blip)
-      } else {
-        this.$store.dispatch('selectBlip', blip)
-      }
-      this.checkComplete()
-    },
-    getBlipCount (blip) {
-      return this.items
-        .map(i => i.payload.blips.filter(e => e.title.toLowerCase() === blip.title.toLowerCase()))
-        .flat()
-        .length
-    },
-    initSelectedBlips () {
-      if (this.selectedBlipTitles.length < 1 && this.hasItems) {
-        this.team.payload.blips.forEach(b => this.$store.dispatch('selectBlip', b))
-      }
+  }
+})
+
+export default class SelectBlips extends Vue {
+  activeItemIx: number = 0
+  chip: boolean = true
+  
+  // computed
+  team: Item
+  devs: Item[]
+  hasItems: boolean
+  selectedBlipsTitle: string[]
+  items: Item[]
+  categories: string[]
+  blipsByCategory: Blip[]
+
+  checkComplete () {
+    if (this.selectedBlipsTitle.length > 0) {
+      this.$emit('isComplete', true)
+    } else {
+      this.$emit('isComplete', false)
     }
-  },
+  }
+  itemDone (value) {
+    this.activeItemIx = ++value
+    this.checkComplete()
+  }
+
+  isSelected (blip) {
+    return !!this.selectedBlipsTitle.find(e => e.toLowerCase() === blip.title.toLowerCase())
+  }
+
+  toggleBlip (blip) {
+    if (this.isSelected(blip)) {
+      this.$store.dispatch('settings/deselectBlip', blip)
+    } else {
+      this.$store.dispatch('settings/selectBlip', blip)
+    }
+    this.checkComplete()
+  }
+
+  getBlipCount (blip) {
+    return this.items
+      .map(i => i.payload.blips.filter(e => e.title.toLowerCase() === blip.title.toLowerCase()))
+      .flat()
+      .length
+  }
+
+  initSelectedBlips () {
+    if (this.selectedBlipsTitle.length < 1 && this.hasItems) {
+      console.log(this.$store)
+      this.team.payload.blips.forEach(b => this.$store.dispatch('settings/selectBlip', b))
+    }
+  }
+
   mounted () {
     this.initSelectedBlips()
-  },
-  components: {
   }
 }
+
 </script>
 
 <style lang="scss" scoped>

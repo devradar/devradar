@@ -1,4 +1,4 @@
-function init (store) {
+function init (): Promise<void> {
   return Promise.resolve() // mock async interface
 }
 

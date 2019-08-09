@@ -1,8 +1,7 @@
 {
   "name": "devradar-editor",
-  "version": "2.0.0",
   "description": "Build your personal techradar",
-  "author": "Andreas Offenhaeuser <http://anoff.io>",
+  "author": "Andreas Offenhaeuser <https://anoff.io>",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -66,5 +65,13 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "config": {
+    "cz-conventional-kawaii": {
+      "scopes": [
+        "editor"
+      ],
+      "quick": false
+    }
+  }
 }

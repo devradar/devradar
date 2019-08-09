@@ -1,9 +1,9 @@
+import Settings from '@/components/Settings.vue'
+import Spider from '@/components/Spider.vue'
+import Stats from '@/components/Stats.vue'
+import appConfig from '@/config'
 import Vue from 'vue'
 import Router from 'vue-router'
-import Stats from '@/components/Stats'
-import Spider from '@/components/Spider'
-import Settings from '@/components/Settings'
-import appConfig from '@/config'
 
 Vue.use(Router)
 const routesCfg = appConfig.routes
@@ -13,7 +13,7 @@ const components = {
   Settings
 }
 const routes = routesCfg
-  .map(r => ({
+  .map((r) => ({
     path: r.path,
     name: r.view,
     component: components[r.view],
@@ -22,7 +22,7 @@ const routes = routesCfg
 
 export default new Router({
   routes,
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior () {
     return { x: 0, y: 0 }
   }
 })

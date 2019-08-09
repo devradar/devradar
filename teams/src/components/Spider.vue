@@ -39,178 +39,183 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import * as d3 from 'd3'
 import Sortable from 'sortablejs'
+import { Blip, Item } from '@/types/domain'
 import RadarChart from './lib/radarchart'
+import { sortFunctionCurry } from './lib/utils'
 
-const sortFunctionCurry = (sortBy, inverted) => {
-  return (a, b) => {
-    // TODO: use toLowerCase() in case argument is a string for case-insensitive sort
-    if (a[sortBy] < b[sortBy]) {
-      return inverted ? -1 : 1
-    } else {
-      return inverted ? 1 : -1
-    }
-  }
-}
-export default {
+@Component({
   computed: {
-    ...mapGetters([
+    ...mapGetters('items', [
       'team',
       'devs',
       'hasItems',
-      'selectedBlipTitles',
       'items'
     ]),
-    headers () {
-      return [
-        { text: 'Skill', value: 'title' },
-        { text: 'Category', value: 'category' },
-        { text: 'Level', value: 'level' }
-      ]
-    }
-  },
-  data: () => ({
-    pagination: {
-      sortBy: 'category',
-      rowsPerPage: -1
-    },
-    skills: []
-  }),
-  methods: {
-    isSelectedBlip (blip) {
-      return !!this.selectedBlipTitles.find(e => e.toLowerCase() === blip.title.toLowerCase())
-    },
-    renderChart () {
-      if (this.hasItems && this.skills.length) {
-        const w = 500
-        const h = 500
+    ...mapGetters('settings', [
+      'selectedBlipsTitle'
+    ])
+  }
+})
 
-        // helper for data collection
-        const formatBlips = e => ({
-          axis: e.title,
-          value: e.level + 1
-        })
-        const addMissingBlips = e => {
-          const existingBlips = e.map(o => o.axis.toLowerCase())
-          const missing = this.selectedBlipTitles
-            .filter(s => existingBlips.indexOf(s.toLowerCase()) === -1)
-            .map(s => ({ axis: s, value: 0 }))
-          return e.concat(missing)
-        }
+export default class Spider extends Vue {
+  pagination: {
+    sortBy: string;
+    rowsPerPage: number;
+    descending: boolean;
+  } = {
+    sortBy: 'category',
+    rowsPerPage: -1,
+    descending: false
+  }
+  public headers: object[] = [
+    { text: 'Skill', value: 'title' },
+    { text: 'Category', value: 'category' },
+    { text: 'Level', value: 'level' }
+  ]
+  skills: Blip[] = []
+  chart: RadarChart = new RadarChart()
+  team: Item
+  devs: Item[]
+  hasItems: boolean
+  selectedBlipsTitle: string[]
+  items: Item[]
 
-        const data = {
-          axis: this.skills
-            .map(e => e.title),
-          levels: ['Adopt', 'Trial', 'Assess', 'Hold'],
-          items: this.items
-            .map(item => item.payload.blips
-              .filter(this.isSelectedBlip)
-              .map(formatBlips)
-            )
-            .map(addMissingBlips)
-            .map(item => { // recreate order from this.skills (table sort)
-              item.sort((a, b) => {
-                const aIx = this.skills.findIndex(s => s.title === a.axis)
-                const bIx = this.skills.findIndex(s => s.title === b.axis)
-                if (aIx > bIx) return 1
-                return -1
-              })
-              return item
-            })
-            .map((item, ix) => ({ values: item.map(e => e.value), name: this.items[ix].title }))
-        }
+  isSelectedBlip (blip) {
+    return !!this.selectedBlipsTitle.find(e => e.toLowerCase() === blip.title.toLowerCase())
+  }
+  public renderChart () {
+    if (this.hasItems && this.skills.length) {
+      const w = 500
+      const h = 500
 
-        // const data = {
-        //   axis: ['a', 'b', 'c'],
-        //   items: [{
-        //     name: 'blup',
-        //     values: [1,2,3,4,5]
-        //   },
-        //   {
-        //     name: 'bert',
-        //     values: [4,2,5,2,1]
-        //   }]
-        // }
-        // Options for the Radar chart, other than default
-        const mycfg = {
-          w: w,
-          h: h,
-          maxValue: 4,
-          levels: 4,
-          ExtraWidthX: 300
-        }
-
-        // Call function to draw the Radar chart
-        // Will expect that data is in %'s
-        RadarChart.draw(d3, '#chart', data, mycfg)
-
-        /// /////////////////////////////////////////
-        /// //////// Initiate legend ////////////////
-        /// /////////////////////////////////////////
-        const colorscale = d3.scaleOrdinal(d3.schemeCategory10)
-        const legendTitles = this.items.map(e => e.title)
-
-        const svg = d3.select('#chart')
-          .selectAll('svg')
-          .append('svg')
-          .attr('width', w + 300)
-          .attr('height', h)
-
-        // Create the title for the legend
-        svg.append('text')
-          .attr('class', 'title')
-          .attr('transform', 'translate(90,0)')
-          .attr('x', w)
-          .attr('y', 15)
-          .attr('font-size', '12px')
-          .attr('fill', '#404040')
-          .text('Team setup')
-
-        // Initiate Legend
-        const legend = svg.append('g')
-          .attr('class', 'legend')
-          .attr('height', 100)
-          .attr('width', 200)
-          .attr('transform', 'translate(90,20)')
-
-        // Create colour squares
-        legend.selectAll('rect')
-          .data(legendTitles)
-          .enter()
-          .append('rect')
-          .attr('x', w + 5)
-          .attr('y', (d, i) => i * 20 + 10)
-          .attr('width', 10)
-          .attr('height', 10)
-          .style('fill', colorscale)
-
-        // Create text next to squares
-        legend.selectAll('text')
-          .data(legendTitles)
-          .enter()
-          .append('text')
-          .attr('x', w + 18)
-          .attr('y', (d, i) => i * 20 + 19)
-          .attr('font-size', '11px')
-          .attr('fill', '#737373')
-          .text(d => d)
+      // helper for data collection
+      const formatBlips = e => ({
+        axis: e.title,
+        value: e.level + 1
+      })
+      const addMissingBlips = e => {
+        const existingBlips = e.map(o => o.axis.toLowerCase())
+        const missing = this.selectedBlipsTitle
+          .filter(s => existingBlips.indexOf(s.toLowerCase()) === -1)
+          .map(s => ({ axis: s, value: 0 }))
+        return e.concat(missing)
       }
-    },
-    updatePagination (obj) {
-      this.skills
-        .sort(sortFunctionCurry(this.pagination.sortBy, !this.pagination.descending))
-      this.renderChart()
-    },
-    reorderSkills ({ newIndex, oldIndex }) {
-      this.renderChart()
+
+      const data = {
+        axis: this.skills
+          .map(e => e.title),
+        levels: ['Adopt', 'Trial', 'Assess', 'Hold'],
+        items: this.items
+          .map(item => item.payload.blips
+            .filter(this.isSelectedBlip)
+            .map(formatBlips)
+          )
+          .map(addMissingBlips)
+          .map(item => { // recreate order from this.skills (table sort)
+            item.sort((a, b) => {
+              const aIx = this.skills.findIndex(s => s.title === a.axis)
+              const bIx = this.skills.findIndex(s => s.title === b.axis)
+              if (aIx > bIx) return 1
+              return -1
+            })
+            return item
+          })
+          .map((item, ix) => ({ values: item.map(e => e.value), name: this.items[ix].title }))
+      }
+
+      // const data = {
+      //   axis: ['a', 'b', 'c'],
+      //   items: [{
+      //     name: 'blup',
+      //     values: [1,2,3,4,5]
+      //   },
+      //   {
+      //     name: 'bert',
+      //     values: [4,2,5,2,1]
+      //   }]
+      // }
+      // Options for the Radar chart, other than default
+      const mycfg = {
+        w: w,
+        h: h,
+        maxValue: 4,
+        levels: 4,
+        ExtraWidthX: 300
+      }
+
+      // Call function to draw the Radar chart
+      // Will expect that data is in %'s
+      this.chart.draw(d3, '#chart', data, mycfg)
+
+      /// /////////////////////////////////////////
+      /// //////// Initiate legend ////////////////
+      /// /////////////////////////////////////////
+      const colorscale = d3.scaleOrdinal(d3.schemeCategory10)
+      const legendTitles = this.items.map(e => e.title)
+
+      const svg = d3.select('#chart')
+        .selectAll('svg')
+        .append('svg')
+        .attr('width', w + 300)
+        .attr('height', h)
+
+      // Create the title for the legend
+      svg.append('text')
+        .attr('class', 'title')
+        .attr('transform', 'translate(90,0)')
+        .attr('x', w)
+        .attr('y', 15)
+        .attr('font-size', '12px')
+        .attr('fill', '#404040')
+        .text('Team setup')
+
+      // Initiate Legend
+      const legend = svg.append('g')
+        .attr('class', 'legend')
+        .attr('height', 100)
+        .attr('width', 200)
+        .attr('transform', 'translate(90,20)')
+
+      // Create colour squares
+      legend.selectAll('rect')
+        .data(legendTitles)
+        .enter()
+        .append('rect')
+        .attr('x', w + 5)
+        .attr('y', (d, i) => i * 20 + 10)
+        .attr('width', 10)
+        .attr('height', 10)
+        .style('fill', colorscale)
+
+      // Create text next to squares
+      legend.selectAll('text')
+        .data(legendTitles)
+        .enter()
+        .append('text')
+        .attr('x', w + 18)
+        .attr('y', (d, i) => i * 20 + 19)
+        .attr('font-size', '11px')
+        .attr('fill', '#737373')
+        .text(d => d)
     }
-  },
-  mounted: function () {
+  }
+  public updatePagination () {
+    this.skills
+      .sort(sortFunctionCurry(this.pagination.sortBy, !this.pagination.descending))
+    this.renderChart()
+  }
+  public reorderSkills () { // eslint-disable no-unused-vars
+    this.renderChart()
+  }
+
+  mounted (): void {
     if (this.hasItems) {
-      const blips = this.selectedBlipTitles
+      const blips = this.selectedBlipsTitle
         .map(title => {
           const devHits = this.devs
             .flatMap(item => item.payload.blips)
@@ -219,20 +224,20 @@ export default {
             .find(blip => blip.title === title)
           if (teamHit) return teamHit // prioritize matching team blip
           return devHits
-            .sort((a, b) => a.level < b.level)[0]
+            .sort((a, b) => a.level - b.level)[0]
         })
       this.skills = blips
         .sort(sortFunctionCurry(this.pagination.sortBy, !this.pagination.descending)) // sort by existing pagination
+      this.renderChart()
+      const table = document.querySelector('.v-datatable tbody')
+      Sortable.create(table, {
+        onEnd: ({ newIndex, oldIndex }) => {
+          const row = this.skills.splice(oldIndex, 1)[0]
+          this.skills.splice(newIndex, 0, row)
+          this.reorderSkills()
+        }
+      })
     }
-    this.renderChart()
-    const table = document.querySelector('.v-datatable tbody')
-    Sortable.create(table, {
-      onEnd: ({ newIndex, oldIndex }) => {
-        const row = this.skills.splice(oldIndex, 1)[0]
-        this.skills.splice(newIndex, 0, row)
-        this.reorderSkills({ newIndex, oldIndex })
-      }
-    })
   }
 }
 </script>

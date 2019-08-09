@@ -27,7 +27,7 @@
   </v-container>
 </template>
 
-<script>
+<script lang="js">
 import { mapGetters } from 'vuex'
 import * as d3 from 'd3'
 import d3Tip from 'd3-tip'
@@ -128,7 +128,7 @@ function dataToPercentage (data) {
 }
 export default {
   computed: {
-    ...mapGetters([
+    ...mapGetters('items', [
       'team',
       'devs',
       'hasItems',

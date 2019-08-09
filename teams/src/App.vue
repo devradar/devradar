@@ -127,7 +127,8 @@
 
 export default {
   data: () => ({
-    showNavdrawer: false
+    showNavdrawer: false,
+    isLoading: false
   }),
   methods: {
     getMenuItems (location) {
@@ -145,17 +146,8 @@ export default {
     }
   },
   computed: {
-    isLoading () {
-      return this.$store.getters.isLoading
-    },
-    meta () {
-      return this.$store.getters.meta
-    },
-    blips () {
-      return this.$store.getters.blips
-    },
     snackbar () {
-      return this.$store.getters.snackbar
+      return this.$store.getters['comm/snackbar']
     }
   }
 }

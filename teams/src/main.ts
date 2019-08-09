@@ -3,11 +3,11 @@
 import Vue from 'vue'
 // import toml from 'toml'
 import Vuetify from 'vuetify'
-import App from './App'
-import router from './router'
-import './stylus/main.styl'
-import { store, backend } from './store'
+import App from './App.vue'
 import appConfig from './config'
+import router from './router'
+import { backend, store } from './store'
+import './stylus/main.styl'
 
 Vue.use(Vuetify, {
   theme: appConfig.theme
@@ -15,8 +15,8 @@ Vue.use(Vuetify, {
 Vue.config.productionTip = false
 
 Vue.prototype.$config = appConfig
-Vue.filter('limitString', function (string, limit = Infinity) {
-  return string.slice(0, limit) + (string.length > limit ? '..' : '')
+Vue.filter('limitString', (str, limit = Infinity) => {
+  return str.slice(0, limit) + (str.length > limit ? '..' : '')
 })
 
 backend.init(store)
@@ -27,6 +27,6 @@ new Vue({
   router,
   store,
   components: { App },
-  render: h => h(App),
+  render: (h) => h(App),
   template: '<App/>'
 })

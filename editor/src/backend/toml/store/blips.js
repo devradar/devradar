@@ -14,7 +14,7 @@ const actions = {
           obj.blips
             .map(cleanBlip)
             .forEach(b => commit('addBlip', b))
-          commit('setSnackbar', 'updated local blips + config')
+          commit('com/setSnackbar', 'updated local blips + config')
         } catch (e) {
           console.error('Error occurred trying to decompress content', e)
         }
