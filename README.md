@@ -20,7 +20,15 @@ See [anoff/devradar-static](https://github.com/anoff/devradar-static) for a easy
 
 ### devradar editor
 
+Create and update your skill information
+
 <img src="assets/editor-demo.gif" alt="video of the editor app">
+
+### devradar teams
+
+Compare your teams target skills with existing team devradars
+
+<img src="assets/teams-demo.gif" alt="video of the teams app">
 
 ## License & Attributions
 
