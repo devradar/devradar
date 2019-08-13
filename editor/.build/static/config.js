@@ -26,10 +26,6 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   darkMode: false,
   blips: {
     titleCutOff: 20 // cut off title after N characters (display only)
-  },
-  googleAnalytics: {
-    enabled: false,
-    id: 'UA-XYZ'
   }
 }
 
