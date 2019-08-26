@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import VueAnalytics from 'vue-analytics'
-import App from './App'
+import App from './App.vue'
 import router from './router'
 import './stylus/main.styl'
 import { store, backend } from './store'
@@ -14,10 +14,10 @@ Vue.use(Vuetify, {
 })
 Vue.config.productionTip = false
 
-if (appConfig.googleAnalytics && appConfig.googleAnalytics.id) {
+if ('googleAnalytics' in appConfig && 'id' in appConfig['googleAnalytics']) {
   Vue.use(VueAnalytics, {
-    id: appConfig.googleAnalytics.id,
-    disabled: !appConfig.googleAnalytics.enabled,
+    id: appConfig['googleAnalytics']['id'],
+    disabled: !appConfig['googleAnalytics']['enabled'],
     debug: {
       // turn on only in prod https://github.com/MatteoGabriele/vue-analytics/blob/9b7125472dc1313823e6c03538434d22b4edad8a/docs/turn-off-development.md
       sendHitTask: process.env.NODE_ENV === 'production'
@@ -26,12 +26,11 @@ if (appConfig.googleAnalytics && appConfig.googleAnalytics.id) {
   })
 }
 
-Vue.prototype.$config = appConfig
-Vue.filter('limitString', function (string, limit = Infinity) {
-  return string.slice(0, limit) + (string.length > limit ? '..' : '')
+Vue.filter('limitString', function (str: string, limit: number = Infinity) {
+  return str.slice(0, limit) + (str.length > limit ? '..' : '')
 })
 
-backend.init(store)
+backend.init(store, appConfig)
 
 /* eslint-disable no-new */
 new Vue({

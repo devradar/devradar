@@ -9,6 +9,7 @@
     "localstorage",
     "nightwatch",
     "styl",
+    "uuidv",
     "vuex"
   ]
 }

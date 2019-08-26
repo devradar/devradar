@@ -1,4 +1,4 @@
-import { Blip, Item } from './domain'
+import { Item } from './domain'
 
 export interface ItemsState {
   team?: Item;

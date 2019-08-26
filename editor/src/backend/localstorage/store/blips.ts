@@ -1,8 +1,11 @@
 import lzs from 'lz-string'
+import { ActionTree } from 'vuex'
 import { getUUID, cleanBlip } from '../../../util'
+import { Blip, Meta, BlipChange } from '@/types/domain'
+import { RootState, BlipsState } from '@/types/vuex'
 
 // allow migration for files happening before issue#54
-function migrateToEnum (blip, meta) {
+function migrateToEnum (blip: Blip, meta: Meta) {
   if (typeof blip.category === 'string' && meta.categories.length) {
     blip.category = meta.categories.indexOf(blip.category)
   }
@@ -19,14 +22,14 @@ function migrateToEnum (blip, meta) {
   return blip
 }
 
-const actions = {
-  getBlips ({ commit, dispatch }) {
-    let r = decodeURI(window.location).split('?')
+const actions = (appConfig): ActionTree<BlipsState, RootState> =>  ({ // eslint-disable-line
+  getBlips ({ commit, dispatch }): void {
+    let r = decodeURI(window.location.toString()).split('?')
     if (r.length < 2) return
     r = r[1]
       .split('&')
       .map(p => p.split('='))
-      .find(([k, v]) => k === 'load')
+      .find(([k]) => k === 'load')
     if (!r) return
     try {
       const string = lzs.decompressFromEncodedURIComponent(r[1])
@@ -37,37 +40,37 @@ const actions = {
       console.error('Error occurred trying to decompress content', e)
     }
   },
-  setBlips ({ commit, dispatch, getters }, blips) {
+  setBlips ({ commit, dispatch, getters }, blips: Blip[]): void {
     commit('dropBlips')
     blips
-      .map(b => migrateToEnum(b, getters.meta))
+      .map((b: Blip) => migrateToEnum(b, getters.meta))
       .map(cleanBlip)
-      .forEach(b => dispatch('addBlip', b))
+      .forEach((b: Blip) => dispatch('addBlip', b))
   },
-  addBlip ({ commit }, blip) {
+  addBlip ({ commit }, blip: Blip): void {
     // prepend https if nothing is there
     if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
     commit('addBlip', blip)
   },
-  updateBlip ({ commit }, blip) {
+  updateBlip ({ commit }, blip: Blip): void {
     commit('exchangeBlip', blip)
   },
-  deleteBlip ({ commit }, blip) {
+  deleteBlip ({ commit }, blip: Blip): void {
     commit('removeBlip', blip)
   },
-  addChange ({ commit }, { blip, change }) {
+  addChange ({ commit }, { blip, change }: { blip: Blip; change: BlipChange }): void {
     change = Object.assign(change, { id: getUUID() })
     blip.changes.push(change)
     commit('exchangeBlip', blip)
   },
-  deleteChange ({ commit }, { blip, change }) {
+  deleteChange ({ commit }, { blip, change }: { blip: Blip; change: BlipChange }): void {
     blip.changes = blip.changes.filter(c => c.id !== change.id)
     commit('exchangeBlip', blip)
   },
-  setMeta ({ commit }, meta) {
+  setMeta ({ commit }, meta: Meta): void {
     commit('setMeta', meta)
   }
-}
+})
 
 export default {
   actions

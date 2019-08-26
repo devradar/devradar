@@ -37,7 +37,7 @@ function flattenChanges (item: Item) {
     .map((blip: Blip) => ({
       category: blip.category,
       level: blip.changes && blip.changes.length ? blip.changes
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0].newLevel : blip.level,
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel : blip.level,
       title: blip.title
     }))
   return item

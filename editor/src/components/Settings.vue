@@ -69,12 +69,14 @@
       </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 import copy from 'clipboard-copy'
 import lzs from 'lz-string'
 import UploadButton from 'vuetify-upload-button'
 import TOML from '@iarna/toml'
 import { mapGetters } from 'vuex'
+import { Blip, Meta } from '@/types/domain'
 
 function saveAs (filename, text) {
   var element = document.createElement('a')
@@ -95,94 +97,24 @@ function stripIds (blip) {
   delete blip.id
   return blip
 }
-export default {
-  data: () => ({
-    contentToml: '',
-    showToml: true,
-    contentIsValid: false,
-    validateToml: [
-      v => {
-        try {
-          TOML.parse(v)
-          return true
-        } catch (e) {
-          return e.toString()
-        }
-      }
-    ]
-  }),
+
+@Component({
   computed: {
-    ...mapGetters([
-      'meta',
+    ...mapGetters('blips', [
+      'meta'
+    ]),
+    ...mapGetters('user', [
       'userCanEdit'
     ]),
     blipsClean () {
-      return this.$store.getters.blipsClean
+      return this.$store.getters['blips/blipsClean']
         .map(stripIds)
-    },
-    meta () {
-      return this.$store.getters.meta
     },
     contentEncoded () {
       const json = TOML.parse(this.contentToml)
       const str = JSON.stringify(json)
       return lzs.compressToEncodedURIComponent(str)
     }
-  },
-  methods: {
-    copyToClipboard (content) {
-      const success = copy(content)
-      if (success) {
-        this.$store.dispatch('showSnackbar', 'content copied to clipboard')
-      } else {
-        console.error(success)
-      }
-    },
-    fetchContent () {
-      const obj = {
-        meta: this.meta,
-        blips: this.blipsClean
-      }
-      const str = TOML.stringify(obj)
-      this.contentToml = str
-    },
-    // move content from view to vuex
-    loadContent () {
-      try {
-        const obj = TOML.parse(this.contentToml)
-        this.$store.dispatch('setMeta', obj.meta)
-        this.$store.dispatch('setBlips', obj.blips)
-        this.$store.dispatch('showSnackbar', 'updated local blips + config')
-      } catch (e) {
-        console.error('Error occured trying to decompress content', e)
-      }
-    },
-    uploadToml (file) {
-      const reader = new FileReader()
-      if (file) {
-        reader.addEventListener('load', () => {
-          this.contentToml = reader.result
-          this.$store.dispatch('showSnackbar', 'file upload successful')
-        }, false)
-        reader.readAsText(file)
-      }
-    },
-    downloadToml () {
-      saveAs(`devradar-${this.meta.title.replace(/[^a-zA-Z0-9 _-]/g, '')}.toml`, this.contentToml)
-    },
-    tabber (event) {
-      const text = this.contentToml
-      const originalSelectionStart = event.target.selectionStart
-      const textStart = text.slice(0, originalSelectionStart)
-      const textEnd = text.slice(originalSelectionStart)
-
-      this.contentToml = `${textStart}  ${textEnd}`
-      event.target.value = this.contentToml // required to make the cursor stay in place.
-      event.target.selectionEnd = event.target.selectionStart = originalSelectionStart + 2
-    }
-  },
-  mounted () {
-    this.fetchContent()
   },
   components: {
     'v-upload-btn': UploadButton
@@ -192,6 +124,87 @@ export default {
       this.fetchContent()
     }
   }
+})
+export default class Settings extends Vue {
+  contentToml: string = ''
+  showToml: boolean = true
+  contentIsValid: boolean = false
+  validateToml: ((v) => boolean | string)[] = [
+    v => {
+      try {
+        TOML.parse(v)
+        return true
+      } catch (e) {
+        return e.toString()
+      }
+    }
+  ]
+  // computed
+  contentEncoded: string
+  meta: Meta
+  blipsClean: Blip[]
+  userCanEdit: boolean
+  
+  copyToClipboard (content) {
+    const success = copy(content)
+    if (success) {
+      this.$store.dispatch('comm/showSnackbar', 'content copied to clipboard')
+    } else {
+      console.error(success)
+    }
+  }
+
+  fetchContent () {
+    const obj: any = {
+      meta: this.meta,
+      blips: this.blipsClean
+    }
+    const str = TOML.stringify(obj) as string
+    this.contentToml = str
+  }
+
+  // move content from view to vuex
+  loadContent () {
+    try {
+      const obj = TOML.parse(this.contentToml)
+      this.$store.dispatch('blips/setMeta', obj.meta)
+      this.$store.dispatch('blips/setBlips', obj.blips)
+      this.$store.dispatch('comm/showSnackbar', 'updated local blips + config')
+    } catch (e) {
+      console.error('Error occured trying to decompress content', e)
+    }
+  }
+
+  uploadToml (file) {
+    const reader = new FileReader()
+    if (file) {
+      reader.addEventListener('load', () => {
+        this.contentToml = reader.result.toString()
+        this.$store.dispatch('comm/showSnackbar', 'file upload successful')
+      }, false)
+      reader.readAsText(file)
+    }
+  }
+
+  downloadToml () {
+    saveAs(`devradar-${this.meta.title.replace(/[^a-zA-Z0-9 _-]/g, '')}.toml`, this.contentToml)
+  }
+
+  tabber (event) {
+    const text = this.contentToml
+    const originalSelectionStart = event.target.selectionStart
+    const textStart = text.slice(0, originalSelectionStart)
+    const textEnd = text.slice(originalSelectionStart)
+
+    this.contentToml = `${textStart}  ${textEnd}`
+    event.target.value = this.contentToml // required to make the cursor stay in place.
+    event.target.selectionEnd = event.target.selectionStart = originalSelectionStart + 2
+  }
+
+  mounted () {
+    this.fetchContent()
+  }
+  
 }
 </script>
 

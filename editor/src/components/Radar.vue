@@ -28,7 +28,7 @@
             :to="{ name: 'List', params: {search: blip.title}}"
             >
               <span class="blip-number">{{blip.index}}</span>
-              {{blip.title | limitString($config.blips.titleCutOff)}}
+              {{blip.title | limitString(blipTitleCutOff)}}
               <span class="blip-level">{{meta.levels[blip.level]}}</span>
               </router-link>
             </li>
@@ -42,15 +42,18 @@
   </v-container>
 </template>
 
-<script>
-import NewBlip from './NewBlip'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import NewBlip from './NewBlip.vue'
+import { Blip, Meta } from '@/types/domain'
 import { getPseudoRand } from '../util'
+import appConfig from '../config'
 
-export default {
-  components: { NewBlip },
+
+@Component({
   computed: {
     blips () {
-      const b = JSON.parse(JSON.stringify(this.$store.getters.blipsWithIndex))
+      const b = JSON.parse(JSON.stringify(this.$store.getters['blips/blipsWithIndex']))
       return b
         .filter(b => b.level >= 0 && b.level <= 3)
         .map(b => {
@@ -71,90 +74,99 @@ export default {
         }, {})
     },
     meta () {
-      return this.$store.getters.meta
+      return this.$store.getters['blips/meta']
     }
   },
-  data: () => ({
-    previousRadarSize: 0 // help detect resize due to SCSS breakpoints in this.handleResize()
-  }),
-  methods: {
-    arrangeBlips () {
-      function getDomWidth (domClass) {
-        return document.getElementsByClassName(domClass)[0].clientWidth
-      }
-      const blips = document.getElementsByClassName('blip')
-      for (let b of blips) {
-        const bWidth = b.clientWidth
-        const category = parseInt(b.dataset.category)
-        const level = parseInt(b.dataset.level)
+  components: { NewBlip }
+})
+export default class Radar extends Vue {
+  // help detect resize due to SCSS breakpoints in this.handleResize()
+  previousRadarSize: number = 0
+  blipTitleCutOff: number = appConfig.blips.titleCutOff
+  // computed
+  blips: Blip[]
+  blipsByCategory: any
+  meta: Meta
 
-        // Different radiuses depending on blips
-        let width, radius
-        switch (level) {
-          case 0:
-            radius = (getDomWidth('radar') - bWidth) / 2
-            width = (getDomWidth('radar') - bWidth) / 2 - (getDomWidth('assess') - bWidth) / 2
-            break
-          case 1:
-            radius = (getDomWidth('assess') - bWidth) / 2
-            width = (getDomWidth('assess') - bWidth) / 2 - (getDomWidth('trial') - bWidth) / 2
-            break
-          case 2:
-            radius = (getDomWidth('trial') - bWidth) / 2
-            width = (getDomWidth('trial') - bWidth) / 2 - (getDomWidth('adopt') - bWidth) / 2
-            break
-          case 3:
-            radius = (getDomWidth('adopt') - bWidth) / 2
-            width = radius = (getDomWidth('adopt') - bWidth) / 2
-            break
-        }
-
-        // Different quadrants depending on area
-        const quadrant = category + 1
-
-        // Calculate things
-        const radarx = (getDomWidth('radar') / 2) // TODO: maybe use height?
-        const radary = (getDomWidth('radar') / 2)
-
-        let rad = radius - width / 2
-        let angle = (quadrant - 1) * Math.PI / 2 + Math.PI / 4
-        rad += (Math.sqrt(getPseudoRand(b.title)) - 0.5) * width / 2 * 0.9
-        angle += (getPseudoRand(b.title) - 0.5) * (Math.PI / 2) * 0.9
-
-        let x = rad * Math.cos(angle) + radarx
-        let y = -rad * Math.sin(angle) + radary // use negative values to go up instead of down on x/y pane
-
-        // offset blip size
-        x -= (bWidth / 2)
-        y -= (bWidth / 2)
-
-        // Now position the blip
-        b.style.left = `${x}px`
-        b.style.top = `${y}px`
-
-        // add class for color and make visible
-        b.classList.add(`blip--q${quadrant}`)
-        b.classList.remove('blip--hidden')
-      }
-    },
-    handleResize () {
-      const radar = document.getElementsByClassName('radar')[0]
-      if (radar.clientWidth !== this.previousRadarSize) {
-        this.previousRadarSize = radar.clientWidth
-        this.arrangeBlips()
-      }
+  public arrangeBlips () {
+    function getDomWidth (domClass) {
+      return document.getElementsByClassName(domClass)[0].clientWidth
     }
-  },
-  mounted: function () {
-    this.$store.subscribe((mutation, level) => {
-      if (['setBlips', 'addBlip', 'exchangeBlip', 'deleteBlip'].indexOf(mutation.type) > -1) {
+    const blips = document.getElementsByClassName('blip') as any
+    for (let b of blips) {
+      const bWidth = b.clientWidth
+      const category = parseInt(b.dataset.category)
+      const level = parseInt(b.dataset.level)
+
+      // Different radiuses depending on blips
+      let width, radius
+      switch (level) {
+        case 0:
+          radius = (getDomWidth('radar') - bWidth) / 2
+          width = (getDomWidth('radar') - bWidth) / 2 - (getDomWidth('assess') - bWidth) / 2
+          break
+        case 1:
+          radius = (getDomWidth('assess') - bWidth) / 2
+          width = (getDomWidth('assess') - bWidth) / 2 - (getDomWidth('trial') - bWidth) / 2
+          break
+        case 2:
+          radius = (getDomWidth('trial') - bWidth) / 2
+          width = (getDomWidth('trial') - bWidth) / 2 - (getDomWidth('adopt') - bWidth) / 2
+          break
+        case 3:
+          radius = (getDomWidth('adopt') - bWidth) / 2
+          width = radius = (getDomWidth('adopt') - bWidth) / 2
+          break
+      }
+
+      // Different quadrants depending on area
+      const quadrant = category + 1
+
+      // Calculate things
+      const radarx = (getDomWidth('radar') / 2) // TODO: maybe use height?
+      const radary = (getDomWidth('radar') / 2)
+
+      let rad = radius - width / 2
+      let angle = (quadrant - 1) * Math.PI / 2 + Math.PI / 4
+      rad += (Math.sqrt(getPseudoRand(b.title)) - 0.5) * width / 2 * 0.9
+      angle += (getPseudoRand(b.title) - 0.5) * (Math.PI / 2) * 0.9
+
+      let x = rad * Math.cos(angle) + radarx
+      let y = -rad * Math.sin(angle) + radary // use negative values to go up instead of down on x/y pane
+
+      // offset blip size
+      x -= (bWidth / 2)
+      y -= (bWidth / 2)
+
+      // Now position the blip
+      b.style.left = `${x}px`
+      b.style.top = `${y}px`
+
+      // add class for color and make visible
+      b.classList.add(`blip--q${quadrant}`)
+      b.classList.remove('blip--hidden')
+    }
+  }
+
+  public handleResize () {
+    const radar = document.getElementsByClassName('radar')[0]
+    if (radar.clientWidth !== this.previousRadarSize) {
+      this.previousRadarSize = radar.clientWidth
+      this.arrangeBlips()
+    }
+  }
+
+  mounted (): void {
+    this.$store.subscribe((mutation) => {
+      if (['blips/setBlips', 'blips/addBlip', 'blips/exchangeBlip', 'blips/deleteBlip'].includes(mutation.type)) {
         setTimeout(() => this.arrangeBlips(), 50) // delay because blobs aren't in DOM yet
       }
     })
     window.addEventListener('resize', this.handleResize)
     this.handleResize()
-  },
-  beforeDestroy: function () {
+  }
+
+  beforeDestroy (): void {
     window.removeEventListener('resize', this.handleResize)
   }
 }

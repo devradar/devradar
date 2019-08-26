@@ -1,7 +1,7 @@
 import { store } from '../store'
 export default validatorFn => { // make authguard a curry for custom validations per route
   return (to, from, next) => {
-    const user = store.getters.user
+    const user = store.getters['user/user']
     if (validatorFn(user)) {
       next()
     } else {

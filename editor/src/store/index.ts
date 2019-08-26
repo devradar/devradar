@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueX from 'vuex'
 import VuexPersistence from 'vuex-persist'
-import users from './user'
-import blips from './blips'
-import comm from './comm'
+import { user } from './user'
+import { blips } from './blips'
+import { comm } from './comm'
 import appConfig from '../config'
 import backend from '../backend/index'
+import { UserState, BlipsState, CommState } from '@/types/vuex';
 
 Vue.use(VueX)
 
@@ -19,22 +20,20 @@ backendActive.type = appConfig.backend.type.toLowerCase()
 const storePlugins = []
 if (backendActive.type === 'localstorage') {
   storePlugins.push((new VuexPersistence({
-    key: 'devradar-blips',
+    key: 'devradar-editor',
     storage: window.localStorage,
-    reducer: (state) => ({ blips: { blips: state.blips.blips } })
-  })).plugin)
-
-  storePlugins.push((new VuexPersistence({
-    key: 'devradar-meta',
-    storage: window.localStorage,
-    reducer: (state) => ({ blips: { meta: state.blips.meta } })
+    reducer: (state: {
+      user: UserState;
+      blips: BlipsState;
+      comm: CommState;
+    }) => ({ blips: { meta: state.blips.meta, blips: state.blips.blips } })
   })).plugin)
 }
 const store = new VueX.Store({
   modules: {
-    users: users(backendActive),
+    user: user(backendActive),
     blips: blips(backendActive),
-    comm: comm(backendActive)
+    comm: comm()
   },
   plugins: storePlugins
 })

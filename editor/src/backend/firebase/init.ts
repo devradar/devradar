@@ -1,6 +1,5 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import appConfig from '../../config'
 
 function upsertUser (user) {
   // upsert into user collection
@@ -32,7 +31,7 @@ function upsertUser (user) {
     .catch(e => console.error(e))
 }
 
-function init (store) {
+function init (store, appConfig) {
   firebase.initializeApp({
     apiKey: appConfig.backend.key,
     authDomain: `${appConfig.backend.project}.firebaseapp.com`,
@@ -41,20 +40,20 @@ function init (store) {
   })
 
   // resolve after auth status is defined as logged in or not
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         upsertUser(user)
           .then(user => {
-            store.commit('setUser', user)
+            store.commit('user/setUser', user)
             resolve(user)
           })
       } else { // user is not set (logout)
-        store.commit('setUser', { roles: {} })
+        store.commit('user/setUser', { roles: {} })
         resolve({})
       }
-      store.dispatch('getBlips')
-      store.dispatch('getMeta')
+      store.dispatch('blips/getBlips')
+      store.dispatch('blips/getMeta')
     })
   })
 }

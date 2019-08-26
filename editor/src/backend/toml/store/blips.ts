@@ -1,14 +1,17 @@
 import axios from 'axios'
+import { ActionTree } from 'vuex'
 import TOML from '@iarna/toml'
 import { cleanBlip } from '../../../util'
-import appConfig from '../../../config'
+import { RootState, BlipsState } from '@/types/vuex'
+import { RadarContent } from '@/types/domain';
 
-const actions = {
-  getBlips ({ commit, dispatch }) {
+const actions = (appConfig): ActionTree<BlipsState, RootState> =>  ({
+  getBlips ({ commit }): void {
     axios.get(appConfig.backend.blipsUrl)
       .then(res => {
         try {
-          const obj = TOML.parse(res.data)
+          const json = TOML.parse(res.data) as unknown
+          const obj = json as RadarContent
           commit('setMeta', obj.meta)
           commit('dropBlips')
           obj.blips
@@ -20,22 +23,22 @@ const actions = {
         }
       })
   },
-  addBlip ({ commit, dispatch }, blip) {
+  addBlip (): void {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
   },
-  updateBlip ({ commit }, blip) {
+  updateBlip (): void {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
   },
-  deleteBlip ({ commit }, blip) {
+  deleteBlip (): void {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
   },
-  addChange ({ commit }, { blip, change }) {
+  addChange (): void {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
   },
-  deleteChange ({ commit }, { blip, change }) {
+  deleteChange (): void {
     console.error('Mutating actions not permitted with static backend, this method should not be reachable')
   }
-}
+})
 
 export default {
   actions

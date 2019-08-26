@@ -1,9 +1,9 @@
 function init (store) {
   // fetch states
-  store.dispatch('getBlips')
+  store.dispatch('blips/getBlips')
 
   // set user as not logged in
-  store.commit('setUser', { roles: {} })
+  store.commit('user/setUser', { roles: {} })
   return Promise.resolve() // mock async interface
 }
 

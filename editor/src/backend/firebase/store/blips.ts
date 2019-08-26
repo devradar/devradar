@@ -1,22 +1,24 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import appConfig from '../../../config'
+import { Blip, BlipChange } from '@/types/domain'
+import { ActionTree } from 'vuex'
+import { RootState, BlipsState } from '@/types/vuex'
 
-function migrateToEnum (blip) {
+function migrateToEnum (blip, { categories, levels }) {
   const b = JSON.parse(JSON.stringify(blip)) // create hard copy
   let updateRequired = false
   if (typeof b.category === 'string') {
-    b.category = appConfig.backend.categories.indexOf(b.category)
+    b.category = categories.indexOf(b.category)
     updateRequired = true
   }
   if (typeof b.level === 'string') {
-    b.level = appConfig.backend.levels.indexOf(b.level)
+    b.level = levels.indexOf(b.level)
     updateRequired = true
   }
   b.changes = b.changes
     .map(change => {
       if (typeof change.newLevel === 'string') {
-        change.newLevel = appConfig.backend.levels.indexOf(change.newLevel)
+        change.newLevel = levels.indexOf(change.newLevel)
         //
         const document = change.id
         delete change.id
@@ -63,8 +65,8 @@ function migrateToLevel (blip) {
   }
 }
 
-const actions = {
-  getBlips ({ commit, getters, level }) {
+const actions = (appConfig): ActionTree<BlipsState, RootState> =>  ({
+  getBlips ({ commit, getters }): void {
     commit('setLoading', true)
     let blipsArray
     firebase.firestore().collection('blips').get()
@@ -75,6 +77,7 @@ const actions = {
       })
       .then(snapshotArray => {
         for (const [index, snapshot] of snapshotArray.entries()) {
+          // @ts-ignore type checking of docs property
           const changes = snapshot.docs.map(d => Object.assign(d.data(), { id: d.id }))
           blipsArray[index].changes = changes
         }
@@ -84,7 +87,7 @@ const actions = {
 
         // migrate from string category/level to enums
         if (getters.userCanEdit) {
-          blipsArray.forEach(migrateToEnum)
+          blipsArray.forEach(b => migrateToEnum(b, { categories: appConfig.backend.categories, levels: appConfig.backend.levels }))
           blipsArray.forEach(migrateToLevel)
         }
 
@@ -92,7 +95,7 @@ const actions = {
         commit('setLoading', false)
       })
   },
-  addBlip ({ commit, dispatch }, blip) {
+  addBlip ({ commit, dispatch }, blip: Blip): void {
     commit('setLoading', true)
     // prepend https if nothing is there
     const { category, description, title } = blip
@@ -109,7 +112,7 @@ const actions = {
         commit('setLoading', false)
       })
   },
-  updateBlip ({ commit }, blip) {
+  updateBlip ({ commit }, blip: Blip): void {
     commit('setLoading', true)
     // create copy of the store object to remove changes array/index for firebase entry
     const { category, description, title } = blip
@@ -122,7 +125,7 @@ const actions = {
         commit('setLoading', false)
       })
   },
-  deleteBlip ({ commit }, blip) {
+  deleteBlip ({ commit }, blip: Blip): void {
     commit('setLoading', true)
     firebase.firestore().collection('blips').doc(blip.id).delete()
       .then(() => {
@@ -130,7 +133,7 @@ const actions = {
         commit('setLoading', false)
       })
   },
-  addChange ({ commit }, { blip, change }) {
+  addChange ({ commit }, { blip, change }: { blip: Blip; change: BlipChange }): void {
     commit('setLoading', true)
     const { date, newLevel, text } = change
     firebase.firestore().collection(`blips/${blip.id}/changes`).add({ date, newLevel, text })
@@ -141,7 +144,7 @@ const actions = {
         commit('setLoading', false)
       })
   },
-  deleteChange ({ commit }, { blip, change }) {
+  deleteChange ({ commit }, { blip, change }: { blip: Blip; change: BlipChange }): void {
     commit('setLoading', true)
     firebase.firestore().collection(`blips/${blip.id}/changes`).doc(change.id).delete()
       .then(() => {
@@ -150,12 +153,12 @@ const actions = {
         commit('setLoading', false)
       })
   },
-  getMeta ({ commit }) {
+  getMeta ({ commit }): void {
     const { title, levels, categories } = appConfig.backend
     const meta = { title, levels, categories }
     commit('setMeta', meta)
   }
-}
+})
 
 export default {
   actions
