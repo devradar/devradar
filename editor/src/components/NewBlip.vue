@@ -53,42 +53,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      valid: false,
-      fab: false,
-      dialog: false,
-      category: null,
-      level: null,
-      title: null,
-      link: null,
-      description: null,
-      changeText: null
-    }
-  },
-  methods: {
-    submit () {
-      if (this.$refs.form.validate()) {
-        this.$store.dispatch('addBlip', Object.assign(this.blip, { changes: [this.change] }))
-        this.dialog = false
-        this.clear()
-      }
-    },
-    cancel () {
-      this.dialog = false
-      this.clear()
-    },
-    clear () {
-      this.category = null
-      this.level = null
-      this.title = null
-      this.link = null
-      this.description = null
-      this.changeText = null
-    }
-  },
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { Blip, BlipChange } from '@/types/domain'
+import { VForm } from '@/types/misc'
+
+@Component({
   computed: {
     blip () {
       return {
@@ -106,14 +76,58 @@ export default {
       }
     },
     userCanEdit () {
-      return this.$store.getters.userCanEdit
+      return this.$store.getters['user/userCanEdit']
     },
     categories () {
-      return this.$store.getters.meta.categories
+      return this.$store.getters['blips/meta'].categories
     },
     levels () {
-      return this.$store.getters.meta.levels
+      return this.$store.getters['blips/meta'].levels
+    },
+    form() {
+      return this.$refs.form as VForm
     }
+  }
+})
+
+export default class NewBlip extends Vue {
+  valid: boolean = false
+  fab: boolean = false
+  dialog: boolean = false
+  category: string = ''
+  level: string = ''
+  title: string = ''
+  link: string = ''
+  description: string = ''
+  changeText: string = ''
+  // computed
+  blip: Blip
+  change: BlipChange
+  userCanEdit: boolean
+  categories: string[]
+  levels: string[]
+  form: VForm
+
+  submit () {
+    if (this.form.validate()) {
+      this.$store.dispatch('blips/addBlip', Object.assign(this.blip, { changes: [this.change] }))
+      this.dialog = false
+      this.clear()
+    }
+  }
+
+  cancel () {
+    this.dialog = false
+    this.clear()
+  }
+
+  clear () {
+    this.category = ''
+    this.level = ''
+    this.title = ''
+    this.link = ''
+    this.description = ''
+    this.changeText = ''
   }
 }
 </script>

@@ -1,3 +1,5 @@
+/* global module require */
+/* eslint-disable */
 const fs = require('fs')
 const path = require('path')
 const toml = require('@iarna/toml')
@@ -12,7 +14,7 @@ if (fs.existsSync(FILEPATH)) {
 }
 
 module.exports = {
-  configureWebpack: config => {
+  configureWebpack: () => {
     return {
       plugins: [
         new webpack.DefinePlugin({

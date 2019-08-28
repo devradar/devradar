@@ -34,34 +34,12 @@
   </v-dialog>
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      valid: false,
-      dialog: true,
-      level: null,
-      date: new Date().toISOString().slice(0, 7),
-      changeText: null
-    }
-  },
-  methods: {
-    submit () {
-      if (this.$refs.form.validate()) {
-        this.$emit('submit', { change: this.change, blip: this.$parent.newChangeBlip })
-        this.reset()
-      }
-    },
-    cancel () {
-      this.$emit('cancel', { change: this.change, blip: this.$parent.newChangeBlip })
-      this.reset()
-    },
-    reset () {
-      this.level = null
-      this.date = new Date().toISOString().slice(0, 7)
-      this.changeText = null
-    }
-  },
+<script lang="ts">
+import { Component, Vue, Emit, InjectReactive } from 'vue-property-decorator'
+import { Blip, BlipChange } from '@/types/domain'
+import { VForm } from '@/types/misc'
+
+@Component({
   computed: {
     change () {
       return {
@@ -71,8 +49,45 @@ export default {
       }
     },
     levels () {
-      return this.$store.getters.meta.levels
+      return this.$store.getters['blips/meta'].levels
+    },
+    form() {
+      return this.$refs.form as VForm
     }
+  }
+})
+
+export default class NewChange extends Vue {
+  @InjectReactive() readonly newChangeBlip!: Blip
+
+  valid: boolean = false
+  dialog: boolean = true
+  level: string = ''
+  date: string = new Date().toISOString().slice(0, 7)
+  changeText: string = ''
+  // computed
+  change: BlipChange
+  levels: string[]
+  form: VForm
+
+  @Emit()
+  submit () {
+    if (this.form.validate()) {
+      setTimeout(() => this.reset(), 100)
+      return { change: this.change, blip: this.newChangeBlip }
+    }
+  }
+
+  @Emit()
+  cancel () {
+    setTimeout(() => this.reset(), 100)
+    return { change: this.change, blip: this.newChangeBlip }
+  }
+
+  reset () {
+    this.level = null
+    this.date = new Date().toISOString().slice(0, 7)
+    this.changeText = null
   }
 }
 </script>
