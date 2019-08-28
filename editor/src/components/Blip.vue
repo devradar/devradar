@@ -4,7 +4,7 @@
         <v-layout row wrap>
           <v-flex xs12 sm6>
               <span class="headline" v-if="!isEditMode">
-                <a :href="blip.link" target="_blank">{{blip.title | limitString($config.blips.titleCutOff)}}</a>
+                <a :href="blip.link" target="_blank">{{blip.title | limitString(blipTitleCutOff)}}</a>
                 <v-btn icon @click.stop="copyUrl(blip)"><v-icon>link</v-icon></v-btn>
               </span>
               <v-text-field
@@ -86,72 +86,84 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import copy from 'clipboard-copy'
 import MarkdownIt from 'markdown-it'
+import appConfig from '../config'
+import { Blip as IBlip, Meta } from '@/types/domain'
+
 const md = new MarkdownIt()
-export default {
+@Component({
   computed: {
     userCanEdit () {
-      return this.$store.getters.userCanEdit
+      return this.$store.getters['user/userCanEdit']
     },
     meta () {
-      return this.$store.getters.meta
+      return this.$store.getters['blips/meta']
     }
-  },
-  props: {
-    blip: Object
-  },
-  data: function () {
-    return {
-      isEditMode: false,
-      tempBlip: {},
-      isDeleteMode: false,
-      showChangeDialog: false,
-      blipForChange: null
+  }
+})
+export default class Blip extends Vue {
+  isEditMode: boolean = false
+  tempBlip: IBlip
+  isDeleteMode: boolean = false
+  showChangeDialog: boolean = false
+  blipForChange: IBlip
+  blipTitleCutOff: number = appConfig.blips.titleCutOff
+  // computed
+  userCanEdit: boolean
+  meta: Meta
+  @Prop()
+  blip: IBlip
+    
+  deleteBlip () {
+    this.$store.dispatch('blips/deleteBlip', this.blip)
+  }
+
+  addChange () {
+    if (!this.userCanEdit) return
+    this.$emit('addChange', this.blip.id)
+  }
+
+  editBlip () {
+    this.tempBlip = { ...this.blip }
+    this.isEditMode = true
+  }
+
+  saveBlip () {
+    const updatedBlip = this.tempBlip
+    updatedBlip.changes = this.blip.changes // update in case changes were deleted
+    this.isEditMode = false
+    this.$store.dispatch('blips/updateBlip', updatedBlip)
+    this.isDeleteMode = false
+  }
+
+  cancelEditBlip () {
+    this.isEditMode = false
+    this.isDeleteMode = false
+  }
+
+  deleteChange (blip, change) {
+    this.$store.dispatch('blips/deleteChange', { blip, change })
+  }
+
+  copyUrl () {
+    const b = this.blip
+    // @ts-ignore ignore the injected .rootPath
+    let url = `${window.location.origin}/#/${appConfig.routes.find(r => r.view === 'List').rootPath}/${b.title}`
+    url = url.replace(/([^:]\/)\/+/g, '$1') // remove potential duplicate //, except http(s)://
+    const success = copy(url)
+    if (success) {
+      this.$store.dispatch('comm/showSnackbar', 'Skill URL copied to clipboard')
+    } else {
+      console.error(success)
     }
-  },
-  methods: {
-    deleteBlip () {
-      this.$store.dispatch('deleteBlip', this.blip)
-    },
-    addChange () {
-      if (!this.userCanEdit) return
-      this.$emit('addChange', this.blip.id)
-    },
-    editBlip () {
-      this.tempBlip = { ...this.blip }
-      this.isEditMode = true
-    },
-    saveBlip () {
-      const updatedBlip = this.tempBlip
-      updatedBlip.changes = this.blip.changes // update in case changes were deleted
-      this.isEditMode = false
-      this.$store.dispatch('updateBlip', updatedBlip)
-      this.isDeleteMode = false
-    },
-    cancelEditBlip () {
-      this.isEditMode = false
-      this.isDeleteMode = false
-    },
-    deleteChange (blip, change) {
-      this.$store.dispatch('deleteChange', { blip, change })
-    },
-    copyUrl () {
-      const b = this.blip
-      let url = `${window.location.origin}/#/${this.$config.routes.find(r => r.view === 'List').rootPath}/${b.title}`
-      url = url.replace(/([^:]\/)\/+/g, '$1') // remove potential duplicate //, except http(s)://
-      const success = copy(url)
-      if (success) {
-        this.$store.dispatch('showSnackbar', 'Skill URL copied to clipboard')
-      } else {
-        console.error(success)
-      }
-    },
-    markdown (string = '') {
-      if (!string || string.length === 0) return ''
-      return md.render(string)
-    }
+  }
+
+  markdown (string = '') {
+    if (!string || string.length === 0) return ''
+    return md.render(string)
   }
 }
 </script>

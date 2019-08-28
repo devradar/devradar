@@ -50,34 +50,32 @@
   </v-stepper>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 import ImportItems from './settings/ImportItems.vue'
 import SelectBlips from './settings/SelectBlips.vue'
 
-export default {
-  data: () => ({
-    stepperCount: 1,
-    stepperComplete: 0 // needs to be 1 to switch stepperCount from 1->2
-  }),
-  computed: {
-    canProgress () {
-      return this.stepperComplete >= this.stepperCount
-    }
-  },
-  methods: {
-    isComplete (step, value) {
-      if (step === this.stepperCount) {
-        if (value) {
-          this.stepperComplete = step
-        } else {
-          this.stepperComplete = step - 1
-        }
-      }
-    }
-  },
+@Component({
   components: {
     ImportItems,
     SelectBlips
+  }
+})
+export default class Settings extends Vue {
+  public stepperCount: number = 1
+  public stepperComplete: number = 0
+  get canProgress (): boolean {
+    return this.stepperComplete >= this.stepperCount
+  }
+
+  public isComplete (step: number, value: boolean) {
+    if (step === this.stepperCount) {
+      if (value) {
+        this.stepperComplete = step
+      } else {
+        this.stepperComplete = step - 1
+      }
+    }
   }
 }
 </script>

@@ -24,21 +24,24 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  data: () => ({
-  }),
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { User } from '@/types/domain'
+
+@Component({
   computed: {
     user () {
       return (this.$store.getters.user || {}).uid
     }
-  },
-  methods: {
-    onLogin (provider) {
-      this.$store.dispatch('oauthLogin', { provider })
-    }
-  },
-  mounted: function () {
+  }
+})
+
+export default class NewChange extends Vue {
+  // computed
+  user: User
+  
+  public onLogin (provider) {
+    this.$store.dispatch('user/oauthLogin', { provider })
   }
 }
 </script>

@@ -73,34 +73,40 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    items: [],
-    roles: []
-  }),
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { User } from '@/types/domain'
+
+@Component({
   computed: {
     userList () {
-      return this.$store.getters.userList
+      return this.$store.getters['user/userList']
     },
     user () {
-      return this.$store.getters.user
+      return this.$store.getters['user/user']
     }
-  },
-  methods: {
-    setRole (index, role, value) {
-      this.userList[index].roles[role] = value
-      const targetUser = this.userList[index]
-      if (targetUser.uid === this.user.uid && role === 'admin') {
-        console.warn('Preventing admin removal for own user')
-        this.$store.dispatch('getUserList')
-      } else {
-        this.$store.dispatch('setRoles', { targetUser })
-      }
+  }
+})
+export default class Users extends Vue {
+  items: []
+  roles: []
+  // computed
+  user: User
+  userList: any
+
+  setRole (index, role, value) {
+    this.userList[index].roles[role] = value
+    const targetUser = this.userList[index]
+    if (targetUser.uid === this.user.uid && role === 'admin') {
+      console.warn('Preventing admin removal for own user')
+      this.$store.dispatch('user/getUserList')
+    } else {
+      this.$store.dispatch('user/setRoles', { targetUser })
     }
-  },
+  }
+ 
   mounted () {
-    this.$store.dispatch('getUserList')
+    this.$store.dispatch('user/getUserList')
   }
 }
 </script>

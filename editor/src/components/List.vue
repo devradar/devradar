@@ -20,7 +20,7 @@
       </v-flex>
       <v-flex xs12 sm6 md4>
         <v-slider
-          v-model="settings.maxMonths"
+          v-model="maxMonths"
           thumb-label
           hint="Only show recently updated blips, 0 to disable"
           label="Latest change"
@@ -38,17 +38,23 @@
   </v-container>
 </template>
 
-<script>
-import NewBlip from './NewBlip'
-import NewChange from './NewChange'
-import Blip from './Blip'
+<script lang="ts">
+import { Component, Vue, Prop, ProvideReactive } from 'vue-property-decorator'
+import NewBlip from './NewBlip.vue'
+import NewChange from './NewChange.vue'
+import BlipComponent from './Blip.vue'
 import router from '../router'
+import { Blip } from '@/types/domain'
 
-export default {
-  components: { NewBlip, NewChange, Blip },
+@Component({
+  components: {
+    NewBlip,
+    NewChange,
+    Blip: BlipComponent
+  },
   computed: {
     blips () {
-      const blips = this.$store.getters.blipsWithIndex
+      const blips = this.$store.getters['blips/blipsWithIndex']
       return blips
     },
     filteredBlips () {
@@ -60,50 +66,52 @@ export default {
           return b
         })
         .filter(b => {
-          if (!this.settings.maxMonths) return true
+          if (!this.maxMonths) return true
           const bDate = new Date(b.changes[0].date)
           const now = new Date()
           const age = (now.getFullYear() - bDate.getFullYear()) * 12 + (now.getMonth() - bDate.getMonth())
-          if (age <= this.settings.maxMonths) return true
+          if (age <= this.maxMonths) return true
           return false
         })
         .sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
     },
     userCanEdit () {
-      return this.$store.getters.userCanEdit
+      return this.$store.getters['user/userCanEdit']
     }
-  },
-  props: {
-    search: String
-  },
-  data: function () {
-    return {
-      searchTitle: this.search,
-      settings: {
-        maxMonths: 0
-      },
-      newChangeModalVisible: false,
-      newChangeBlip: null
-    }
-  },
-  methods: {
-    searchUpdated () {
-      if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })
-      else router.replace({ name: 'List' })
-    },
-    newChangeOpen (blipId) {
-      this.newChangeBlip = this.blips.find(b => b.id === blipId)
-      this.newChangeModalVisible = true
-    },
-    newChangeSubmit ({ blip, change }) {
-      this.$store.dispatch('addChange', { blip, change })
-      this.newChangeModalVisible = false
-      this.newChangeBlip = null
-    },
-    newChangeCancel (change) {
-      this.newChangeBlip = null
-      this.newChangeModalVisible = false
-    }
+  }
+})
+export default class List extends Vue {
+  @Prop({ default: '' })
+  search: string
+  @ProvideReactive() newChangeBlip: Blip
+
+  searchTitle: string = this.search
+  maxMonths: number = 0
+  newChangeModalVisible: boolean = false
+  // computed
+  blips: Blip[]
+  userCanEdit: boolean
+  filteredBlips: Blip[]
+
+  searchUpdated () {
+    if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })
+    else router.replace({ name: 'List' })
+  }
+
+  newChangeOpen (blipId) {
+    this.newChangeBlip = this.blips.find(b => b.id === blipId)
+    this.newChangeModalVisible = true
+  }
+
+  newChangeSubmit ({ blip, change }) {
+    this.$store.dispatch('blips/addChange', { blip, change })
+    this.newChangeModalVisible = false
+    this.newChangeBlip = null
+  }
+
+  newChangeCancel () {
+    this.newChangeBlip = null
+    this.newChangeModalVisible = false
   }
 }
 </script>
