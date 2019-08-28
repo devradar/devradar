@@ -73,6 +73,20 @@
   <!-- /about -->
   {{ end }}
 
+  {{ if .Site.Data.homepage.features.enable }}
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="section-title">{{ .Site.Data.homepage.features.title }}</h2>
+        </div>
+      </div>
+      {{ range where .Site.RegularPages "Type" "feature" }}
+        {{ partial "content-type/card" . }}
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
 
   {{ if .Site.Data.homepage.usecases.enable }}
   <!-- usecases -->
@@ -107,22 +121,7 @@
       </div>
     </div>
   </section>
-  <!-- /portfolio -->
-  {{ end }}
-
-  {{ if .Site.Data.homepage.features.enable }}
-  <section class="section">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 text-center">
-          <h2 class="section-title">{{ .Site.Data.homepage.features.title }}</h2>
-        </div>
-      </div>
-      {{ range where .Site.RegularPages "Type" "feature" }}
-        {{ partial "content-type/card" . }}
-      {{ end }}
-    </div>
-  </section>
+  <!-- /usecases -->
   {{ end }}
 
   {{ if .Site.Data.homepage.tiles.enable }}

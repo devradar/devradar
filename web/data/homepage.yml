@@ -3,17 +3,16 @@ banner:
 
 about:
   enable : true
-  content : "Document and present skills for individuals and teams. The devradar editor allows you to:"
+  content : "Manage your skills as an individual using the devradar editor or track competence management within your team by using both the editor and the devradar teams app."
   item:
-    - text: "create your own _techradar_"
-    - text: "customize adoption levels"
-    - text: "define quadrant categories"
-    - text: "create radar blips via GUI"
-    - text: "view all skills in a list"
-    - text: "search for specific skills"
+    - text: "manage skills via web UI"
+    - text: "view all skills in a list or radar view"
     - text: "import/export via `.toml` files"
-    - text: "share your devradar via URL"
-  video: "/videos/view.webm"
+    - text: "overlay your teams devradars and focus on the key skills"
+
+features:
+  enable: true
+  title: Features
 
 tiles:
   enable : true
@@ -58,7 +57,3 @@ usecases:
       Identify emerging technologies and guide innovation.<br><br>
       Plan and document technology adoption over time.
       "
-
-features:
-  enable: false
-  title: Features
