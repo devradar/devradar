@@ -144,7 +144,7 @@ class Chart {
       .data((d: any, i: number) => d.values)
       .enter().append('circle')
       .attr('class', 'radarCircle')
-      .attr('r', 5)
+      .attr('r', d => d === null ? 0 : 5) // hide undefined values
       .attr('cx', (d: any, i: number) => pol2xy(d, i).x)
       .attr('cy', (d: any, i: number) => pol2xy(d, i).y)
       .style('fill', function (d: any, i: number) {
