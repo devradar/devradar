@@ -1,4 +1,4 @@
-const { default: colors } = require('vuetify/es5/util/colors')
+import colors from 'vuetify/es5/util/colors'
 
 const config = { // needs to be ES6 module so it can be imported by webpack
   backend: {
@@ -35,7 +35,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
 // precalculate some properties for later
 config.routes = config.routes
   .map(i => {
-    i.rootPath = i.path.split(':')[0] // path property without a potential query param
+    i['rootPath'] = i.path.split(':')[0] // path property without a potential query param
     return i
   })
 
