@@ -6,6 +6,7 @@ export interface Blip {
   description?: string;
   changes?: BlipChange[];
   id?: string;
+  index?: number;
 }
 
 export interface BlipChange {
