@@ -3,49 +3,49 @@ name: Build editor apps
 on: [push]
 
 jobs:
-#   test:
-#     strategy:
-#       matrix:
-#         os: [macOS-latest, ubuntu-16.04, ubuntu-latest]
-#         node: [10, 12]
-#     runs-on: ${{ matrix.os }}
-#     steps:
-#     - uses: actions/checkout@master
-#     - uses: actions/setup-node@v1
-#       with:
-#         node-version: ${{ matrix.node }}
-#     - run: npm ci
-#       working-directory: editor
-#     - run: npm run lint
-#       working-directory: editor
-#     # run build to make sure typescript does not throw
-#     - run: |
-#         npm run build
-#       working-directory: editor
+  test:
+    strategy:
+      matrix:
+        os: [macOS-latest, ubuntu-latest] # for some reason cannot run on windows with the '.working-directory' property
+        node: [10, 12]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm ci
+      working-directory: editor
+    - run: npm run lint
+      working-directory: editor
+    # run build to make sure typescript does not throw
+    - run: |
+        npm run build
+      working-directory: editor
 
   static:
-    name: "build and deploy devradar-static"
-    # needs: test
+    name: "publish devradar-static"
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
       with:
         node-version: 12
-    # - run: |
-    #     cd editor
-    #     cp -R .build/static/** .
-    #     npm ci
-    #     npm run build
-    #     npx yarn import # generate yarn.lock
-    #     npx yarn licenses generate-disclaimer > dist/DISCLAIMER
-    #     sed -i.bk -E -e "s^href=([\"']?)/([^/]+)^href=\1\2^g" -e "s^src=([\"']?)/([^/]+)^src=\1\2^g" dist/index.html # make resource includes relative to support non-root hosting
-    #     rm dist/index.html.bk
-    #   name: build
+    - run: |
+        cd editor
+        cp -R .build/static/** .
+        npm ci
+        npm run build
+        npx yarn import # generate yarn.lock
+        npx yarn licenses generate-disclaimer > dist/DISCLAIMER
+        sed -i.bk -E -e "s^href=([\"']?)/([^/]+)^href=\1\2^g" -e "s^src=([\"']?)/([^/]+)^src=\1\2^g" dist/index.html # make resource includes relative to support non-root hosting
+        rm dist/index.html.bk
+      name: build
     - run: |
         export tmpdir=../pages_tmp
         mkdir $tmpdir
-        git clone -b gh-pages --single-branch https://github.com/anoff/devradar-static.git $tmpdir
+        git clone -b gh-pages --single-branch https://${{ secrets.GITHUB_USERNAME }}:${{ secrets.GITHUB_TOKEN }}github.com/anoff/devradar-static.git $tmpdir
         rsync --delete --exclude .git -r ./editor/dist/ $tmpdir/
         cd $tmpdir
         git status --porcelain
@@ -55,4 +55,69 @@ jobs:
         git diff-index --quiet HEAD || git commit -m "commit static devradar"
         git push origin HEAD:gh-pages
       name: publish to gh-pages
+      if: github.ref == 'master'
+
+  editor_site:
+    name: "publish editor.devradar.io"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: |
+        cd editor
+        cp -R .build/editor/** .
+        npm ci
+        npm run build
+      name: build
+    - run: |
+        npm install -g netlify-cli
+        netlify deploy --dir=dist --prod
+      name: netlify deploy
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_EDITOR_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+      if: github.ref == 'master'
+
+  editor_docker:
+    name: "publish docker image"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: |
+        cd editor
+        cp -R .build/editor/** .
+        docker build -t anoff/devradar .
+      name: build
+    - run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push anoff/devradar
+      name: docker push
+      if: github.ref == 'master'
+
+  anoff:
+    name: "update radar.anoff.io"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: |
+        cd editor
+        npm ci
+        cp -R .build/anoff/** .
+        npm run build
+      name: build
+    - run: |
+        npm i -g firebase-tools
+        firebase deploy --token ${{ secrets.FIREBASE_CI_TOKEN }} --project ${{ secrets. FIREBASE_PROJECT}}
+      name: firebase deploy
       if: github.ref == 'master'
