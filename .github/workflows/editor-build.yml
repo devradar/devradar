@@ -1,0 +1,55 @@
+name: Build editor apps
+
+on: [push]
+
+jobs:
+#   test:
+#     strategy:
+#       matrix:
+#         os: [macOS-latest, ubuntu-16.04, ubuntu-latest]
+#         node: [10, 12]
+#     runs-on: ${{ matrix.os }}
+#     steps:
+#     - uses: actions/checkout@master
+#     - uses: actions/setup-node@v1
+#       with:
+#         node-version: ${{ matrix.node }}
+#     - run: npm ci
+#       working-directory: editor
+#     - run: npm run lint
+#       working-directory: editor
+#     # run build to make sure typescript does not throw
+#     - run: |
+#         npm run build
+#       working-directory: editor
+
+  static:
+    name: "build and deploy devradar-static"
+    # needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: |
+        cd editor
+        cp -R .build/static/** .
+        npm ci
+        npm run build
+        npx yarn import # generate yarn.lock
+        npx yarn licenses generate-disclaimer > dist/DISCLAIMER
+        sed -i.bk -E -e "s^href=([\"']?)/([^/]+)^href=\1\2^g" -e "s^src=([\"']?)/([^/]+)^src=\1\2^g" dist/index.html # make resource includes relative to support non-root hosting
+        rm dist/index.html.bk
+      name: build
+    - run: |
+        export tmpdir=../pages_tmp
+        mkdir $tmpdir
+        git clone -b gh-pages --single-branch https://github.com/anoff/devradar-static.git $tmpdir
+        rsync --delete --exclude .git -r ./editor/dist/ $tmpdir/
+        cd $tmpdir
+        git status --porcelain
+        git add .
+        git config user.email ""
+        git config user.name "CI Joe" 
+      name: publish to gh-pages
