@@ -1,0 +1,8 @@
+label1:
+- example1/**/*
+
+label2: example2/*
+
+label3:
+- example3/*
+- example3/**/*.yml
