@@ -1,0 +1,50 @@
+name: teams
+
+on: [push]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macOS-latest, ubuntu-latest] # for some reason cannot run on windows with the '.working-directory' property
+        node: [10, 12]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm ci
+      working-directory: teams
+    - run: npm run lint
+      working-directory: teams
+    # run build to make sure typescript does not throw
+    - run: |
+        npm run build
+      working-directory: teams
+
+  teams_site:
+    name: "publish teams.devradar.io"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+      if: github.ref == 'master'
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+      if: github.ref == 'master'
+    - run: |
+        cd teams
+        npm ci
+        npm run build
+      name: build
+      if: github.ref == 'master'
+    - run: |
+        npm install -g netlify-cli
+        netlify deploy --dir=dist --prod
+      name: netlify deploy
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TEAMS_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+      if: github.ref == 'master'

@@ -1,8 +1,7 @@
-label1:
-- example1/**/*
+component:teams: teams/**/*
 
-label2: example2/*
+component:editor: editor/**/*
 
-label3:
-- example3/*
-- example3/**/*.yml
+component:web: web/**/*
+
+dependencies: package*.json

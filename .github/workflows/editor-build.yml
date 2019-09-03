@@ -1,4 +1,4 @@
-name: Build editor apps
+name: editor
 
 on: [push]
 
