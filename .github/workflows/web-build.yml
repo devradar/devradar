@@ -1,0 +1,24 @@
+name: web
+
+on: [push]
+
+jobs:
+  site:
+    name: "publish devradar.io"
+    container: anoff/hugo-asciidoctor
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - run: |
+        cd web
+        hugo --gc --minify -d _site --baseURL //devradar.io
+        touch _site/.nojekyll
+      name: build hugo page
+    - name: publish to gh-pages
+      uses: JamesIves/github-pages-deploy-action@master
+      env:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: web/_site
+        CNAME: devradar.io
+      if: github.ref == 'master'
