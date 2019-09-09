@@ -45,7 +45,7 @@ jobs:
     - run: |
         export tmpdir=../pages_tmp
         mkdir $tmpdir
-        git clone -b gh-pages --single-branch https://${{ secrets.GITHUB_USERNAME }}:${{ secrets.GITHUB_TOKEN }}github.com/anoff/devradar-static.git $tmpdir
+        git clone -b gh-pages --single-branch https://${{ secrets.GITHUB_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/anoff/devradar-static.git $tmpdir
         rsync --delete --exclude .git -r ./editor/dist/ $tmpdir/
         cd $tmpdir
         git status --porcelain
@@ -73,6 +73,7 @@ jobs:
         npm run build
       name: build
     - run: |
+        cd editor
         npm install -g netlify-cli
         netlify deploy --dir=dist --prod
       name: netlify deploy
@@ -96,6 +97,7 @@ jobs:
         docker build -t anoff/devradar .
       name: build
     - run: |
+        cd editor
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker push anoff/devradar
       name: docker push
@@ -117,6 +119,7 @@ jobs:
         npm run build
       name: build
     - run: |
+        cd editor
         npm i -g firebase-tools
         firebase deploy --token ${{ secrets.FIREBASE_CI_TOKEN }} --project ${{ secrets. FIREBASE_PROJECT}}
       name: firebase deploy

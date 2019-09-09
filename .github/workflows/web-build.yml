@@ -11,7 +11,6 @@ jobs:
     - uses: actions/checkout@master
     - run: |
         cd web
-        echo ${{ github.ref }}
         hugo --gc --minify -d _site --baseURL //devradar.io
         touch _site/.nojekyll
       name: build hugo page

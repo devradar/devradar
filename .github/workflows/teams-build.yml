@@ -41,6 +41,7 @@ jobs:
       name: build
       if: github.ref == 'refs/heads/master'
     - run: |
+        cd teams
         npm install -g netlify-cli
         netlify deploy --dir=dist --prod
       name: netlify deploy
