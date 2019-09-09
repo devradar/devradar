@@ -55,7 +55,7 @@ jobs:
         git diff-index --quiet HEAD || git commit -m "commit static devradar"
         git push origin HEAD:gh-pages
       name: publish to gh-pages
-      if: github.ref == 'master'
+      if: github.ref == 'refs/heads/master'
 
   editor_site:
     name: "publish editor.devradar.io"
@@ -79,7 +79,7 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_EDITOR_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-      if: github.ref == 'master'
+      if: github.ref == 'refs/heads/master'
 
   editor_docker:
     name: "publish docker image"
@@ -99,7 +99,7 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker push anoff/devradar
       name: docker push
-      if: github.ref == 'master'
+      if: github.ref == 'refs/heads/master'
 
   anoff:
     name: "update radar.anoff.io"
@@ -120,4 +120,4 @@ jobs:
         npm i -g firebase-tools
         firebase deploy --token ${{ secrets.FIREBASE_CI_TOKEN }} --project ${{ secrets. FIREBASE_PROJECT}}
       name: firebase deploy
-      if: github.ref == 'master'
+      if: github.ref == 'refs/heads/master'

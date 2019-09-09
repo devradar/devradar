@@ -21,4 +21,4 @@ jobs:
         BRANCH: gh-pages
         FOLDER: web/_site
         CNAME: devradar.io
-      if: github.ref == 'master'
+      if: github.ref == 'refs/heads/master'
