@@ -74,9 +74,9 @@ jobs:
       name: build
     - run: |
         npm install -g netlify-cli
-        ls -ahl .
-        ls -ahl ./editor
-        netlify deploy --dir=./editor/dist --prod
+        cd editor
+        ls -ahl dist
+        netlify deploy --dir=dist --prod
       name: netlify deploy
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_EDITOR_ID }}
