@@ -17,7 +17,7 @@ jobs:
     - name: publish to gh-pages
       uses: JamesIves/github-pages-deploy-action@master
       env:
-        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ACCESS_TOKEN: ${{ secrets.ANOFF_GITHUB_TOKEN }}
         BRANCH: gh-pages
         FOLDER: web/_site
         CNAME: devradar.io

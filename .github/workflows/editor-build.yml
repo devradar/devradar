@@ -48,7 +48,7 @@ jobs:
         git config user.email ""
         git config user.name "CI Joe" 
         git diff-index --quiet HEAD || git commit -m "commit static devradar"
-        git push https://${{ secrets.GITHUB_USERNAME }}:${{ secrets.GITHUB_TOKEN }}@github.com/anoff/devradar-static.git HEAD:gh-pages
+        git push https://${{ secrets.GITHUB_USERNAME }}:${{ secrets.ANOFF_GITHUB_TOKEN }}@github.com/anoff/devradar-static.git HEAD:gh-pages
       name: publish to gh-pages
       if: github.ref == 'refs/heads/master'
 
