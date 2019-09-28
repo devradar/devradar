@@ -1,0 +1,19 @@
+name: "Close stale issues"
+on:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/stale@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-issue-message: 'This issue is marked as stale due to lacking activity over the last 90 days. Without any activity this issue will be auto-closed in 7 days.'
+        stale-pr-message: 'This PR is marked as stale due to lacking activity over the last 90 days. Without any activity this PR will be auto-closed in 7 days.'
+        days-before-stale: 90
+        stale-pr-label: inactive
+        stale-issue-label: inactive
+        exempt-issue-label: keep
+        exempt-pr-label: keep

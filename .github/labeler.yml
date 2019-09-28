@@ -1,0 +1,7 @@
+component:teams: teams/**/*
+
+component:editor: editor/**/*
+
+component:web: web/**/*
+
+dependencies: package*.json
