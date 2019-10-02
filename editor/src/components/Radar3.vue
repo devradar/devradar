@@ -1,6 +1,16 @@
 <template>
-  <v-container id="radar-container">
-    <div id="chart"></div>
+  <v-container grid-list class="radarcontainer">
+    <v-layout row>
+      <v-flex xs3>
+        <div id="legendwest" class="radarlegend"></div>
+      </v-flex>
+      <v-flex xs6>
+        <div id="radarchart"></div>
+      </v-flex>
+      <v-flex xs3>
+        <div id="legendeast" class="radarlegend"></div>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -43,7 +53,9 @@ export default class Radar3 extends Vue {
 
       // Call function to draw the Radar chart
       // Will expect that data is in %'s
-      this.chart.draw('#chart', data)
+      this.chart.drawChart('#radarchart', data)
+      this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2)
+      this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2)
     }
   }
 
@@ -54,54 +66,92 @@ export default class Radar3 extends Vue {
 </script>
 
 <style lang="scss">
-#chart {
+#radarchart {
   max-width: 600px;
 }
-.blipIndex, .gridLabel {
-  cursor: default;
+.radarlegend {
+  padding: 0 2rem;
 }
-.tooltip {
-  font-size: 20px;
+.radarcontainer {
+  padding: 0;
+  margin: 0;
 }
-.tooltipText {
-  fill: #fff;
-}
-.tooltipRectangle {
-  fill: #333;
-}
-.blip {
-  .blipCircle {
-    stroke: #fff;
+// to be moved into radarchart component
+
+.radar-chart {
+  .tooltip {
+    font-size: 20px;
+    .tooltipText {
+      fill: #fff;
+      cursor: default;
+    }
+    .tooltipRectangle {
+      fill: #333;
+    }
   }
-  .blipCircle-category-0 {
-    fill: #0DBD0D;
+  .blip {
+    .blipCircle {
+      stroke: #fff;
+    }
+    .blipCircle-category-0 {
+      fill: #0DBD0D;
+    }
+    .blipCircle-category-1 {
+      fill: #ff7700;
+    }
+    .blipCircle-category-2 {
+      fill: #11aadd;
+    }
+    .blipCircle-category-3 {
+      fill: #cc0033;
+    }
+    .blipIndex {
+      fill: #fff;
+      font-size: 16px;
+    }
   }
-  .blipCircle-category-1 {
-    fill: #ff7700;
-  }
-  .blipCircle-category-2 {
-    fill: #11aadd;
-  }
-  .blipCircle-category-3 {
-    fill: #cc0033;
-  }
-  .blipIndex {
-    fill: #fff;
-    font-size: 16px;
+
+  .gridWrapper {
+    .gridLabel {
+      font-size: 24px;
+      width: 30px;
+      fill: #fff;
+      cursor: default;
+    }
+    .gridCircle {
+      fill: #111;
+      fill-opacity: 0.7;
+      stroke: #fafafa;
+      stroke-width: 1;
+    }
   }
 }
 
-.gridWrapper {
-  .gridLabel {
-    font-size: 24px;
-    width: 30px;
-    fill: #fff;
+.radar-legend {
+  cursor: default;
+  .legendEntry {
+    font-size: 16px;
   }
-  .gridCircle {
-    fill: #111;
-    fill-opacity: 0.7;
-    stroke: #fafafa;
-    stroke-width: 1;
+  .legendEntry-category-0 {
+    fill: #0DBD0D;
+  }
+  .legendEntry-category-1 {
+    fill: #ff7700;
+  }
+  .legendEntry-category-2 {
+    fill: #11aadd;
+  }
+  .legendEntry-category-3 {
+    fill: #cc0033;
+  }
+  .legendCircle {
+    fill: none;
+  }
+  .highlight {
+    font-weight: bolder;
+  }
+  .grayed {
+    fill: #888;
   }
 }
 </style>
