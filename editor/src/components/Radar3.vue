@@ -16,9 +16,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Blip } from '@/types/domain'
+import { Blip, Meta } from '@/types/domain'
 import { SkillradarChart, SkillradarOptions, SkillradarData } from '../lib/skillradar'
-import * as d3 from 'd3'
 
 @Component({
   computed: {
@@ -33,11 +32,10 @@ import * as d3 from 'd3'
 export default class Radar3 extends Vue {
   blips: Blip[]
   chart: SkillradarChart
+  meta: Meta
+
   radarConfig: SkillradarOptions = {
-    radius: 300,
-    maxValue: 4,
-    levels: 4,
-    color: d3.scaleOrdinal(['#0DBD0D', '#ff7700', '#11aadd', '#cc0033'])
+    radius: 300
   }
   constructor () {
     super()

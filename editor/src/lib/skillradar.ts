@@ -1,4 +1,3 @@
-import { ScaleOrdinal } from 'd3';
 import { Blip } from '@/types/domain';
 import * as d3 from 'd3'
 import { getPseudoRand } from '../util'
@@ -9,11 +8,9 @@ export interface SkillradarOptions {
   elementCount?: number;
   blipRadius?: number;
   blipRadiusHoverPercentage?: number;
-  maxValue?: number;
   opacityArea?: number;
   transitionDurationMs?: number;
   titleCutOff?: number;
-  color?: ScaleOrdinal<number | string, number | string>;
 }
 
 export interface SkillradarData {
@@ -33,19 +30,17 @@ export interface CoordCarthesian {
 export class SkillradarChart {
   public config: SkillradarOptions
 
-  private chartArea: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
-  private legends: d3.Selection<SVGGElement, unknown, HTMLElement, any>[] = [];
+  private chartArea: d3.Selection<SVGGElement, unknown, HTMLElement, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  private legends: d3.Selection<SVGGElement, unknown, HTMLElement, any>[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   public constructor (options: SkillradarOptions) {
     const cfg: SkillradarOptions = {
       radius: 300,
-      maxValue: 10,
       opacityArea: 0.5,
       transitionDurationMs: 500,
       blipRadius: 13,
       blipRadiusHoverPercentage: 1.5,
-      titleCutOff: 20,
-      color: d3.scaleOrdinal(d3.schemeCategory10)
+      titleCutOff: 20
     }
 
     if (options) {
@@ -110,7 +105,7 @@ export class SkillradarChart {
       .attr('data-index', (d: Blip) => d.index)
       .attr('transform', (d: Blip) => 'translate(' + this.rad2xy(this.blip2rad(d)).x + ',' + this.rad2xy(this.blip2rad(d)).y + ')')
       .on('mouseover', function () {
-        const { category, level, title, index } = d3.select(this).data()[0] as Blip
+        const { title, index } = d3.select(this).data()[0] as Blip
         d3.select(this).select('.blipCircle')
           .transition().duration(cfg.transitionDurationMs)
           .attr('r', cfg.blipRadius * cfg.blipRadiusHoverPercentage)
@@ -229,7 +224,7 @@ export class SkillradarChart {
       .attr('data-index', (d: Blip) => d.index)
       .attr('class', (d: Blip) => `legendEntry legendEntry-category-${d.category} legendEntry-level-${d.level}`)
       .on('mouseover', function () {
-        const { category, level, title, index } = d3.select(this).data()[0] as Blip
+        const { index } = d3.select(this).data()[0] as Blip
         const blip = d3.selectAll('.blip').filter(`[data-index='${index}']`)
         blip.select('.blipCircle')
           .transition().duration(cfg.transitionDurationMs)
