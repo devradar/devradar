@@ -53,20 +53,55 @@ export default class Radar3 extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #chart {
   max-width: 600px;
 }
-.svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    vertical-align: top;
-    overflow: hidden;
+.blipIndex, .gridLabel {
+  cursor: default;
 }
-.svg-content-responsive {
-    display: inline-block;
-    position: absolute;
-    left: 0;
+.tooltip {
+  font-size: 20px;
+}
+.tooltipText {
+  fill: #fff;
+}
+.tooltipRectangle {
+  fill: #333;
+}
+.blip {
+  .blipCircle {
+    stroke: #fff;
+  }
+  .blipCircle-category-0 {
+    fill: #0DBD0D;
+  }
+  .blipCircle-category-1 {
+    fill: #ff7700;
+  }
+  .blipCircle-category-2 {
+    fill: #11aadd;
+  }
+  .blipCircle-category-3 {
+    fill: #cc0033;
+  }
+  .blipIndex {
+    fill: #fff;
+    font-size: 16px;
+  }
+}
+
+.gridWrapper {
+  .gridLabel {
+    font-size: 24px;
+    width: 30px;
+    fill: #fff;
+  }
+  .gridCircle {
+    fill: #111;
+    fill-opacity: 0.7;
+    stroke: #fafafa;
+    stroke-width: 1;
+  }
 }
 </style>

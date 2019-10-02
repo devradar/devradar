@@ -96,7 +96,7 @@ export class SkillradarChart {
       .append('svg')
       .attr('preserveAspectRatio', 'xMinYMin meet')
       .attr('viewBox', `0 0 ${2 * cfg.radius} ${2 * cfg.radius}`)
-      .attr('class', 'svg-content-responsive')
+      .attr('class', 'svg-content')
       .append('g')
       .attr('transform', 'translate(' + (cfg.radius) + ',' + (cfg.radius) + ')')
     this.chartArea = g
@@ -107,29 +107,22 @@ export class SkillradarChart {
     const gridWrapper = g.append('g').attr('class', 'gridWrapper')
 
     // background circles
-    gridWrapper.selectAll('.levels')
+    gridWrapper.selectAll('.gridCircle')
       .data(d3.range(0, cfg.levelCount))
       .enter()
       .append('circle')
       .attr('class', 'gridCircle')
       .attr('r', (d: number) => this.level2radius(d))
-      .style('fill', '#111')
-      .style('stroke', '#fafafa')
-      .style('stroke-width', 3)
-      .style('fill-opacity', 0.7)
 
     // circle label
     gridWrapper.selectAll('.gridLabel')
       .data(d3.range(0, cfg.levelCount))
       .enter().append('text')
       .attr('class', 'gridLabel')
-      .attr('width', '30px')
       .attr('text-anchor', 'middle')
       .attr('x', 4)
       .attr('y', (d: number) => -this.level2radius(d))
       .attr('dy', '1.5em')
-      .style('font-size', '24px')
-      .attr('fill', '#fff')
       .text((d: number) => data.levels[d])
 
     // ###################
@@ -180,49 +173,41 @@ export class SkillradarChart {
     // blip circle
     radarWrapper
       .append('circle')
-      .attr('class', 'blipCircle')
       .attr('r', 13)
-      .style('stroke', '#fff')
-      .style('fill', function (d: Blip) {
-        return cfg.color(d.category)
+      .attr('class', function (d: Blip) {
+        return `blipCircle blipCircle-level-${d.level} blipCircle-category-${d.category}`
       })
     // blip number
     radarWrapper
       .append('text')
       .attr('class', 'blipIndex')
       .attr('text-anchor', 'middle')
-      .style('font-size', '16px')
       .attr('dy', '0.3em')
-      .attr('fill', '#fff')
       .text((d: Blip) => d.index + 1)
 
-      
     // ###################
     // ###   Tooltip   ###
     // ###################
     tooltip = g
       .append('g')
       .attr('visibility', 'hidden')
+      .attr('class', 'tooltip')
       .attr('opacity', 0)
     
     tooltip
       .append('rect')
       .attr('class', 'tooltipRectangle')
-      .attr('height', 30)
-      .style('font-size', '20px')
-      .attr('y', '-2em')
-      .attr('fill', '#333')
-      .attr('rx', 5)
+      .attr('height', '1.5em')
+      .attr('y', '-2.5em')
+      .attr('rx', 5) // corner radius
       .attr('anchor', 'middle')
 
     tooltip
       .append('text')
       .attr('class', 'tooltipText')
       .attr('text-anchor', 'middle')
-      .style('font-size', '20px')
-      .attr('fill', '#fff')
       .text('hello world')
-      .attr('y', '-1em')
+      .attr('y', '-1.5em')
       .attr('width', 100)
 
   }
