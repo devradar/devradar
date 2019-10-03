@@ -32,17 +32,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-      if: github.ref == 'refs/heads/master'
+      if: github.event == 'pull_request' && github.ref == 'refs/heads/master'
     - uses: actions/setup-node@v1
       with:
         node-version: 12
-      if: github.ref == 'refs/heads/master'
+      if: github.event == 'pull_request' && github.ref == 'refs/heads/master'
     - run: |
         cd teams
         npm ci
         npm run build
       name: build
-      if: github.ref == 'refs/heads/master'
+      if: github.event == 'pull_request' && github.ref == 'refs/heads/master'
     - run: |
         cd teams
         npm install -g netlify-cli
@@ -51,4 +51,4 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TEAMS_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-      if: github.ref == 'refs/heads/master'
+      if: github.event == 'pull_request' && github.ref == 'refs/heads/master'
