@@ -1,7 +1,9 @@
-component:teams: teams/**/*
+component:teams: teams/**
 
-component:editor: editor/**/*
+component:editor: editor/**
 
-component:web: web/**/*
+component:web: web/**
 
 dependencies: package*.json
+
+actions: .github/**

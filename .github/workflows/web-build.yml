@@ -1,6 +1,14 @@
 name: web
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'web/**'
+      - '.github/**'
+  pull_request:
+    paths:
+      - 'web/**'
+      - '.github/**'
 
 jobs:
   site:

@@ -1,7 +1,8 @@
 # devradar teams
 
-[![Build Status](https://cloud.drone.io/api/badges/anoff/devradar/status.svg)](https://cloud.drone.io/anoff/devradar)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
+[![Build Status](https://github.com/anoff/devradar/workflows/teams/badge.svg)](https://github.com/anoff/devradar/actions)
+[![Typed with TypeScript](https://badgen.net/badge/built%20with/TypeScript/blue?icon=typescript)](https://www.typescriptlang.org/)
+[![Standard](https://badgen.net/badge/code%20style/standard/pink)](https://standardjs.com/)
 
 <img src="../assets/logo-text.png">
 
@@ -14,16 +15,9 @@ You need to create individual devradars for each team member to use the teams to
 <!-- TOC depthFrom:2 -->
 
 - [Features](#features)
-- [License & Attributions](#license--attributions)
 
 <!-- /TOC -->
 
 ## Features
 
 1. import devradar TOML files
-
-## License & Attributions
-
-Copyright 2019 Andreas Offenhaeuser <https://anoff.io>
-
-All devradar code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.

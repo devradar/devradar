@@ -1,8 +1,9 @@
 # devradar editor
 
-[![MicroBadger Size](https://img.shields.io/microbadger/image-size/anoff/devradar.svg)](https://microbadger.com/images/anoff/devradar)
-[![Build Status](https://cloud.drone.io/api/badges/anoff/devradar/status.svg)](https://cloud.drone.io/anoff/devradar)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
+[![Build Status](https://github.com/anoff/devradar/workflows/editor/badge.svg)](https://github.com/anoff/devradar/actions)
+[![Docker Image](https://images.microbadger.com/badges/image/anoff/devradar-editor.svg)](http://microbadger.com/images/anoff/devradar-editor)
+[![Typed with TypeScript](https://badgen.net/badge/built%20with/TypeScript/blue?icon=typescript)](https://www.typescriptlang.org/)
+[![Standard](https://badgen.net/badge/code%20style/standard/pink)](https://standardjs.com/)
 
 <img src="../assets/logo-text.png">
 
@@ -21,7 +22,7 @@ Instead of assigning a static level of expertise for a given blip the devradar u
   - [devradar for teams and organizations](#devradar-for-teams-and-organizations)
 - [Setup](#setup)
   - [Tech stack](#tech-stack)
-- [License & Attributions](#license--attributions)
+- [Attributions](#attributions)
 
 <!-- /TOC -->
 
@@ -79,15 +80,11 @@ See [setup.md](setup.md) for instructions on the different setup options.
 ### Tech stack
 
 The devradar itself is build with Vue.js.
-For easier deployment the editor comes pre-built as a docker image [anoff/devradar](https://cloud.docker.com/repository/docker/anoff/devradar).
+For easier deployment the editor comes pre-built as a docker image [anoff/devradar-editor](https://cloud.docker.com/repository/docker/anoff/devradar-editor).
 For the docker image nginx-alpine is used as a base image which brings the final image size to < 15MB.
 
 ![design](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/devradar/master/assets/editor-build.puml)
 
-## License & Attributions
-
-Copyright 2019 Andreas Offenhaeuser <https://anoff.io>
-
-All devradar code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.
+## Attributions
 
 The radar visualization is inspired by [Urban Sanden](https://github.com/urre/radar/), licensed under [MIT](https://github.com/urre/radar/blob/502b57332467e68819ce69eeb65f8432129d69b9/LICENSE).

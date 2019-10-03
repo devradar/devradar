@@ -1,6 +1,14 @@
 name: editor
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'editor/**'
+      - '.github/**'
+  pull_request:
+    paths:
+      - 'editor/**'
+      - '.github/**'
 
 jobs:
   test:
@@ -89,12 +97,12 @@ jobs:
     - run: |
         cd editor
         cp -R .build/editor/** .
-        docker build -t anoff/devradar .
+        docker build -t anoff/devradar-editor .
       name: build
     - run: |
         cd editor
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker push anoff/devradar
+        docker push anoff/devradar-editor
       name: docker push
       if: github.ref == 'refs/heads/master'
 

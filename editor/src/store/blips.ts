@@ -36,6 +36,7 @@ const getters: GetterTree<BlipsState, RootState> = {
     return state.blips
       .filter(b => b.changes.length > 0)
       .map(cleanBlip)
+      .sort((a: Blip, b: Blip) => a.title > b.title ? 1 : -1)
       .map((b, bIndex) => {
         const changes = b.changes.map((c, cIndex) => {
           // append a 'fake' index that is used for visuals only e.g. blip# in radar view
