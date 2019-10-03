@@ -11,11 +11,13 @@ export interface SkillradarOptions {
   opacityArea?: number;
   transitionDurationMs?: number;
   titleCutOff?: number;
+  legendFontSize?: number;
 }
 
 export interface SkillradarData {
   items: Blip[];
   levels: string[];
+  categories: string[];
 }
 
 export interface CoordPolar {
@@ -40,7 +42,8 @@ export class SkillradarChart {
       transitionDurationMs: 500,
       blipRadius: 13,
       blipRadiusHoverPercentage: 1.5,
-      titleCutOff: 20
+      titleCutOff: 20,
+      legendFontSize: 16
     }
 
     if (options) {
@@ -193,7 +196,7 @@ export class SkillradarChart {
       .attr('width', 100)
   }
 
-  public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean) {
+  public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean, direction: string) {
     const blips = data.items
       .filter(filterFn)
       .sort((a: Blip, b: Blip) => {
@@ -205,6 +208,13 @@ export class SkillradarChart {
         }
         return a.category - b.category
       })
+    const categories = blips.map((b: Blip) => b.category)
+    const categoriesDistinct = categories.reduce((p: number[], c: number) => {
+      if (!p.includes(c)) {
+        p.push(c)
+      }
+      return p
+    }, [])
     const cfg = this.config
     
     d3.select(id).select('svg').remove()
@@ -225,7 +235,7 @@ export class SkillradarChart {
       .append('g')
       .attr('data-title', (d: Blip) => d.title)
       .attr('data-index', (d: Blip) => d.index)
-      .attr('class', (d: Blip) => `legendEntry legendEntry-category-${d.category} legendEntry-level-${d.level}`)
+      .attr('class', (d: Blip) => `legendEntry category-${d.category} level-${d.level}`)
       .on('mouseover', function () {
         const { index } = d3.select(this).data()[0] as Blip
         const blip = d3.selectAll('.blip').filter(`[data-index='${index}']`)
@@ -253,7 +263,12 @@ export class SkillradarChart {
           .classed('highlight', false)
           .classed('grayed', false)
       })
-    const legendYoffset = (d: Blip, i: number) => `${(i + 1) * 2}em` // can not move <g> by em units so move individual elements
+    // can not move <g> by em units so move individual elements
+    const legendYoffset = (d: Blip, i: number) => {
+      const category = categories[i]
+      const NthCategory = categoriesDistinct.indexOf(category) + 1
+      return `${(i + 1) * 2 + NthCategory * 4}em`
+    }
     legendWrapper
       .append('text')
       .attr('class', 'legendTitle')
@@ -269,6 +284,24 @@ export class SkillradarChart {
       .attr('y', legendYoffset)
       .attr('x', '1em')
       .text((d: Blip) => d.index + 1)
+
+    g.selectAll('.legendCategory')
+      .data(categoriesDistinct)
+      .enter().append('text')
+      .attr('class', (d: number) => `legendCategory category-${d}`)
+      .attr('text-anchor', 'left')
+      .attr('y', (d: number, i: number) => {
+        const previousEntries = blips
+          .filter((b: Blip) => {
+            if (direction === 'up') {
+              return b.category > d
+            }
+            return b.category < d
+          })
+        return `${((previousEntries.length) * 2 + (i + 1) * 4) * cfg.legendFontSize}px`
+      })
+      .attr('x', '0em')
+      .text((d: number) => data.categories[d])
   }
   public blip2rad (blip: Blip): CoordPolar {
     const categoryCount = 4

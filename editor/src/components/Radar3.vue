@@ -46,7 +46,8 @@ export default class Radar3 extends Vue {
     if (this.blips.length) {
       const data: SkillradarData = {
         items: this.blips,
-        levels: this.meta.levels
+        levels: this.meta.levels,
+        categories: this.meta.categories
       }
 
       // Call function to draw the Radar chart
@@ -129,17 +130,18 @@ export default class Radar3 extends Vue {
   cursor: default;
   .legendEntry {
     font-size: 16px;
+    transition: fill 500ms;
   }
-  .legendEntry-category-0 {
+  .category-0 {
     fill: #0DBD0D;
   }
-  .legendEntry-category-1 {
+  .category-1 {
     fill: #ff7700;
   }
-  .legendEntry-category-2 {
+  .category-2 {
     fill: #11aadd;
   }
-  .legendEntry-category-3 {
+  .category-3 {
     fill: #cc0033;
   }
   .legendCircle {
@@ -150,6 +152,13 @@ export default class Radar3 extends Vue {
   }
   .grayed {
     fill: #888;
+    transition: fill 500ms;
+  }
+
+  .legendCategory {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
   }
 }
 </style>
