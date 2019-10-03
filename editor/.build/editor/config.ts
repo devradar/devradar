@@ -9,7 +9,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     // do NOT change the view property as this links to the vue component and is used for lookups across the app
     { view: 'List', icon: 'list', title: 'Blips', path: '/list/:search?', validator: user => true, location: ['toolbar'] },
     { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
-    { view: 'Radar (new)', icon: 'track_changes', title: 'Radar', path: '/beta', validator: user => true, location: ['toolbar'] },
+    { view: 'Radar3', icon: 'track_changes', title: 'Radar (beta)', path: '/beta', validator: user => true, location: ['toolbar'] },
     { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => true, location: ['toolbar'] } // only use this on localstorage backend for now
   ],
   navEntries: [

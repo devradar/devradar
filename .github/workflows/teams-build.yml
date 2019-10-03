@@ -1,6 +1,14 @@
 name: teams
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'teams/**'
+      - '.github/**'
+  pull_request:
+    paths:
+      - 'teams/**'
+      - '.github/**'
 
 jobs:
   test:

@@ -7,4 +7,6 @@ RUN npm run build
 
 FROM nginx:alpine as editor
 LABEL maintainer="Andreas Offenhaeuser <https://anoff.io>"
+LABEL homepage="https://devradar.io"
+LABEL runtime="nginx"
 COPY --from=build /app/dist /usr/share/nginx/html

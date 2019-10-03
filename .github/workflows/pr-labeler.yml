@@ -1,4 +1,4 @@
-name: "Pull Request Labeler"
+name: pr-labeler
 on: [pull_request]
 
 jobs:
