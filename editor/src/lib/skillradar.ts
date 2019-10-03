@@ -200,6 +200,9 @@ export class SkillradarChart {
         if (a.category === b.category) {
           return a.title > b.title ? 1 : -1
         }
+        if (direction === 'up') {
+          return b.category - a.category
+        }
         return a.category - b.category
       })
     const cfg = this.config

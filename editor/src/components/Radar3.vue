@@ -52,8 +52,8 @@ export default class Radar3 extends Vue {
       // Call function to draw the Radar chart
       // Will expect that data is in %'s
       this.chart.drawChart('#radarchart', data)
-      this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2)
-      this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2)
+      this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2, 'down')
+      this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2, 'up')
     }
   }
 
