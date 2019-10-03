@@ -102,7 +102,7 @@ export default class Spider extends Vue {
         const existingBlips = e.map(o => o.axis.toLowerCase())
         const missing = this.selectedBlipsTitle
           .filter(s => existingBlips.indexOf(s.toLowerCase()) === -1)
-          .map(s => ({ axis: s, value: 0 }))
+          .map(s => ({ axis: s, value: null }))
         return e.concat(missing)
       }
 
