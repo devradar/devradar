@@ -1,10 +1,19 @@
 # devradar
 
-[![MicroBadger Size](https://img.shields.io/microbadger/image-size/anoff/devradar.svg)](https://microbadger.com/images/anoff/devradar)
-[![Build Status](https://cloud.drone.io/api/badges/anoff/devradar/status.svg)](https://cloud.drone.io/anoff/devradar)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
+[![License check](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
+[![Dependabot status](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)](https://dependabot.com/)
+[![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
+[![Gitter](https://badgen.net/badge/chat/on%20gitter/cyan?icon=gitter)](https://gitter.im/devradar/discuss)
 
-<img src="assets/logo-text.png">
+[![VueJS](https://badgen.net/badge/built%20with/Vue.js/cyan)](https://vuejs.org/)
+[![TypeScript](https://badgen.net/badge/code/TypeScript/blue)](https://www.typescriptlang.org/)
+[![Standard](https://badgen.net/badge/code%20style/standard/pink)](https://standardjs.com/)
+
+[![Build Status](https://github.com/anoff/devradar/workflows/editor/badge.svg)](https://github.com/anoff/devradar/actions)
+[![Build Status](https://github.com/anoff/devradar/workflows/teams/badge.svg)](https://github.com/anoff/devradar/actions)
+[![Build Status](https://github.com/anoff/devradar/workflows/web/badge.svg)](https://github.com/anoff/devradar/actions)
+
+[<img src="assets/logo-text.png">](https://devradar.io)
 
 > Visit [devradar.io](https://devradar.io) for an introduction
 
@@ -14,7 +23,7 @@ This repository holds the individual projects making up the devradar ecosystem:
 * [teams](teams/): manage skills across an entire team (Vue)
 * [web](web/): devradar landing page at [devradar.io](//devradar.io) (Hugo)
 
-See [anoff/devradar-static](https://github.com/anoff/devradar-static) for a easy to setup version of the devradar to present your own tech skills.
+See [anoff/devradar-static](https://github.com/anoff/devradar-static) for an easy to setup version of the devradar to present your own tech skills.
 
 ## Demo
 
