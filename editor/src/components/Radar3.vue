@@ -68,8 +68,11 @@ export default class Radar3 extends Vue {
 #radarchart {
   max-width: 600px;
 }
-.radarlegend {
-  padding: 0 2rem;
+#legendeast {
+  padding: 0 0 0 2rem;
+}
+#legendwest {
+  padding: 0 2rem 0 0;
 }
 .radarcontainer {
   padding: 0;
@@ -159,6 +162,17 @@ export default class Radar3 extends Vue {
     font-size: 24px;
     font-weight: bold;
     text-transform: uppercase;
+  }
+  .legendDecorator {
+    fill: none;
+    stroke: #333;
+    strok-width: 1px;
+    stroke-dasharray: 1.5;
+  }
+  .legendLevel {
+    fill: #333;
+    text-transform: uppercase;
+    font-size: 14px;
   }
 }
 </style>
