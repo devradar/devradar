@@ -48,4 +48,4 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TEAMS_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-      if: github.event == 'push' && github.ref == 'refs/heads/master'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
