@@ -46,14 +46,15 @@ export default class Radar3 extends Vue {
     if (this.blips.length) {
       const data: SkillradarData = {
         items: this.blips,
-        levels: this.meta.levels
+        levels: this.meta.levels,
+        categories: this.meta.categories
       }
 
       // Call function to draw the Radar chart
       // Will expect that data is in %'s
       this.chart.drawChart('#radarchart', data)
-      this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2)
-      this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2)
+      this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2, 'down')
+      this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2, 'up')
     }
   }
 
@@ -67,8 +68,11 @@ export default class Radar3 extends Vue {
 #radarchart {
   max-width: 600px;
 }
-.radarlegend {
-  padding: 0 2rem;
+#legendeast {
+  padding: 0 0 0 2rem;
+}
+#legendwest {
+  padding: 0 2rem 0 0;
 }
 .radarcontainer {
   padding: 0;
@@ -129,17 +133,18 @@ export default class Radar3 extends Vue {
   cursor: default;
   .legendEntry {
     font-size: 16px;
+    transition: fill 500ms;
   }
-  .legendEntry-category-0 {
+  .category-0 {
     fill: #0DBD0D;
   }
-  .legendEntry-category-1 {
+  .category-1 {
     fill: #ff7700;
   }
-  .legendEntry-category-2 {
+  .category-2 {
     fill: #11aadd;
   }
-  .legendEntry-category-3 {
+  .category-3 {
     fill: #cc0033;
   }
   .legendCircle {
@@ -150,6 +155,24 @@ export default class Radar3 extends Vue {
   }
   .grayed {
     fill: #888;
+    transition: fill 500ms;
+  }
+
+  .legendCategory {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .legendDecorator {
+    fill: none;
+    stroke: #333;
+    strok-width: 1px;
+    stroke-dasharray: 1.5;
+  }
+  .legendLevel {
+    fill: #333;
+    text-transform: uppercase;
+    font-size: 14px;
   }
 }
 </style>

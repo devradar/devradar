@@ -16,6 +16,7 @@ export interface SkillradarOptions {
 export interface SkillradarData {
   items: Blip[];
   levels: string[];
+  categories: string[];
 }
 
 export interface CoordPolar {
@@ -40,7 +41,7 @@ export class SkillradarChart {
       transitionDurationMs: 500,
       blipRadius: 13,
       blipRadiusHoverPercentage: 1.5,
-      titleCutOff: 20
+      titleCutOff: 13
     }
 
     if (options) {
@@ -193,17 +194,28 @@ export class SkillradarChart {
       .attr('width', 100)
   }
 
-  public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean) {
+  public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean, direction: string) {
+    const cfg = this.config
     const blips = data.items
       .filter(filterFn)
       .sort((a: Blip, b: Blip) => {
         if (a.category === b.category) {
           return a.title > b.title ? 1 : -1
         }
+        if (direction === 'up') {
+          return b.category - a.category
+        }
         return a.category - b.category
       })
-    const cfg = this.config
-    
+    const categories = blips.map((b: Blip) => b.category)
+    const categoriesDistinct = categories.reduce((p: number[], c: number) => {
+      if (!p.includes(c)) {
+        p.push(c)
+      }
+      return p
+    }, [])
+    const levelMaxLength = Math.max(...data.levels.map((l: string) => l.length))
+
     d3.select(id).select('svg').remove()
     const g = d3.select(id)
       .append('svg')
@@ -211,6 +223,15 @@ export class SkillradarChart {
       .append('g')
       .attr('class', 'radar-legend')
     this.legends[id] = g
+
+    // find legend width/height
+    g.append('text')
+      .attr('class', 'legendTitle')
+      .text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    const bbox = (document.querySelector('.legendTitle') as any).getBBox() // eslint-disable-line @typescript-eslint/no-explicit-any
+    const legendTitleCharWidth = bbox.width / 52
+    const legendTitleCharHeight = bbox.height
+    g.selectAll('.legendTitle').remove()
 
     // ####################
     // ### Legend Group ###
@@ -222,7 +243,7 @@ export class SkillradarChart {
       .append('g')
       .attr('data-title', (d: Blip) => d.title)
       .attr('data-index', (d: Blip) => d.index)
-      .attr('class', (d: Blip) => `legendEntry legendEntry-category-${d.category} legendEntry-level-${d.level}`)
+      .attr('class', (d: Blip) => `legendEntry category-${d.category} level-${d.level}`)
       .on('mouseover', function () {
         const { index } = d3.select(this).data()[0] as Blip
         const blip = d3.selectAll('.blip').filter(`[data-index='${index}']`)
@@ -250,13 +271,29 @@ export class SkillradarChart {
           .classed('highlight', false)
           .classed('grayed', false)
       })
-    const legendYoffset = (d: Blip, i: number) => `${(i + 1) * 2}em` // can not move <g> by em units so move individual elements
+    // can not move <g> by em units so move individual elements
+    const legendYoffset = (d: Blip, i: number) => {
+      const category = categories[i]
+      const NthCategory = categoriesDistinct.indexOf(category) + 1
+      return ((i + 1) * 2 + NthCategory * 4) * legendTitleCharHeight
+    }
+
+    legendWrapper
+      .append('polyline')
+      .attr('class', 'legendDecorator')
+      .attr('points', (d: Blip, i: number) => {
+        const y = legendYoffset(d, i) + 2
+        const x0 = 1 * legendTitleCharWidth
+        const x1 = cfg.titleCutOff * legendTitleCharWidth + 2 * legendTitleCharHeight + (levelMaxLength + 2) * legendTitleCharWidth
+        return `${x0-3},${y-3} ${x0},${y} ${x1},${y} ${x1+3},${y+3}`
+      })
+
     legendWrapper
       .append('text')
       .attr('class', 'legendTitle')
       .attr('text-anchor', 'left')
       .attr('y', legendYoffset)
-      .attr('x', '2em')
+      .attr('x', 2 * legendTitleCharHeight)
       .text((d: Blip) => this.limitString(d.title, cfg.titleCutOff))
     
     legendWrapper
@@ -264,8 +301,34 @@ export class SkillradarChart {
       .attr('class', 'legendIndex')
       .attr('text-anchor', 'middle')
       .attr('y', legendYoffset)
-      .attr('x', '1em')
+      .attr('x', 1 * legendTitleCharHeight)
       .text((d: Blip) => d.index + 1)
+    
+    legendWrapper
+      .append('text')
+      .attr('class', 'legendLevel')
+      .attr('text-anchor', 'end')
+      .attr('y', legendYoffset)
+      .attr('x', cfg.titleCutOff * legendTitleCharWidth + 2 * legendTitleCharHeight + (levelMaxLength + 2) * legendTitleCharWidth)
+      .text((d: Blip) => data.levels[d.level])
+
+    g.selectAll('.legendCategory')
+      .data(categoriesDistinct)
+      .enter().append('text')
+      .attr('class', (d: number) => `legendCategory category-${d}`)
+      .attr('text-anchor', 'left')
+      .attr('y', (d: number, i: number) => {
+        const previousEntries = blips
+          .filter((b: Blip) => {
+            if (direction === 'up') {
+              return b.category > d
+            }
+            return b.category < d
+          })
+        return ((previousEntries.length) * 2 + (i + 1) * 4) * legendTitleCharHeight
+      })
+      .attr('x', '0em')
+      .text((d: number) => data.categories[d])
   }
   public blip2rad (blip: Blip): CoordPolar {
     const categoryCount = 4
