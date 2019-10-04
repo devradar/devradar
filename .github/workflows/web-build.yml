@@ -29,4 +29,4 @@ jobs:
         BRANCH: gh-pages
         FOLDER: web/_site
         CNAME: devradar.io
-      if: github.event == 'pull_request' && github.ref == 'refs/heads/master'
+      if: github.event == 'push' && github.ref == 'refs/heads/master'
