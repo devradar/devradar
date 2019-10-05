@@ -11,6 +11,8 @@ export interface SkillradarOptions {
   opacityArea?: number;
   transitionDurationMs?: number;
   titleCutOff?: number;
+  legendCategorySpacingEms?: number;
+  legendCategoryOffsetEms?: number;
 }
 
 export interface SkillradarData {
@@ -41,7 +43,9 @@ export class SkillradarChart {
       transitionDurationMs: 500,
       blipRadius: 13,
       blipRadiusHoverPercentage: 1.5,
-      titleCutOff: 13
+      titleCutOff: 13,
+      legendCategorySpacingEms: 8,
+      legendCategoryOffsetEms: 2
     }
 
     if (options) {
@@ -219,19 +223,16 @@ export class SkillradarChart {
     d3.select(id).select('svg').remove()
     const g = d3.select(id)
       .append('svg')
-      .attr('height', cfg.radius*2)
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .style('overflow', 'visible')
+      .attr('viewBox', `0 0 ${0.9 * cfg.radius} ${2 * cfg.radius}`)
       .append('g')
       .attr('class', 'radar-legend')
     this.legends[id] = g
 
     // find legend width/height
-    g.append('text')
-      .attr('class', 'legendTitle')
-      .text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-    const bbox = (document.querySelector('.legendTitle') as any).getBBox() // eslint-disable-line @typescript-eslint/no-explicit-any
-    const legendTitleCharWidth = bbox.width / 52
-    const legendTitleCharHeight = bbox.height
-    g.selectAll('.legendTitle').remove()
+    const legendTitleCharWidth = 8
+    const legendTitleCharHeight = 16
 
     // ####################
     // ### Legend Group ###
@@ -272,19 +273,19 @@ export class SkillradarChart {
           .classed('grayed', false)
       })
     // can not move <g> by em units so move individual elements
-    const legendYoffset = (d: Blip, i: number) => {
-      const category = categories[i]
-      const NthCategory = categoriesDistinct.indexOf(category) + 1
-      return ((i + 1) * 2 + NthCategory * 4) * legendTitleCharHeight
+    const legendYoffset = (categoryNumber: number, entryNumber: number) => {
+      return (entryNumber * 2 + categoryNumber * cfg.legendCategorySpacingEms + cfg.legendCategoryOffsetEms) * legendTitleCharHeight
     }
 
     legendWrapper
       .append('polyline')
       .attr('class', 'legendDecorator')
       .attr('points', (d: Blip, i: number) => {
-        const y = legendYoffset(d, i) + 2
+        const category = categories[i]
+        const categoryNumber = categoriesDistinct.indexOf(category)
+        const y = legendYoffset(categoryNumber, i + 1) + 2
         const x0 = 1 * legendTitleCharWidth
-        const x1 = cfg.titleCutOff * legendTitleCharWidth + 2 * legendTitleCharHeight + (levelMaxLength + 2) * legendTitleCharWidth
+        const x1 = cfg.titleCutOff * legendTitleCharWidth + 2 * legendTitleCharHeight + (levelMaxLength + 2) * legendTitleCharWidth + cfg.legendCategoryOffsetEms * legendTitleCharHeight
         return `${x0-3},${y-3} ${x0},${y} ${x1},${y} ${x1+3},${y+3}`
       })
 
@@ -292,7 +293,11 @@ export class SkillradarChart {
       .append('text')
       .attr('class', 'legendTitle')
       .attr('text-anchor', 'left')
-      .attr('y', legendYoffset)
+      .attr('y', (d: Blip, i: number) => {
+        const category = categories[i]
+        const categoryNumber = categoriesDistinct.indexOf(category)
+        return legendYoffset(categoryNumber, i + 1)
+      })
       .attr('x', 2 * legendTitleCharHeight)
       .text((d: Blip) => this.limitString(d.title, cfg.titleCutOff))
     
@@ -300,7 +305,11 @@ export class SkillradarChart {
       .append('text')
       .attr('class', 'legendIndex')
       .attr('text-anchor', 'middle')
-      .attr('y', legendYoffset)
+      .attr('y', (d: Blip, i: number) => {
+        const category = categories[i]
+        const categoryNumber = categoriesDistinct.indexOf(category)
+        return legendYoffset(categoryNumber, i + 1)
+      })
       .attr('x', 1 * legendTitleCharHeight)
       .text((d: Blip) => d.index + 1)
     
@@ -308,7 +317,11 @@ export class SkillradarChart {
       .append('text')
       .attr('class', 'legendLevel')
       .attr('text-anchor', 'end')
-      .attr('y', legendYoffset)
+      .attr('y', (d: Blip, i: number) => {
+        const category = categories[i]
+        const categoryNumber = categoriesDistinct.indexOf(category)
+        return legendYoffset(categoryNumber, i + 1)
+      })
       .attr('x', cfg.titleCutOff * legendTitleCharWidth + 2 * legendTitleCharHeight + (levelMaxLength + 2) * legendTitleCharWidth)
       .text((d: Blip) => data.levels[d.level])
 
@@ -318,6 +331,7 @@ export class SkillradarChart {
       .attr('class', (d: number) => `legendCategory category-${d}`)
       .attr('text-anchor', 'left')
       .attr('y', (d: number, i: number) => {
+        // figure out how many entries have been printed "above" this category heading
         const previousEntries = blips
           .filter((b: Blip) => {
             if (direction === 'up') {
@@ -325,7 +339,7 @@ export class SkillradarChart {
             }
             return b.category < d
           })
-        return ((previousEntries.length) * 2 + (i + 1) * 4) * legendTitleCharHeight
+        return legendYoffset(i, previousEntries.length)
       })
       .attr('x', '0em')
       .text((d: number) => data.categories[d])

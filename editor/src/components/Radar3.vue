@@ -1,15 +1,18 @@
 <template>
-  <v-container grid-list class="radarcontainer">
+  <v-container grid-list fluid class="radarcontainer">
     <v-layout row>
-      <v-flex xs3>
+      <v-flex xs3 hidden-xs-only>
         <div id="legendwest" class="radarlegend"></div>
       </v-flex>
-      <v-flex xs6>
+      <v-flex xs8 sm6>
         <div id="radarchart"></div>
       </v-flex>
-      <v-flex xs3>
+      <v-flex xs3 hidden-xs-only>
         <div id="legendeast" class="radarlegend"></div>
       </v-flex>
+      <v-flex xs4 hidden-sm-and-up>
+        <div id="legendeast-onecol" class="radarlegend"></div>
+      </v-flex>  
     </v-layout>
   </v-container>
 </template>
@@ -55,6 +58,7 @@ export default class Radar3 extends Vue {
       this.chart.drawChart('#radarchart', data)
       this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2, 'down')
       this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2, 'up')
+      this.chart.drawLegend('#legendeast-onecol', data, () => true, 'down')
     }
   }
 
@@ -73,6 +77,9 @@ export default class Radar3 extends Vue {
 }
 #legendwest {
   padding: 0 2rem 0 0;
+}
+#legendeast-onecol {
+  padding: 0 0 0 2rem;
 }
 .radarcontainer {
   padding: 0;
@@ -131,10 +138,6 @@ export default class Radar3 extends Vue {
 
 .radar-legend {
   cursor: default;
-  .legendEntry {
-    font-size: 16px;
-    transition: fill 500ms;
-  }
   .category-0 {
     fill: #0DBD0D;
   }
@@ -157,9 +160,12 @@ export default class Radar3 extends Vue {
     fill: #888;
     transition: fill 500ms;
   }
-
+  .legendEntry {
+    font-size: 20px;
+    transition: fill 500ms;
+  }
   .legendCategory {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
     text-transform: uppercase;
   }
@@ -172,7 +178,7 @@ export default class Radar3 extends Vue {
   .legendLevel {
     fill: #333;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 </style>
