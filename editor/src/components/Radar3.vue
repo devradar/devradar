@@ -4,15 +4,21 @@
       <v-flex xs3 hidden-xs-only>
         <div id="legendwest" class="radarlegend"></div>
       </v-flex>
-      <v-flex xs8 sm6>
+      <v-flex xs11 sm6>
         <div id="radarchart"></div>
       </v-flex>
       <v-flex xs3 hidden-xs-only>
         <div id="legendeast" class="radarlegend"></div>
       </v-flex>
-      <v-flex xs4 hidden-sm-and-up>
-        <div id="legendeast-onecol" class="radarlegend"></div>
-      </v-flex>  
+    </v-layout>
+    <v-layout row>
+      <v-flex xs5 hidden-sm-and-up>
+        <div id="legendeast-small" class="radarlegend"></div>
+      </v-flex>
+      <v-flex xs2></v-flex>
+      <v-flex xs5 hidden-sm-and-up>
+        <div id="legendwest-small" class="radarlegend"></div>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -58,7 +64,8 @@ export default class Radar3 extends Vue {
       this.chart.drawChart('#radarchart', data)
       this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2, 'down')
       this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2, 'up')
-      this.chart.drawLegend('#legendeast-onecol', data, () => true, 'down')
+      this.chart.drawLegend('#legendeast-small', data, (blip: Blip) => blip.category < 2, 'down')
+      this.chart.drawLegend('#legendwest-small', data, (blip: Blip) => blip.category >= 2, 'up')
     }
   }
 
@@ -77,9 +84,6 @@ export default class Radar3 extends Vue {
 }
 #legendwest {
   padding: 0 2rem 0 0;
-}
-#legendeast-onecol {
-  padding: 0 0 0 2rem;
 }
 .radarcontainer {
   padding: 0;
