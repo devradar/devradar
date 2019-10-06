@@ -9,7 +9,6 @@
     </v-snackbar>
     <v-toolbar class="primary top"
     fixed app dense scroll-off-screen
-    :dark="darkMode"
     color="accent"
     >
     <v-toolbar-side-icon
@@ -172,7 +171,7 @@ import appConfig from './config'
 })
 export default class App extends Vue {
   showNavdrawer: boolean = false
-  darkMode: boolean = appConfig.darkMode
+  darkMode: boolean = appConfig.theme.dark
   // computed
   isLoading: boolean
   meta: Meta
