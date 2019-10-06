@@ -33,6 +33,7 @@
     "vuex-persist": "^2.0.1"
   },
   "devDependencies": {
+    "@mdi/font": "^4.4.95",
     "@vue/cli-plugin-babel": "^3.9.2",
     "@vue/cli-plugin-eslint": "^3.9.2",
     "@vue/cli-plugin-typescript": "^3.11.0",

@@ -2,13 +2,14 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueAnalytics from 'vue-analytics'
-import Vuetify from 'vuetify/lib'
+import Vuetify from 'vuetify'
 import App from './App.vue'
 import router from './router'
-import './stylus/main.styl'
+//import './stylus/main.styl'
 import { store, backend } from './store'
 import appConfig from './config'
 import 'vuetify/dist/vuetify.min.css'
+import '@mdi/font/css/materialdesignicons.css'
 
 Vue.use(Vuetify)
 
