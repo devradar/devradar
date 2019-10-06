@@ -16,7 +16,7 @@ if (fs.existsSync(FILEPATH)) {
 module.exports = {
   configureWebpack: () => {
     return {
-      // devtool: 'source-map',
+      devtool: 'source-map',
       plugins: [
         new webpack.DefinePlugin({
           'BLIPS_TOML': json
