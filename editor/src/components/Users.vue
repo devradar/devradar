@@ -92,7 +92,7 @@ export default class Users extends Vue {
   roles: []
   // computed
   user: User
-  userList: any
+  userList: any // eslint-disable-line @typescript-eslint/no-explicit-any
 
   setRole (index, role, value) {
     this.userList[index].roles[role] = value

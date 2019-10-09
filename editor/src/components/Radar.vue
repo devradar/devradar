@@ -85,14 +85,14 @@ export default class Radar extends Vue {
   blipTitleCutOff: number = appConfig.blips.titleCutOff
   // computed
   blips: Blip[]
-  blipsByCategory: any
+  blipsByCategory: any // eslint-disable-line @typescript-eslint/no-explicit-any
   meta: Meta
 
   public arrangeBlips () {
     function getDomWidth (domClass) {
       return document.getElementsByClassName(domClass)[0].clientWidth
     }
-    const blips = document.getElementsByClassName('blip') as any
+    const blips = document.getElementsByClassName('blip') as any // eslint-disable-line @typescript-eslint/no-explicit-any
     for (let b of blips) {
       const bWidth = b.clientWidth
       const category = parseInt(b.dataset.category)

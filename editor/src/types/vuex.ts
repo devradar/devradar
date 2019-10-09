@@ -8,7 +8,7 @@ export interface BlipsState {
 
 export interface UserState {
   user: User;
-  userList: any;
+  userList: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface SettingsState {

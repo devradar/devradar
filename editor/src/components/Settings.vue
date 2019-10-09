@@ -155,7 +155,7 @@ export default class Settings extends Vue {
   }
 
   fetchContent () {
-    const obj: any = {
+    const obj: any = { // eslint-disable-line @typescript-eslint/no-explicit-any
       meta: this.meta,
       blips: this.blipsClean
     }

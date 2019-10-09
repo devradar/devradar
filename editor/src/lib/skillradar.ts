@@ -73,7 +73,8 @@ export class SkillradarChart {
       .append('g')
       .attr('transform', 'translate(' + (cfg.radius) + ',' + (cfg.radius) + ')')
     this.chartArea = g
-    let tooltip // eslint-disable-line prefer-const, // drawn at the end to be placed on top
+    // define var here so it can be used without hoisting; instantiate tooltip at the end to be placed on top in svg render process
+    let tooltip // eslint-disable-line prefer-const
     // #############
     // ###  Grid ###
     // #############
