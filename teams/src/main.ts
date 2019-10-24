@@ -7,11 +7,13 @@ import App from './App.vue'
 import appConfig from './config'
 import router from './router'
 import { backend, store } from './store'
-import './stylus/main.styl'
+import 'vuetify/dist/vuetify.min.css'
+import '@mdi/font/css/materialdesignicons.css'
 
-Vue.use(Vuetify, {
+Vue.use(Vuetify)
+const vuetifyOpts = {
   theme: appConfig.theme
-})
+}
 Vue.config.productionTip = false
 
 Vue.prototype.$config = appConfig
@@ -28,5 +30,6 @@ new Vue({
   store,
   components: { App },
   render: (h) => h(App),
-  template: '<App/>'
+  template: '<App/>',
+  vuetify: new Vuetify(vuetifyOpts)
 })

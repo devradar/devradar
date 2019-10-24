@@ -3,22 +3,22 @@
     <v-flex xs4>
       <v-list>
         <v-subheader>Team</v-subheader>
-        <v-list-tile
+        <v-list-item
           v-for="(item, index) in items"
           :key="item.title"
           avatar
           @click="activeItemIx = index"
           :class="index === activeItemIx ? 'active-radar' : ''"
         >
-          <v-list-tile-avatar>
+          <v-list-item-avatar>
             <v-icon v-if="index == 0" class="secondary lighten-1 white--text">explore</v-icon>
             <v-icon v-else class="grey darken-3 white--text">person</v-icon>
-          </v-list-tile-avatar>
+          </v-list-item-avatar>
 
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-flex>
     <v-flex xs6>
