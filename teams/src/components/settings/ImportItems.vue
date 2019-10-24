@@ -2,19 +2,19 @@
   <v-list two-line subheader>
     <v-subheader inset>Team competences</v-subheader>
 
-    <v-list-tile
+    <v-list-item
       avatar
     >
-      <v-list-tile-avatar>
+      <v-list-item-avatar>
         <v-icon class="secondary lighten-1 white--text">explore</v-icon>
-      </v-list-tile-avatar>
+      </v-list-item-avatar>
 
-      <v-list-tile-content :class="{ missing: team.filename === 'N/A'}">
-        <v-list-tile-title>{{ team.filename }}</v-list-tile-title>
-        <v-list-tile-sub-title>{{ team.title }}</v-list-tile-sub-title>
-      </v-list-tile-content>
+      <v-list-item-content :class="{ missing: team.filename === 'N/A'}">
+        <v-list-item-title>{{ team.filename }}</v-list-item-title>
+        <v-list-item-sub-title>{{ team.title }}</v-list-item-sub-title>
+      </v-list-item-content>
 
-      <v-list-tile-action>
+      <v-list-item-action>
         <v-upload-btn
           @file-update="uploadToml($event, 'team')"
           color=""
@@ -24,8 +24,8 @@
             <v-icon>publish</v-icon>
           </template>
         </v-upload-btn>
-      </v-list-tile-action>
-    </v-list-tile>
+      </v-list-item-action>
+    </v-list-item>
 
     <v-divider inset></v-divider>
 
@@ -42,28 +42,28 @@
       </v-upload-btn>
     </v-subheader>
 
-    <v-list-tile
+    <v-list-item
       v-for="(item, index) in devs"
       :key="item.title"
       avatar
     >
-      <v-list-tile-avatar>
+      <v-list-item-avatar>
         <v-icon class="primary white--text">person</v-icon>
-      </v-list-tile-avatar>
+      </v-list-item-avatar>
 
-      <v-list-tile-content>
-        <v-list-tile-title>{{ item.filename }}</v-list-tile-title>
-        <v-list-tile-sub-title>{{ item.title }}</v-list-tile-sub-title>
-      </v-list-tile-content>
+      <v-list-item-content>
+        <v-list-item-title>{{ item.filename }}</v-list-item-title>
+        <v-list-item-sub-title>{{ item.title }}</v-list-item-sub-title>
+      </v-list-item-content>
 
-      <v-list-tile-action>
+      <v-list-item-action>
         <v-btn
         @click="removeDev(index)"
         icon ripple>
           <v-icon color="grey lighten-1">delete</v-icon>
         </v-btn>
-      </v-list-tile-action>
-      <v-list-tile-action>
+      </v-list-item-action>
+      <v-list-item-action>
         <v-upload-btn
           @file-update="uploadToml($event, 'devs', index)"
           color=""
@@ -73,8 +73,8 @@
             <v-icon>publish</v-icon>
           </template>
         </v-upload-btn>
-      </v-list-tile-action>
-    </v-list-tile>
+      </v-list-item-action>
+    </v-list-item>
     <v-btn
     @click="loadDummyData()"
     color="secondary"

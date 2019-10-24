@@ -35,15 +35,19 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: () => true }
   ],
   theme: {
-    primary: '#0DBD0D',
-    secondary: '#ff7700',
-    accent: '#0ddd0d',
-    error: colors.red.base,
-    warning: colors.yellow.base,
-    info: colors.blue.base,
-    success: colors.green.base
+    dark: false,
+    themes: {
+      light: {
+        primary: '#0DBD0D',
+        secondary: '#ff7700',
+        accent: '#0ddd0d',
+        error: colors.red.base,
+        warning: colors.yellow.base,
+        info: colors.blue.base,
+        success: colors.green.base
+      }
+    }
   },
-  darkMode: false,
   blips: {
     titleCutOff: 20 // cut off title after N characters (display only)
   }
