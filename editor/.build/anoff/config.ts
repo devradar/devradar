@@ -24,15 +24,19 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { icon: 'info', title: 'About Me', url: '//anoff.io', validator: user => true }
   ],
   theme: {
-    primary: '#cc0033',
-    secondary: colors.blue.darken1,
-    accent: '#cc0033',
-    error: colors.red.base,
-    warning: colors.yellow.base,
-    info: colors.blue.base,
-    success: colors.green.base
+    dark: false,
+    themes: {
+      light: {
+        primary: '#cc0033',
+        secondary: colors.blue.darken1,
+        accent: '#cc0033',
+        error: colors.red.base,
+        warning: colors.yellow.base,
+        info: colors.blue.base,
+        success: colors.green.base
+      }
+    }
   },
-  darkMode: true,
   blips: {
     titleCutOff: 20 // cut off title after N characters (display only)
   }
