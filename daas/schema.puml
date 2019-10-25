@@ -1,0 +1,69 @@
+@startuml firestore_schema
+!includeurl https://gist.githubusercontent.com/anoff/d8f48105ac4d3c7b14ca8c34d6d54938/raw/7381f13a14e048bbd3cb4ecc70369e913908151a
+
+object users
+users : Array<user>
+
+object "user" as user
+user : _id : Firebase UID
+user : uid : String
+user : displayName : String
+user : lastLogin : String
+user : name : String
+
+users o-- user
+
+
+object roles
+roles : Array<role>
+
+object "role" as role
+role : _id : user._id
+role : admin : Boolean (optional)
+role : editor : Boolean (optional)
+role : viewer : Boolean (optional)
+
+roles o-- role
+role .right. user
+
+
+object radar
+radar : _id : Firebase UID
+radar : blips : Array<blip>
+radar : categories : Array<String>
+radar : levels : Array<String>
+radar : owner : user._id
+radar : readers : Array<user._id>
+radar : isPublic : Boolean
+
+object blip
+blip : _id : Firebase UID
+blip : title : String
+blip : category : String
+blip : level : String
+blip : link : String
+blip : changes : change
+
+radar o-- blip
+user .right. blip
+
+object change
+change : _id : Firebase UID
+change : date : String
+change : newLevel : String
+change : text : String
+change : author : user._id
+
+blip o-- change
+user .. change
+
+object team
+team : _id : Firebase UID
+team : name : String
+team : members : Array<user._id>
+team : tech : radar._id
+
+user .. team
+radar .. team
+
+@enduml

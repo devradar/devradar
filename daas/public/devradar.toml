@@ -1,0 +1,155 @@
+[meta]
+title = "Mortys personal~ radar"
+categories = [ "Tools", "Techniques", "Platforms", "Frameworks" ]
+levels = [ "Novice", "Intermediate", "Advanced", "Veteran" ]
+
+[[blips]]
+category = 0
+title = "GitLab CI"
+level = 3
+
+  [[blips.changes]]
+  date = "2018-07"
+  newLevel = 3
+
+[[blips]]
+category = 3
+title = "Go"
+level = 0
+
+  [[blips.changes]]
+  date = "2018-12"
+  newLevel = 0
+  text = "Superfast, cross-compiled, multi-platform executables"
+
+[[blips]]
+category = 2
+link = "https:////kubernetes.io"
+description = "Containers at scale"
+title = "Kubernetes"
+level = 0
+
+  [[blips.changes]]
+  date = "2018-07"
+  newLevel = 0
+
+[[blips]]
+category = 2
+link = "https:////docker.io"
+description = "Container all the things"
+title = "Docker"
+level = 2
+
+  [[blips.changes]]
+  date = "2019-03"
+  newLevel = 2
+
+[[blips]]
+category = 1
+description = "Treat your documentation like you treat code, git version, PR review, etc."
+title = "docs as code"
+level = 2
+
+  [[blips.changes]]
+  date = "2019-03"
+  newLevel = 2
+  text = "I am so good at this because I use it everywhere!"
+
+[[blips]]
+category = 0
+title = "Matlab"
+level = 3
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 3
+
+[[blips]]
+category = 3
+title = "OpenCV"
+level = 3
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 3
+
+[[blips]]
+category = 3
+title = "Python"
+level = 1
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 1
+
+[[blips]]
+category = 3
+title = "Javascript"
+level = 2
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 2
+
+[[blips]]
+category = 3
+title = "CSS"
+level = 3
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 3
+
+[[blips]]
+category = 1
+title = "Design"
+level = 3
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 3
+
+[[blips]]
+category = 1
+title = "Deep Learning"
+level = 2
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 2
+
+[[blips]]
+category = 2
+title = "Blockchain"
+level = 2
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 2
+
+[[blips]]
+category = 0
+title = "Ansible"
+level = 0
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 0
+
+[[blips]]
+category = 0
+title = "Azure RM"
+level = 1
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 1
+
+[[blips]]
+category = 0
+title = "Chef"
+level = 2
+
+  [[blips.changes]]
+  date = "2019-06"
+  newLevel = 2

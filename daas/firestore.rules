@@ -1,0 +1,49 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{user} {
+     	allow get: if request.auth.uid == user || hasRole('admin');
+      allow list: if hasRole('admin');
+      allow write: if request.auth.uid == user || hasRole('admin');
+    }
+
+    match /roles/{user} {
+      allow get: if request.auth.uid == user || hasRole('admin');
+      allow list: if hasRole('admin');
+      allow write: if hasRole('admin');
+    }
+
+    match /radar/{radar}/blips/{blip} {
+      allow get: if 
+    }
+    match /blips/{blip} {
+      allow get: if true;
+      allow list: if true;
+      allow write: if hasAnyRole(['admin', 'editor']);
+    }
+
+    match /blips/{blip}/changes/{entry} {
+      allow get: if true;
+      allow list: if true;
+      allow write: if hasAnyRole(['admin', 'editor']);
+    }
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }    
+    function getRoles() {
+      return get(/databases/$(database)/documents/roles/$(request.auth.uid)).data
+    }
+    function hasRole(role) {
+      return isSignedIn() && getRoles()[role] == true;
+    }
+    function hasAnyRole(roles) {
+      return isSignedIn() && getRoles().keys().hasAny(roles);
+    }
+    function isPublic(radar) {
+      return get(/databases/$(database)/documents/radar/$(radar)).data[isPublic] == true
+    }
+    function isReadable(radar) {
+      return isPublic(radar) || get(/databases/$(database)/documents/radar/$(radar)).data.hasAny(request.auth.uid)
+    }
+  }
+}
