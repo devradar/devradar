@@ -3,10 +3,10 @@ window.addEventListener('load', function () {
   window.cookieconsent.initialise({
     'palette': {
       'popup': {
-        'background': '#0ddd0d'
+        'background': '#333'
       },
       'button': {
-        'background': '#333'
+        'background': '#fff'
       }
     }
   })

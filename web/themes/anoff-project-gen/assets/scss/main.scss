@@ -327,7 +327,7 @@ header.navigation.nav-bg {
 
 @media(max-width:767px) {
   .hero-area {
-    padding: 5rem 0 10rem;
+    padding: 10rem 0 10rem;
     overflow: hidden
   }
 }
@@ -492,6 +492,7 @@ header.navigation.nav-bg {
   position: absolute;
   top: 0;
   text-align: center;
+  padding-top: 30px;
 
   span {
     font-size: 1.2rem;
