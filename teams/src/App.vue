@@ -9,7 +9,7 @@
     </v-snackbar>
     <v-app-bar class="primary top"
     scroll-off-screen
-    dense absolute
+    dense
     color="accent"
     >
     <v-app-bar-nav-icon
