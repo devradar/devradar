@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Radar from '@/components/Radar.vue'
 import Radar3 from '@/components/Radar3.vue'
 import List from '@/components/List.vue'
 import Login from '@/components/Login.vue'
@@ -13,7 +12,6 @@ import appConfig from '@/config'
 Vue.use(Router)
 const routesCfg = appConfig.routes
 const components = {
-  Radar,
   List,
   Login,
   Logout,

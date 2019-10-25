@@ -132,10 +132,10 @@ export default class Radar3 extends Vue {
       cursor: default;
     }
     .gridCircle {
-      fill: #111;
-      fill-opacity: 0.7;
+      fill: #444;
+      fill-opacity: 1;
       stroke: #fafafa;
-      stroke-width: 1;
+      stroke-width: 3;
     }
   }
 }
