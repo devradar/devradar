@@ -43,28 +43,23 @@
 
   {{ if .Site.Data.homepage.about.enable }}
   <!-- about -->
-  <section class="section">
+  <section class="section short-info">
     <div class="container">
       <div class="row">
-        <div class="col-lg-10 mx-auto text-center">
+        <div class="col-lg-10 mx-auto lead-container">
           {{ with .Site.Data.homepage.about }}
-            <p class="lead text-dark">{{.content | markdownify}}</p>
-            <ul class="lead">
-              {{ range .item }}
-              <li>
-                {{ .text | markdownify }}
-              </li>
-              {{ end }}
-            </ul>
-            {{ with .button }}
-            <a href="{{ .URL | absURL }}" class="btn btn-transparent">{{.btnText}}</a>
-            {{ end }}
-            {{ with .video }}
-              <video autoplay loop muted width="100%">
-                <source src="{{ . | absURL }}" type="video/webm">
-                Sorry, your browser doesn't support embedded videos.
-              </video>
-            {{ end }}
+            <div class="inner-lead-container col-lg-5">
+              <p class="lead lead-text text-dark">{{.content | markdownify}}</p>
+            </div>
+            <div class="inner-lead-container offset-lg-1 col-lg-6">
+              <ul class="lead lead-ul">
+                {{ range .item }}
+                <li>
+                  {{ .text | markdownify }}
+                </li>
+                {{ end }}
+              </ul>
+            </div>
           {{ end }}
         </div>
       </div>

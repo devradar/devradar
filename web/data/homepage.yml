@@ -5,10 +5,10 @@ about:
   enable : true
   content : "Manage your skills as an individual using the devradar editor or track competence management within your team by using both the editor and the devradar teams app."
   item:
-    - text: "manage skills via web UI"
-    - text: "view all skills in a list or radar view"
-    - text: "import/export via `.toml` files"
-    - text: "overlay your teams devradars and focus on the key skills"
+    - text: "Manage skills via web UI"
+    - text: "View all skills in a list or radar view"
+    - text: "Import/export via `.toml` files"
+    - text: "Overlay your teams devradars and focus on the key skills"
 
 features:
   enable: true

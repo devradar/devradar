@@ -10,7 +10,25 @@
   }
 }
 
+.card-text li::before {
+  content: "| ";
+  display: block;
+  width: 15px;
+  height: 15px;
+  float: left;
+}
+
+.card-text ul {
+  list-style-type: none;
+}
+
+.card-text li {
+  margin-bottom: 1em;
+}
+
 .howto .card-text {
+  font-family: roboto,sans-serif;
+
   h1 {
     margin: 2rem 0rem;
     font-size: 2.2rem;

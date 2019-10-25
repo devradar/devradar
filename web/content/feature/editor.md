@@ -2,16 +2,20 @@
 title: devradar Editor
 ---
 
-Document and present skills for individuals and teams. The devradar editor allows you to:
+**Document and present skills for individuals and teams. The devradar editor allows you to:**
 
-* create your own _techradar_
-* customize adoption levels
-* define quadrant categories
-* create radar blips via GUI
-* view all skills in a list
-* search for specific skills
-* import/export via `.toml` files
-* share your devradar via URL
+* Create your own _techradar_
+* Customize adoption levels
+* Define quadrant categories
+* Create radar blips via GUI
+* View all skills in a list
+* Search for specific skills
+* Import/export via `.toml` files
+* Share your devradar via URL
+
+---
+
+<br />
 
 <video autoplay loop muted width="100%">
   <source src="/videos/view.webm" type="video/webm">
