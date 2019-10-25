@@ -37,6 +37,7 @@
   })
 
   /* ########################################### hero parallax ############################################## */
+  /*
   window.onload = function () {
     var parallaxBox = document.getElementById('parallax')
     if (!parallaxBox) return
@@ -105,5 +106,8 @@
     obj.style.left = left - (((mouseX - (parseInt(obj.offsetWidth) / 2 + left)) / containerWidth) * speed) + 'px'
     obj.style.top = top - (((mouseY - (parseInt(obj.offsetHeight) / 2 + top)) / containerHeight) * speed) + 'px'
   }
+
+  */
   /* ########################################### /hero parallax ############################################## */
+
 })(jQuery)

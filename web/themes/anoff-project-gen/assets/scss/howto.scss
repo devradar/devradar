@@ -2,15 +2,45 @@
 @import './variables.scss';
 @import './common.scss';
 
-.toc {
-  position: relative;
-  left: 10%;
-  li {
-    font-size: 1.3rem;
-  }
+.toc {}
+
+.toc-links {
+  display: flex;  
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
+  width: 100%;
+}
+
+.toc-link-container {
+  height: 25px;
+  margin-bottom: 20px;
+}
+
+.toc-link-text {
+  font-size: 1.25em;
+}
+
+.card-text li::before {
+  content: "| ";
+  display: block;
+  width: 15px;
+  height: 15px;
+  float: left;
+}
+
+.card-text ul {
+  list-style-type: none;
+}
+
+.card-text li {
+  margin-bottom: 1em;
 }
 
 .howto .card-text {
+  font-family: roboto,sans-serif;
+
   h1 {
     margin: 2rem 0rem;
     font-size: 2.2rem;

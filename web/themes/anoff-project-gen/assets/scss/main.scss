@@ -146,12 +146,12 @@ select:focus {
 
 .section {
   padding-top: 4rem;
-  padding-bottom: 4rem
+  padding-bottom: 4rem;
 }
 
 .section-title {
   margin-bottom: 80px;
-  font-family: bwnistaint-xbd
+  font-family: bwnistaint-xbd;
 }
 
 .bg-cover {
@@ -327,7 +327,7 @@ header.navigation.nav-bg {
 
 @media(max-width:767px) {
   .hero-area {
-    padding: 5rem 0 10rem;
+    padding: 10rem 0 10rem;
     overflow: hidden
   }
 }
@@ -492,6 +492,7 @@ header.navigation.nav-bg {
   position: absolute;
   top: 0;
   text-align: center;
+  padding-top: 30px;
 
   span {
     font-size: 1.2rem;
@@ -555,4 +556,38 @@ div.usecase-details {
 }
 .usecase-details a {
   max-height: 6rem;
+}
+
+.short-info {
+  margin-top: 5rem;
+  height: 25rem;
+}
+
+.lead-text {
+  font-size: 1.4em;
+}
+
+.lead-container {
+  display: flex;
+  flex-direction: row;
+} 
+
+.lead-ul li::before {
+  content: "| ";
+  display: block;
+  width: 25px;
+  height: 25px;
+  float: left;
+}
+
+.lead-ul {
+  list-style-type: none;
+}
+
+.lead-ul li {
+  margin-bottom: 1.5em;
+}
+
+.space-bottom {
+  margin-bottom: 5rem;
 }

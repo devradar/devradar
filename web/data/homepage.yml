@@ -5,10 +5,10 @@ about:
   enable : true
   content : "Manage your skills as an individual using the devradar editor or track competence management within your team by using both the editor and the devradar teams app."
   item:
-    - text: "manage skills via web UI"
-    - text: "view all skills in a list or radar view"
-    - text: "import/export via `.toml` files"
-    - text: "overlay your teams devradars and focus on the key skills"
+    - text: "Manage skills via web UI"
+    - text: "View all skills in a list or radar view"
+    - text: "Import/export via `.toml` files"
+    - text: "Overlay your teams devradars and focus on the key skills"
 
 features:
   enable: true
@@ -20,7 +20,7 @@ tiles:
   item : 
     - title : "Serverless"
       icon : "ti-server"
-      content : "Host your own instance on Google Firebase with integrated authentication, user management and web-based blip editing."
+      content : "Host your own instance on Google Firebase with automatically integrated authentication, sophisticaed user management and full web-based blip editing."
       URL: https://github.com/anoff/devradar/blob/master/editor/setup.md#firebase-backend
       URLtitle: Setup Guide
       highlighted : false
@@ -30,7 +30,7 @@ tiles:
       content : "View and edit your devradar on our client-only web application. No data is sent to the server, everything stays on your device. You can download your devradar as TOML file."
       URL: //editor.devradar.io
       URLtitle: Open editor
-      highlighted : true
+      highlighted : false
 
     - title : "GitHub Pages"
       icon : "ti-file"
@@ -42,7 +42,7 @@ tiles:
 usecases:
   enable : true
   item:
-    - image : "images/interview.jpg"
+    - image : "images/use_case1_small.jpg"
       URL : "https://editor.devradar.io/#/?load=N4IgtgpgLghiBcooEsoBsIJAWQPYCcoBPAZwAIAHCfE3AOxjQD8z8YATGfEAGhAGMYUCAHMCyCCQQBtEABVcuNFL5yI-ABZ1kARwCuk3iAAKaIQDMCYFSABibSAHcCAaykBdPhgBuEZTJAAOVxvZH5MPgBJOmF8SHZkIQiQAEF2bxg6cPYjADVoakyQdwBfPgAjNGQKKXhpUEFhMXwiBAAGPhR0THgQAHFUABkYcrIAYUijTUyRQzrQTmEsACY2gEYADgBaNoB2IzoIR0GIXzQEAGYSzxAfP0uyhqTm1vgLztQMLD7cKY0Zub1ECLHogVabLZrZYHI4nM7tToQAAeUCwAGU9FR8OYYCQoDwyPx8LgSCQtvxcGAKMgMOwCWA9GgUFsKGYoJY4mRkeo9LBKoZrl5Tvd4G1HgJngRXssvMg6C4sBooFAavAAPQatUuPTlaiHYQkAB0yF+fHYkiJ1RQ9CwY3osDl1HIQjIJEEXw+3SwAGkdXqCjZpnRZrUgSCVuttnsYcdhedRYLbnH2uLGqIpQgZbc5QrekqVSR1Zr2Lh+C5qMbTcCLfgrSa6Lb7TBHfgyIw0GQoBoIJ2NHKRDYul9egARUvl7h8IMhmQLJIRtYATh2FxjcJFy0Td3jm54TyaGfgazNNbrNt6cnwEBdRFwelbJf4ekgMSE9bIVXLZFvek7V5dFLmgSIioGQvg0PWBLGAASqwpwSI4BLQPwhpGEOoKPs65CAck06AnOSy9OCy5tKufCHLG8LwFmwgolgkRtmArq4GQYi4OwbZQL2yDkLqgh6CQPYMQJPagcKLSON2V4AIQgFuybUamkotAiIDoVg2BCGY5R-ACoYEaCxE7AAbGuClXDc24PHuEoHipbyesOIAAPJUHQYy5Lpwb4cC85EesJGmeRsLmfJVFXDZaYvJcjmgsYRBdjaU7-N5+m+YRYIBSZZlUWsYUinlkXKa87xqZ8oIAFIwBkbq1hQqLJXps7pYZWVtEFIAUeuO75T1RV2SVsW2miaJeTO8wtQugU5SKFlCuFSkDQgx5lV6o6SMgIgNo1qXNeG-lLtlwWUbNvXWfu6b2St6nrRAFBkCcXDaMGY0+ftmWHe1M09ZZCm7hd0XUUNvQAEJoOO0xyq9aXvUZX3Hd1mZnYp-WXa8HSrU5KR0CQyD8tDe1+R900IwpYq-VRYqo4DGM3akABe949tB2AExNsNtR1XUKXlFMFYtaOqXTYzduYbNhkTcNcyFVGbnzP0lEAA"
       title: Visualize your tech proficiency
       text: "Create a devradar with skill proficiency scale.
