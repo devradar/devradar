@@ -2,7 +2,7 @@
 title: devradar Teams (Preview)
 ---
 
-**Import your teams devradars and track progress in your team members competences.**
+Import your teams devradars and track progress in your team members competences.
 
 ---
 

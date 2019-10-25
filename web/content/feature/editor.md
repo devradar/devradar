@@ -2,7 +2,7 @@
 title: devradar Editor
 ---
 
-**Document and present skills for individuals and teams. The devradar editor allows you to:**
+Document and present skills for individuals and teams. The devradar editor allows you to:
 
 * Create your own _techradar_
 * Customize adoption levels
