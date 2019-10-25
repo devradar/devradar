@@ -5,14 +5,13 @@
 
   <section class="section" style="padding-bottom: 0;">
   <div class="toc">
-    <h5>Items on this page</h5>
-    <ul>
+    <div class="toc-links">
       {{ range where .Site.RegularPages "Type" "howto" }}
-        <li>
-          <a href="#{{ .Title | urlize }}">{{ .Title | humanize }}</a>
-        </li>
+        <div class="toc-link-container">
+          <a class="btn toc-link-text" href="#{{ .Title | urlize }}">{{ .Title | humanize }}</a>
+        </div>
       {{ end }}
-    </ul>
+    </div>
   </div>
   </section>
 

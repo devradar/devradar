@@ -2,12 +2,24 @@
 @import './variables.scss';
 @import './common.scss';
 
-.toc {
-  position: relative;
-  left: 10%;
-  li {
-    font-size: 1.3rem;
-  }
+.toc {}
+
+.toc-links {
+  display: flex;  
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
+  width: 100%;
+}
+
+.toc-link-container {
+  height: 25px;
+  margin-bottom: 20px;
+}
+
+.toc-link-text {
+  font-size: 1.25em;
 }
 
 .card-text li::before {
