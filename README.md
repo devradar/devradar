@@ -1,6 +1,6 @@
 <p align="center">
   <img src="assets/logo-text.png">
-  <p align="center"><b>Track and manage</b> your and your teams skill set to <b>accelerate progress and advance productivity</b>.<p>
+<p align="center">Track and manage skills as an individual and manage competences across a team.<p>
   <p align="center">
     <a href="./LICENSE">
     	<img src="https://badgen.net/badge/license/MIT/blue" />
@@ -39,7 +39,9 @@
 
 <br />
 
-**Get more information: [Try out devradar.io here](https://devradar.io)**
+**Get more information: [devradar homepage](https://devradar.io)** 
+
+**Try it out: [devradar editor](http://editor.devradar.io/)**
 
 This repository holds the individual projects making up the devradar ecosystem:
 
@@ -53,13 +55,13 @@ See [anoff/devradar-static](https://github.com/anoff/devradar-static) for an eas
 
 ## Demo
 
-### Devradar editor
+### devradar editor
 
 Create and update your skill information
 
 <img src="assets/editor-demo.gif" alt="video of the editor app">
 
-### Devradar teams
+### devradar teams
 
 Compare your teams target skills with existing team devradars
 
