@@ -13,11 +13,11 @@
     </v-layout>
     <v-layout row>
       <v-flex xs5 hidden-sm-and-up>
-        <div id="legendeast-small" class="radarlegend"></div>
+        <div id="legendwest-small" class="radarlegend"></div>
       </v-flex>
       <v-flex xs2></v-flex>
       <v-flex xs5 hidden-sm-and-up>
-        <div id="legendwest-small" class="radarlegend"></div>
+        <div id="legendeast-small" class="radarlegend"></div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -86,7 +86,7 @@ export default class Radar3 extends Vue {
   padding: 0 2rem 0 0;
 }
 .radarcontainer {
-  padding: 0;
+  padding: 1rem 4rem;
   margin: 0;
 }
 // to be moved into radarchart component
