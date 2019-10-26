@@ -21,17 +21,30 @@
               ></v-text-field>
           </v-flex>
           <v-flex xs12 sm6 text-xs-right>
-            <v-chip small disabled class="bold">
-              <v-avatar class="primary">
-                <v-icon dark>domain</v-icon>
-              </v-avatar>
-              <span>{{meta.categories[blip.category]}}</span>
-            </v-chip>
-            <v-chip small disabled class="bold" @click.stop="addChange(blip)">
-              <v-avatar class="primary">
-                {{blip.level}}
+            <v-chip
+              class="ma-2 bold"
+              color="#444"
+              text-color="white"
+              @click.stop="addChange(blip)"
+            >
+              <v-avatar
+                left
+                class="primary"
+              >
+                {{blip.level + 1}}
               </v-avatar>
               {{meta.levels[blip.level]}}
+            </v-chip>
+
+            <v-chip
+              class="bold"
+              color="#444"
+              text-color="white"
+            >
+              <v-avatar left>
+                <v-icon>domain</v-icon>
+              </v-avatar>
+              {{meta.categories[blip.category]}}
             </v-chip>
           </v-flex>
         </v-layout>
@@ -48,9 +61,16 @@
         <v-divider></v-divider>
         <v-subheader>
           <span class="subheading">{{change.date}}</span>
-            <v-chip small disabled class="bold">
-              <v-avatar color="primary">
-                {{change.newLevel}}
+            <v-chip
+              small
+              color="#888"
+              text-color="white"
+            >
+              <v-avatar
+                left
+                class="primary"
+              >
+                {{change.newLevel + 1}}
               </v-avatar>
               {{meta.levels[change.newLevel]}}
             </v-chip>
