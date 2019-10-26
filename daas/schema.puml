@@ -24,7 +24,7 @@ role : editor : Boolean (optional)
 role : viewer : Boolean (optional)
 
 roles o-- role
-role .right. user
+role o.right. user
 
 
 object radar
@@ -45,17 +45,14 @@ blip : link : String
 blip : changes : change
 
 radar o-- blip
-user .right. blip
 
 object change
 change : _id : Firebase UID
 change : date : String
 change : newLevel : String
 change : text : String
-change : author : user._id
 
 blip o-- change
-user .. change
 
 object team
 team : _id : Firebase UID
@@ -63,7 +60,7 @@ team : name : String
 team : members : Array<user._id>
 team : tech : radar._id
 
-user .. team
-radar .. team
+user ..o team
+radar ..o team
 
 @enduml

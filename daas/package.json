@@ -1,7 +1,7 @@
 {
-  "name": "devradar-editor",
+  "name": "devradar-aas",
   "private": true,
-  "description": "Build your personal techradar",
+  "description": "Manage your dev skills",
   "author": "Andreas Offenhaeuser <https://anoff.io>",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -53,7 +53,7 @@
   "config": {
     "cz-conventional-kawaii": {
       "scopes": [
-        "editor"
+        "daas"
       ],
       "quick": false
     }

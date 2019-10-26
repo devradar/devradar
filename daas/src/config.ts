@@ -2,15 +2,18 @@ import colors from 'vuetify/es5/util/colors'
 
 const config = { // needs to be ES6 module so it can be imported by webpack
   backend: {
-    type: 'localstorage'
+    type: 'firebase',
+    project: 'devradario',
+    key: 'AIzaSyCv9VSMXxH7aREKGCi_dsHgkK7hYm25j0A'
   },
   editPermissions: user => true,
   routes: [ // configure name, permissions & view ports
-    // do NOT change the view property as this links to the vue component and is used for lookups across the app
     { view: 'List', icon: 'list', title: 'Blips', path: '/list/:search?', validator: user => true, location: ['toolbar'] },
-    { view: 'Radar', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
-    { view: 'Radar3', icon: 'track_changes', title: 'Radar (beta)', path: '/beta', validator: user => true, location: ['toolbar'] },
-    { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => true, location: ['toolbar'] } // only use this on localstorage backend for now
+    { view: 'Radar3', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
+    { view: 'Logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
+    { view: 'Users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
+    { view: 'Login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar-menu'] },
+    { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => user.uid && user.roles.admin, location: ['toolbar'] }
   ],
   navEntries: [
     { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: user => true }

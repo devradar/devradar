@@ -32,7 +32,11 @@ function upsertUser (user) {
 }
 
 function init (store, appConfig) {
-  firebase.initializeApp({
+  if (!appConfig.backend.project || !appConfig.backend.key) {
+    console.error('Misconfigured backend in config.ts, please provide backend.project and backend.key')
+    return Promise.reject()
+  }
+  const app = firebase.initializeApp({
     apiKey: appConfig.backend.key,
     authDomain: `${appConfig.backend.project}.firebaseapp.com`,
     databaseURL: `https://${appConfig.backend.project}.firebaseio.com`,

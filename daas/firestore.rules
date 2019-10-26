@@ -1,32 +1,34 @@
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{user} {
-     	allow get: if request.auth.uid == user || hasRole('admin');
+     	allow get: if true;
       allow list: if hasRole('admin');
       allow write: if request.auth.uid == user || hasRole('admin');
     }
 
     match /roles/{user} {
-      allow get: if request.auth.uid == user || hasRole('admin');
+      allow get: if true;
       allow list: if hasRole('admin');
       allow write: if hasRole('admin');
     }
 
-    match /radar/{radar}/blips/{blip} {
-      allow get: if 
+    match /radar/{radar} {
+      allow get: if isReadable(radar);
+      allow list: if isReadable(radar);
+      allow write: if request.auth.uid == radar.owner || hasRole('admin');
     }
-    match /blips/{blip} {
-      allow get: if true;
-      allow list: if true;
-      allow write: if hasAnyRole(['admin', 'editor']);
+    match /radar/{radar}/blips/{blip} {
+      allow get: if isReadable(radar);
+      allow list: if isReadable(radar);
+      allow write: if request.auth.uid == radar.owner || hasRole('admin');
+    }
+    match /radar/{radar}/blips/{blip}/changes/{change} {
+      allow get: if isReadable(radar);
+      allow list: if isReadable(radar);
+      allow write: if request.auth.uid == radar.owner || hasRole('admin');
     }
 
-    match /blips/{blip}/changes/{entry} {
-      allow get: if true;
-      allow list: if true;
-      allow write: if hasAnyRole(['admin', 'editor']);
-    }
-    
+    /* helper functions */
     function isSignedIn() {
       return request.auth != null;
     }    
@@ -43,7 +45,7 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/radar/$(radar)).data[isPublic] == true
     }
     function isReadable(radar) {
-      return isPublic(radar) || get(/databases/$(database)/documents/radar/$(radar)).data.hasAny(request.auth.uid)
+      return isPublic(radar) || request.auth.uid in get(/databases/$(database)/documents/radar/$(radar)).data.readers
     }
   }
 }
