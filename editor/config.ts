@@ -34,7 +34,14 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   googleAnalytics: {
     enabled: false,
     id: 'UA-XYZ'
-  }
+  }, footer: [
+    { text: 'by Andreas Offenhaeuser',
+      link: '//anoff.io'},
+    { text: 'Blog',
+      link: '//bloganoff.io'},
+    { text: 'Legal',
+      link: '//anoff.github.io/legal'}
+  ]
 }
 
 // precalculate some properties for later

@@ -30,7 +30,15 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   blips: {
     titleCutOff: 20 // cut off title after N characters (display only)
-  }
+  },
+  footer: [
+    { text: 'static devradar deployment',
+      link: '//devradar.io'},
+    { text: 'fork your own',
+      link: '//github.com/anoff/devradar-static'},
+    { text: 'made with 💖 by Andreas Offenhaeuser',
+      link: '//anoff.io'}
+  ]
 }
 
 // precalculate some properties for later

@@ -24,9 +24,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { icon: 'info', title: 'About Me', url: '//anoff.io', validator: user => true }
   ],
   theme: {
-    dark: false,
+    dark: true,
     themes: {
-      light: {
+      dark: {
         primary: '#cc0033',
         secondary: colors.blue.darken1,
         accent: '#cc0033',
@@ -39,7 +39,15 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   blips: {
     titleCutOff: 20 // cut off title after N characters (display only)
-  }
+  },
+  footer: [
+    { text: 'by Andreas Offenhaeuser',
+      link: '//anoff.io'},
+    { text: 'Blog',
+      link: '//bloganoff.io'},
+    { text: 'Legal',
+      link: '//anoff.github.io/legal'}
+  ]
 }
 
 // precalculate some properties for later

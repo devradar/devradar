@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app fill-height>
     <v-snackbar
       v-model="snackbar.active"
       color="success"
@@ -11,6 +11,7 @@
     scroll-off-screen
     dense
     color="accent"
+    class="octocat-padding"
     >
     <v-app-bar-nav-icon
     class="hidden-md-and-up"
@@ -22,25 +23,9 @@
         v-bind:class="{ 'invert-image': darkMode }"
         width="140rem">
       </v-toolbar-title>
+      <v-spacer></v-spacer>
       <v-toolbar-title class="hidden-xs-only">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <span class="radar-title" v-on="on">{{ meta.title }} </span>
-          </template>
-        <span>Change me in the settings tab</span>
-        </v-tooltip>
-        <v-tooltip right>
-          <template v-slot:activator="{ on }">
-            <v-btn
-            icon large
-            v-on="on"
-            @click="copyURL()"
-            >
-              <v-icon>attach_file</v-icon>
-            </v-btn>
-          </template>
-          <span>Copy devradar URL</span>
-        </v-tooltip>
+        <span class="radar-title">{{ meta.title }} </span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
@@ -62,10 +47,15 @@
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
         </v-btn>
-        <v-menu bottom left v-if="getMenuItems('toolbar-menu').length">
-          <v-btn slot="activator" icon :dark="darkMode">
-            <v-icon>more_vert</v-icon>
-          </v-btn>
+        <v-menu bottom left
+        v-if="getMenuItems('toolbar-menu').length">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon :dark="darkMode"
+              v-bind="attrs"
+              v-on="on">
+              <v-icon>more_vert</v-icon>
+            </v-btn>
+          </template>
           <v-list>
             <v-list-item v-for="elm in getMenuItems('toolbar-menu')" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
               <v-list-item-title>
@@ -95,15 +85,7 @@
               <v-list-item-title>{{ elm.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-for="elm in getMenuItems('toolbar')" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
-            <v-list-item-action>
-              <v-icon left>{{elm.icon}}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{ elm.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item v-for="elm in getMenuItems('toolbar-menu')" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
+          <v-list-item v-for="elm in (getMenuItems('toolbar').concat(getMenuItems('toolbar-menu')))" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
             <v-list-item-action>
               <v-icon left>{{elm.icon}}</v-icon>
             </v-list-item-action>
@@ -133,7 +115,7 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <v-container fluid>
+      <v-container fluid fill-height>
         <router-view></router-view>
       </v-container>
     </v-content>
@@ -142,6 +124,17 @@
       This website uses cookies to ensure you get the best experience on our website. <a href="https://www.cookiesandyou.com/" target="_blank">Learn more</a>
     </div>
   </cookie-law>
+  <v-footer :dark="darkMode" >
+    <v-col
+      class="text-center"
+      cols="12"
+    >
+    <span v-for="elm in footerEntries" v-bind:key="elm.text" class="entry">
+      <a v-if="elm.link" :href="elm.link" target="_blank">{{ elm.text }}</a>
+      <span v-else>{{ elm.text }}</span>
+    </span>
+    </v-col>
+  </v-footer>
   </v-app>
 </template>
 
@@ -173,6 +166,7 @@ import appConfig from './config'
 export default class App extends Vue {
   showNavdrawer: boolean = false
   darkMode: boolean = appConfig.theme.dark
+  footerEntries: object[] = appConfig.footer
   // computed
   isLoading: boolean
   meta: Meta
@@ -244,6 +238,18 @@ span.radar-title {
 }
 .invert-image {
   filter: invert(1);
+}
+
+footer .entry:after {
+  text-align : center;
+  margin : 0 1rem;
+  content: "—";
+}
+footer .entry:last-child:after {
+  content: "";
+}
+.octocat-padding {
+  padding-right: 80px;
 }
 // cookie consent component
 .Cookie--devradar {
