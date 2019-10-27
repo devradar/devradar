@@ -1,7 +1,7 @@
 <template>
-  <v-container grid-list fill-height
+  <v-container grid-list
     class="radarcontainer">
-    <v-layout row fill-height>
+    <v-layout row>
       <v-flex xs3 hidden-xs-only>
         <div id="legendwest" class="radarlegend dark"></div>
       </v-flex>
@@ -12,7 +12,7 @@
         <div id="legendeast" class="radarlegend dark"></div>
       </v-flex>
     </v-layout>
-    <v-layout row fill-height>
+    <v-layout row class="asdf">
       <v-flex xs5 hidden-sm-and-up>
         <div id="legendwest-small" class="radarlegend"></div>
       </v-flex>
