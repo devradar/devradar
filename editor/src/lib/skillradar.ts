@@ -13,6 +13,7 @@ export interface SkillradarOptions {
   titleCutOff?: number;
   legendCategorySpacingEms?: number;
   legendCategoryOffsetEms?: number;
+  dark?: boolean;
 }
 
 export interface SkillradarData {
@@ -45,7 +46,8 @@ export class SkillradarChart {
       blipRadiusHoverPercentage: 1.5,
       titleCutOff: 13,
       legendCategorySpacingEms: 8,
-      legendCategoryOffsetEms: 2
+      legendCategoryOffsetEms: 2,
+      dark: false
     }
 
     if (options) {
@@ -62,14 +64,15 @@ export class SkillradarChart {
     const cfg = this.config
     cfg.elementCount = data.items.length
     cfg.levelCount = data.levels.length
-
+    
+    const darkClass = cfg.dark ? 'dark' : ''
     // create a reference object with radar center being 0,0
     d3.select(id).select('svg').remove()
     const g = d3.select(id)
       .append('svg')
       .attr('preserveAspectRatio', 'xMinYMin meet')
-      .attr('viewBox', `0 0 ${2 * cfg.radius} ${2 * cfg.radius}`)
-      .attr('class', 'radar-chart')
+      .attr('viewBox', `-5 -5 ${2 * cfg.radius + 10} ${2 * cfg.radius + 10}`)
+      .attr('class', `radar-chart ${darkClass}`)
       .append('g')
       .attr('transform', 'translate(' + (cfg.radius) + ',' + (cfg.radius) + ')')
     this.chartArea = g
@@ -77,21 +80,21 @@ export class SkillradarChart {
     // #############
     // ###  Grid ###
     // #############
-    const gridWrapper = g.append('g').attr('class', 'gridWrapper')
+    const gridWrapper = g.append('g').attr('class', `gridWrapper ${darkClass}`)
 
     // background circles
     gridWrapper.selectAll('.gridCircle')
       .data(d3.range(0, cfg.levelCount))
       .enter()
       .append('circle')
-      .attr('class', 'gridCircle')
+      .attr('class', `gridCircle ${darkClass}`)
       .attr('r', (d: number) => this.level2radius(d))
 
     // circle label
     gridWrapper.selectAll('.gridLabel')
       .data(d3.range(0, cfg.levelCount))
       .enter().append('text')
-      .attr('class', 'gridLabel')
+      .attr('class', `gridLabel ${darkClass}`)
       .attr('text-anchor', 'middle')
       .attr('x', 4)
       .attr('y', (d: number) => -this.level2radius(d))
@@ -106,7 +109,7 @@ export class SkillradarChart {
       .enter().append('a')
       .attr('href', (d: Blip) => `#/list/${d.title}`)
       .append('g')
-      .attr('class', 'blip')
+      .attr('class', `blip ${darkClass}`)
       .attr('data-index', (d: Blip) => d.index)
       .attr('transform', (d: Blip) => 'translate(' + this.rad2xy(this.blip2rad(d)).x + ',' + this.rad2xy(this.blip2rad(d)).y + ')')
       .on('mouseover', function () {
@@ -162,12 +165,12 @@ export class SkillradarChart {
       .append('circle')
       .attr('r', 13)
       .attr('class', function (d: Blip) {
-        return `blipCircle blipCircle-level-${d.level} blipCircle-category-${d.category}`
+        return `blipCircle blipCircle-level-${d.level} blipCircle-category-${d.category} ${darkClass}`
       })
     // blip number
     radarWrapper
       .append('text')
-      .attr('class', 'blipIndex')
+      .attr('class', `blipIndex ${darkClass}`)
       .attr('text-anchor', 'middle')
       .attr('dy', '0.3em')
       .text((d: Blip) => d.index + 1)
@@ -178,12 +181,12 @@ export class SkillradarChart {
     tooltip = g
       .append('g')
       .attr('visibility', 'hidden')
-      .attr('class', 'tooltip')
+      .attr('class', `tooltip ${darkClass}`)
       .attr('opacity', 0)
     
     tooltip
       .append('rect')
-      .attr('class', 'tooltipRectangle')
+      .attr('class', `tooltipRectangle ${darkClass}`)
       .attr('height', '1.5em')
       .attr('y', '-2.5em')
       .attr('rx', 5) // corner radius
@@ -191,7 +194,7 @@ export class SkillradarChart {
 
     tooltip
       .append('text')
-      .attr('class', 'tooltipText')
+      .attr('class', `tooltipText ${darkClass}`)
       .attr('text-anchor', 'middle')
       .text('hello world')
       .attr('y', '-1.5em')
@@ -200,6 +203,7 @@ export class SkillradarChart {
 
   public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean, direction: string) {
     const cfg = this.config
+    const darkClass = cfg.dark ? 'dark' : ''
     const blips = data.items
       .filter(filterFn)
       .sort((a: Blip, b: Blip) => {
@@ -220,19 +224,26 @@ export class SkillradarChart {
     }, [])
     const levelMaxLength = Math.max(...data.levels.map((l: string) => l.length))
 
+    // find legend width/height
+    const legendTitleCharWidth = 8
+    const legendTitleCharHeight = 16
+    
+    // can not move <g> by em units so move individual elements
+    const legendYoffset = (categoryNumber: number, entryNumber: number) => {
+      return (entryNumber * 2 + categoryNumber * cfg.legendCategorySpacingEms + cfg.legendCategoryOffsetEms) * legendTitleCharHeight
+    }
+
+    const maxLegendHeight = legendYoffset(2, blips.length)
+
     d3.select(id).select('svg').remove()
     const g = d3.select(id)
       .append('svg')
       .attr('preserveAspectRatio', 'xMinYMin meet')
       .style('overflow', 'visible')
-      .attr('viewBox', `0 0 ${0.9 * cfg.radius} ${2 * cfg.radius}`)
+      .attr('viewBox', `0 0 ${0.9 * cfg.radius} ${maxLegendHeight}`)
       .append('g')
-      .attr('class', 'radar-legend')
+      .attr('class', `radar-legend ${darkClass}`)
     this.legends[id] = g
-
-    // find legend width/height
-    const legendTitleCharWidth = 8
-    const legendTitleCharHeight = 16
 
     // ####################
     // ### Legend Group ###
@@ -244,7 +255,7 @@ export class SkillradarChart {
       .append('g')
       .attr('data-title', (d: Blip) => d.title)
       .attr('data-index', (d: Blip) => d.index)
-      .attr('class', (d: Blip) => `legendEntry category-${d.category} level-${d.level}`)
+      .attr('class', (d: Blip) => `legendEntry category-${d.category} level-${d.level} ${darkClass}`)
       .on('mouseover', function () {
         const { index } = d3.select(this).data()[0] as Blip
         const blip = d3.selectAll('.blip').filter(`[data-index='${index}']`)
@@ -272,14 +283,10 @@ export class SkillradarChart {
           .classed('highlight', false)
           .classed('grayed', false)
       })
-    // can not move <g> by em units so move individual elements
-    const legendYoffset = (categoryNumber: number, entryNumber: number) => {
-      return (entryNumber * 2 + categoryNumber * cfg.legendCategorySpacingEms + cfg.legendCategoryOffsetEms) * legendTitleCharHeight
-    }
 
     legendWrapper
       .append('polyline')
-      .attr('class', 'legendDecorator')
+      .attr('class', `legendDecorator ${darkClass}`)
       .attr('points', (d: Blip, i: number) => {
         const category = categories[i]
         const categoryNumber = categoriesDistinct.indexOf(category)
@@ -291,7 +298,7 @@ export class SkillradarChart {
 
     legendWrapper
       .append('text')
-      .attr('class', 'legendTitle')
+      .attr('class', 'legendTitle ${darkClass}')
       .attr('text-anchor', 'left')
       .attr('y', (d: Blip, i: number) => {
         const category = categories[i]
@@ -303,7 +310,7 @@ export class SkillradarChart {
     
     legendWrapper
       .append('text')
-      .attr('class', 'legendIndex')
+      .attr('class', `legendIndex ${darkClass}`)
       .attr('text-anchor', 'middle')
       .attr('y', (d: Blip, i: number) => {
         const category = categories[i]
@@ -315,20 +322,20 @@ export class SkillradarChart {
     
     legendWrapper
       .append('text')
-      .attr('class', 'legendLevel')
+      .attr('class', `legendLevel ${darkClass}`)
       .attr('text-anchor', 'end')
       .attr('y', (d: Blip, i: number) => {
         const category = categories[i]
         const categoryNumber = categoriesDistinct.indexOf(category)
         return legendYoffset(categoryNumber, i + 1)
       })
-      .attr('x', cfg.titleCutOff * legendTitleCharWidth + 2 * legendTitleCharHeight + (levelMaxLength + 2) * legendTitleCharWidth)
+      .attr('x', (cfg.titleCutOff + levelMaxLength + 9) * legendTitleCharWidth) // no clue how to get rid of the magic 8; TODO: come up with a better way for calculating text width/height than magic numbers
       .text((d: Blip) => data.levels[d.level])
 
     g.selectAll('.legendCategory')
       .data(categoriesDistinct)
       .enter().append('text')
-      .attr('class', (d: number) => `legendCategory category-${d}`)
+      .attr('class', (d: number) => `legendCategory category-${d} ${darkClass}`)
       .attr('text-anchor', 'left')
       .attr('y', (d: number, i: number) => {
         // figure out how many entries have been printed "above" this category heading

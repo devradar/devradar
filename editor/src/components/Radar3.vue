@@ -1,17 +1,18 @@
 <template>
-  <v-container grid-list fluid class="radarcontainer">
-    <v-layout row>
+  <v-container grid-list fill-height
+    class="radarcontainer">
+    <v-layout row fill-height>
       <v-flex xs3 hidden-xs-only>
-        <div id="legendwest" class="radarlegend"></div>
+        <div id="legendwest" class="radarlegend dark"></div>
       </v-flex>
       <v-flex xs11 sm6>
-        <div id="radarchart"></div>
+        <div id="radarchart" class="dark"></div>
       </v-flex>
       <v-flex xs3 hidden-xs-only>
-        <div id="legendeast" class="radarlegend"></div>
+        <div id="legendeast" class="radarlegend dark"></div>
       </v-flex>
     </v-layout>
-    <v-layout row>
+    <v-layout row fill-height>
       <v-flex xs5 hidden-sm-and-up>
         <div id="legendwest-small" class="radarlegend"></div>
       </v-flex>
@@ -27,6 +28,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Blip, Meta } from '@/types/domain'
 import { SkillradarChart, SkillradarOptions, SkillradarData } from '../lib/skillradar'
+import appConfig from '../config'
 
 @Component({
   computed: {
@@ -42,9 +44,11 @@ export default class Radar3 extends Vue {
   blips: Blip[]
   chart: SkillradarChart
   meta: Meta
+  darkMode: boolean = appConfig.theme.dark
 
   radarConfig: SkillradarOptions = {
-    radius: 300
+    radius: 300,
+    dark: this.darkMode
   }
   constructor () {
     super()
@@ -103,6 +107,9 @@ export default class Radar3 extends Vue {
     }
     .tooltipRectangle {
       fill: #333;
+      &.dark {
+        fill: #ddd;
+      }
     }
   }
   .blip {
@@ -181,11 +188,17 @@ export default class Radar3 extends Vue {
     stroke: #333;
     strok-width: 1px;
     stroke-dasharray: 1.5;
+    &.dark {
+      stroke: #ddd;
+    }
   }
   .legendLevel {
     fill: #333;
     text-transform: uppercase;
     font-size: 16px;
+    &.dark {
+      fill: #ddd;
+    }
   }
 }
 </style>
