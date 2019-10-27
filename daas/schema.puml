@@ -48,7 +48,7 @@ radar o-- blip
 
 object change
 change : _id : Firebase UID
-change : date : String
+change : date : String (ISO8601)
 change : newLevel : String
 change : text : String
 

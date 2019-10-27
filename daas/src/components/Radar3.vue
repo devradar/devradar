@@ -1,17 +1,18 @@
 <template>
-  <v-container grid-list fluid class="radarcontainer">
+  <v-container grid-list
+    class="radarcontainer">
     <v-layout row>
       <v-flex xs3 hidden-xs-only>
-        <div id="legendwest" class="radarlegend"></div>
+        <div id="legendwest" class="radarlegend dark"></div>
       </v-flex>
       <v-flex xs11 sm6>
-        <div id="radarchart"></div>
+        <div id="radarchart" class="dark"></div>
       </v-flex>
       <v-flex xs3 hidden-xs-only>
-        <div id="legendeast" class="radarlegend"></div>
+        <div id="legendeast" class="radarlegend dark"></div>
       </v-flex>
     </v-layout>
-    <v-layout row>
+    <v-layout row class="asdf">
       <v-flex xs5 hidden-sm-and-up>
         <div id="legendwest-small" class="radarlegend"></div>
       </v-flex>
@@ -24,9 +25,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Blip, Meta } from '@/types/domain'
 import { SkillradarChart, SkillradarOptions, SkillradarData } from '../lib/skillradar'
+import appConfig from '../config'
 
 @Component({
   computed: {
@@ -42,9 +44,11 @@ export default class Radar3 extends Vue {
   blips: Blip[]
   chart: SkillradarChart
   meta: Meta
+  darkMode: boolean = appConfig.theme.dark
 
   radarConfig: SkillradarOptions = {
-    radius: 300
+    radius: 300,
+    dark: this.darkMode
   }
   constructor () {
     super()
@@ -52,24 +56,27 @@ export default class Radar3 extends Vue {
   }
 
   public renderChart () {
-    if (this.blips.length) {
-      const data: SkillradarData = {
-        items: this.blips,
-        levels: this.meta.levels,
-        categories: this.meta.categories
-      }
-
-      // Call function to draw the Radar chart
-      // Will expect that data is in %'s
-      this.chart.drawChart('#radarchart', data)
-      this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2, 'down')
-      this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2, 'up')
-      this.chart.drawLegend('#legendeast-small', data, (blip: Blip) => blip.category < 2, 'down')
-      this.chart.drawLegend('#legendwest-small', data, (blip: Blip) => blip.category >= 2, 'up')
+    const data: SkillradarData = {
+      items: this.blips,
+      levels: this.meta.levels,
+      categories: this.meta.categories
     }
+
+    // Call function to draw the Radar chart
+    // Will expect that data is in %'s
+    this.chart.drawChart('#radarchart', data)
+    this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2, 'down')
+    this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2, 'up')
+    this.chart.drawLegend('#legendeast-small', data, (blip: Blip) => blip.category < 2, 'down')
+    this.chart.drawLegend('#legendwest-small', data, (blip: Blip) => blip.category >= 2, 'up')
   }
 
   mounted () {
+    this.renderChart()
+  }
+
+  @Watch('blips')
+  onPropertyChanged(value: Blip[], oldValue: Blip[]) {
     this.renderChart()
   }
 }
@@ -86,7 +93,7 @@ export default class Radar3 extends Vue {
   padding: 0 2rem 0 0;
 }
 .radarcontainer {
-  padding: 1rem 4rem;
+  padding: 1rem 4rem !important;
   margin: 0;
 }
 // to be moved into radarchart component
@@ -100,6 +107,9 @@ export default class Radar3 extends Vue {
     }
     .tooltipRectangle {
       fill: #333;
+      &.dark {
+        fill: #ddd;
+      }
     }
   }
   .blip {
@@ -178,11 +188,17 @@ export default class Radar3 extends Vue {
     stroke: #333;
     strok-width: 1px;
     stroke-dasharray: 1.5;
+    &.dark {
+      stroke: #ddd;
+    }
   }
   .legendLevel {
     fill: #333;
     text-transform: uppercase;
     font-size: 16px;
+    &.dark {
+      fill: #ddd;
+    }
   }
 }
 </style>
