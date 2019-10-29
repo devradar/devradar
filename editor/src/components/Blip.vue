@@ -1,12 +1,12 @@
 <template>
     <v-card>
-      <v-container fluid grid-list-lg>
-        <v-layout row wrap>
-          <v-flex xs12 sm6>
-              <span class="headline" v-if="!isEditMode">
+      <v-container>
+        <v-row justify="space-around">
+          <v-col cols="12" sm="6">
+              <v-card-title class="headline" :class="{ dark: darkMode }" v-if="!isEditMode">
                 <a :href="blip.link" target="_blank">{{blip.title | limitString(blipTitleCutOff)}}</a>
                 <v-btn icon @click.stop="copyUrl(blip)"><v-icon>link</v-icon></v-btn>
-              </span>
+              </v-card-title>
               <v-text-field
               v-model="tempBlip.title"
               v-if="isEditMode"
@@ -19,56 +19,51 @@
               label="Link"
               required
               ></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm6 text-xs-right>
+          </v-col>
+          <v-col cols="12" sm="6" style="text-align: left;">
             <v-chip
-              class="ma-2 bold"
-              color="#444"
-              text-color="white"
+              class="bold"
+              color="accent"
               @click.stop="addChange(blip)"
             >
               <v-avatar
                 left
-                class="primary"
               >
                 {{blip.level + 1}}
               </v-avatar>
               {{meta.levels[blip.level]}}
             </v-chip>
-
             <v-chip
               class="bold"
-              color="#444"
-              text-color="white"
+              color="accent"
+
             >
               <v-avatar left>
                 <v-icon>domain</v-icon>
               </v-avatar>
               {{meta.categories[blip.category]}}
             </v-chip>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
-      <v-card-title>
+      <v-card-text>
         <span v-if="!isEditMode" v-html="markdown(blip.description)"></span>
         <v-textarea
           v-model="tempBlip.description"
           v-if="isEditMode"
           label="Description"
           ></v-textarea>
-      </v-card-title>
+      </v-card-text>
       <div v-for="change in blip.changes" :key="change.id">
         <v-divider></v-divider>
         <v-subheader>
-          <span class="subheading">{{change.date}}</span>
+          <span class="title">{{change.date}}</span>
             <v-chip
-              small
-              color="#888"
-              text-color="white"
+              :color="darkMode ? 'white' : 'black'"
+              outlined
             >
               <v-avatar
                 left
-                class="primary"
               >
                 {{change.newLevel + 1}}
               </v-avatar>
@@ -131,6 +126,8 @@ export default class Blip extends Vue {
   showChangeDialog: boolean = false
   blipForChange: IBlip
   blipTitleCutOff: number = appConfig.blips.titleCutOff
+  darkMode: boolean = appConfig.theme.dark
+
   // computed
   userCanEdit: boolean
   meta: Meta
@@ -189,11 +186,14 @@ export default class Blip extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/common.scss';
 
 .headline a {
   text-decoration: none;
-  color: black;
+  font-weight: bold;
+  color: #000;
+}
+.headline.dark a {
+  color: #fff;
 }
 .subheading {
   margin-right: 1vw;
@@ -204,10 +204,7 @@ export default class Blip extends Vue {
 .bold {
   font-weight: bold;
 }
-.v-chip .v-avatar {
-  color: #fff !important;
-}
 .v-chip {
-  color: #666 !important;
+  margin: 0 1rem;
 }
 </style>

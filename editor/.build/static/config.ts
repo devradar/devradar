@@ -18,9 +18,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     dark: false,
     themes: {
       light: {
-        primary: '#0DBD0D',
+        primary: '#0ddd0d',
         secondary: '#ff7700',
-        accent: '#0ddd0d',
+        accent: '#0DBD0D',
         error: colors.red.base,
         warning: colors.yellow.base,
         info: colors.blue.base,

@@ -24,9 +24,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { icon: 'info', title: 'About Me', url: '//anoff.io', validator: user => true }
   ],
   theme: {
-    dark: true,
+    dark: false,
     themes: {
-      dark: {
+      light: {
         primary: '#cc0033',
         secondary: colors.blue.darken1,
         accent: '#cc0033',

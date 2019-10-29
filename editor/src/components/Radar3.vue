@@ -1,26 +1,26 @@
 <template>
-  <v-container grid-list
+  <v-container fluid
     class="radarcontainer">
-    <v-layout row>
-      <v-flex xs3 hidden-xs-only>
+    <v-row justify="space-around">
+      <v-col cols="3" class="d-none d-sm-flex">
         <div id="legendwest" class="radarlegend dark"></div>
-      </v-flex>
-      <v-flex xs11 sm6>
+      </v-col>
+      <v-col cols="11" sm="6">
         <div id="radarchart" class="dark"></div>
-      </v-flex>
-      <v-flex xs3 hidden-xs-only>
+      </v-col>
+      <v-col cols="3" class="d-none d-sm-flex">
         <div id="legendeast" class="radarlegend dark"></div>
-      </v-flex>
-    </v-layout>
-    <v-layout row class="asdf">
-      <v-flex xs5 hidden-sm-and-up>
+      </v-col>
+    </v-row>
+    <v-row justify="space-around">
+      <v-col cols="5" class="d-flex d-sm-none">
         <div id="legendwest-small" class="radarlegend"></div>
-      </v-flex>
-      <v-flex xs2></v-flex>
-      <v-flex xs5 hidden-sm-and-up>
+      </v-col>
+      <v-col cols="2" class="d-flex d-sm-none"></v-col>
+      <v-col cols="5" class="d-flex d-sm-none">
         <div id="legendeast-small" class="radarlegend"></div>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

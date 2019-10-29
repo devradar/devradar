@@ -9,8 +9,8 @@
     </v-snackbar>
     <v-app-bar
     scroll-off-screen
-    dense
-    color="accent"
+    dense app
+    color="primary"
     class="octocat-padding"
     >
     <v-app-bar-nav-icon
@@ -67,11 +67,11 @@
         </v-menu>
       </v-toolbar-items>
     </v-app-bar>
-    <v-content>
+    
       <v-navigation-drawer
         v-model="showNavdrawer"
-        absolute
-        temporary
+        app temporary
+        :dark="darkMode"
       >
         <v-list>
           <v-list-item v-for="elm in getNavEntries()"
@@ -95,6 +95,7 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
+      <v-content>
       <v-dialog
         v-model="isLoading"
         hide-overlay
@@ -129,7 +130,8 @@
       class="text-center"
       cols="12"
     >
-    <span v-for="elm in footerEntries" v-bind:key="elm.text" class="entry">
+    <span v-for="elm in footerEntries" v-bind:key="elm.text"
+      class="entry" color="accent">
       <a v-if="elm.link" :href="elm.link" target="_blank">{{ elm.text }}</a>
       <span v-else>{{ elm.text }}</span>
     </span>
