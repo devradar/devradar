@@ -7,8 +7,8 @@
     @submit="newChangeSubmit"
     @cancel="newChangeCancel"
     ></new-change>
-    <v-layout row wrap justify-space-around>
-      <v-flex xs12 sm5 md4>
+    <v-row justify="space-around">
+      <v-col xs="12" sm="5" md="4">
         <v-text-field
           v-model="searchTitle"
           label="Search.."
@@ -17,8 +17,8 @@
           prepend-icon="search"
         >
         </v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6 md4>
+      </v-col>
+      <v-col xs="12" sm="6" md="4">
         <v-slider
           v-model="maxMonths"
           thumb-label
@@ -26,15 +26,18 @@
           label="Latest change"
           :max="12"
         ></v-slider>
-      </v-flex>
-      <v-flex xs12 v-for="blip in filteredBlips" :key="blip.id">
+      </v-col>
+    </v-row>
+    <v-row justify="space-around">
+      <v-col cols="12" lg="9"
+        v-for="blip in filteredBlips" :key="blip.id">
         <blip
           :blip="blip"
           @addChange="newChangeOpen"
         >
         </blip>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

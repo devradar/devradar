@@ -9,8 +9,8 @@
     </v-snackbar>
     <v-app-bar
     scroll-off-screen
-    dense
-    color="accent"
+    dense app
+    color="primary"
     class="octocat-padding"
     >
     <v-app-bar-nav-icon
