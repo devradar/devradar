@@ -12,17 +12,17 @@ service cloud.firestore {
       allow write: if hasRole('admin');
     }
 
-    match /radar/{radar} {
+    match /radars/{radar} {
       allow get: if isReadable(radar);
       allow list: if isReadable(radar);
       allow write: if request.auth.uid == radar.owner || hasRole('admin');
     }
-    match /radar/{radar}/blips/{blip} {
+    match /radars/{radar}/blips/{blip} {
       allow get: if isReadable(radar);
       allow list: if isReadable(radar);
       allow write: if request.auth.uid == radar.owner || hasRole('admin');
     }
-    match /radar/{radar}/blips/{blip}/changes/{change} {
+    match /radars/{radar}/blips/{blip}/changes/{change} {
       allow get: if isReadable(radar);
       allow list: if isReadable(radar);
       allow write: if request.auth.uid == radar.owner || hasRole('admin');
@@ -42,10 +42,10 @@ service cloud.firestore {
       return isSignedIn() && getRoles().keys().hasAny(roles);
     }
     function isPublic(radar) {
-      return get(/databases/$(database)/documents/radar/$(radar)).data[isPublic] == true
+      return get(/databases/$(database)/documents/radars/$(radar)).data[isPublic] == true
     }
     function isReadable(radar) {
-      return isPublic(radar) || request.auth.uid in get(/databases/$(database)/documents/radar/$(radar)).data.readers
+      return isPublic(radar) || request.auth.uid in get(/databases/$(database)/documents/radars/$(radar)).data.readers
     }
   }
 }

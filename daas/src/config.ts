@@ -13,7 +13,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { view: 'Logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
     { view: 'Users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
     { view: 'Login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar-menu'] },
-    { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => user.uid && user.roles.admin, location: ['toolbar'] }
+    { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => user.uid, location: ['toolbar'] }
   ],
   navEntries: [
     { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: user => true }

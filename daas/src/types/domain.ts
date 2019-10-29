@@ -30,7 +30,7 @@ export interface User {
   displayName: string;
 }
 
-export interface RadarContent {
+export interface Radar {
   meta: Meta;
   blips: Blip[];
 }

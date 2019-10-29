@@ -26,6 +26,9 @@ const actions = (appConfig): ActionTree<UserState, RootState> =>  ({ // eslint-d
         console.error(error)
       })
   },
+  initRadar({ commit }): void {
+
+  },
   getUserList ({ commit }): void {
     Promise.all([
       firebase.firestore().collection('users').get(),

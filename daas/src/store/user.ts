@@ -18,7 +18,7 @@ const mutations: MutationTree<UserState> = {
 
 const getters: GetterTree<UserState, RootState> = {
   user (state: UserState) {
-    return state.user
+    return state.user || {}
   },
   userList (state: UserState) {
     return state.userList

@@ -31,6 +31,29 @@ function upsertUser (user) {
     .catch(e => console.error(e))
 }
 
+async function upsertRadar (user) {
+  if (!user.radar) {
+    const db = firebase.firestore()
+    const getSnapshot = await db.collection('radars')
+      .where('owner', '==', user.uid)
+      .get()
+    if (getSnapshot.empty) {
+      console.log('No radar found for this user; creating one..')
+      const doc = {
+        categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],
+        levels: [ 'Hold', 'Assess', 'Trial', 'Adopt' ],
+        owner: user.uid,
+        readers: [],
+        isPublic: true
+      }
+      const setSnapshot = await db.collection('radars').add(doc)
+      const updateSnapshot = await db.collection('users').doc(user.uid).update({ radar: setSnapshot.id })
+    } else {
+      // set the first radar to the active radar
+      const updateSnapshot = await db.collection('users').doc(user.uid).update({ radar: getSnapshot.docs[0].id })
+    }
+  }
+}
 function init (store, appConfig) {
   if (!appConfig.backend.project || !appConfig.backend.key) {
     console.error('Misconfigured backend in config.ts, please provide backend.project and backend.key')
@@ -52,12 +75,12 @@ function init (store, appConfig) {
             store.commit('user/setUser', user)
             resolve(user)
           })
+        upsertRadar(user)
       } else { // user is not set (logout)
         store.commit('user/setUser', { roles: {} })
         resolve({})
       }
-      store.dispatch('blips/getBlips')
-      store.dispatch('blips/getMeta')
+      setTimeout(() => store.dispatch('blips/getRadar'), 1000)
     })
   })
 }
