@@ -1,34 +1,27 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-function upsertUser (user) {
+async function upsertUser (user): Promise<any> {
   // upsert into user collection
   const db = firebase.firestore()
-  return db.collection('users').doc(user.uid).get()
-    .then(snapshot => {
-      const doc = snapshot.data()
-      if (doc) {
-        doc.displayName = user.displayName
-        doc.lastLogin = new Date().toISOString()
-        db.collection('users').doc(user.uid).update(doc) // update server document with time
-        return db.collection('roles').doc(user.uid).get()
-          .then(rolesSnapshot => {
-            return Object.assign(doc, { roles: rolesSnapshot.data() || {} })
-          })
-      } else { // document does not exist, create new user
-        const doc = {
-          uid: user.uid,
-          name: user.displayName || user.uid,
-          displayName: user.displayName,
-          lastLogin: new Date().toISOString()
-        }
-        return db.collection('users').doc(user.uid).set(doc)
-          .then(doc => {
-            return Object.assign(doc, { roles: {} })
-          })
-      }
-    })
-    .catch(e => console.error(e))
+  const getSnapshot = await db.collection('users').doc(user.uid).get()
+  const doc = getSnapshot.data()
+  if (doc) {
+    doc.displayName = user.displayName
+    doc.lastLogin = new Date().toISOString()
+    await db.collection('users').doc(user.uid).update(doc) // update server document with time
+    const rolesSnapshot = await db.collection('roles').doc(user.uid).get()
+    return Object.assign(doc, { roles: rolesSnapshot.data() || {} })
+  } else { // document does not exist, create new user
+    const doc = {
+      uid: user.uid,
+      name: user.displayName || user.uid,
+      displayName: user.displayName,
+      lastLogin: new Date().toISOString()
+    }
+    const docRef = await db.collection('users').doc(user.uid).set(doc)
+    return Object.assign(docRef, { roles: {} })
+  }
 }
 
 async function upsertRadar (user) {
@@ -47,19 +40,19 @@ async function upsertRadar (user) {
         isPublic: true
       }
       const setSnapshot = await db.collection('radars').add(doc)
-      const updateSnapshot = await db.collection('users').doc(user.uid).update({ radar: setSnapshot.id })
+      await db.collection('users').doc(user.uid).update({ radar: setSnapshot.id })
     } else {
       // set the first radar to the active radar
-      const updateSnapshot = await db.collection('users').doc(user.uid).update({ radar: getSnapshot.docs[0].id })
+      await db.collection('users').doc(user.uid).update({ radar: getSnapshot.docChanges()[0].doc.id })
     }
   }
 }
-function init (store, appConfig) {
-  if (!appConfig.backend.project || !appConfig.backend.key) {
+async function init (store, appConfig) {
+  if (!appConfig.backend.project || !appConfig.backend.key) {
     console.error('Misconfigured backend in config.ts, please provide backend.project and backend.key')
     return Promise.reject()
   }
-  const app = firebase.initializeApp({
+  const app = firebase.initializeApp({ // eslint-disable-line @typescript-eslint/no-unused-vars
     apiKey: appConfig.backend.key,
     authDomain: `${appConfig.backend.project}.firebaseapp.com`,
     databaseURL: `https://${appConfig.backend.project}.firebaseio.com`,
@@ -68,19 +61,17 @@ function init (store, appConfig) {
 
   // resolve after auth status is defined as logged in or not
   return new Promise(resolve => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        upsertUser(user)
-          .then(user => {
-            store.commit('user/setUser', user)
-            resolve(user)
-          })
-        upsertRadar(user)
+    firebase.auth().onAuthStateChanged(async oauthUser => {
+      if (oauthUser) {
+        const user = await upsertUser(oauthUser)
+        store.commit('user/setUser', user)
+        await upsertRadar(user)
+        resolve(user)
       } else { // user is not set (logout)
         store.commit('user/setUser', { roles: {} })
         resolve({})
       }
-      setTimeout(() => store.dispatch('blips/getRadar'), 1000)
+      store.dispatch('blips/getRadar')
     })
   })
 }

@@ -1,0 +1,47 @@
+name: daas
+
+on:
+  push:
+    paths:
+      - 'daas/**'
+      - '.github/**'
+  pull_request:
+    paths:
+      - 'daas/**'
+      - '.github/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm ci
+      working-directory: daas
+    - run: npm run lint
+      working-directory: daas
+    # run build to make sure typescript does not throw
+    - run: npm run build
+      working-directory: daas
+
+  firebase-deploy:
+    name: "publish daas.devradar.io"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: |
+        cd daas
+        npm ci
+        npm run build
+      name: build
+    - run: |
+        cd daas
+        npm i -g firebase-tools
+        firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets. FIREBASE_DAAS_PROJECT}}
+      #if: github.event_name == 'push' && github.ref == 'refs/heads/master'

@@ -35,10 +35,10 @@ const actions = (appConfig): ActionTree<UserState, RootState> =>  ({ // eslint-d
       firebase.firestore().collection('roles').get()
     ])
       .then(([usersSnapshot, rolesSnapshot]) => {
-        const roles = rolesSnapshot.docs
+        const roles = rolesSnapshot.readonlydocs
           .map(d => Object.assign(d.data(), { id: d.id }))
           .reduce((p, doc) => Object.assign(p, { [doc.id]: doc }), {})
-        const users = usersSnapshot.docs
+        const users = usersSnapshot.readonlydocs
           .map(d => Object.assign(d.data(), { id: d.id }))
           .map(d => {
             const userRoles = roles[d.id] || {}
