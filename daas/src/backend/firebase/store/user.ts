@@ -26,19 +26,16 @@ const actions = (appConfig): ActionTree<UserState, RootState> =>  ({ // eslint-d
         console.error(error)
       })
   },
-  initRadar({ commit }): void {
-
-  },
   getUserList ({ commit }): void {
     Promise.all([
       firebase.firestore().collection('users').get(),
       firebase.firestore().collection('roles').get()
     ])
       .then(([usersSnapshot, rolesSnapshot]) => {
-        const roles = rolesSnapshot.readonlydocs
+        const roles = rolesSnapshot.docs
           .map(d => Object.assign(d.data(), { id: d.id }))
           .reduce((p, doc) => Object.assign(p, { [doc.id]: doc }), {})
-        const users = usersSnapshot.readonlydocs
+        const users = usersSnapshot.docs
           .map(d => Object.assign(d.data(), { id: d.id }))
           .map(d => {
             const userRoles = roles[d.id] || {}

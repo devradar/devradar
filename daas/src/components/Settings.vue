@@ -1,78 +1,53 @@
 <template>
-      <v-container grid-list-lg>
-        <v-layout row>
-          <v-flex xs10>
-              <span class="headline">
-                Content
-              </span>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs12>
-            <v-form v-model="contentIsValid">
-              <v-textarea
-                name="content-toml"
-                rows="16"
-                color="primary"
-                v-if="showToml"
-                label="TOML"
-                :rules="validateToml"
-                @keydown.tab.prevent="tabber($event)"
-                append-icon="code"
-                @click:append="showToml = !showToml"
-                v-model="contentToml"
-              ></v-textarea>
-              <v-textarea
-                name="content-encoded"
-                rows="8"
-                color="primary"
-                v-else
-                label="Encoded"
-                readonly
-                append-icon="code"
-                @click:append="showToml = !showToml"
-                @focus="$event.target.select()"
-                v-model="contentEncoded"
-              ></v-textarea>
-            </v-form>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap justify-space-between>
-          <v-flex xs8 sm4 lg3 xl2>
-            <v-btn
-            @click.end="downloadToml()">
-              <v-icon left>save</v-icon>
-              Download as toml
-            </v-btn>
-          </v-flex>
-          <v-flex xs9 sm4 lg3 xl2>
-            <v-upload-btn
-            @file-update="uploadToml"
-            color="grey lighten-3"
-            :disabled="!userCanEdit"
-            title="Upload from file">
-              <template slot="icon-left">
-                <v-icon left>cloud_upload</v-icon>
-              </template>
-            </v-upload-btn>
-          </v-flex>
-          <v-spacer></v-spacer>
-          <v-flex xs5 sm3 lg1 xl1>
-            <v-btn
-            :disabled="!contentIsValid || !userCanEdit"
-            @click.end="loadContent()"
-            color="primary">
-              Save
-            </v-btn>
-          </v-flex>
-        </v-layout>
-      </v-container>
+  <v-dialog v-model="$parent.settingsModalVisible">
+    <v-card>
+      <v-card-title>
+        <span class="headline">devradar settings</span>
+      </v-card-title>
+      <v-card-text>
+        <v-container>
+          <v-card-title>Content</v-card-title>
+          <v-row justify="space-around">
+            <v-col cols="10" sm="6" md="4">
+              <v-btn
+                @click.end="downloadToml()">
+                <v-icon left>mdi-content-save</v-icon>
+                Download
+              </v-btn>
+            </v-col>
+            <v-col cols="10" sm="6" md="4">
+              <v-upload-btn
+                @file-update="uploadToml"
+                color="grey lighten-3"
+                large
+                title="Upload">
+                  <template slot="icon-left">
+                    <v-icon left>mdi-upload</v-icon>
+                  </template>
+              </v-upload-btn>
+            </v-col>
+            <v-col cols="10" sm="6" md="4">
+              <v-btn
+                @click.end="copyToClipboard(contentToml)">
+                <v-icon left>mdi-paperclip</v-icon>
+                Copy
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+        <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import copy from 'clipboard-copy'
-import lzs from 'lz-string'
 import UploadButton from 'vuetify-upload-button'
 import TOML from '@iarna/toml'
 import { mapGetters } from 'vuex'
@@ -109,11 +84,6 @@ function stripIds (blip) {
     blipsClean () {
       return this.$store.getters['blips/blipsClean']
         .map(stripIds)
-    },
-    contentEncoded () {
-      const json = TOML.parse(this.contentToml)
-      const str = JSON.stringify(json)
-      return lzs.compressToEncodedURIComponent(str)
     }
   },
   components: {
@@ -121,26 +91,13 @@ function stripIds (blip) {
   },
   watch: {
     blipsClean () {
-      this.fetchContent()
+      this.generateToml()
     }
   }
 })
 export default class Settings extends Vue {
   contentToml: string = ''
-  showToml: boolean = true
-  contentIsValid: boolean = false
-  validateToml: ((v) => boolean | string)[] = [
-    v => {
-      try {
-        TOML.parse(v)
-        return true
-      } catch (e) {
-        return e.toString()
-      }
-    }
-  ]
   // computed
-  contentEncoded: string
   meta: Meta
   blipsClean: Blip[]
   userCanEdit: boolean
@@ -154,7 +111,7 @@ export default class Settings extends Vue {
     }
   }
 
-  fetchContent () {
+  generateToml () {
     const obj: any = {
       meta: this.meta,
       blips: this.blipsClean
@@ -172,6 +129,7 @@ export default class Settings extends Vue {
       this.$store.dispatch('comm/showSnackbar', 'updated local blips + config')
     } catch (e) {
       console.error('Error occured trying to decompress content', e)
+      this.$store.dispatch('comm/showSnackbar', 'error while trying to read uploaded file')
     }
   }
 
@@ -181,6 +139,7 @@ export default class Settings extends Vue {
       reader.addEventListener('load', () => {
         this.contentToml = reader.result.toString()
         this.$store.dispatch('comm/showSnackbar', 'file upload successful')
+        this.loadContent()
       }, false)
       reader.readAsText(file)
     }
@@ -190,26 +149,16 @@ export default class Settings extends Vue {
     saveAs(`devradar-${this.meta.title.replace(/[^a-zA-Z0-9 _-]/g, '')}.toml`, this.contentToml)
   }
 
-  tabber (event) {
-    const text = this.contentToml
-    const originalSelectionStart = event.target.selectionStart
-    const textStart = text.slice(0, originalSelectionStart)
-    const textEnd = text.slice(originalSelectionStart)
-
-    this.contentToml = `${textStart}  ${textEnd}`
-    event.target.value = this.contentToml // required to make the cursor stay in place.
-    event.target.selectionEnd = event.target.selectionStart = originalSelectionStart + 2
-  }
-
   mounted () {
-    this.fetchContent()
+    this.generateToml()
   }
   
 }
 </script>
 
 <style lang="scss" scoped>
-div.upload-btn {
-  padding: 0px;
+label.upload-btn {
+  margin: 8px;
+  color: black !important;
 }
 </style>

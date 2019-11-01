@@ -1,6 +1,17 @@
 <template>
   <v-container grid-list
     class="radarcontainer">
+    <settings></settings>
+    <v-btn
+      absolute
+      :dark="darkMode"
+      fab
+      bottom
+      right
+      color="accent"
+    >
+      <v-icon>mdi-settings</v-icon>
+    </v-btn>
     <v-layout row>
       <v-flex xs3 hidden-xs-only>
         <div id="legendwest" class="radarlegend dark"></div>
@@ -27,10 +38,14 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Blip, Meta } from '@/types/domain'
+import Settings from './Settings.vue'
 import { SkillradarChart, SkillradarOptions, SkillradarData } from '../lib/skillradar'
 import appConfig from '../config'
 
 @Component({
+  components: {
+    Settings
+  },
   computed: {
     blips () {
       return this.$store.getters['blips/blipsWithIndex']
@@ -45,6 +60,7 @@ export default class Radar3 extends Vue {
   chart: SkillradarChart
   meta: Meta
   darkMode: boolean = appConfig.theme.dark
+  settingsModalVisible: boolean = true
 
   radarConfig: SkillradarOptions = {
     radius: 300,
