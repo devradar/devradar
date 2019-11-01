@@ -27,7 +27,10 @@ function cleanBlip (blip: Blip) {
     const { date, newLevel, text, id } = c
     return { date, newLevel, text, id }
   })
-  const level = changes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel
+  let level = blip.level
+  if (changes.length) {
+    level = changes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel
+  }
   const { category, link, description, title, id } = blip
   return { category, link, description, title, changes, level, id }
 }

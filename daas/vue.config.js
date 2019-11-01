@@ -1,1 +1,0 @@
-../editor/vue.config.js

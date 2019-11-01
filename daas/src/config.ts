@@ -12,8 +12,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { view: 'Radar3', icon: 'track_changes', title: 'Radar', path: '/', validator: user => true, location: ['toolbar'] },
     { view: 'Logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
     { view: 'Users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
-    { view: 'Login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar-menu'] },
-    { view: 'Settings', icon: 'settings', title: 'Settings', path: '/settings', validator: user => user.uid, location: ['toolbar'] }
+    { view: 'Login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar-menu'] }
   ],
   navEntries: [
     { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: user => true }

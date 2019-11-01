@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import { Blip, BlipChange } from '@/types/domain'
+import { Blip, BlipChange, Meta } from '@/types/domain'
 import { ActionTree } from 'vuex'
 import { RootState, BlipsState } from '@/types/vuex'
 
@@ -22,11 +22,12 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('dropBlips')
     blipSnapshot.forEach(async doc => {
       // @ts-ignore type checking of docs property
-      const { title, category, link } = doc.data()
+      const { title, category, link, level } = doc.data()
       const blip = {
         title,
         category,
         link,
+        level,
         id: doc.id,
         changes: []
       }
@@ -55,12 +56,10 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     // handle each change separately to create valid documents
     const changes = blip.changes
     delete blip.changes
-    console.log('add', blip)
     const setSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).add({ category, description, title, link })
     commit('setLoading', false)
     blip.id = setSnapshot.id
     blip.changes = []
-    console.log(blip, changes)
     changes.forEach(change => dispatch('addChange', { blip, change }))
   },
   async updateBlip ({ commit, rootGetters }, blip: Blip): Promise<void> {
@@ -71,7 +70,6 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     let link = blip.link || ''
     // prepend https if nothing is there
     if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link
-    console.log({ category, description, title, link })
     await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update({ category, description, title, link })
     commit('exchangeBlip', blip)
     commit('setLoading', false)
@@ -81,6 +79,22 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     const user = rootGetters['user/user']
     await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).delete()
     commit('removeBlip', blip)
+    commit('setLoading', false)
+  },
+  async setBlips({ commit, rootGetters }, blips: Blip[]): Promise<void> {
+    commit('setLoading', true)
+    const user = rootGetters['user/user']
+    // drop entire collection of blips
+    const collectionSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).get()
+    await Promise.all(collectionSnapshot.docs.map(docSnapshot => {
+      return firebase.firestore().collection(`radars/${user.radar}/blips`).doc(docSnapshot.id).delete()
+    }))
+    commit('dropBlips')
+    // add all new blips
+    await Promise.all(blips.map(b => {
+      commit('addBlip', b)
+      return firebase.firestore().collection(`radars/${user.radar}/blips`).add(b)
+    }))
     commit('setLoading', false)
   },
   async addChange ({ commit, rootGetters }, { blip, change }: { blip: Blip; change: BlipChange }): Promise<void> {
@@ -100,6 +114,13 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     await firebase.firestore().collection(`radars/${user.radar}/blips/${blip.id}/changes`).doc(change.id).delete()
     blip.changes = blip.changes.filter(c => c.id !== change.id)
     commit('exchangeBlip', blip)
+    commit('setLoading', false)
+  },
+  async setMeta({ commit, rootGetters }, meta: Meta): Promise<void> {
+    commit('setLoading', true)
+    const user = rootGetters['user/user']
+    await firebase.firestore().collection(`radars`).doc(user.radar).update(meta)
+    commit('setMeta', meta)
     commit('setLoading', false)
   }
 })

@@ -1,13 +1,15 @@
 <template>
   <v-container grid-list
     class="radarcontainer">
-    <settings></settings>
+    <settings
+      @close="settingsModalClose"></settings>
     <v-btn
       absolute
       :dark="darkMode"
       fab
       bottom
       right
+      @click="settingsModalVisible = true"
       color="accent"
     >
       <v-icon>mdi-settings</v-icon>
@@ -60,7 +62,7 @@ export default class Radar3 extends Vue {
   chart: SkillradarChart
   meta: Meta
   darkMode: boolean = appConfig.theme.dark
-  settingsModalVisible: boolean = true
+  settingsModalVisible: boolean = false
 
   radarConfig: SkillradarOptions = {
     radius: 300,
@@ -77,7 +79,6 @@ export default class Radar3 extends Vue {
       levels: this.meta.levels,
       categories: this.meta.categories
     }
-
     // Call function to draw the Radar chart
     // Will expect that data is in %'s
     this.chart.drawChart('#radarchart', data)
@@ -89,6 +90,10 @@ export default class Radar3 extends Vue {
 
   mounted () {
     this.renderChart()
+  }
+
+  settingsModalClose () {
+    this.settingsModalVisible = false
   }
 
   @Watch('blips')

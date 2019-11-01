@@ -38,15 +38,14 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+        <v-btn text @click="close()">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Emit } from 'vue-property-decorator'
 import copy from 'clipboard-copy'
 import UploadButton from 'vuetify-upload-button'
 import TOML from '@iarna/toml'
@@ -151,6 +150,11 @@ export default class Settings extends Vue {
 
   mounted () {
     this.generateToml()
+  }
+
+  @Emit()
+  close () {
+    return 0
   }
   
 }

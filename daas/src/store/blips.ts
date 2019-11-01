@@ -34,7 +34,7 @@ const mutations: MutationTree<BlipsState> = {
 const getters: GetterTree<BlipsState, RootState> = {
   blipsWithIndex (state: BlipsState) {
     return state.blips
-      .filter(b => b.changes.length > 0)
+      .filter(b => b.changes.length > 0 || b.level >= 0)
       .map(cleanBlip)
       .sort((a: Blip, b: Blip) => a.title > b.title ? 1 : -1)
       .map((b, bIndex) => {
@@ -43,8 +43,10 @@ const getters: GetterTree<BlipsState, RootState> = {
           Object.assign(c, { index: cIndex })
           return c
         })
-        const level = changes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel
-        b.level = level
+        if (changes.length) {
+          const level = changes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel
+          b.level = level
+        }
         Object.assign(b, { index: bIndex })
         return b
       })
@@ -54,10 +56,12 @@ const getters: GetterTree<BlipsState, RootState> = {
     return blips
       .map(b => {
         delete b.index
-        b.changes = b.changes.map(c => {
-          delete c.index
-          return c
-        })
+        if (b.changes.length) {
+          b.changes = b.changes.map(c => {
+            delete c.index
+            return c
+          })
+        }
         return b
       })
   },
@@ -73,9 +77,9 @@ const state: BlipsState = {
   blips: [],
   isLoading: false,
   meta: {
-    title: 'Rick\'s skillradar',
-    categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'],
-    levels: ['Novice', 'Intermediate', 'Advanced', 'Veteran']
+    title: 'Loading..',
+    categories: [],
+    levels: []
   }
 }
 
