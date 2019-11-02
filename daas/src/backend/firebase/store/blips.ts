@@ -16,8 +16,8 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
       commit('setLoading', false)
       return
     }
-    const { categories, levels } = radarSnapshot.data()
-    commit('setMeta', { title: `${user.name}'s devradar`, categories, levels })
+    const { categories, levels, title } = radarSnapshot.data()
+    commit('setMeta', { title: title || `${user.name}'s devradar`, categories, levels })
     const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`).get()
     commit('dropBlips')
     blipSnapshot.forEach(async doc => {

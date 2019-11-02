@@ -2,7 +2,7 @@
   <div>
     <v-btn
       @click.stop="dialog = true"
-      color="primary" v-model="fab"
+      color="accent" v-model="fab"
       fab fixed bottom right
       v-if="userCanEdit"
       id="floaty"

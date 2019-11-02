@@ -94,6 +94,7 @@ export default class Radar3 extends Vue {
 
   settingsModalClose () {
     this.settingsModalVisible = false
+    this.renderChart()
   }
 
   @Watch('blips')
