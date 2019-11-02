@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list
+  <v-container grid-list fluid
     class="radarcontainer">
     <settings
       @close="settingsModalClose"></settings>
@@ -14,26 +14,26 @@
     >
       <v-icon>mdi-settings</v-icon>
     </v-btn>
-    <v-layout row>
-      <v-flex xs3 hidden-xs-only>
-        <div id="legendwest" class="radarlegend dark"></div>
-      </v-flex>
-      <v-flex xs11 sm6>
-        <div id="radarchart" class="dark"></div>
-      </v-flex>
-      <v-flex xs3 hidden-xs-only>
-        <div id="legendeast" class="radarlegend dark"></div>
-      </v-flex>
-    </v-layout>
-    <v-layout row class="asdf">
-      <v-flex xs5 hidden-sm-and-up>
+    <v-row justify="space-around">
+      <v-col cols="3" xl="2" class="d-none d-sm-flex">
+        <div id="legendwest" class="radarlegend"></div>
+      </v-col>
+      <v-col cols="11" sm="6" class="text-center">
+        <div id="radarchart" class="d-inline"></div>
+      </v-col>
+      <v-col cols="3" xl="2" class="d-none d-sm-flex">
+        <div id="legendeast" class="radarlegend"></div>
+      </v-col>
+    </v-row>
+    <v-row justify="space-around">
+      <v-col cols="5" class="d-flex d-sm-none">
         <div id="legendwest-small" class="radarlegend"></div>
-      </v-flex>
-      <v-flex xs2></v-flex>
-      <v-flex xs5 hidden-sm-and-up>
+      </v-col>
+      <v-col cols="2"></v-col>
+      <v-col cols="5" class="d-flex d-sm-none">
         <div id="legendeast-small" class="radarlegend"></div>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -207,7 +207,7 @@ export default class Radar3 extends Vue {
   .legendDecorator {
     fill: none;
     stroke: #333;
-    strok-width: 1px;
+    stroke-width: 1px;
     stroke-dasharray: 1.5;
     &.dark {
       stroke: #ddd;
