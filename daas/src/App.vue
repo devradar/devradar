@@ -11,7 +11,7 @@
     scroll-off-screen
     dense app
     color="primary"
-    class="octocat-padding"
+    class="github-corner-padding"
     >
     <v-app-bar-nav-icon
     class="hidden-md-and-up"
@@ -30,25 +30,25 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn text
-        v-for="elm in getNavEntries()"
-        v-bind:key="elm.title"
-        v-bind:href="elm.url"
-        target="_blank"
-        >
+          v-for="elm in getNavEntries('toolbar')"
+          v-bind:key="elm.title"
+          v-bind:href="elm.url"
+          target="_blank"
+          >
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
         </v-btn>
         <v-btn text
-        v-for="elm in getMenuItems('toolbar')"
-        v-bind:key="elm.title"
-        router
-        v-bind:to="elm.rootPath"
-        >
+          v-for="elm in getMenuItems('toolbar')"
+          v-bind:key="elm.title"
+          router
+          v-bind:to="elm.rootPath"
+          >
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
         </v-btn>
         <v-menu bottom left
-        v-if="getMenuItems('toolbar-menu').length">
+          v-if="getMenuItems('toolbar-menu').concat(getNavEntries('toolbar-menu')).length">
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon :dark="darkMode"
               v-bind="attrs"
@@ -57,6 +57,15 @@
             </v-btn>
           </template>
           <v-list>
+            <v-list-item v-for="elm in getNavEntries('toolbar-menu')"
+              v-bind:key="elm.title"
+              v-bind:href="elm.url"
+              target="_blank">
+              <v-list-item-title>
+                <v-icon left>{{elm.icon}}</v-icon>
+                {{ elm.title }}
+                </v-list-item-title>
+            </v-list-item>
             <v-list-item v-for="elm in getMenuItems('toolbar-menu')" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
               <v-list-item-title>
                 <v-icon left>{{elm.icon}}</v-icon>
@@ -74,16 +83,14 @@
         temporary
       >
         <v-list>
-          <v-list-item v-for="elm in getNavEntries()"
+          <v-list-item v-for="elm in getNavEntries('toolbar').concat(getNavEntries('toolbar-menu'))"
             v-bind:key="elm.title"
             v-bind:href="elm.url"
             target="_blank">
-            <v-list-item-action>
+            <v-list-item-title>
               <v-icon left>{{elm.icon}}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{ elm.title }}</v-list-item-title>
-            </v-list-item-content>
+              {{ elm.title }}
+              </v-list-item-title>
           </v-list-item>
           <v-list-item v-for="elm in (getMenuItems('toolbar').concat(getMenuItems('toolbar-menu')))" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
             <v-list-item-action>
@@ -181,14 +188,15 @@ export default class App extends Vue {
     const items = appConfig.routes
     return items
       .filter(i => i.validator(user))
-      .filter(i => i.location.indexOf(location) > -1)
+      .filter(i => i.location.includes(location))
   }
 
-  public getNavEntries () {
+  public getNavEntries (location) {
     const user = this.$store.getters['user/user'] || {}
     const items = appConfig.navEntries
     return items
       .filter(i => i.validator(user))
+      .filter(i => i.location.includes(location))
   }
 
   public copyURL () {
@@ -220,6 +228,7 @@ nav.v-toolbar {
 .progress-linear {
   margin: 0;
 }
+
 .github-corner:hover .octo-arm{
   animation:octocat-wave 560ms ease-in-out
 }
@@ -232,6 +241,10 @@ nav.v-toolbar {
   .github-corner:hover .octo-arm{animation:none}
   .github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}
 }
+.github-corner-padding {
+  padding-right: 80px;
+}
+
 span.radar-title {
   font-style: italic;
   padding-right: 0.2rem;
@@ -248,9 +261,7 @@ footer .entry:after {
 footer .entry:last-child:after {
   content: "";
 }
-.octocat-padding {
-  padding-right: 80px;
-}
+
 // cookie consent component
 .Cookie--devradar {
   background: #0ddd0d;
