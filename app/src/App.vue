@@ -264,18 +264,18 @@ footer .entry:last-child:after {
 
 // cookie consent component
 .Cookie--devradar {
-  background: #0ddd0d;
-  color: #000;
+  background: #333;
+  color: #0ddd0d;
   padding: 1rem;
   font-size: 1.4rem;
   min-height: 6rem;
 }
 .Cookie--devradar a {
-  color: #000;
+  color: #0ddd0d;
 }
 .Cookie--devradar .Cookie__button {
-  background: #000;
-  color: #fff;
+  background: #0ddd0d;
+  color: #333;
   padding: 0.5rem 1rem;
   border-radius: 0;
   border: 0;
@@ -283,6 +283,6 @@ footer .entry:last-child:after {
   font-weight: bold;
 }
 .Cookie--devradar div.Cookie__button:hover {
-  background: darken(#000, 10%);
+  background: darken(#0ddd0d, 10%);
 }
 </style>

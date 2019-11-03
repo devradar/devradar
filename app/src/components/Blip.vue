@@ -25,7 +25,7 @@
               <v-col cols="12" style="text-align: right; padding: 6px !important;">
                 <v-chip
                   class="bold"
-                  color="accent"
+                  color="primary"
                   @click.stop="addChange(blip)"
                 >
                   <v-avatar
@@ -41,7 +41,7 @@
               <v-col cols="12" style="text-align: right; padding: 6px !important;">
                 <v-chip
                   class="bold"
-                  color="accent"
+                  color="primary"
                 >
                   <v-avatar left>
                     <v-icon>domain</v-icon>

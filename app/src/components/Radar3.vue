@@ -4,13 +4,10 @@
     <settings
       @close="settingsModalClose"></settings>
     <v-btn
-      absolute
       :dark="darkMode"
-      fab
-      bottom
-      right
+      fab bottom right fixed
       @click="settingsModalVisible = true"
-      color="accent"
+      color="primary"
     >
       <v-icon>mdi-settings</v-icon>
     </v-btn>
