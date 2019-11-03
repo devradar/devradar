@@ -1,7 +1,7 @@
 {
-  "name": "devradar-aas",
+  "name": "devradar",
   "private": true,
-  "description": "Manage your dev skills",
+  "description": "Competence management for developers",
   "author": "Andreas Offenhaeuser <https://anoff.io>",
   "scripts": {
     "serve": "vue-cli-service serve",
