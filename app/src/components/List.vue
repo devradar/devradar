@@ -67,9 +67,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, ProvideReactive } from 'vue-property-decorator'
-import NewBlip from './NewBlip.vue'
-import NewChange from './NewChange.vue'
-import BlipComponent from './Blip.vue'
+import NewBlip from './list/NewBlip.vue'
+import NewChange from './list/NewChange.vue'
+import BlipComponent from './list/Blip.vue'
 import router from '../router'
 import { Blip } from '@/types/domain'
 
