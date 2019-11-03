@@ -1,3 +1,4 @@
+
 /* global module require */
 /* eslint-disable */
 const fs = require('fs')

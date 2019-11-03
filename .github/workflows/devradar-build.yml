@@ -1,0 +1,47 @@
+name: devradar
+
+on:
+  push:
+    paths:
+      - 'app/**'
+      - '.github/**'
+  pull_request:
+    paths:
+      - 'app/**'
+      - '.github/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm ci
+      working-directory: app
+    - run: npm run lint
+      working-directory: app
+    # run build to make sure typescript does not throw
+    - run: npm run build
+      working-directory: app
+
+  firebase-deploy:
+    name: "publish app.devradar.io"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: |
+        cd app
+        npm ci
+        npm run build
+      name: build
+    - run: |
+        cd app
+        npm i -g firebase-tools
+        firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets. FIREBASE_DAAS_PROJECT}}
+      #if: github.event_name == 'push' && github.ref == 'refs/heads/master'
