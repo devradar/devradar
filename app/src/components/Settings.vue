@@ -164,11 +164,10 @@ function stripIds (blip) {
   },
   watch: {
     blipsClean () {
-      this.generateToml()
+      this.reload()
     },
     meta () {
-      this.tmpLevels = Array.from(this.meta.levels)
-      this.tmpCategories = Array.from(this.meta.categories)
+      this.reload()
     }
   }
 })
@@ -259,9 +258,19 @@ export default class Settings extends Vue {
     this.$store.dispatch('comm/showSnackbar', `updated ${type} metadata`)
   }
 
+  reload () {
+    this.tmpLevels = Array.from(this.meta.levels)
+    this.tmpCategories = Array.from(this.meta.categories)
+    this.generateToml()
+  }
+
   @Emit()
   close () {
     return 0
+  }
+
+  mounted () {
+    this.reload()
   }
   
 }
