@@ -20,29 +20,36 @@
               required
               ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" style="text-align: left;">
-            <v-chip
-              class="bold"
-              color="accent"
-              @click.stop="addChange(blip)"
-            >
-              <v-avatar
-                left
-              >
-                {{blip.level + 1}}
-              </v-avatar>
-              {{meta.levels[blip.level]}}
-            </v-chip>
-            <v-chip
-              class="bold"
-              color="accent"
-
-            >
-              <v-avatar left>
-                <v-icon>domain</v-icon>
-              </v-avatar>
-              {{meta.categories[blip.category]}}
-            </v-chip>
+          <v-col cols="12" sm="6">
+            <v-row>
+              <v-col cols="12" style="text-align: right; padding: 6px !important;">
+                <v-chip
+                  class="bold"
+                  color="accent"
+                  @click.stop="addChange(blip)"
+                >
+                  <v-avatar
+                    left
+                  >
+                    {{blip.level + 1}}
+                  </v-avatar>
+                  {{meta.levels[blip.level]}}
+                </v-chip>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" style="text-align: right; padding: 6px !important;">
+                <v-chip
+                  class="bold"
+                  color="accent"
+                >
+                  <v-avatar left>
+                    <v-icon>domain</v-icon>
+                  </v-avatar>
+                  {{meta.categories[blip.category]}}
+                </v-chip>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-container>

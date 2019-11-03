@@ -53,7 +53,7 @@
   "config": {
     "cz-conventional-kawaii": {
       "scopes": [
-        "daas"
+        "app"
       ],
       "quick": false
     }

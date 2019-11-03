@@ -28,8 +28,8 @@
         ></v-slider>
       </v-col>
     </v-row>
-    <v-row justify="space-around">
-      <v-col cols="12" lg="9"
+    <v-row justify="space-between">
+      <v-col cols="12" lg="6" xl="4"
         v-for="blip in filteredBlips" :key="blip.id">
         <blip
           :blip="blip"
@@ -37,6 +37,30 @@
         >
         </blip>
       </v-col>
+      <!-- <v-col cols="6" class="d-none d-lg-flex">
+        <v-row>
+          <v-col cols="12"
+            v-for="blip in filteredBlips.slice(0, Math.ceil(filteredBlips.length / 2))" :key="blip.id">
+            <blip
+              :blip="blip"
+              @addChange="newChangeOpen"
+            >
+            </blip>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="6" class="d-none d-lg-flex">
+        <v-row>
+          <v-col cols="12"
+            v-for="blip in filteredBlips.slice(Math.ceil(filteredBlips.length / 2), filteredBlips.length)" :key="blip.id">
+            <blip
+              :blip="blip"
+              @addChange="newChangeOpen"
+            >
+            </blip>
+          </v-col>
+        </v-row>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>
