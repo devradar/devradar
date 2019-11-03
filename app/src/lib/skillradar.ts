@@ -73,6 +73,7 @@ export class SkillradarChart {
       .attr('preserveAspectRatio', 'xMinYMin meet')
       .attr('viewBox', `-5 -5 ${2 * cfg.radius + 10} ${2 * cfg.radius + 10}`)
       .attr('class', `radar-chart ${darkClass}`)
+      .style('overflow', 'visible')
       .append('g')
       .attr('transform', 'translate(' + (cfg.radius) + ',' + (cfg.radius) + ')')
     this.chartArea = g
@@ -128,8 +129,6 @@ export class SkillradarChart {
           .text(title)
         tooltip
           .select('.tooltipRectangle')
-          .attr('width', tooltipWidth)
-          .attr('x', -tooltipWidth / 2)
         tooltip
           .transition().duration(cfg.transitionDurationMs)
           .attr('visibility', 'visible')
@@ -187,17 +186,20 @@ export class SkillradarChart {
     tooltip
       .append('rect')
       .attr('class', `tooltipRectangle ${darkClass}`)
-      .attr('height', '1.5em')
-      .attr('y', '-2.5em')
+      .attr('height', '8em')
+      .attr('width', '10em')
+      // .attr('y', '1.5em')
+      // .attr('x', '1.5em')
       .attr('rx', 5) // corner radius
-      .attr('anchor', 'middle')
+      .attr('anchor', 'start')
 
     tooltip
       .append('text')
       .attr('class', `tooltipText ${darkClass}`)
-      .attr('text-anchor', 'middle')
+      .attr('text-anchor', 'start')
       .text('hello world')
-      .attr('y', '-1.5em')
+      .attr('y', '2em')
+      .attr('x', '1.5em')
       .attr('width', 100)
   }
 
