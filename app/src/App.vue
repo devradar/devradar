@@ -10,7 +10,7 @@
     <v-app-bar
     scroll-off-screen
     dense app
-    color="primary"
+    color="accent"
     class="github-corner-padding"
     >
     <v-app-bar-nav-icon
@@ -109,14 +109,13 @@
         width="300"
       >
         <v-card
-          color="primary"
+          color="accent"
           dark
         >
           <v-card-text>
             Loading radar..
             <v-progress-linear
               indeterminate
-              color="white"
               class="mb-0"
             ></v-progress-linear>
           </v-card-text>

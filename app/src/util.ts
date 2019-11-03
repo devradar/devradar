@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid/v4'
-import { Blip } from '@/types/domain'
+import { Blip, BlipChange } from '@/types/domain'
 
 // generate hash from string
 function getHash (str: string): number {
@@ -22,21 +22,32 @@ function getUUID () {
 }
 
 // return a new object that only contains the pure blip data
-function cleanBlip (blip: Blip) {
-  const changes = blip.changes.map(c => {
-    const { date, newLevel, text, id } = c
-    return { date, newLevel, text, id }
-  })
+function cleanChange (change: BlipChange): BlipChange {
+  const { date, newLevel, text, id } = change
+  const newChange = { date, newLevel, text, id }
+  if (!newChange.id) delete newChange.id
+  return newChange
+}
+function cleanBlip (blip: Blip): Blip {
+  let changes = []
+  if (blip.changes) {
+    changes = blip.changes.map(cleanChange)
+  }
   let level = blip.level
   if (changes.length) {
     level = changes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel
   }
   const { category, link, description, title, id } = blip
-  return { category, link, description, title, changes, level, id }
+  const newBlip = { category, link, description, title, changes, level, id }
+  if (!link) delete newBlip.link
+  if (!id) delete newBlip.id
+  if (!description) newBlip.description = ''
+  return newBlip
 }
 export {
   getHash,
   getPseudoRand,
   getUUID,
-  cleanBlip
+  cleanBlip,
+  cleanChange
 }

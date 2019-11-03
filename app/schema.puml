@@ -47,12 +47,12 @@ blip : title : String
 blip : category : String
 blip : level : String
 blip : link : String
-blip : changes : change
+blip : changes : Array<change>
 
 radar o-- blip
 
-object change
-change : _id : Firebase UID
+object change (not a collection)
+change : id : UUIDv4
 change : date : String (ISO8601)
 change : newLevel : String
 change : text : String

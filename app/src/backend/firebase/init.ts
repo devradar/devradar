@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import appConfig from '../../config'
 
 async function upsertUser (user): Promise<any> {
   // upsert into user collection
@@ -33,11 +34,11 @@ async function upsertRadar (user) {
     if (getSnapshot.empty) {
       console.log('No radar found for this user; creating one..')
       const doc = {
-        categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],
-        levels: [ 'Hold', 'Assess', 'Trial', 'Adopt' ],
+        categories: appConfig.radarDefault.categories,
+        levels: appConfig.radarDefault.levels,
         owner: user.uid,
         readers: [],
-        isPublic: true
+        isPublic: appConfig.radarDefault.isPublic || false
       }
       const setSnapshot = await db.collection('radars').add(doc)
       await db.collection('users').doc(user.uid).update({ radar: setSnapshot.id })

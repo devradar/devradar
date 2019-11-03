@@ -77,7 +77,7 @@ const state: BlipsState = {
   blips: [],
   isLoading: false,
   meta: {
-    title: 'Loading..',
+    title: '',
     categories: [],
     levels: []
   }
