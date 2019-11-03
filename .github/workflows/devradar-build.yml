@@ -44,4 +44,4 @@ jobs:
         cd app
         npm i -g firebase-tools
         firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets. FIREBASE_DAAS_PROJECT}}
-      #if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
