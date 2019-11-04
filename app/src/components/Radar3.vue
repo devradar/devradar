@@ -122,15 +122,27 @@ export default class Radar3 extends Vue {
 
 .radar-chart {
   .tooltip {
-    font-size: 20px;
+    font-size: 16px;
+    .tooltipTitle {
+      fill: #333;
+      cursor: default;
+    }
+    .tooltipLevel {
+      fill: #333;
+      cursor: default;
+    }
     .tooltipText {
-      fill: #fff;
+      font-size: 12px;
+      fill: #333;
       cursor: default;
     }
     .tooltipRectangle {
-      fill: #333;
+      fill: #eee;
+      stroke: #333;
+      stroke-width: 2px;
+      rx: 1px;
       &.dark {
-        fill: #ddd;
+        fill: #333;
       }
     }
   }

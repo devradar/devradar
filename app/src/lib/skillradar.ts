@@ -78,6 +78,8 @@ export class SkillradarChart {
       .attr('transform', 'translate(' + (cfg.radius) + ',' + (cfg.radius) + ')')
     this.chartArea = g
     let tooltip // eslint-disable-line prefer-const, // drawn at the end to be placed on top
+    let isOverTooltip = false
+    let isOverBlip = false
     // #############
     // ###  Grid ###
     // #############
@@ -114,19 +116,34 @@ export class SkillradarChart {
       .attr('data-index', (d: Blip) => d.index)
       .attr('transform', (d: Blip) => 'translate(' + this.rad2xy(this.blip2rad(d)).x + ',' + this.rad2xy(this.blip2rad(d)).y + ')')
       .on('mouseover', function () {
-        const { title, index } = d3.select(this).data()[0] as Blip
+        isOverBlip = true
+        const blip = d3.select(this).data()[0] as Blip
         d3.select(this).select('.blipCircle')
           .transition().duration(cfg.transitionDurationMs)
           .attr('r', cfg.blipRadius * cfg.blipRadiusHoverPercentage)
         d3.select(this).select('.blipIndex')
           .transition().duration(cfg.transitionDurationMs)
           .attr('opacity', 0)
-        const tooltipWidth = title.length * 12 + 20
 
         tooltip
           .attr('transform', this.attributes['transform'].value)
           .select('.tooltipText')
-          .text(title)
+          .text(blip.title)
+        const sortedChanges = blip.changes
+          .sort((a, b) => a.date < b.date ? 1 : -1)
+        const newLevel = sortedChanges[0].newLevel
+        let prevLevel
+        if (sortedChanges.length > 1) {
+          prevLevel = sortedChanges[1].newLevel
+        } else {
+          prevLevel = 'none'
+        }
+        tooltip
+          .select('.tooltipLevel')
+          .text(`${prevLevel} -> ${newLevel}`)
+        tooltip
+          .select('.tooltipText')
+          .text(sortedChanges[0].text)
         tooltip
           .select('.tooltipRectangle')
         tooltip
@@ -136,29 +153,36 @@ export class SkillradarChart {
 
         d3.selectAll('.legendEntry')
           .classed('grayed', true)
-        const legendEntry = d3.selectAll('.legendEntry').filter(`[data-index='${index}']`)
+        const legendEntry = d3.selectAll('.legendEntry').filter(`[data-index='${blip.index}']`)
         legendEntry
           .classed('highlight', true)
           .classed('grayed', false)
       })
       .on('mouseout', function () {
-        // Bring back all blobs
-        d3.selectAll('.blipCircle')
-          .transition().duration(cfg.transitionDurationMs)
-          .attr('r', cfg.blipRadius)
-        d3.select(this).select('.blipIndex')
-          .transition().duration(cfg.transitionDurationMs)
-          .attr('opacity', 1)
-        tooltip
-          .transition().duration(cfg.transitionDurationMs)
-          .attr('opacity', 0)
-          .attr('visibility', 'hidden')
-        
-        d3.selectAll('.legendEntry')
-          .classed('highlight', false)
-          .classed('grayed', false)
+        isOverBlip = false
       })
 
+    function deactivateTooltip () {
+      if (isOverBlip || isOverTooltip) {
+        return
+      }
+      // Bring back all blobs
+      d3.selectAll('.blipCircle')
+        .transition().duration(cfg.transitionDurationMs)
+        .attr('r', cfg.blipRadius)
+      d3.selectAll('.blipIndex')
+        .transition().duration(cfg.transitionDurationMs)
+        .attr('opacity', 1)
+      tooltip
+        .transition().duration(cfg.transitionDurationMs)
+        .attr('opacity', 0)
+        .attr('visibility', 'hidden')
+      
+      d3.selectAll('.legendEntry')
+        .classed('highlight', false)
+        .classed('grayed', false)
+    }
+    g.on('mouseover', deactivateTooltip)
     // blip circle
     radarWrapper
       .append('circle')
@@ -186,21 +210,42 @@ export class SkillradarChart {
     tooltip
       .append('rect')
       .attr('class', `tooltipRectangle ${darkClass}`)
-      .attr('height', '8em')
-      .attr('width', '10em')
+      .attr('height', '12em')
+      .attr('width', '22em')
       // .attr('y', '1.5em')
       // .attr('x', '1.5em')
-      .attr('rx', 5) // corner radius
       .attr('anchor', 'start')
 
     tooltip
       .append('text')
-      .attr('class', `tooltipText ${darkClass}`)
+      .attr('class', `tooltipTitle ${darkClass}`)
       .attr('text-anchor', 'start')
       .text('hello world')
       .attr('y', '2em')
       .attr('x', '1.5em')
       .attr('width', 100)
+    tooltip
+      .append('text')
+      .attr('class', `tooltipLevel ${darkClass}`)
+      .attr('text-anchor', 'start')
+      .text('hello world')
+      .attr('y', '2em')
+      .attr('x', '7em')
+      .attr('width', 100)
+    tooltip
+      .append('text')
+      .attr('class', `tooltipText ${darkClass}`)
+      .attr('text-anchor', 'start')
+      .text('hello world')
+      .attr('y', '4em')
+      .attr('x', '1em')
+      .attr('width', '20em')
+
+    tooltip.on('mouseover', function () {
+      isOverTooltip = true
+    }).on('mouseout', function () {
+      isOverTooltip = false
+    })
   }
 
   public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean, direction: string) {
