@@ -14,6 +14,8 @@ export interface SkillradarOptions {
   legendCategorySpacingEms?: number;
   legendCategoryOffsetEms?: number;
   dark?: boolean;
+  tooltipWidth?: number;
+  tooltipHeight?: number;
 }
 
 export interface SkillradarData {
@@ -31,6 +33,39 @@ export interface CoordCarthesian {
   x: number;
   y: number;
 }
+
+// wrap (existing) text within a svg <text> element by adding <tspan> attributes once maxLength is reached
+function textWrap (textElm, maxLength) {
+  textElm.each(function () {
+    const elm = d3.select(this)
+    const rootX = elm.attr('x')
+    const rootY = elm.attr('y')
+    const words = elm.text().split(/\s+/).reverse()
+    const lineHeight = 1.1
+    elm
+      .append('tspan')
+      .attr('x', rootX)
+      .attr('y', rootY)
+    let line = []
+    let lineNumber = 0
+    let tspan = elm.text(null)
+    let word = words.pop()
+    while (word) {
+      line.push(word)
+      tspan.text(line.join(' '))
+      if (tspan.node().getComputedTextLength() > maxLength) {
+        const lastWord = line.pop() // remove last element from line
+        tspan.text(line.join(' '))
+        line = [lastWord]
+        tspan = textElm.append('tspan')
+          .attr('x', rootX)
+          .attr('y', rootY)
+          .attr('dy', ++lineNumber * lineHeight + 'em')
+      }
+      word = words.pop()
+    }
+  })
+}
 export class SkillradarChart {
   public config: SkillradarOptions
 
@@ -47,7 +82,9 @@ export class SkillradarChart {
       titleCutOff: 13,
       legendCategorySpacingEms: 8,
       legendCategoryOffsetEms: 2,
-      dark: false
+      dark: false,
+      tooltipWidth: 360,
+      tooltipHeight: 200
     }
 
     if (options) {
@@ -127,23 +164,27 @@ export class SkillradarChart {
 
         tooltip
           .attr('transform', this.attributes['transform'].value)
-          .select('.tooltipText')
+          .select('.tooltipTitle')
           .text(blip.title)
+          .attr('class', `tooltipTitle category-${blip.category}`)
+
         const sortedChanges = blip.changes
           .sort((a, b) => a.date < b.date ? 1 : -1)
         const newLevel = sortedChanges[0].newLevel
-        let prevLevel
+        let prevLevel = null
         if (sortedChanges.length > 1) {
           prevLevel = sortedChanges[1].newLevel
-        } else {
-          prevLevel = 'none'
         }
         tooltip
           .select('.tooltipLevel')
-          .text(`${prevLevel} -> ${newLevel}`)
+          .text(`${prevLevel !== null ? data.levels[prevLevel] + ' —' : '🆕'} ${data.levels[newLevel]}`)
         tooltip
           .select('.tooltipText')
-          .text(sortedChanges[0].text)
+          .text(sortedChanges[0].text.replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, '$1'))
+          .call(textWrap, cfg.tooltipWidth * 0.8)
+        tooltip
+          .select('.tooltipDate')
+          .text(sortedChanges[0].date)
         tooltip
           .select('.tooltipRectangle')
         tooltip
@@ -210,37 +251,38 @@ export class SkillradarChart {
     tooltip
       .append('rect')
       .attr('class', `tooltipRectangle ${darkClass}`)
-      .attr('height', '12em')
-      .attr('width', '22em')
-      // .attr('y', '1.5em')
-      // .attr('x', '1.5em')
+      .attr('height', cfg.tooltipHeight)
+      .attr('width', cfg.tooltipWidth)
       .attr('anchor', 'start')
 
     tooltip
       .append('text')
       .attr('class', `tooltipTitle ${darkClass}`)
       .attr('text-anchor', 'start')
-      .text('hello world')
-      .attr('y', '2em')
-      .attr('x', '1.5em')
-      .attr('width', 100)
+      .attr('y', 28)
+      .attr('x', 16)
+      .attr('width', cfg.tooltipWidth * 0.9)
+    tooltip
+      .append('text')
+      .attr('class', `tooltipDate ${darkClass}`)
+      .attr('text-anchor', 'start')
+      .attr('y', 54)
+      .attr('x', 14)
+      .attr('width', cfg.tooltipWidth * 0.6)
     tooltip
       .append('text')
       .attr('class', `tooltipLevel ${darkClass}`)
-      .attr('text-anchor', 'start')
-      .text('hello world')
-      .attr('y', '2em')
-      .attr('x', '7em')
-      .attr('width', 100)
+      .attr('text-anchor', 'end')
+      .attr('y', 54)
+      .attr('x', cfg.tooltipWidth - 20)
+      .attr('width', cfg.tooltipWidth * 0.4)
     tooltip
       .append('text')
       .attr('class', `tooltipText ${darkClass}`)
       .attr('text-anchor', 'start')
-      .text('hello world')
-      .attr('y', '4em')
-      .attr('x', '1em')
-      .attr('width', '20em')
-
+      .attr('y', 80)
+      .attr('x', 14)
+      .attr('width', cfg.tooltipWidth * 0.8)
     tooltip.on('mouseover', function () {
       isOverTooltip = true
     }).on('mouseout', function () {
