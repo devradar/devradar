@@ -14,6 +14,8 @@ export interface SkillradarOptions {
   legendCategorySpacingEms?: number;
   legendCategoryOffsetEms?: number;
   dark?: boolean;
+  tooltipWidth?: number;
+  tooltipHeight?: number;
 }
 
 export interface SkillradarData {
@@ -31,6 +33,39 @@ export interface CoordCarthesian {
   x: number;
   y: number;
 }
+
+// wrap (existing) text within a svg <text> element by adding <tspan> attributes once maxLength is reached
+function textWrap (textElm, maxLength) {
+  textElm.each(function () {
+    const elm = d3.select(this)
+    const rootX = elm.attr('x')
+    const rootY = elm.attr('y')
+    const words = elm.text().split(/\s+/).reverse()
+    const lineHeight = 1.1
+    elm
+      .append('tspan')
+      .attr('x', rootX)
+      .attr('y', rootY)
+    let line = []
+    let lineNumber = 0
+    let tspan = elm.text(null)
+    let word = words.pop()
+    while (word) {
+      line.push(word)
+      tspan.text(line.join(' '))
+      if (tspan.node().getComputedTextLength() > maxLength) {
+        const lastWord = line.pop() // remove last element from line
+        tspan.text(line.join(' '))
+        line = [lastWord]
+        tspan = textElm.append('tspan')
+          .attr('x', rootX)
+          .attr('y', rootY)
+          .attr('dy', ++lineNumber * lineHeight + 'em')
+      }
+      word = words.pop()
+    }
+  })
+}
 export class SkillradarChart {
   public config: SkillradarOptions
 
@@ -47,7 +82,9 @@ export class SkillradarChart {
       titleCutOff: 13,
       legendCategorySpacingEms: 8,
       legendCategoryOffsetEms: 2,
-      dark: false
+      dark: false,
+      tooltipWidth: 360,
+      tooltipHeight: 200
     }
 
     if (options) {
@@ -73,10 +110,13 @@ export class SkillradarChart {
       .attr('preserveAspectRatio', 'xMinYMin meet')
       .attr('viewBox', `-5 -5 ${2 * cfg.radius + 10} ${2 * cfg.radius + 10}`)
       .attr('class', `radar-chart ${darkClass}`)
+      .style('overflow', 'visible')
       .append('g')
       .attr('transform', 'translate(' + (cfg.radius) + ',' + (cfg.radius) + ')')
     this.chartArea = g
     let tooltip // eslint-disable-line prefer-const, // drawn at the end to be placed on top
+    let isOverTooltip = false
+    let isOverBlip = false
     // #############
     // ###  Grid ###
     // #############
@@ -113,23 +153,40 @@ export class SkillradarChart {
       .attr('data-index', (d: Blip) => d.index)
       .attr('transform', (d: Blip) => 'translate(' + this.rad2xy(this.blip2rad(d)).x + ',' + this.rad2xy(this.blip2rad(d)).y + ')')
       .on('mouseover', function () {
-        const { title, index } = d3.select(this).data()[0] as Blip
+        isOverBlip = true
+        const blip = d3.select(this).data()[0] as Blip
         d3.select(this).select('.blipCircle')
           .transition().duration(cfg.transitionDurationMs)
           .attr('r', cfg.blipRadius * cfg.blipRadiusHoverPercentage)
         d3.select(this).select('.blipIndex')
           .transition().duration(cfg.transitionDurationMs)
           .attr('opacity', 0)
-        const tooltipWidth = title.length * 12 + 20
 
         tooltip
           .attr('transform', this.attributes['transform'].value)
+          .select('.tooltipTitle')
+          .text(blip.title)
+          .attr('class', `tooltipTitle category-${blip.category}`)
+
+        const sortedChanges = blip.changes
+          .sort((a, b) => a.date < b.date ? 1 : -1)
+        const newLevel = sortedChanges[0].newLevel
+        let prevLevel = null
+        if (sortedChanges.length > 1) {
+          prevLevel = sortedChanges[1].newLevel
+        }
+        tooltip
+          .select('.tooltipLevel')
+          .text(`${prevLevel !== null ? data.levels[prevLevel] + ' —' : '🆕'} ${data.levels[newLevel]}`)
+        tooltip
           .select('.tooltipText')
-          .text(title)
+          .text(sortedChanges[0].text.replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, '$1'))
+          .call(textWrap, cfg.tooltipWidth * 0.8)
+        tooltip
+          .select('.tooltipDate')
+          .text(sortedChanges[0].date)
         tooltip
           .select('.tooltipRectangle')
-          .attr('width', tooltipWidth)
-          .attr('x', -tooltipWidth / 2)
         tooltip
           .transition().duration(cfg.transitionDurationMs)
           .attr('visibility', 'visible')
@@ -137,29 +194,36 @@ export class SkillradarChart {
 
         d3.selectAll('.legendEntry')
           .classed('grayed', true)
-        const legendEntry = d3.selectAll('.legendEntry').filter(`[data-index='${index}']`)
+        const legendEntry = d3.selectAll('.legendEntry').filter(`[data-index='${blip.index}']`)
         legendEntry
           .classed('highlight', true)
           .classed('grayed', false)
       })
       .on('mouseout', function () {
-        // Bring back all blobs
-        d3.selectAll('.blipCircle')
-          .transition().duration(cfg.transitionDurationMs)
-          .attr('r', cfg.blipRadius)
-        d3.select(this).select('.blipIndex')
-          .transition().duration(cfg.transitionDurationMs)
-          .attr('opacity', 1)
-        tooltip
-          .transition().duration(cfg.transitionDurationMs)
-          .attr('opacity', 0)
-          .attr('visibility', 'hidden')
-        
-        d3.selectAll('.legendEntry')
-          .classed('highlight', false)
-          .classed('grayed', false)
+        isOverBlip = false
       })
 
+    function deactivateTooltip () {
+      if (isOverBlip || isOverTooltip) {
+        return
+      }
+      // Bring back all blobs
+      d3.selectAll('.blipCircle')
+        .transition().duration(cfg.transitionDurationMs)
+        .attr('r', cfg.blipRadius)
+      d3.selectAll('.blipIndex')
+        .transition().duration(cfg.transitionDurationMs)
+        .attr('opacity', 1)
+      tooltip
+        .transition().duration(cfg.transitionDurationMs)
+        .attr('opacity', 0)
+        .attr('visibility', 'hidden')
+      
+      d3.selectAll('.legendEntry')
+        .classed('highlight', false)
+        .classed('grayed', false)
+    }
+    g.on('mouseover', deactivateTooltip)
     // blip circle
     radarWrapper
       .append('circle')
@@ -187,18 +251,43 @@ export class SkillradarChart {
     tooltip
       .append('rect')
       .attr('class', `tooltipRectangle ${darkClass}`)
-      .attr('height', '1.5em')
-      .attr('y', '-2.5em')
-      .attr('rx', 5) // corner radius
-      .attr('anchor', 'middle')
+      .attr('height', cfg.tooltipHeight)
+      .attr('width', cfg.tooltipWidth)
+      .attr('anchor', 'start')
 
     tooltip
       .append('text')
+      .attr('class', `tooltipTitle ${darkClass}`)
+      .attr('text-anchor', 'start')
+      .attr('y', 28)
+      .attr('x', 16)
+      .attr('width', cfg.tooltipWidth * 0.9)
+    tooltip
+      .append('text')
+      .attr('class', `tooltipDate ${darkClass}`)
+      .attr('text-anchor', 'start')
+      .attr('y', 54)
+      .attr('x', 14)
+      .attr('width', cfg.tooltipWidth * 0.6)
+    tooltip
+      .append('text')
+      .attr('class', `tooltipLevel ${darkClass}`)
+      .attr('text-anchor', 'end')
+      .attr('y', 54)
+      .attr('x', cfg.tooltipWidth - 20)
+      .attr('width', cfg.tooltipWidth * 0.4)
+    tooltip
+      .append('text')
       .attr('class', `tooltipText ${darkClass}`)
-      .attr('text-anchor', 'middle')
-      .text('hello world')
-      .attr('y', '-1.5em')
-      .attr('width', 100)
+      .attr('text-anchor', 'start')
+      .attr('y', 80)
+      .attr('x', 14)
+      .attr('width', cfg.tooltipWidth * 0.8)
+    tooltip.on('mouseover', function () {
+      isOverTooltip = true
+    }).on('mouseout', function () {
+      isOverTooltip = false
+    })
   }
 
   public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean, direction: string) {

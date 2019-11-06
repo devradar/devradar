@@ -15,7 +15,7 @@
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
         <div id="legendwest" class="radarlegend"></div>
       </v-col>
-      <v-col cols="11" sm="6" class="text-center">
+      <v-col cols="11" sm="6" class="text-center z-10">
         <div id="radarchart" class="d-inline"></div>
       </v-col>
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
@@ -115,19 +115,37 @@ export default class Radar3 extends Vue {
   padding: 1rem 4rem !important;
   margin: 0;
 }
+.z-10 {
+  z-index: 10;
+}
 // to be moved into radarchart component
 
 .radar-chart {
   .tooltip {
-    font-size: 20px;
+    font-size: 18px;
+    fill: #444;
+    .tooltipTitle {
+      font-size: 28px;
+      font-weight: bold;
+      cursor: default;
+      &.category-0 {
+      }
+    }
+    .tooltipDate {
+      font-size: 20px;
+    }
+    .tooltipLevel {
+      font-size: 20px;
+    }
     .tooltipText {
-      fill: #fff;
+      font-size: 16px;
       cursor: default;
     }
     .tooltipRectangle {
-      fill: #333;
+      fill: #eee;
+      rx: 3px;
       &.dark {
-        fill: #ddd;
+        fill: #333;
       }
     }
   }

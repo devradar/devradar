@@ -182,6 +182,7 @@ export default class Settings extends Vue {
   uploadFile: any = null
   rules: any = {
     level: [val => (val || '').length > 0 || 'Level name cannot be empty'],
+    category: [val => (val || '').length > 0 || 'Category name cannot be empty']
   }
   tmpLevels: string[] = []
   tmpLevelsDirty: boolean = false

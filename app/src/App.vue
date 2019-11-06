@@ -11,7 +11,7 @@
     scroll-off-screen
     dense app
     color="accent"
-    class="github-corner-padding"
+    class="github-corner-padding z-30"
     >
     <v-app-bar-nav-icon
     class="hidden-md-and-up"
@@ -217,9 +217,8 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-nav.v-toolbar {
-  z-index: 10;
-  padding-right: 3rem !important;
+.z-30 {
+  z-index: 30 !important;
 }
 #progressContainer {
   min-height: 20px;
