@@ -42,9 +42,29 @@
           <v-card-title>Radar metadata</v-card-title>
           <v-row justify="space-around" align="center">
             <v-col cols="6" md="2">
+              <v-card-subtitle>Title</v-card-subtitle>
+            </v-col>
+            <v-col cols="6" md="2">
+              <v-btn icon color="secondary"
+                :disabled="!tmpTitleDirty"
+                @click="saveMeta('title')">
+                <v-icon>mdi-content-save</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col cols="6" md="3">
+              <v-text-field v-model="tmpTitle"
+                persistent-hint hint="Radar title"
+                @change="tmpTitleDirty = true"
+                single-line required :rules="rules.title"></v-text-field>
+            </v-col>
+            <v-col cols="5" class="d-none d-md-flex">
+            </v-col>
+          </v-row>
+          <v-row justify="space-around" align="center">
+            <v-col cols="6" md="2">
               <v-card-subtitle>Levels</v-card-subtitle>
             </v-col>
-            <v-col cols="6" md="1">
+            <v-col cols="6" md="2">
               <v-btn icon color="secondary"
                 :disabled="!tmpLevelsDirty"
                 @click="saveMeta('levels')">
@@ -80,7 +100,7 @@
             <v-col cols="6" md="2">
               <v-card-subtitle>Categories</v-card-subtitle>
             </v-col>
-            <v-col cols="6" md="1">
+            <v-col cols="6" md="2">
               <v-btn icon color="secondary"
                 :disabled="!tmpCategoriesDirty"
                 @click="saveMeta('categories')">
@@ -188,6 +208,8 @@ export default class Settings extends Vue {
   tmpLevelsDirty: boolean = false
   tmpCategories: string[] = []
   tmpCategoriesDirty: boolean = false
+  tmpTitle: string = ''
+  tmpTitleDirty: boolean = false
 
   copyToClipboard (content) {
     const success = copy(content)
@@ -247,6 +269,10 @@ export default class Settings extends Vue {
         content = this.tmpLevels
         this.tmpLevelsDirty = false
         break
+      case 'title':
+        content = this.tmpTitle
+        this.tmpTitleDirty = false
+        break
       default:
         console.error('Unknown type to save to metadata detected:', type)
         return
@@ -262,6 +288,7 @@ export default class Settings extends Vue {
   reload () {
     this.tmpLevels = Array.from(this.meta.levels)
     this.tmpCategories = Array.from(this.meta.categories)
+    this.tmpTitle = this.meta.title
     this.generateToml()
   }
 
