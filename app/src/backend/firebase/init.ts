@@ -8,9 +8,12 @@ async function upsertUser (user): Promise<any> {
   const getSnapshot = await db.collection('users').doc(user.uid).get()
   const doc = getSnapshot.data()
   if (doc) {
-    doc.displayName = user.displayName
-    doc.lastLogin = new Date().toISOString()
-    await db.collection('users').doc(user.uid).update(doc) // update server document with time
+    const userUpdate = {
+      displayName: user.displayName,
+      lastLogin: new Date().toISOString(),
+      email: user.email
+    }
+    await db.collection('users').doc(user.uid).update(userUpdate) // update server document with time
     const rolesSnapshot = await db.collection('roles').doc(user.uid).get()
     return Object.assign(doc, { roles: rolesSnapshot.data() || {} })
   } else { // document does not exist, create new user
@@ -18,7 +21,8 @@ async function upsertUser (user): Promise<any> {
       uid: user.uid,
       name: user.displayName || user.uid,
       displayName: user.displayName,
-      lastLogin: new Date().toISOString()
+      lastLogin: new Date().toISOString(),
+      email: user.email
     }
     const docRef = await db.collection('users').doc(user.uid).set(doc)
     return Object.assign(docRef, { roles: {} })
