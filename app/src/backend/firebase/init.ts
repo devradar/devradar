@@ -29,12 +29,13 @@ async function upsertUser (user): Promise<any> {
   }
 }
 
-async function upsertRadar (user) {
+async function upsertRadar (user): Promise<string> {
   if (!user.radar) {
     const db = firebase.firestore()
     const getSnapshot = await db.collection('radars')
       .where('owner', '==', user.uid)
       .get()
+    let radarId
     if (getSnapshot.empty) {
       console.log('No radar found for this user; creating one..')
       const doc = {
@@ -46,10 +47,15 @@ async function upsertRadar (user) {
       }
       const setSnapshot = await db.collection('radars').add(doc)
       await db.collection('users').doc(user.uid).update({ radar: setSnapshot.id })
+      radarId = setSnapshot.id
     } else {
       // set the first radar to the active radar
       await db.collection('users').doc(user.uid).update({ radar: getSnapshot.docChanges()[0].doc.id })
+      radarId = getSnapshot.docChanges()[0].doc.id
     }
+    return radarId
+  } else {
+    return user.radar
   }
 }
 async function init (store, appConfig) {
@@ -67,16 +73,16 @@ async function init (store, appConfig) {
   // resolve after auth status is defined as logged in or not
   return new Promise(resolve => {
     firebase.auth().onAuthStateChanged(async oauthUser => {
+      let radarId
       if (oauthUser) {
         const user = await upsertUser(oauthUser)
         store.commit('user/setUser', user)
-        await upsertRadar(user)
+        radarId = await upsertRadar(user)
         resolve(user)
       } else { // user is not set (logout)
         store.commit('user/setUser', { roles: {} })
         resolve({})
       }
-      store.dispatch('blips/getRadar')
     })
   })
 }

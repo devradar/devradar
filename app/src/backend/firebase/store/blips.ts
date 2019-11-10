@@ -6,19 +6,15 @@ import { Blip, BlipChange, Meta } from '@/types/domain'
 import { RootState, BlipsState } from '@/types/vuex'
 
 const actions = (): ActionTree<BlipsState, RootState> =>  ({
-  async getRadar ({ commit, rootGetters }): Promise<void> {
-    const user = rootGetters['user/user']
-    if (!user || !user.radar) return
+  async getRadar ({ commit, rootGetters }, id: string): Promise<void> {
     commit('setLoading', true)
-    const radarSnapshot = await firebase.firestore().collection('radars').doc(user.radar).get()
-    if (!radarSnapshot.exists) {
-      // in case a radar is referenced but was deleted in the meantime; clean up the user account
-      await firebase.firestore().collection('users').doc(user.uid).update({ radar: null })
-      commit('setLoading', false)
-      return
-    }
-    const { categories, levels, title } = radarSnapshot.data()
-    commit('setMeta', { title: title || `${user.name}'s devradar`, categories, levels })
+    const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
+    const { categories, levels, title, isPublic = false } = radarSnapshot.data()
+    commit('setMeta', { title: title || `devradar #${id}`, categories, levels })
+    commit ('setIsPublic', isPublic)
+    commit ('setId', id)
+
+    // populate with blip info
     const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`).get()
     commit('dropBlips')
     blipSnapshot.forEach(async doc => {
@@ -28,6 +24,13 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
       commit('addBlip', blip)
     })
     commit('setLoading', false)
+  },
+  // call getRadar if the id is different from the one currently in state
+  async getRadarLazy({ dispatch, rootGetters }, radarId: string): Promise<void> {
+    const loadedId = rootGetters['blips/radarId']
+    if (loadedId !== radarId) {
+      dispatch('getRadar', radarId)
+    }
   },
   async addBlip ({ commit, rootGetters }, blip: Blip): Promise<void> {
     commit('setLoading', true)
@@ -99,7 +102,6 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     newChange.id = getUUID()
     blip.changes.push(newChange)
     if (blip.level) blip.level = newChange.newLevel
-    console.log(blip)
     await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(blip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
@@ -118,6 +120,22 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     await firebase.firestore().collection(`radars`).doc(user.radar).update(meta)
     commit('setMeta', meta)
     commit('setLoading', false)
+  },
+  async getRadarRedirect({ commit, rootGetters }): Promise<void> {
+    const user = rootGetters['user/user']
+    if (!user || !user.radar) return
+    const redirectSnapshot = await firebase.firestore().collection('radarRedirects').doc(user.uid)
+    if (redirectSnapshot.exists) {
+      console.log(redirectSnapshot)
+    }
+  },
+  async setRadarRedirect({ commit, rootGetters }, name: string): Promise<void> {
+    const user = rootGetters['user/user']
+    if (!user || !user.radar) return
+    const doc = {
+      name
+    }
+    const redirectSnapshot = await firebase.firestore().collection('radarRedirects').doc(user.uid).set(doc)
   }
 })
 

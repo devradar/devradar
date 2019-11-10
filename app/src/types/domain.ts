@@ -33,4 +33,6 @@ export interface User {
 export interface Radar {
   meta: Meta;
   blips: Blip[];
+  id: string;
+  alias?: string;
 }

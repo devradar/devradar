@@ -28,6 +28,12 @@ service cloud.firestore {
       allow write: if isOwner(radar) || hasRole('admin');
     }
 
+    match /radarAliases/{user} {
+      allow get: if true;
+      allow list: if true;
+      allow write: if request.auth.uid == user || hasRole('admin');
+    }
+    
     /* helper functions */
     function isSignedIn() {
       return request.auth != null;

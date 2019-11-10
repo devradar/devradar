@@ -2,14 +2,14 @@
 !includeurl https://gist.githubusercontent.com/anoff/d8f48105ac4d3c7b14ca8c34d6d54938/raw/7381f13a14e048bbd3cb4ecc70369e913908151a
 
 object users
-users : Array<user>
+users : Collection<user>
 object radars
-radars : Array<radar>
+radars : Collection<radar>
 object roles
-roles : Array<role>
+roles : Collection<role>
 
-users .[hidden]right radars
-radars .[hidden]right roles
+users .[hidden]right roles
+roles .[hidden]right radars
 
 object user
 user : _id : Firebase UID
@@ -28,10 +28,11 @@ role : editor : Boolean (optional)
 role : viewer : Boolean (optional)
 
 roles o-- role
+role o.. user
 
 object radar
 radar : _id : Firebase UID
-radar : blips : Array<blip>
+radar : blips : Collection<blip>
 radar : categories : Array<String>
 radar : levels : Array<String>
 radar : owner : user._id
@@ -51,7 +52,7 @@ blip : changes : Array<change>
 
 radar o-- blip
 
-object change (not a collection)
+object change
 change : id : UUIDv4
 change : date : String (ISO8601)
 change : newLevel : String
@@ -67,5 +68,17 @@ team : tech : radar._id
 
 user ..o team
 radar ..o team
+
+object radarAliases
+radarAliases : Collection<radarAlias>
+
+radars .[hidden]right radarAliases
+
+object radarAlias
+radarAlias : _id : user._id
+radarAlias : radar : radar._id
+
+radarAliases o-- radarAlias
+radarAlias o.. radar
 
 @enduml
