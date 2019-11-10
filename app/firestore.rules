@@ -48,10 +48,10 @@ service cloud.firestore {
       return isSignedIn() && getRoles().keys().hasAny(roles);
     }
     function isPublic(radar) {
-      return get(/databases/$(database)/documents/radars/$(radar)).data[isPublic] == true
+      return get(/databases/$(database)/documents/radars/$(radar)).data.isPublic == true
     }
     function isOwner(radar) {
-      return request.auth.uid == get(/databases/$(database)/documents/radars/$(radar)).data.owner
+      return isSignedIn() && request.auth.uid == get(/databases/$(database)/documents/radars/$(radar)).data.owner
     }
     function isReadable(radar) {
       return isOwner(radar) || isPublic(radar) || request.auth.uid in get(/databases/$(database)/documents/radars/$(radar)).data.readers

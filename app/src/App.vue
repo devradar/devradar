@@ -192,10 +192,17 @@ export default class App extends Vue {
   updateToolbarItems () {
     const items = appConfig.routes.concat(appConfig.navEntries)
       .filter(i => i.validator(this.user))
+      .filter(i => {
+        if (i.path && i.path.includes(':radarId') && this.radarId.length === 0) {
+          return false
+        } else {
+          return true
+        }
+      })
       .map(i => {
         if (i.path) {
           i.updatedPath = i.path
-            .replace(':radarId', this.$store.getters['blips/radarId'])
+            .replace(':radarId', this.radarId)
             .replace(':blipName?', '')
         }
         return i
@@ -213,18 +220,18 @@ export default class App extends Vue {
       .filter(i => i.location.includes('toolbar-menu'))
       .filter(i => i.url)
   }
--
+
   mounted () {
     this.updateToolbarItems()
   }
 
   @Watch('radarId')
-  onPropertyChanged() {
+  radarIdChange () {
     this.updateToolbarItems()
   }
 
   @Watch('user')
-  onPropertyChanged() {
+  userChange () {
     this.updateToolbarItems()
   }
 }

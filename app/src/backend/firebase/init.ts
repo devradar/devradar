@@ -73,11 +73,13 @@ async function init (store, appConfig) {
   // resolve after auth status is defined as logged in or not
   return new Promise(resolve => {
     firebase.auth().onAuthStateChanged(async oauthUser => {
-      let radarId
       if (oauthUser) {
         const user = await upsertUser(oauthUser)
         store.commit('user/setUser', user)
-        radarId = await upsertRadar(user)
+        const radarId = await upsertRadar(user)
+        if (!store.getters['blips/isLoading']) {
+          store.dispatch('blips/getRadarLazy', radarId)
+        }
         resolve(user)
       } else { // user is not set (logout)
         store.commit('user/setUser', { roles: {} })
