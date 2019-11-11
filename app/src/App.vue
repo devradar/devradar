@@ -301,4 +301,7 @@ footer .entry:last-child:after {
   font-size: 1em;
   font-weight: bold;
 }
+.Cookie--devradar div.Cookie__button:hover {
+  background: #eee;
+}
 </style>
