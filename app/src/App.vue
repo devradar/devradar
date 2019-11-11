@@ -149,8 +149,9 @@
 <script lang="ts">
 import CookieLaw from 'vue-cookie-law'
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { Blip, Meta } from '@/types/domain'
+import { Blip, Meta, User } from '@/types/domain'
 import appConfig from './config'
+import { app } from 'firebase'
 
 @Component({
   computed: {
@@ -184,13 +185,14 @@ export default class App extends Vue {
   isLoading: boolean
   meta: Meta
   radarId: string
+  user: User
   snackbar: {
     active: boolean;
     text: string;
   };
 
   updateToolbarItems () {
-    const items = appConfig.routes.concat(appConfig.navEntries)
+    const routes = appConfig.routes
       .filter(i => i.validator(this.user))
       .filter(i => {
         if (i.path && i.path.includes(':radarId') && this.radarId.length === 0) {
@@ -201,24 +203,22 @@ export default class App extends Vue {
       })
       .map(i => {
         if (i.path) {
-          i.updatedPath = i.path
+          i['updatedPath'] = i.path
             .replace(':radarId', this.radarId)
             .replace(':blipName?', '')
         }
         return i
       })
-    this.toolbarItemsRouter = items
+    const navEntries = appConfig.navEntries
+      .filter(i => i.validator(this.user))
+    this.toolbarItemsRouter = routes
       .filter(i => i.location.includes('toolbar'))
-      .filter(i => i.path)
-    this.toolbarMenuItemsRouter = items
+    this.toolbarMenuItemsRouter = routes
       .filter(i => i.location.includes('toolbar-menu'))
-      .filter(i => i.path)
-    this.toolbarItemsStatic = items
+    this.toolbarItemsStatic = navEntries
       .filter(i => i.location.includes('toolbar'))
-      .filter(i => i.url)
-    this.toolbarMenuItemsStatic = items
+    this.toolbarMenuItemsStatic = navEntries
       .filter(i => i.location.includes('toolbar-menu'))
-      .filter(i => i.url)
   }
 
   mounted () {

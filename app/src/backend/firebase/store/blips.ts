@@ -125,9 +125,6 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     const user = rootGetters['user/user']
     if (!user || !user.radar) return
     const redirectSnapshot = await firebase.firestore().collection('radarRedirects').doc(user.uid)
-    if (redirectSnapshot.exists) {
-      console.log(redirectSnapshot)
-    }
   },
   async setRadarRedirect({ commit, rootGetters }, name: string): Promise<void> {
     const user = rootGetters['user/user']
