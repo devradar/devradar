@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { Blip, Meta } from '@/types/domain'
 import Settings from './Settings.vue'
 import { SkillradarChart, SkillradarOptions, SkillradarData } from '../lib/skillradar'
@@ -51,15 +51,26 @@ import appConfig from '../config'
     },
     meta () {
       return this.$store.getters['blips/meta']
+    },
+    radarIsLoaded () {
+      return this.$store.getters['blips/isLoaded']
+    },
+    isLoading () {
+      return this.$store.getters['blips/isLoading']
     }
   }
 })
 export default class Radar3 extends Vue {
-  blips: Blip[]
+  @Prop({ default: '' })
+  radarId: string
   chart: SkillradarChart
-  meta: Meta
   darkMode: boolean = appConfig.theme.dark
   settingsModalVisible: boolean = false
+  // computed
+  blips: Blip[]
+  meta: Meta
+  radarIsLoaded: boolean
+  isLoading: boolean
 
   radarConfig: SkillradarOptions = {
     radius: 300,
@@ -85,8 +96,17 @@ export default class Radar3 extends Vue {
     this.chart.drawLegend('#legendwest-small', data, (blip: Blip) => blip.category >= 2, 'up')
   }
 
+  public fetchRadarData () {
+    this.$store.dispatch('blips/getRadarLazy', this.radarId)
+  }
+
   mounted () {
-    this.renderChart()
+    if (this.radarIsLoaded) {
+      this.renderChart()
+    }
+    if (!this.isLoading) {
+      this.fetchRadarData()
+    }
   }
 
   settingsModalClose () {
@@ -104,12 +124,15 @@ export default class Radar3 extends Vue {
 <style lang="scss">
 #radarchart {
   max-width: 600px;
+  min-width: 100%;
 }
 #legendeast {
   padding: 0 0 0 2rem;
+  min-width: 100%;
 }
 #legendwest {
   padding: 0 2rem 0 0;
+  min-width: 100%;
 }
 .radarcontainer {
   padding: 1rem 4rem !important;

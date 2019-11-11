@@ -30,7 +30,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn text
-          v-for="elm in getNavEntries('toolbar')"
+          v-for="elm in toolbarItemsStatic"
           v-bind:key="elm.title"
           v-bind:href="elm.url"
           target="_blank"
@@ -39,16 +39,16 @@
           <span class="hidden-md-only">{{elm.title}}</span>
         </v-btn>
         <v-btn text
-          v-for="elm in getMenuItems('toolbar')"
+          v-for="elm in toolbarItemsRouter"
           v-bind:key="elm.title"
           router
-          v-bind:to="elm.rootPath"
+          v-bind:to="elm.updatedPath"
           >
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
         </v-btn>
         <v-menu bottom left
-          v-if="getMenuItems('toolbar-menu').concat(getNavEntries('toolbar-menu')).length">
+          v-if="(toolbarMenuItemsStatic.length + toolbarMenuItemsRouter.length) > 0">
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon :dark="darkMode"
               v-bind="attrs"
@@ -57,7 +57,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item v-for="elm in getNavEntries('toolbar-menu')"
+            <v-list-item v-for="elm in toolbarMenuItemsStatic"
               v-bind:key="elm.title"
               v-bind:href="elm.url"
               target="_blank">
@@ -66,7 +66,7 @@
                 {{ elm.title }}
                 </v-list-item-title>
             </v-list-item>
-            <v-list-item v-for="elm in getMenuItems('toolbar-menu')" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
+            <v-list-item v-for="elm in toolbarMenuItemsRouter" v-bind:key="elm.title" v-bind:to="elm.updatedPath" router>
               <v-list-item-title>
                 <v-icon left>{{elm.icon}}</v-icon>
                 {{ elm.title }}
@@ -83,7 +83,7 @@
         temporary
       >
         <v-list>
-          <v-list-item v-for="elm in getNavEntries('toolbar').concat(getNavEntries('toolbar-menu'))"
+          <v-list-item v-for="elm in toolbarItemsStatic.concat(toolbarMenuItemsStatic)"
             v-bind:key="elm.title"
             v-bind:href="elm.url"
             target="_blank">
@@ -92,7 +92,9 @@
               {{ elm.title }}
               </v-list-item-title>
           </v-list-item>
-          <v-list-item v-for="elm in (getMenuItems('toolbar').concat(getMenuItems('toolbar-menu')))" v-bind:key="elm.title" v-bind:to="elm.rootPath" router>
+          <v-list-item v-for="elm in toolbarItemsRouter.concat(toolbarMenuItemsRouter)"
+          v-bind:key="elm.title" v-bind:to="elm.updatedPath"
+          router>
             <v-list-item-action>
               <v-icon left>{{elm.icon}}</v-icon>
             </v-list-item-action>
@@ -145,26 +147,28 @@
 </template>
 
 <script lang="ts">
-import lzs from 'lz-string'
-import copy from 'clipboard-copy'
 import CookieLaw from 'vue-cookie-law'
-import { Component, Vue } from 'vue-property-decorator'
-import { Blip, Meta } from '@/types/domain'
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Blip, Meta, User } from '@/types/domain'
 import appConfig from './config'
+import { app } from 'firebase'
 
 @Component({
   computed: {
     isLoading () {
       return this.$store.getters['blips/isLoading']
     },
+    snackbar () {
+      return this.$store.getters['comm/snackbar']
+    },
+    radarId () {
+      return this.$store.getters['blips/radarId']
+    },
     meta () {
       return this.$store.getters['blips/meta']
     },
-    blips () {
-      return this.$store.getters['blips/blipsClean']
-    },
-    snackbar () {
-      return this.$store.getters['comm/snackbar']
+    user () {
+      return this.$store.getters['user/user']
     }
   },
   components: { CookieLaw }
@@ -173,45 +177,62 @@ export default class App extends Vue {
   showNavdrawer: boolean = false
   darkMode: boolean = appConfig.theme.dark
   footerEntries: object[] = appConfig.footer
+  toolbarItemsRouter: object[] = []
+  toolbarMenuItemsRouter: object[] = []
+  toolbarItemsStatic: object[] = []
+  toolbarMenuItemsStatic: object[] = []
   // computed
   isLoading: boolean
   meta: Meta
-  blips: Blip[]
+  radarId: string
+  user: User
   snackbar: {
     active: boolean;
     text: string;
   };
 
-  public getMenuItems (location) {
-    const user = this.$store.getters['user/user'] || {}
-    const items = appConfig.routes
-    return items
-      .filter(i => i.validator(user))
-      .filter(i => i.location.includes(location))
+  updateToolbarItems () {
+    const routes = appConfig.routes
+      .filter(i => i.validator(this.user))
+      .filter(i => {
+        if (i.path && i.path.includes(':radarId') && this.radarId.length === 0) {
+          return false
+        } else {
+          return true
+        }
+      })
+      .map(i => {
+        if (i.path) {
+          i['updatedPath'] = i.path
+            .replace(':radarId', this.radarId)
+            .replace(':blipName?', '')
+        }
+        return i
+      })
+    const navEntries = appConfig.navEntries
+      .filter(i => i.validator(this.user))
+    this.toolbarItemsRouter = routes
+      .filter(i => i.location.includes('toolbar'))
+    this.toolbarMenuItemsRouter = routes
+      .filter(i => i.location.includes('toolbar-menu'))
+    this.toolbarItemsStatic = navEntries
+      .filter(i => i.location.includes('toolbar'))
+    this.toolbarMenuItemsStatic = navEntries
+      .filter(i => i.location.includes('toolbar-menu'))
   }
 
-  public getNavEntries (location) {
-    const user = this.$store.getters['user/user'] || {}
-    const items = appConfig.navEntries
-    return items
-      .filter(i => i.validator(user))
-      .filter(i => i.location.includes(location))
+  mounted () {
+    this.updateToolbarItems()
   }
 
-  public copyURL () {
-    const obj = {
-      meta: this.meta,
-      blips: this.blips
-    }
-    const string = JSON.stringify(obj)
-    const contentEncoded = lzs.compressToEncodedURIComponent(string)
-    const b = window.location.origin + '/#/?load=' + contentEncoded
-    const success = copy(b)
-    if (success) {
-      this.$store.dispatch('comm/showSnackbar', 'URL copied to clipboard')
-    } else {
-      console.error(success)
-    }
+  @Watch('radarId')
+  radarIdChange () {
+    this.updateToolbarItems()
+  }
+
+  @Watch('user')
+  userChange () {
+    this.updateToolbarItems()
   }
 }
 </script>

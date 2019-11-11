@@ -1,38 +1,47 @@
 import Vue from 'vue'
 import { Module, GetterTree, MutationTree } from 'vuex'
-import { RootState, BlipsState } from '@/types/vuex'
-import { Blip, Meta } from '@/types/domain';
+import { RootState, BlipsState as RadarState } from '@/types/vuex'
+import { Blip, Meta, Radar } from '@/types/domain';
 import { getUUID, cleanBlip } from '../util'
 import appConfig from '../config'
 
-const mutations: MutationTree<BlipsState> = {
-  dropBlips (state: BlipsState) {
+const mutations: MutationTree<RadarState> = {
+  dropBlips (state: RadarState) {
     state.blips = []
   },
-  addBlip (state: BlipsState, blip: Blip) {
+  addBlip (state: RadarState, blip: Blip) {
     blip.id = blip.id || getUUID()
     blip.changes = blip.changes
       .map(c => Object.assign({ id: getUUID() }, c)) // make sure an existing ID has priority by correct assign order
     state.blips.push(blip)
   },
-  exchangeBlip (state: BlipsState, blip: Blip) {
+  exchangeBlip (state: RadarState, blip: Blip) {
     const index = state.blips.findIndex(b => b.id === blip.id)
     state.blips.splice(index, 1, blip)
   },
-  removeBlip (state: BlipsState, blip: Blip) {
+  removeBlip (state: RadarState, blip: Blip) {
     Vue.delete(state.blips, state.blips.findIndex(b => b.id === blip.id))
   },
-  setLoading (state: BlipsState, isLoading: boolean) {
+  setLoading (state: RadarState, isLoading: boolean) {
     state.isLoading = isLoading
   },
-  setMeta (state: BlipsState, meta: Meta) {
+  setMeta (state: RadarState, meta: Meta) {
     const { title, categories, levels } = meta
     state.meta = { title, categories, levels }
+  },
+  setRedirect (state: RadarState, name: string) {
+    state.radarRedirect = name
+  },
+  setIsPublic (state: RadarState, isPublic: boolean) {
+    state.isPublic = isPublic
+  },
+  setId (state: RadarState, id: string) {
+    state.id = id
   }
 }
 
-const getters: GetterTree<BlipsState, RootState> = {
-  blipsWithIndex (state: BlipsState) {
+const getters: GetterTree<RadarState, RootState> = {
+  blipsWithIndex (state: RadarState) {
     return state.blips
       .filter(b => b.changes.length > 0 || b.level >= 0)
       .map(cleanBlip)
@@ -51,7 +60,7 @@ const getters: GetterTree<BlipsState, RootState> = {
         return b
       })
   },
-  blipsClean (state: BlipsState, getters) {
+  blipsClean (state: RadarState, getters) {
     const blips = JSON.parse(JSON.stringify(getters.blipsWithIndex))
     return blips
       .map(b => {
@@ -65,15 +74,30 @@ const getters: GetterTree<BlipsState, RootState> = {
         return b
       })
   },
-  isLoading (state: BlipsState) {
+  isLoading (state: RadarState) {
     return state.isLoading
   },
-  meta (state: BlipsState) {
+  meta (state: RadarState) {
     return state.meta
+  },
+  redirect (state: RadarState) {
+    return state.radarRedirect || state.id
+  },
+  isPublic (state: RadarState) {
+    return state.isPublic
+  },
+  radarId (state: RadarState) {
+    return state.id
+  },
+  isLoaded (state: RadarState) {
+    return state.meta.levels.length > 0 && state.id.length > 0
   }
 }
 
-const state: BlipsState = {
+const state: RadarState = {
+  id: '',
+  isPublic: false,
+  radarRedirect: '',
   blips: [],
   isLoading: false,
   meta: {
@@ -83,7 +107,7 @@ const state: BlipsState = {
   }
 }
 
-export const blips = (backend): Module<BlipsState, RootState> => {
+export const blips = (backend): Module<RadarState, RootState> => {
   return {
     namespaced: true,
     state,

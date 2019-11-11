@@ -1,9 +1,12 @@
 import { Blip, Meta, User } from './domain'
 
 export interface BlipsState {
+  id: string;
   blips: Blip[];
   isLoading: boolean;
   meta: Meta;
+  radarRedirect?: string;
+  isPublic: boolean;
 }
 
 export interface UserState {

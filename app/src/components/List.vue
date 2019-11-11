@@ -104,12 +104,17 @@ import { Blip } from '@/types/domain'
     },
     userCanEdit () {
       return this.$store.getters['user/userCanEdit']
+    },
+    isLoading () {
+      return this.$store.getters['blips/isLoading']
     }
   }
 })
 export default class List extends Vue {
   @Prop({ default: '' })
   search: string
+  @Prop({ default: '' })
+  radarId: string
   @ProvideReactive() newChangeBlip: Blip
 
   searchTitle: string = this.search
@@ -119,6 +124,7 @@ export default class List extends Vue {
   blips: Blip[]
   userCanEdit: boolean
   filteredBlips: Blip[]
+  isLoading: boolean
 
   searchUpdated () {
     if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })
@@ -139,6 +145,16 @@ export default class List extends Vue {
   newChangeCancel () {
     this.newChangeBlip = null
     this.newChangeModalVisible = false
+  }
+
+  public fetchRadarData () {
+    this.$store.dispatch('blips/getRadarLazy', this.radarId)
+  }
+
+  mounted () {
+    if (!this.isLoading) {
+      this.fetchRadarData()
+    }
   }
 }
 </script>

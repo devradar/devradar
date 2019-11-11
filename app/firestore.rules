@@ -28,6 +28,12 @@ service cloud.firestore {
       allow write: if isOwner(radar) || hasRole('admin');
     }
 
+    match /radarAliases/{user} {
+      allow get: if true;
+      allow list: if true;
+      allow write: if request.auth.uid == user || hasRole('admin');
+    }
+    
     /* helper functions */
     function isSignedIn() {
       return request.auth != null;
@@ -42,10 +48,10 @@ service cloud.firestore {
       return isSignedIn() && getRoles().keys().hasAny(roles);
     }
     function isPublic(radar) {
-      return get(/databases/$(database)/documents/radars/$(radar)).data[isPublic] == true
+      return get(/databases/$(database)/documents/radars/$(radar)).data.isPublic == true
     }
     function isOwner(radar) {
-      return request.auth.uid == get(/databases/$(database)/documents/radars/$(radar)).data.owner
+      return isSignedIn() && request.auth.uid == get(/databases/$(database)/documents/radars/$(radar)).data.owner
     }
     function isReadable(radar) {
       return isOwner(radar) || isPublic(radar) || request.auth.uid in get(/databases/$(database)/documents/radars/$(radar)).data.readers
