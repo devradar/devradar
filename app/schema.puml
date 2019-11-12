@@ -76,7 +76,8 @@ radars .[hidden]right radarAliases
 
 object radarAlias
 radarAlias : _id : user._id
-radarAlias : radar : radar._id
+radarAlias : alias : string
+radarAlias : radarId : radar._id
 
 radarAliases o-- radarAlias
 radarAlias o.. radar

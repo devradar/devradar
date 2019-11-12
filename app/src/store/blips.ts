@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { Module, GetterTree, MutationTree } from 'vuex'
 import { RootState, BlipsState as RadarState } from '@/types/vuex'
-import { Blip, Meta, Radar } from '@/types/domain';
+import { Blip, Meta } from '@/types/domain';
 import { getUUID, cleanBlip } from '../util'
 import appConfig from '../config'
 
@@ -29,8 +29,8 @@ const mutations: MutationTree<RadarState> = {
     const { title, categories, levels } = meta
     state.meta = { title, categories, levels }
   },
-  setRedirect (state: RadarState, name: string) {
-    state.radarRedirect = name
+  setRadarAlias (state: RadarState, name: string) {
+    state.radarAlias = name
   },
   setIsPublic (state: RadarState, isPublic: boolean) {
     state.isPublic = isPublic
@@ -80,8 +80,8 @@ const getters: GetterTree<RadarState, RootState> = {
   meta (state: RadarState) {
     return state.meta
   },
-  redirect (state: RadarState) {
-    return state.radarRedirect || state.id
+  radarAlias (state: RadarState) {
+    return state.radarAlias
   },
   isPublic (state: RadarState) {
     return state.isPublic
@@ -97,7 +97,7 @@ const getters: GetterTree<RadarState, RootState> = {
 const state: RadarState = {
   id: '',
   isPublic: false,
-  radarRedirect: '',
+  radarAlias: '',
   blips: [],
   isLoading: false,
   meta: {

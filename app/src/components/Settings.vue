@@ -62,6 +62,27 @@
           </v-row>
           <v-row justify="space-around" align="center">
             <v-col cols="6" md="2">
+              <v-card-subtitle>Alias</v-card-subtitle>
+              <v-card-text>devradar.io/[alias]</v-card-text>
+            </v-col>
+            <v-col cols="6" md="2">
+              <v-btn icon color="secondary"
+                :disabled="!tmpAliasDirty"
+                @click="saveAlias()">
+                <v-icon>mdi-content-save</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col cols="6" md="3">
+              <v-text-field v-model="tmpAlias"
+                persistent-hint hint="devradar alias (must be unique)"
+                @change="tmpAliasDirty = true"
+                single-line required :rules="rules.alias"></v-text-field>
+            </v-col>
+            <v-col cols="5" class="d-none d-md-flex">
+            </v-col>
+          </v-row>
+          <v-row justify="space-around" align="center">
+            <v-col cols="6" md="2">
               <v-card-subtitle>Levels</v-card-subtitle>
             </v-col>
             <v-col cols="6" md="2">
@@ -143,7 +164,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from 'vue-property-decorator'
+import { Component, Vue, Emit, Watch } from 'vue-property-decorator'
 import copy from 'clipboard-copy'
 import TOML from '@iarna/toml'
 import { mapGetters } from 'vuex'
@@ -172,7 +193,7 @@ function stripIds (blip) {
 @Component({
   computed: {
     ...mapGetters('blips', [
-      'meta'
+      'meta', 'radarAlias', 'radarId'
     ]),
     ...mapGetters('user', [
       'userCanEdit'
@@ -196,13 +217,17 @@ export default class Settings extends Vue {
   meta: Meta
   blipsClean: Blip[]
   userCanEdit: boolean
+  radarAlias: string
+  radarId: string
 
   // local data
   contentToml: string = ''
   uploadFile: any = null
   rules: any = {
     level: [val => (val || '').length > 0 || 'Level name cannot be empty'],
-    category: [val => (val || '').length > 0 || 'Category name cannot be empty']
+    category: [val => (val || '').length > 0 || 'Category name cannot be empty'],
+    title: [val => (val || '').length > 0 || 'Title cannot be empty'],
+    alias: [val => true || 'Alias must be unique'] // TODO: implement uniqueness check
   }
   tmpLevels: string[] = []
   tmpLevelsDirty: boolean = false
@@ -210,6 +235,8 @@ export default class Settings extends Vue {
   tmpCategoriesDirty: boolean = false
   tmpTitle: string = ''
   tmpTitleDirty: boolean = false
+  tmpAlias: string = ''
+  tmpAliasDirty: boolean = false
 
   copyToClipboard (content) {
     const success = copy(content)
@@ -285,10 +312,16 @@ export default class Settings extends Vue {
     this.$store.dispatch('comm/showSnackbar', `updated ${type} metadata`)
   }
 
+  saveAlias () {
+    this.$store.dispatch('blips/setRadarAlias', { alias: this.tmpAlias, radarId: this.radarId })
+    this.$store.dispatch('comm/showSnackbar', `updated your devradar alias to: ${this.tmpAlias}`)
+  }
+
   reload () {
     this.tmpLevels = Array.from(this.meta.levels)
     this.tmpCategories = Array.from(this.meta.categories)
     this.tmpTitle = this.meta.title
+    this.tmpAlias = this.radarAlias
     this.generateToml()
   }
 
@@ -298,6 +331,10 @@ export default class Settings extends Vue {
   }
 
   mounted () {
+    this.reload()
+  }
+  @Watch('radarAlias')
+  radarAliasUpdate () {
     this.reload()
   }
   

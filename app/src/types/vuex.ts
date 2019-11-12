@@ -5,7 +5,7 @@ export interface BlipsState {
   blips: Blip[];
   isLoading: boolean;
   meta: Meta;
-  radarRedirect?: string;
+  radarAlias?: string;
   isPublic: boolean;
 }
 

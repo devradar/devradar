@@ -6,7 +6,7 @@ import { Blip, BlipChange, Meta } from '@/types/domain'
 import { RootState, BlipsState } from '@/types/vuex'
 
 const actions = (): ActionTree<BlipsState, RootState> =>  ({
-  async getRadar ({ commit, rootGetters }, id: string): Promise<void> {
+  async getRadar ({ commit }, id: string): Promise<void> {
     commit('setLoading', true)
     const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
     const { categories, levels, title, isPublic = false } = radarSnapshot.data()
@@ -121,18 +121,26 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setMeta', meta)
     commit('setLoading', false)
   },
-  async getRadarRedirect({ commit, rootGetters }): Promise<void> {
+  async getRadarAlias({ commit, rootGetters }): Promise<void> {
     const user = rootGetters['user/user']
     if (!user || !user.radar) return
-    const redirectSnapshot = await firebase.firestore().collection('radarRedirects').doc(user.uid)
+    const aliasSnapshot = await firebase.firestore().collection('radarAliases').doc(user.uid).get()
+    if (aliasSnapshot.exists) {
+      const data = aliasSnapshot.data()
+      commit('setRadarAlias', data.alias)
+    } else {
+      commit('setRadarAlias', '')
+    }
   },
-  async setRadarRedirect({ commit, rootGetters }, name: string): Promise<void> {
+  async setRadarAlias({ commit, rootGetters }, { alias, radarId }: { alias: string; radarId: string }): Promise<void> {
     const user = rootGetters['user/user']
     if (!user || !user.radar) return
     const doc = {
-      name
+      alias,
+      radarId
     }
-    const redirectSnapshot = await firebase.firestore().collection('radarRedirects').doc(user.uid).set(doc)
+    await firebase.firestore().collection('radarAliases').doc(user.uid).set(doc)
+    commit('setRadarAlias', alias)
   }
 })
 
