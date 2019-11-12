@@ -9,12 +9,13 @@ import router from '@/router'
 const actions = (): ActionTree<BlipsState, RootState> =>  ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
   async followRadarAlias ({ commit }, alias: string): Promise<string> {
+    let response = ''
     let radarSnapshot: any = {}
     try {
       radarSnapshot = await firebase.firestore().collection('radars').doc(alias).get()
     } finally {
       if (radarSnapshot.exists) { // provided string is not actually an alias but a valid ID
-        return radarSnapshot.id
+        response = radarSnapshot.id
       } else {
         const aliasSnapshot = await firebase.firestore().collection('radarAliases')
           .where('alias', '==', alias)
@@ -22,13 +23,14 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
           .get()
         if (aliasSnapshot.size === 0) {
           console.error('No devradar found for this alias', alias)
-          return ''
+          response = ''
         } else {
           const data = aliasSnapshot.docs[0].data()
-          return data.radarId
+          response = data.radarId
         }
       }
     }
+    return response
   },
   async getRadar ({ commit }, id: string): Promise<void> {
     commit('setLoading', true)

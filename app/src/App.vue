@@ -160,10 +160,10 @@ import { Blip, Meta, User } from '@/types/domain'
     ...mapGetters('blips', [
       'meta', 'radarAlias', 'radarId', 'isLoading'
     ]),
-      ...mapGetters('user', [
+    ...mapGetters('user', [
       'user'
     ]),
-      ...mapGetters('comm', [
+    ...mapGetters('comm', [
       'snackbar'
     ])
   },
