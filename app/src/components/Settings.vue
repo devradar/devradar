@@ -67,7 +67,7 @@
             </v-col>
             <v-col cols="6" md="2">
               <v-btn icon color="secondary"
-                :disabled="!tmpAliasDirty || tmpAliasErrors.length > 0"
+                :disabled="!tmpAliasDirty || tmpAliasErrors.length > 0"
                 @click="saveAlias()">
                 <v-icon>mdi-content-save</v-icon>
               </v-btn>
