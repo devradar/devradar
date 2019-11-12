@@ -69,7 +69,7 @@ export default class Radar3 extends Vue {
   blips: Blip[]
   meta: Meta
   user: User
-  radarIsLoaded: boolean
+  isLoaded: boolean
   isLoading: boolean
   ownerId: string
 
@@ -102,7 +102,7 @@ export default class Radar3 extends Vue {
   }
 
   mounted () {
-    if (this.radarIsLoaded) {
+    if (this.isLoaded) {
       this.renderChart()
     }
     if (!this.isLoading) {

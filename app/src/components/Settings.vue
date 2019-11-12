@@ -67,7 +67,7 @@
             </v-col>
             <v-col cols="6" md="2">
               <v-btn icon color="secondary"
-                :disabled="!tmpAliasDirty"
+                :disabled="!tmpAliasDirty || tmpAliasErrors.length > 0"
                 @click="saveAlias()">
                 <v-icon>mdi-content-save</v-icon>
               </v-btn>
@@ -75,7 +75,7 @@
             <v-col cols="6" md="3">
               <v-text-field v-model="tmpAlias"
                 persistent-hint hint="devradar alias (must be unique)"
-                @change="tmpAliasDirty = true"
+                :error-messages="tmpAliasErrors"
                 single-line required :rules="rules.alias"></v-text-field>
             </v-col>
             <v-col cols="5" class="d-none d-md-flex">
@@ -227,7 +227,7 @@ export default class Settings extends Vue {
     level: [val => (val || '').length > 0 || 'Level name cannot be empty'],
     category: [val => (val || '').length > 0 || 'Category name cannot be empty'],
     title: [val => (val || '').length > 0 || 'Title cannot be empty'],
-    alias: [val => true || 'Alias must be unique'] // TODO: implement uniqueness check
+    alias: [val => this.aliasAvailable(val) || 'Alias must be unique'] // TODO: implement uniqueness check
   }
   tmpLevels: string[] = []
   tmpLevelsDirty: boolean = false
@@ -237,6 +237,7 @@ export default class Settings extends Vue {
   tmpTitleDirty: boolean = false
   tmpAlias: string = ''
   tmpAliasDirty: boolean = false
+  tmpAliasErrors: string[] = []
 
   copyToClipboard (content) {
     const success = copy(content)
@@ -315,6 +316,7 @@ export default class Settings extends Vue {
   saveAlias () {
     this.$store.dispatch('blips/setRadarAlias', { alias: this.tmpAlias, radarId: this.radarId })
     this.$store.dispatch('comm/showSnackbar', `updated your devradar alias to: ${this.tmpAlias}`)
+    this.tmpAliasDirty = false
   }
 
   reload () {
@@ -323,6 +325,22 @@ export default class Settings extends Vue {
     this.tmpTitle = this.meta.title
     this.tmpAlias = this.radarAlias
     this.generateToml()
+  }
+
+  aliasAvailable (value: string) {
+    return true
+  }
+  @Watch('tmpAlias')
+  async tmpAliasKeydown (newValue: string) {
+    this.tmpAliasDirty = true
+    this.tmpAliasErrors = []
+    if (!/^[a-zA-Z0-9-_ ]+$/.test(newValue)) {
+      this.tmpAliasErrors.push('Invalid character detected (a-z A-Z 0-9 -_ only)')
+    }
+    const isAvailable = await this.$store.dispatch('blips/isRadarAliasAvailable', newValue)
+    if (!isAvailable) {
+      this.tmpAliasErrors.push(`Alias already in use: ${newValue}`)
+    }
   }
 
   @Emit()

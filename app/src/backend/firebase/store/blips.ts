@@ -13,6 +13,8 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     let radarSnapshot: any = {}
     try {
       radarSnapshot = await firebase.firestore().collection('radars').doc(alias).get()
+    } catch (e) {
+      // ignore e
     } finally {
       if (radarSnapshot.exists) { // provided string is not actually an alias but a valid ID
         response = radarSnapshot.id
@@ -27,6 +29,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
         } else {
           const data = aliasSnapshot.docs[0].data()
           response = data.radarId
+          commit('setRadarAlias', alias)
         }
       }
     }
@@ -170,6 +173,13 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     await firebase.firestore().collection('radarAliases').doc(user.uid).set(doc)
     commit('setRadarAlias', alias)
     router.push({ name: 'radar', params: { radarId: alias } })
+  },
+  async isRadarAliasAvailable({ commit }, alias: string): Promise<boolean> {
+    const aliasSnapshot = await firebase.firestore().collection('radarAliases')
+      .where('alias', '==', alias)
+      .limit(1)
+      .get()
+    return aliasSnapshot.size === 0
   }
 })
 

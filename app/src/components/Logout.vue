@@ -12,10 +12,8 @@ import { Component, Vue } from 'vue-property-decorator'
 })
 export default class Logout extends Vue {
   mounted () {
-    console.log('logoff')
     firebase.auth().signOut()
       .then(() => {
-        console.log('logoff done')
         this.$router.replace('/')
       })
   }
