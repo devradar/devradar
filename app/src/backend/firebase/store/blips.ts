@@ -8,7 +8,7 @@ import router from '@/router'
 
 const actions = (): ActionTree<BlipsState, RootState> =>  ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
-  async followRadarAlias ({ }, alias: string): Promise<string> {
+  async followRadarAlias ({ commit }, alias: string): Promise<string> {
     let radarSnapshot: any = {}
     try {
       radarSnapshot = await firebase.firestore().collection('radars').doc(alias).get()
@@ -33,10 +33,11 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
   async getRadar ({ commit }, id: string): Promise<void> {
     commit('setLoading', true)
     const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
-    const { categories, levels, title, isPublic = false } = radarSnapshot.data()
+    const { categories, levels, title, isPublic = false, owner } = radarSnapshot.data()
     commit('setMeta', { title: title || `devradar #${id}`, categories, levels })
     commit ('setIsPublic', isPublic)
     commit ('setId', id)
+    commit('setOwnerId', owner)
 
     // populate with blip info
     const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`).get()

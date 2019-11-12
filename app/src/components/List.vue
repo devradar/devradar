@@ -2,7 +2,7 @@
   <v-container
     fluid
     grid-list-lg>
-    <new-blip></new-blip>
+    <new-blip v-if="user.uid === ownerId"></new-blip>
     <new-change
     @submit="newChangeSubmit"
     @cancel="newChangeCancel"
@@ -37,41 +37,18 @@
         >
         </blip>
       </v-col>
-      <!-- <v-col cols="6" class="d-none d-lg-flex">
-        <v-row>
-          <v-col cols="12"
-            v-for="blip in filteredBlips.slice(0, Math.ceil(filteredBlips.length / 2))" :key="blip.id">
-            <blip
-              :blip="blip"
-              @addChange="newChangeOpen"
-            >
-            </blip>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="6" class="d-none d-lg-flex">
-        <v-row>
-          <v-col cols="12"
-            v-for="blip in filteredBlips.slice(Math.ceil(filteredBlips.length / 2), filteredBlips.length)" :key="blip.id">
-            <blip
-              :blip="blip"
-              @addChange="newChangeOpen"
-            >
-            </blip>
-          </v-col>
-        </v-row>
-      </v-col> -->
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, ProvideReactive } from 'vue-property-decorator'
+import { mapGetters } from 'vuex'
 import NewBlip from './list/NewBlip.vue'
 import NewChange from './list/NewChange.vue'
 import BlipComponent from './list/Blip.vue'
 import router from '../router'
-import { Blip } from '@/types/domain'
+import { Blip, User } from '@/types/domain'
 
 @Component({
   components: {
@@ -80,6 +57,7 @@ import { Blip } from '@/types/domain'
     Blip: BlipComponent
   },
   computed: {
+
     blips () {
       const blips = this.$store.getters['blips/blipsWithIndex']
       return blips
@@ -102,12 +80,12 @@ import { Blip } from '@/types/domain'
         })
         .sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
     },
-    userCanEdit () {
-      return this.$store.getters['user/userCanEdit']
-    },
-    isLoading () {
-      return this.$store.getters['blips/isLoading']
-    }
+    ...mapGetters('blips', [
+      'isLoading', 'ownerId'
+    ]),
+    ...mapGetters('user', [
+      'user', 'userCanEdit'
+    ]),
   }
 })
 export default class List extends Vue {
@@ -125,6 +103,8 @@ export default class List extends Vue {
   userCanEdit: boolean
   filteredBlips: Blip[]
   isLoading: boolean
+  ownerId: string
+  user: User
 
   searchUpdated () {
     if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })

@@ -6,6 +6,7 @@
     <v-btn
       :dark="darkMode"
       fab bottom right fixed
+      v-if="user.uid === ownerId"
       @click="settingsModalVisible = true"
       color="primary"
     >
@@ -36,7 +37,8 @@
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
-import { Blip, Meta } from '@/types/domain'
+import { mapGetters } from 'vuex'
+import { Blip, Meta, User } from '@/types/domain'
 import Settings from './Settings.vue'
 import { SkillradarChart, SkillradarOptions, SkillradarData } from '../lib/skillradar'
 import appConfig from '../config'
@@ -46,17 +48,14 @@ import appConfig from '../config'
     Settings
   },
   computed: {
+    ...mapGetters('blips', [
+      'meta', 'isLoading', 'isLoaded', 'ownerId'
+    ]),
+    ...mapGetters('user', [
+      'user'
+    ]),
     blips () {
       return this.$store.getters['blips/blipsWithIndex']
-    },
-    meta () {
-      return this.$store.getters['blips/meta']
-    },
-    radarIsLoaded () {
-      return this.$store.getters['blips/isLoaded']
-    },
-    isLoading () {
-      return this.$store.getters['blips/isLoading']
     }
   }
 })
@@ -69,8 +68,10 @@ export default class Radar3 extends Vue {
   // computed
   blips: Blip[]
   meta: Meta
+  user: User
   radarIsLoaded: boolean
   isLoading: boolean
+  ownerId: string
 
   radarConfig: SkillradarOptions = {
     radius: 300,

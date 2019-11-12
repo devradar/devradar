@@ -223,15 +223,9 @@ export default class App extends Vue {
   }
 
   @Watch('radarId')
-  radarIdChange () {
-    this.updateToolbarItems()
-  }
   @Watch('radarAlias')
-  radarAliasChange () {
-    this.updateToolbarItems()
-  }
   @Watch('user')
-  userChange () {
+  radarIdChange () {
     this.updateToolbarItems()
   }
 }

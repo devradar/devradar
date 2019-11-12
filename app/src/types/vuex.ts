@@ -7,6 +7,7 @@ export interface BlipsState {
   meta: Meta;
   radarAlias?: string;
   isPublic: boolean;
+  ownerId: string;
 }
 
 export interface UserState {

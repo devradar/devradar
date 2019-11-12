@@ -32,6 +32,9 @@ const mutations: MutationTree<RadarState> = {
   setRadarAlias (state: RadarState, name: string) {
     state.radarAlias = name
   },
+  setOwnerId (state: RadarState, id: string) {
+    state.ownerId = id
+  },
   setIsPublic (state: RadarState, isPublic: boolean) {
     state.isPublic = isPublic
   },
@@ -89,6 +92,9 @@ const getters: GetterTree<RadarState, RootState> = {
   radarId (state: RadarState) {
     return state.id
   },
+  ownerId (state: RadarState) {
+    return state.ownerId
+  },
   isLoaded (state: RadarState) {
     return state.meta.levels.length > 0 && state.id.length > 0
   }
@@ -96,6 +102,7 @@ const getters: GetterTree<RadarState, RootState> = {
 
 const state: RadarState = {
   id: '',
+  ownerId: '',
   isPublic: false,
   radarAlias: '',
   blips: [],
