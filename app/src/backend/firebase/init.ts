@@ -79,8 +79,7 @@ async function init (store, appConfig) {
         store.commit('user/setUser', user)
         const radarId = await upsertRadar(user)
         store.dispatch('blips/getRadarAlias') // make sure radar alias is also populated
-        if (!store.getters['blips/isLoading']) {
-          // TODO: should not redirect in case user is currently viewing "something useful"
+        if (!store.getters['blips/radarId']) {
           router.push({ name: 'radar', params: { radarId } })
         }
         resolve(user)

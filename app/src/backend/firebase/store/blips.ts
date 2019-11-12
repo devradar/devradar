@@ -4,8 +4,32 @@ import { ActionTree } from 'vuex'
 import { getUUID, cleanChange, cleanBlip } from '../../../util'
 import { Blip, BlipChange, Meta } from '@/types/domain'
 import { RootState, BlipsState } from '@/types/vuex'
+import router from '@/router'
 
 const actions = (): ActionTree<BlipsState, RootState> =>  ({
+  // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
+  async followRadarAlias ({ }, alias: string): Promise<string> {
+    let radarSnapshot: any = {}
+    try {
+      radarSnapshot = await firebase.firestore().collection('radars').doc(alias).get()
+    } finally {
+      if (radarSnapshot.exists) { // provided string is not actually an alias but a valid ID
+        return radarSnapshot.id
+      } else {
+        const aliasSnapshot = await firebase.firestore().collection('radarAliases')
+          .where('alias', '==', alias)
+          .limit(1)
+          .get()
+        if (aliasSnapshot.size === 0) {
+          console.error('No devradar found for this alias', alias)
+          return ''
+        } else {
+          const data = aliasSnapshot.docs[0].data()
+          return data.radarId
+        }
+      }
+    }
+  },
   async getRadar ({ commit }, id: string): Promise<void> {
     commit('setLoading', true)
     const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
@@ -26,8 +50,9 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setLoading', false)
   },
   // call getRadar if the id is different from the one currently in state
-  async getRadarLazy({ dispatch, rootGetters }, radarId: string): Promise<void> {
+  async getRadarLazy({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
     const loadedId = rootGetters['blips/radarId']
+    const radarId = await dispatch('followRadarAlias', aliasOrId)
     if (loadedId !== radarId) {
       dispatch('getRadar', radarId)
     }
@@ -141,6 +166,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     }
     await firebase.firestore().collection('radarAliases').doc(user.uid).set(doc)
     commit('setRadarAlias', alias)
+    router.push({ name: 'radar', params: { radarId: alias } })
   }
 })
 
