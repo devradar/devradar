@@ -12,24 +12,25 @@ import appConfig from '@/config'
 Vue.use(Router)
 const routesCfg = appConfig.routes
 const components = {
-  List,
-  Login,
-  Logout,
-  Users,
-  Settings,
-  Radar3
+  list: List,
+  login: Login,
+  logout: Logout,
+  users: Users,
+  settings: Settings,
+  radar: Radar3
 }
 const routes = routesCfg
   .map(r => ({
     path: r.path,
-    name: r.view,
-    component: components[r.view],
+    name: r.name,
+    component: components[r.name],
     props: true,
     beforeEnter: AuthGuard(r.validator)
   }))
 
 export default new Router({
   routes,
+  mode: 'history',
   scrollBehavior () {
     return { x: 0, y: 0 }
   }

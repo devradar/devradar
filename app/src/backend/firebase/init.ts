@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import appConfig from '../../config'
+import router from '../../router'
 
 async function upsertUser (user): Promise<any> {
   // upsert into user collection
@@ -77,8 +78,8 @@ async function init (store, appConfig) {
         const user = await upsertUser(oauthUser)
         store.commit('user/setUser', user)
         const radarId = await upsertRadar(user)
-        if (!store.getters['blips/isLoading']) {
-          store.dispatch('blips/getRadarLazy', radarId)
+        if (!store.getters['blips/radarId']) {
+          router.push({ name: 'radar', params: { radarId } })
         }
         resolve(user)
       } else { // user is not set (logout)

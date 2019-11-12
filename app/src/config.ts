@@ -8,11 +8,11 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   editPermissions: user => true,
   routes: [ // configure name, permissions & view ports
-    { view: 'Login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar'] },
-    { view: 'List', icon: 'list', title: 'History', path: '/:radarId/list/:blipName?', validator: user => true, location: ['toolbar'] },
-    { view: 'Radar3', icon: 'track_changes', title: 'Radar', path: '/:radarId', validator: user => true, location: ['toolbar'] },
-    { view: 'Logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
-    { view: 'Users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] }
+    { name: 'login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar'] },
+    { name: 'list', icon: 'list', title: 'History', path: '/@:radarId/list/:blipName?', validator: user => true, location: ['toolbar'] },
+    { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
+    { name: 'users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
+    { name: 'radar', icon: 'track_changes', title: 'Radar', path: '/@:radarId', validator: user => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
   ],
   navEntries: [
     { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: user => true, location: ['toolbar-menu'] }

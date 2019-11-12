@@ -4,15 +4,45 @@ import { ActionTree } from 'vuex'
 import { getUUID, cleanChange, cleanBlip } from '../../../util'
 import { Blip, BlipChange, Meta } from '@/types/domain'
 import { RootState, BlipsState } from '@/types/vuex'
+import router from '@/router'
 
 const actions = (): ActionTree<BlipsState, RootState> =>  ({
-  async getRadar ({ commit, rootGetters }, id: string): Promise<void> {
+  // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
+  async followRadarAlias ({ commit }, alias: string): Promise<string> {
+    let response = ''
+    let radarSnapshot: any = {}
+    try {
+      radarSnapshot = await firebase.firestore().collection('radars').doc(alias).get()
+    } catch (e) {
+      // ignore e
+    } finally {
+      if (radarSnapshot.exists) { // provided string is not actually an alias but a valid ID
+        response = radarSnapshot.id
+      } else {
+        const aliasSnapshot = await firebase.firestore().collection('radarAliases')
+          .where('alias', '==', alias)
+          .limit(1)
+          .get()
+        if (aliasSnapshot.size === 0) {
+          console.error('No devradar found for this alias', alias)
+          response = ''
+        } else {
+          const data = aliasSnapshot.docs[0].data()
+          response = data.radarId
+          commit('setRadarAlias', alias)
+        }
+      }
+    }
+    return response
+  },
+  async getRadar ({ commit }, id: string): Promise<void> {
     commit('setLoading', true)
     const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
-    const { categories, levels, title, isPublic = false } = radarSnapshot.data()
+    const { categories, levels, title, isPublic = false, owner } = radarSnapshot.data()
     commit('setMeta', { title: title || `devradar #${id}`, categories, levels })
     commit ('setIsPublic', isPublic)
     commit ('setId', id)
+    commit('setOwnerId', owner)
 
     // populate with blip info
     const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`).get()
@@ -26,8 +56,9 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setLoading', false)
   },
   // call getRadar if the id is different from the one currently in state
-  async getRadarLazy({ dispatch, rootGetters }, radarId: string): Promise<void> {
+  async getRadarLazy({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
     const loadedId = rootGetters['blips/radarId']
+    const radarId = await dispatch('followRadarAlias', aliasOrId)
     if (loadedId !== radarId) {
       dispatch('getRadar', radarId)
     }
@@ -121,18 +152,34 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setMeta', meta)
     commit('setLoading', false)
   },
-  async getRadarRedirect({ commit, rootGetters }): Promise<void> {
+  async getRadarAlias({ commit, rootGetters }): Promise<void> {
     const user = rootGetters['user/user']
     if (!user || !user.radar) return
-    const redirectSnapshot = await firebase.firestore().collection('radarRedirects').doc(user.uid)
+    const aliasSnapshot = await firebase.firestore().collection('radarAliases').doc(user.uid).get()
+    if (aliasSnapshot.exists) {
+      const data = aliasSnapshot.data()
+      commit('setRadarAlias', data.alias)
+    } else {
+      commit('setRadarAlias', '')
+    }
   },
-  async setRadarRedirect({ commit, rootGetters }, name: string): Promise<void> {
+  async setRadarAlias({ commit, rootGetters }, { alias, radarId }: { alias: string; radarId: string }): Promise<void> {
     const user = rootGetters['user/user']
     if (!user || !user.radar) return
     const doc = {
-      name
+      alias,
+      radarId
     }
-    const redirectSnapshot = await firebase.firestore().collection('radarRedirects').doc(user.uid).set(doc)
+    await firebase.firestore().collection('radarAliases').doc(user.uid).set(doc)
+    commit('setRadarAlias', alias)
+    router.push({ name: 'radar', params: { radarId: alias } })
+  },
+  async isRadarAliasAvailable({ commit }, alias: string): Promise<boolean> {
+    const aliasSnapshot = await firebase.firestore().collection('radarAliases')
+      .where('alias', '==', alias)
+      .limit(1)
+      .get()
+    return aliasSnapshot.size === 0
   }
 })
 

@@ -150,27 +150,22 @@
 <script lang="ts">
 import CookieLaw from 'vue-cookie-law'
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { Blip, Meta, User } from '@/types/domain'
 import appConfig from './config'
 import { app } from 'firebase'
+import { mapGetters } from 'vuex'
+import { Blip, Meta, User } from '@/types/domain'
 
 @Component({
   computed: {
-    isLoading () {
-      return this.$store.getters['blips/isLoading']
-    },
-    snackbar () {
-      return this.$store.getters['comm/snackbar']
-    },
-    radarId () {
-      return this.$store.getters['blips/radarId']
-    },
-    meta () {
-      return this.$store.getters['blips/meta']
-    },
-    user () {
-      return this.$store.getters['user/user']
-    }
+    ...mapGetters('blips', [
+      'meta', 'radarAlias', 'radarId', 'isLoading'
+    ]),
+    ...mapGetters('user', [
+      'user'
+    ]),
+    ...mapGetters('comm', [
+      'snackbar'
+    ])
   },
   components: { CookieLaw }
 })
@@ -186,6 +181,7 @@ export default class App extends Vue {
   isLoading: boolean
   meta: Meta
   radarId: string
+  radarAlias: string
   user: User
   snackbar: {
     active: boolean;
@@ -205,7 +201,7 @@ export default class App extends Vue {
       .map(i => {
         if (i.path) {
           i['updatedPath'] = i.path
-            .replace(':radarId', this.radarId)
+            .replace(':radarId', this.radarAlias || this.radarId)
             .replace(':blipName?', '')
         }
         return i
@@ -227,12 +223,9 @@ export default class App extends Vue {
   }
 
   @Watch('radarId')
-  radarIdChange () {
-    this.updateToolbarItems()
-  }
-
+  @Watch('radarAlias')
   @Watch('user')
-  userChange () {
+  radarIdChange () {
     this.updateToolbarItems()
   }
 }
