@@ -16,7 +16,7 @@
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
         <div id="legendwest" class="radarlegend"></div>
       </v-col>
-      <v-col cols="11" sm="6" class="text-center z-10">
+      <v-col cols="12" sm="6" class="text-center z-10">
         <div id="radarchart" class="d-inline"></div>
       </v-col>
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
@@ -129,15 +129,15 @@ export default class Radar3 extends Vue {
 }
 #legendeast {
   padding: 0 0 0 2rem;
-  min-width: 100%;
 }
 #legendwest {
   padding: 0 2rem 0 0;
-  min-width: 100%;
 }
 .radarcontainer {
-  padding: 1rem 4rem !important;
   margin: 0;
+}
+.radarlegend {
+  min-width: 100%;
 }
 .z-10 {
   z-index: 10;

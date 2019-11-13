@@ -7,7 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --format unix",
-    "start": "npm run serve"
+    "start": "npm run serve",
+    "test": "npm run lint && npm run build"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",
