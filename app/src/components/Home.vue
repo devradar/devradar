@@ -1,25 +1,25 @@
 <template>
   <v-container fluid>
-    <v-container class="full-height-width-view ml-10 align-items-center">
-      <v-container class="intro-radar-container">
-        <img src="heading_radar.png" class="intro-radar-img" />
-      </v-container>
-      <v-container class="full-height-width-perc justify-space-around">
+    <v-container class="full-height-width-view align-items-col margin-left-10">
+      <v-container class="justify-space-around">
         <v-row>
           <v-row >
-            <v-col cols=12 class="intro-heading-spacing">
+            <v-col class="intro-heading-spacing" lg=12 md=12 sm=12 xs=12>
               <h1 class="intro-heading">Competence Management <br /> for developers</h1>
             </v-col>
           </v-row>
+          <v-container class="intro-radar-container">
+            <img src="heading_radar.png" class="intro-radar-img" />
+          </v-container>
           <v-row>
             <v-col>
-              <v-row row>
-                <v-col class="intro-text" cols=6 lg=4 md=6 sm=8 xs=12>
+              <v-row>
+                <v-col class="intro-text" lg=5 md=8 sm=10 xs=12>
                   Manage your skills as an individual using the devradar editor or track competence management within your team by using both the editor and the devradar teams app.
                 </v-col>
               </v-row>
-              <v-row row>
-                <v-col class="intro-listing-container" cols=8>
+              <v-row>
+                <v-col class="intro-listing-container" lg=4 md=8 sm=10 xs=12>
                   <ul class="intro-listing">
                     <li>Manage skills via web UI</li>
                     <li>View all skills in a list or radar view</li>
@@ -29,83 +29,22 @@
                 </v-col>
               </v-row>
               <v-row row>
-                <v-col class="intro-buttons" cols=8>
-                  <v-btn dark class="intro-button text-underlined">Get Started</v-btn>
-                  <v-btn dark class="intro-button">Learn More</v-btn>
+                <v-col class="intro-buttons" lg=4 md=8 sm=10 xs=12>
+                  <v-btn 
+                    dark 
+                    href="/login"
+                    class="intro-button text-underlined">Get Started
+                  </v-btn>
+                  <v-btn 
+                    dark 
+                    href="http://devradar.io/howto"
+                    target="_blank"
+                    class="intro-button">Learn More
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-col>
           </v-row>
-        </v-row>
-      </v-container>
-    </v-container>
-    <v-container class="align-items-center">
-      <v-container >
-        <v-row align="center">
-          <v-col>
-            <img src="frameworks_mixed_screenshot.png" class="intro-frameworks-img" />
-          </v-col>
-          <v-col class="frameworks-text" cols=6>
-            Track skills of different categories like <b>Frameworks, Tools, Platforms, Techniques, or custom</b> ones. <br />
-            Keep track of your whole suite of knowledge in one single glance.
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-container>
-    <v-container class="align-items-center">
-      <v-container fluid>
-        <v-row align="center" align-content="center" justify="center">
-          <v-col cols=4 lg=4 md=6 sm=12 xs=12>
-            <v-container class="card-container">
-              <v-card light raised height="400">
-                <v-card-title class="card-title center-content">
-                  <v-icon x-large>home</v-icon>
-                  Serverless
-                </v-card-title> 
-                <v-card-text class="card-text center-content">
-                  Host your own instance on Google Firebase with automatically integrated authentication, sophisticaed user management and full web-based blip editing.
-                </v-card-text>
-
-                <v-card-actions class="center-content">
-                  <v-btn dark class="intro-button text-underlined">Start now</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-container>
-          </v-col>
-          <v-col cols=4 lg=4 md=6 sm=12 xs=12>
-            <v-container class="card-container">
-              <v-card light raised height="400">
-                <v-card-title class="card-title center-content">
-                  <v-icon x-large>home</v-icon>
-                  Serverless
-                </v-card-title>
-                <v-card-text class="card-text center-content">
-                  Host your own instance on Google Firebase with automatically integrated authentication, sophisticaed user management and full web-based blip editing.
-                </v-card-text>
-
-                <v-card-actions class="center-content">
-                  <v-btn dark class="intro-button text-underlined">Start now</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-container>
-          </v-col>
-          <v-col cols=4 lg=4 md=6 sm=12 xs=12>
-            <v-container class="card-container">
-              <v-card light raised height="400">
-                <v-card-title class="card-title center-content">
-                  <v-icon x-large>home</v-icon>
-                  Serverless
-                </v-card-title>
-                <v-card-text class="card-text center-content">
-                  Host your own instance on Google Firebase with automatically integrated authentication, sophisticaed user management and full web-based blip editing.
-                </v-card-text>
-
-                <v-card-actions class="center-content">
-                  <v-btn dark class="intro-button text-underlined">Start now</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-container>
-          </v-col>
         </v-row>
       </v-container>
     </v-container>
@@ -114,14 +53,18 @@
 
 
 <style lang="scss">
-.full-height-width-view {
-  height: calc(100vh - 100px);
-  width: 100vw;
+.margin-left-10 {
+  margin-left: 10px !important;
 }
 
-.full-height-width-perc {
-  height: 80%;
+.full-height-width-view {
+  height: 100%;
   width: 100%;
+}
+
+.align-items-col {
+  display: flex;
+  flex-direction: column;
 }
 
 .align-items-center {
@@ -141,24 +84,70 @@
   margin-bottom: 3vw;
 }
 
-.frameworks-text {
-  font-size: 1.5em;
+@media (max-width: 1049px) {
+  .intro-radar-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .intro-radar-img {
+    height: 55vw;
+  }
 }
 
-.intro-radar-container {
-  position: absolute;
-  right: -50vw;
+@media (min-width: 1050px) {
+  .intro-radar-container {
+    height: 75vw;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  .intro-radar-img {
+    height: 80vw;
+    position: absolute;
+    bottom: -40vh;
+    right: -25vw;  
+  }
 }
 
-.intro-radar-img {
-  height: 50vw;
-  position: relative;
-  bottom: 0;
+@media (min-width: 1500px) {
+  .intro-radar-container {
+    height: 75vw;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  .intro-radar-img {
+    height: 75vw;
+    position: absolute;
+    bottom: -40vh;
+    right: -25vw;  
+  }
 }
 
-.intro-frameworks-img {
-  height: 35vw;
-  position: relative;
+@media (min-width: 1700px) {
+  .intro-radar-container {
+    height: 75vw;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  .intro-radar-img {
+    height: 70vw;
+    position: absolute;
+    bottom: -45vh;
+    right: -25vw;  
+  }
 }
 
 .intro-listing {
@@ -198,26 +187,34 @@
   font-size: 1.25em;
 }
 
-.card-container {
-  width: 400px !important;
+.intro-button {
+    margin-top: 20px;
 }
 
-.center-card-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+@media (max-width: 520px) {
+  .intro-heading {
+    font-size: 9vw;
+    line-height: 125%;
+  }
+  
+  .intro-heading-spacing {
+    margin-bottom: 0;
+  }
+  
+  .intro-text {
+    font-size: 1em;
+  }
+
+  .intro-listing {
+    font-size: 0.9em;
+  }
 }
 
-.card-title {
-  font-size: 1.75em !important;
-}
-
-.card-text {
-  margin-bottom: 10px;
-  font-size: 1.1em !important;
-  text-align: center;
+@media (min-width: 521px) and (max-width: 1049px) {
+  .intro-heading {
+    font-size: 7vw;
+    line-height: 125%;
+  }
 }
 
 </style>
