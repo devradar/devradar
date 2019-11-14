@@ -8,7 +8,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   editPermissions: user => true,
   routes: [ // configure name, permissions & view ports
-    { name: 'home' , icon: 'home', title: 'Home', path: '/home', validator: user => true, location: ['toolbar'] },
+    { name: 'home' , icon: 'home', title: 'Home', path: '/', validator: user => true, location: ['toolbar'] },
     { name: 'login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar'] },
     { name: 'list', icon: 'list', title: 'History', path: '/@:radarId/list/:blipName?', validator: user => true, location: ['toolbar'] },
     { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },

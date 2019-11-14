@@ -15,7 +15,7 @@
             <v-col>
               <v-row>
                 <v-col class="intro-text" lg=5 md=8 sm=10 xs=12>
-                  Manage your skills as an individual using the devradar editor or track competence management within your team by using both the editor and the devradar teams app.
+                  Manage your competences as an individual or use devradar to create a team wide skill matrix. 
                 </v-col>
               </v-row>
               <v-row>
