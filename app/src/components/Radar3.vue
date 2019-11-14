@@ -17,7 +17,7 @@
         <div id="legendwest" class="radarlegend"></div>
       </v-col>
       <v-col cols="12" sm="6" class="text-center z-10">
-        <div id="radarchart" class="d-inline"></div>
+        <div id="radarchart" class="d-inline" data-cy=radarSvg></div>
       </v-col>
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
         <div id="legendeast" class="radarlegend"></div>

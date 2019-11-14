@@ -109,6 +109,7 @@
         v-model="isLoading"
         hide-overlay
         persistent
+        data-cy="loadingDialog"
         width="300"
       >
         <v-card
@@ -128,7 +129,7 @@
         <router-view></router-view>
       </v-container>
     </v-content>
-  <cookie-law theme="devradar">
+  <cookie-law theme="devradar" data-cy="cookie-banner">
     <div slot="message">
       This website uses cookies to ensure you get the best experience on our website. <a href="https://www.cookiesandyou.com/" target="_blank">Learn more</a>
     </div>
