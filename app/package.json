@@ -8,11 +8,11 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --format unix",
     "start": "npm run serve",
-    "start:ci": "serve dist --no-clipboard --listen 8080",
+    "start:ci": "serve dist --single --no-clipboard --listen 8080",
     "test": "npm run lint && npm run build",
-    "test:e2e": "cypress run --record --key 1ed60b20-0a7a-44d6-8e36-08b294121620",
-    "test:e2e:ci": "npm run build && run-p --race start:ci test:e2e",
-    "cypress": "cypress open"
+    "cypress:ci": "cypress run --record --key 1ed60b20-0a7a-44d6-8e36-08b294121620",
+    "test:e2e": "cypress open",
+    "test:e2e:ci": "npm run build && run-p --race start:ci cypress:ci"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",

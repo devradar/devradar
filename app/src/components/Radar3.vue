@@ -14,22 +14,22 @@
     </v-btn>
     <v-row justify="space-around">
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
-        <div id="legendwest" class="radarlegend"></div>
+        <div id="legendwest" class="radarlegend" data-cy="radar-legendwest"></div>
       </v-col>
       <v-col cols="12" sm="6" class="text-center z-10">
-        <div id="radarchart" class="d-inline" data-cy=radarSvg></div>
+        <div id="radarchart" class="d-inline" data-cy="radarSvg"></div>
       </v-col>
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
-        <div id="legendeast" class="radarlegend"></div>
+        <div id="legendeast" class="radarlegend" data-cy="radar-legendeast"></div>
       </v-col>
     </v-row>
     <v-row justify="space-around">
       <v-col cols="5" class="d-flex d-sm-none">
-        <div id="legendwest-small" class="radarlegend"></div>
+        <div id="legendwest-small" class="radarlegend" data-cy="radar-legendwest"></div>
       </v-col>
       <v-col cols="2"></v-col>
       <v-col cols="5" class="d-flex d-sm-none">
-        <div id="legendeast-small" class="radarlegend"></div>
+        <div id="legendeast-small" class="radarlegend" data-cy="radar-legendeast"></div>
       </v-col>
     </v-row>
   </v-container>
