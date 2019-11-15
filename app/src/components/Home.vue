@@ -10,7 +10,7 @@
           <img src="heading_radar.png" class="intro-radar-img" />
         </v-container>
         <v-row>
-          <v-col class="intro-text" lg=5 md=8 sm=10 xs=12>
+          <v-col class="intro-text" lg=5 md=6 sm=10 xs=12>
             Manage your competences as an individual or use devradar to create a team wide skill matrix. 
           </v-col>
         </v-row>
@@ -76,7 +76,7 @@
   margin-bottom: 3vw;
 }
 
-@media (max-width: 1049px) {
+@media (max-width: 1099px) {  
   .intro-radar-container {
     display: flex;
     justify-content: center;
@@ -87,13 +87,14 @@
   }
 
   .intro-radar-img {
-    height: 55vw;
+    width: 55vw;
   }
 }
 
-@media (min-width: 1050px) {
+@media (min-width: 1100px) {
   .intro-radar-container {
-    height: 75vw;
+    width: 75vw;
+    height: 80vh;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -101,16 +102,22 @@
   }
 
   .intro-radar-img {
-    height: 80vw;
+    object-fit: contain;
+    max-width: 120%;
+    max-height: 110%;
+    width: auto;
+    height: auto;
+    
     position: absolute;
-    bottom: -40vh;
-    right: -25vw;  
+    bottom: -30vh;
+    right: -15vw;
   }
 }
 
 @media (min-width: 1500px) {
   .intro-radar-container {
-    height: 75vw;
+    width: 75vw;
+    height: 75vh;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -118,16 +125,22 @@
   }
 
   .intro-radar-img {
-    height: 75vw;
+    object-fit: contain;
+    max-width: 130%;
+    max-height: 120%;
+    width: auto;
+    height: auto;
+    
     position: absolute;
-    bottom: -40vh;
-    right: -25vw;  
+    bottom: -25vh;
+    right: -10vw;  
   }
 }
 
 @media (min-width: 1700px) {
   .intro-radar-container {
-    height: 75vw;
+    width: 75vw;
+    max-height: 75vh;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -135,10 +148,15 @@
   }
 
   .intro-radar-img {
-    height: 70vw;
+    object-fit: contain;
+    max-width: 130%;
+    max-height: 120%;
+    width: auto;
+    height: auto;
+    
     position: absolute;
-    bottom: -45vh;
-    right: -25vw;  
+    bottom: -25vh;
+    right: -10vw;
   }
 }
 
@@ -202,7 +220,7 @@
   }
 }
 
-@media (min-width: 521px) and (max-width: 1049px) {
+@media (min-width: 521px) and (max-width: 1099px) {
   .intro-heading {
     font-size: 7vw;
     line-height: 125%;
