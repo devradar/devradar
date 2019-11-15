@@ -2,9 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 const config = { // needs to be ES6 module so it can be imported by webpack
   backend: {
-    type: 'firebase',
-    project: 'devradario',
-    key: 'AIzaSyCv9VSMXxH7aREKGCi_dsHgkK7hYm25j0A'
+    type: 'testVolatile'
   },
   editPermissions: user => true,
   routes: [ // configure name, permissions & view ports
