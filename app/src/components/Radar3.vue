@@ -8,6 +8,7 @@
       fab bottom right fixed
       v-if="user.uid === ownerId"
       @click="settingsModalVisible = true"
+      data-cy="radar-settings-button"
       color="primary"
     >
       <v-icon>mdi-settings</v-icon>

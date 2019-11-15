@@ -5,7 +5,7 @@ export default {
       categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],
       levels: [ 'Novice', 'Intermediate', 'Advanced', 'Veteran' ],
       isPublic: true,
-      owner: 'rickUser'
+      owner: 'rickUserUid'
     },
     blips: [
       {
