@@ -12,7 +12,7 @@
     "test": "npm run lint && npm run build",
     "cypress:ci": "cypress run --record --key 1ed60b20-0a7a-44d6-8e36-08b294121620",
     "test:e2e": "cypress open",
-    "test:e2e:ci": "npm run build && run-p --race start:ci cypress:ci"
+    "test:e2e:ci": "BACKEND_TYPE=testVolatile npm run build && run-p --race start:ci cypress:ci"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",
@@ -52,6 +52,7 @@
     "npm-run-all": "^4.1.5",
     "sass": "^1.23.0",
     "sass-loader": "^7.1.0",
+    "serve": "^11.2.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "typescript": "^3.4.3",
