@@ -7,6 +7,7 @@
 [![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 [![License check](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
 [![Build Status](https://github.com/anoff/devradar/workflows/devradar/badge.svg)](https://github.com/anoff/devradar/actions)
+[![Cypress.io tests](https://img.shields.io/badge/cypress.io-E2E%20Tests-brightgreen.svg)](https://dashboard.cypress.io/#/projects/gumn5q/runs)
 
 [![Gitter](https://badgen.net/badge/chat/on%20gitter/cyan?icon=gitter)](https://gitter.im/devradar/discuss)
 [![Dependabot status](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)](https://dependabot.com/)
