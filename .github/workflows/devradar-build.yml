@@ -13,6 +13,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      VUE_APP_BACKEND_TYPE: 'testVolatile'
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
@@ -20,16 +23,23 @@ jobs:
         node-version: 12
     - run: npm ci
       working-directory: app
-    - run: npm run lint
+    - run: |
+        npm run lint
+        npm run build
+      name: check for lint and tsc errors
       working-directory: app
-    # run build to make sure typescript does not throw
-    - run: npm run build
+    - run: npm run test:e2e:ci # cypress key provided via CYPRESS_RECORD_KEY env variable
+      name: end to end tests (frontend only)
       working-directory: app
 
   firebase-deploy:
     name: "publish app.devradar.io"
     needs: test
     runs-on: ubuntu-latest
+    env:
+      VUE_APP_BACKEND_TYPE: 'firebase'
+      VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_DAAS_PROJECT }}
+      VUE_APP_BACKEND_KEY: ${{ secrets.FIREBASE_DAAS_CLIENTKEY }}
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
@@ -43,5 +53,6 @@ jobs:
     - run: |
         cd app
         npm i -g firebase-tools
-        firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets. FIREBASE_DAAS_PROJECT}}
+        firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets.FIREBASE_DAAS_PROJECT }}
+      name: deploy to firebase
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
