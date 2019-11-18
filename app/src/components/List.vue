@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, ProvideReactive } from 'vue-property-decorator'
+import { Component, Vue, Prop, ProvideReactive, Query } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import NewBlip from './list/NewBlip.vue'
 import NewChange from './list/NewChange.vue'
@@ -90,12 +90,12 @@ import { Blip, User } from '@/types/domain'
 })
 export default class List extends Vue {
   @Prop({ default: '' })
-  search: string
+  blipName: string
   @Prop({ default: '' })
   radarId: string
   @ProvideReactive() newChangeBlip: Blip
 
-  searchTitle: string = this.search
+  searchTitle: string = this.blipName
   maxMonths: number = 0
   newChangeModalVisible: boolean = false
   // computed
@@ -107,8 +107,11 @@ export default class List extends Vue {
   user: User
 
   searchUpdated () {
-    if (this.searchTitle) router.replace({ name: 'List', params: { search: this.searchTitle } })
-    else router.replace({ name: 'List' })
+    if (this.searchTitle) {
+      router.replace({ name: 'list', params: { radarId: this.radarId }, query: { q: this.searchTitle } })
+    } else {
+      router.replace({ name: 'list', params: { radarId: this.radarId } })
+    }
   }
 
   newChangeOpen (blipId) {
@@ -127,13 +130,9 @@ export default class List extends Vue {
     this.newChangeModalVisible = false
   }
 
-  public fetchRadarData () {
-    this.$store.dispatch('blips/getRadarLazy', this.radarId)
-  }
-
   mounted () {
     if (!this.isLoading) {
-      this.fetchRadarData()
+      this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }
   }
 }

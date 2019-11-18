@@ -26,7 +26,7 @@ const routes = routesCfg
     path: r.path,
     name: r.name,
     component: components[r.name],
-    props: true,
+    props: r.props || true,
     beforeEnter: AuthGuard(r.validator)
   }))
 
