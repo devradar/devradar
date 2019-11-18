@@ -10,11 +10,11 @@ import { UserState, BlipsState, CommState } from '@/types/vuex';
 
 Vue.use(VueX)
 
-const backendActive = backend[appConfig.backend.type.toLowerCase()]
+const backendActive = backend[appConfig.backend.type]
 if (!backendActive) {
   console.error('No valid backend defined. Please choose:', Object.keys(backend))
 }
-backendActive.type = appConfig.backend.type.toLowerCase()
+backendActive.type = appConfig.backend.type
 
 // add local (browser) storage
 const storePlugins = []

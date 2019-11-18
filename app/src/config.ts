@@ -2,15 +2,15 @@ import colors from 'vuetify/es5/util/colors'
 
 const config = { // needs to be ES6 module so it can be imported by webpack
   backend: {
-    type: 'firebase',
-    project: 'devradario',
-    key: 'AIzaSyCv9VSMXxH7aREKGCi_dsHgkK7hYm25j0A'
+    type: process.env.VUE_APP_BACKEND_TYPE || 'testVolatile',
+    project: process.env.VUE_APP_BACKEND_PROJECT,
+    key: process.env.VUE_APP_BACKEND_KEY
   },
   editPermissions: user => true,
   routes: [ // configure name, permissions & view ports
     { name: 'home' , icon: 'home', title: 'Home', path: '/', validator: user => true, location: ['toolbar'] },
     { name: 'login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar'] },
-    { name: 'list', icon: 'list', title: 'History', path: '/@:radarId/list/:blipName?', validator: user => true, location: ['toolbar'] },
+    { name: 'list', icon: 'list', title: 'History', path: '/^:radarId/list/:blipName?', validator: user => true, location: ['toolbar'] },
     { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
     { name: 'users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
     { name: 'radar', icon: 'track_changes', title: 'Radar', path: '/@:radarId', validator: user => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry

@@ -32,7 +32,7 @@ const routes = routesCfg
 
 export default new Router({
   routes,
-  mode: 'history',
+  // mode: 'history',
   scrollBehavior () {
     return { x: 0, y: 0 }
   }

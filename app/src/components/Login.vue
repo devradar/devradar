@@ -7,13 +7,16 @@
             <v-container>
                 <v-layout row>
                   <v-flex xs6 class="text-xs-center">
-                    <v-btn v-on:click="onLogin('twitter')" mx-auto>Login using Twitter</v-btn>
+                    <v-btn v-on:click="onLogin('twitter')"
+                    data-cy="user-login" mx-auto>Login using Twitter</v-btn>
                   </v-flex>
                   <v-flex xs6 class="text-xs-center">
-                    <v-btn v-on:click="onLogin('github')" mx-auto>Login using GitHub</v-btn>
+                    <v-btn v-on:click="onLogin('github')"
+                    data-cy="admin-login" mx-auto>Login using GitHub</v-btn>
                   </v-flex>
                   <v-flex xs6 class="text-xs-center">
-                    <v-btn v-on:click="onLogin('google')" mx-auto>Login using Google</v-btn>
+                    <v-btn v-on:click="onLogin('google')"
+                    mx-auto>Login using Google</v-btn>
                   </v-flex>
                 </v-layout>
                 <v-layout row>
