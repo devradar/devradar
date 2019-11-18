@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, ProvideReactive, Query } from 'vue-property-decorator'
+import { Component, Vue, Prop, ProvideReactive } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import NewBlip from './list/NewBlip.vue'
 import NewChange from './list/NewChange.vue'
