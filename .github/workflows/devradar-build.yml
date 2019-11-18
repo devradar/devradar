@@ -34,6 +34,7 @@ jobs:
 
   firebase-deploy:
     name: "publish app.devradar.io"
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: test
     runs-on: ubuntu-latest
     env:
@@ -55,4 +56,3 @@ jobs:
         npm i -g firebase-tools
         firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets.FIREBASE_DAAS_PROJECT }}
       name: deploy to firebase
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
