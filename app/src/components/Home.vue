@@ -194,6 +194,7 @@
 
   .intro-radar-img {
     width: 55vw;
+    height: 55vw;
   }
 }
 </style>
