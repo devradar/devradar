@@ -51,11 +51,12 @@ async function upsertRadar (user): Promise<string> {
       radarId = setSnapshot.id
     } else {
       // set the first radar to the active radar
-      await db.collection('users').doc(user.uid).update({ radar: getSnapshot.docChanges()[0].doc.id })
       radarId = getSnapshot.docChanges()[0].doc.id
+      await db.collection('users').doc(user.uid).update({ radar: radarId })
     }
     return radarId
   } else {
+    // check if alias exists
     return user.radar
   }
 }
@@ -79,7 +80,12 @@ async function init (store, appConfig) {
         store.commit('user/setUser', user)
         const radarId = await upsertRadar(user)
         if (!store.getters['blips/radarId']) {
-          router.push({ name: 'radar', params: { radarId } })
+          await store.dispatch('blips/getRadarLazy', radarId)
+          let radarIdOrAlias = radarId
+          if (store.getters['blips/radarAlias']) {
+            radarIdOrAlias = store.getters['blips/radarAlias']
+          }
+          router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
         }
         resolve(user)
       } else { // user is not set (logout)
