@@ -36,7 +36,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     return response
   },
   // check if a given radarId already has an alias
-  async findAliasForRadarId ({ commit }, id: string): Promise<string> {
+  async findAliasForRadarId ({ commit }, id: string): Promise<string> {
     const aliasSnapshot = await firebase.firestore().collection('radarAliases')
       .where('radarId', '==', id)
       .limit(1)

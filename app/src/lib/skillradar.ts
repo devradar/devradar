@@ -34,6 +34,10 @@ export interface CoordCarthesian {
   y: number;
 }
 
+export interface BlipExtended extends Blip {
+  detailsUrl?: string;
+}
+
 // wrap (existing) text within a svg <text> element by adding <tspan> attributes once maxLength is reached
 function textWrap (textElm, maxLength) {
   textElm.each(function () {
@@ -147,14 +151,14 @@ export class SkillradarChart {
     const radarWrapper = g.selectAll('.radarWrapper') // eslint-disable-line @typescript-eslint/no-unused-vars
       .data(data.items)
       .enter().append('a')
-      .attr('href', (d: Blip) => (d || {}).detailsUrl || '')
+      .attr('href', (d: BlipExtended) => (d || {}).detailsUrl || '')
       .append('g')
       .attr('class', `blip ${darkClass}`)
-      .attr('data-index', (d: Blip) => d.index)
-      .attr('transform', (d: Blip) => 'translate(' + this.rad2xy(this.blip2rad(d)).x + ',' + this.rad2xy(this.blip2rad(d)).y + ')')
+      .attr('data-index', (d: BlipExtended) => d.index)
+      .attr('transform', (d: BlipExtended) => 'translate(' + this.rad2xy(this.blip2rad(d)).x + ',' + this.rad2xy(this.blip2rad(d)).y + ')')
       .on('mouseover', function () {
         isOverBlip = true
-        const blip = d3.select(this).data()[0] as Blip
+        const blip = d3.select(this).data()[0] as BlipExtended
         d3.select(this).select('.blipCircle')
           .transition().duration(cfg.transitionDurationMs)
           .attr('r', cfg.blipRadius * cfg.blipRadiusHoverPercentage)
@@ -228,7 +232,7 @@ export class SkillradarChart {
     radarWrapper
       .append('circle')
       .attr('r', 13)
-      .attr('class', function (d: Blip) {
+      .attr('class', function (d: BlipExtended) {
         return `blipCircle blipCircle-level-${d.level} blipCircle-category-${d.category} ${darkClass}`
       })
     // blip number
@@ -237,7 +241,7 @@ export class SkillradarChart {
       .attr('class', `blipIndex ${darkClass}`)
       .attr('text-anchor', 'middle')
       .attr('dy', '0.3em')
-      .text((d: Blip) => d.index + 1)
+      .text((d: BlipExtended) => d.index + 1)
 
     // ###################
     // ###   Tooltip   ###
@@ -340,13 +344,13 @@ export class SkillradarChart {
     const legendWrapper = g.selectAll('.legendWrapper') // eslint-disable-line @typescript-eslint/no-unused-vars
       .data(blips)
       .enter().append('a')
-      .attr('href', (d: Blip) => (d || {}).detailsUrl || '')
+      .attr('href', (d: BlipExtended) => (d || {}).detailsUrl || '')
       .append('g')
-      .attr('data-title', (d: Blip) => d.title)
-      .attr('data-index', (d: Blip) => d.index)
-      .attr('class', (d: Blip) => `legendEntry category-${d.category} level-${d.level} ${darkClass}`)
+      .attr('data-title', (d: BlipExtended) => d.title)
+      .attr('data-index', (d: BlipExtended) => d.index)
+      .attr('class', (d: BlipExtended) => `legendEntry category-${d.category} level-${d.level} ${darkClass}`)
       .on('mouseover', function () {
-        const { index } = d3.select(this).data()[0] as Blip
+        const { index } = d3.select(this).data()[0] as BlipExtended
         const blip = d3.selectAll('.blip').filter(`[data-index='${index}']`)
         blip.select('.blipCircle')
           .transition().duration(cfg.transitionDurationMs)
@@ -376,7 +380,7 @@ export class SkillradarChart {
     legendWrapper
       .append('polyline')
       .attr('class', `legendDecorator ${darkClass}`)
-      .attr('points', (d: Blip, i: number) => {
+      .attr('points', (d: BlipExtended, i: number) => {
         const category = categories[i]
         const categoryNumber = categoriesDistinct.indexOf(category)
         const y = legendYoffset(categoryNumber, i + 1) + 2
@@ -389,37 +393,37 @@ export class SkillradarChart {
       .append('text')
       .attr('class', 'legendTitle ${darkClass}')
       .attr('text-anchor', 'left')
-      .attr('y', (d: Blip, i: number) => {
+      .attr('y', (d: BlipExtended, i: number) => {
         const category = categories[i]
         const categoryNumber = categoriesDistinct.indexOf(category)
         return legendYoffset(categoryNumber, i + 1)
       })
       .attr('x', 2 * legendTitleCharHeight)
-      .text((d: Blip) => this.limitString(d.title, cfg.titleCutOff))
+      .text((d: BlipExtended) => this.limitString(d.title, cfg.titleCutOff))
     
     legendWrapper
       .append('text')
       .attr('class', `legendIndex ${darkClass}`)
       .attr('text-anchor', 'middle')
-      .attr('y', (d: Blip, i: number) => {
+      .attr('y', (d: BlipExtended, i: number) => {
         const category = categories[i]
         const categoryNumber = categoriesDistinct.indexOf(category)
         return legendYoffset(categoryNumber, i + 1)
       })
       .attr('x', 1 * legendTitleCharHeight)
-      .text((d: Blip) => d.index + 1)
+      .text((d: BlipExtended) => d.index + 1)
     
     legendWrapper
       .append('text')
       .attr('class', `legendLevel ${darkClass}`)
       .attr('text-anchor', 'end')
-      .attr('y', (d: Blip, i: number) => {
+      .attr('y', (d: BlipExtended, i: number) => {
         const category = categories[i]
         const categoryNumber = categoriesDistinct.indexOf(category)
         return legendYoffset(categoryNumber, i + 1)
       })
       .attr('x', (cfg.titleCutOff + levelMaxLength + 9) * legendTitleCharWidth) // no clue how to get rid of the magic 8; TODO: come up with a better way for calculating text width/height than magic numbers
-      .text((d: Blip) => data.levels[d.level])
+      .text((d: BlipExtended) => data.levels[d.level])
 
     g.selectAll('.legendCategory')
       .data(categoriesDistinct)
