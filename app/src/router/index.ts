@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Radar3 from '@/components/Radar3.vue'
+import Home from '@/components/Home.vue'
 import List from '@/components/List.vue'
 import Login from '@/components/Login.vue'
 import Logout from '@/components/Logout.vue'
@@ -12,6 +13,7 @@ import appConfig from '@/config'
 Vue.use(Router)
 const routesCfg = appConfig.routes
 const components = {
+  home: Home,  
   list: List,
   login: Login,
   logout: Logout,
