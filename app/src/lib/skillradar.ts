@@ -147,7 +147,7 @@ export class SkillradarChart {
     const radarWrapper = g.selectAll('.radarWrapper') // eslint-disable-line @typescript-eslint/no-unused-vars
       .data(data.items)
       .enter().append('a')
-      .attr('href', (d: Blip) => `#/list/${d.title}`)
+      .attr('href', (d: Blip) => (d || {}).detailsUrl || '')
       .append('g')
       .attr('class', `blip ${darkClass}`)
       .attr('data-index', (d: Blip) => d.index)
@@ -340,7 +340,7 @@ export class SkillradarChart {
     const legendWrapper = g.selectAll('.legendWrapper') // eslint-disable-line @typescript-eslint/no-unused-vars
       .data(blips)
       .enter().append('a')
-      .attr('href', (d: Blip) => `#/list/${d.title}`)
+      .attr('href', (d: Blip) => (d || {}).detailsUrl || '')
       .append('g')
       .attr('data-title', (d: Blip) => d.title)
       .attr('data-index', (d: Blip) => d.index)

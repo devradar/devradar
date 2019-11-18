@@ -35,13 +35,28 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     }
     return response
   },
-  async getRadar ({ commit }, id: string): Promise<void> {
+  // check if a given radarId already has an alias
+  async findAliasForRadarId ({ commit }, id: string): Promise<string> {
+    const aliasSnapshot = await firebase.firestore().collection('radarAliases')
+      .where('radarId', '==', id)
+      .limit(1)
+      .get()
+    if (aliasSnapshot.size === 0) {
+      return ''
+    } else {
+      const data = aliasSnapshot.docs[0].data()
+      const alias = data.alias
+      commit('setRadarAlias', alias)
+      return alias
+    }
+  },
+  async getRadar ({ commit, dispatch }, id: string): Promise<void> {
     commit('setLoading', true)
     const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
     const { categories, levels, title, isPublic = false, owner } = radarSnapshot.data()
     commit('setMeta', { title: title || `devradar #${id}`, categories, levels })
-    commit ('setIsPublic', isPublic)
-    commit ('setId', id)
+    commit('setIsPublic', isPublic)
+    commit('setId', id)
     commit('setOwnerId', owner)
 
     // populate with blip info
@@ -53,6 +68,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
       blip.id = doc.id // ensure that firebase._id is used
       commit('addBlip', blip)
     })
+    await dispatch('findAliasForRadarId', id)
     commit('setLoading', false)
   },
   // call getRadar if the id is different from the one currently in state
@@ -60,7 +76,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     const loadedId = rootGetters['blips/radarId']
     const radarId = await dispatch('followRadarAlias', aliasOrId)
     if (loadedId !== radarId) {
-      dispatch('getRadar', radarId)
+      return dispatch('getRadar', radarId)
     }
   },
   async addBlip ({ commit, rootGetters }, blip: Blip): Promise<void> {
