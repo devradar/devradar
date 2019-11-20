@@ -8,7 +8,7 @@ about:
     - text: "Manage skills via web UI"
     - text: "View all skills in a list or radar view"
     - text: "Import/export via `.toml` files"
-    - text: "Overlay your teams devradars and focus on the key skills"
+    - text: "Overlay your team's devradars and focus on the key skills"
 
 features:
   enable: true
@@ -20,7 +20,7 @@ tiles:
   item : 
     - title : "Serverless"
       icon : "ti-server"
-      content : "Host your own instance on Google Firebase with automatically integrated authentication, sophisticaed user management and full web-based blip editing."
+      content : "Host your own instance on Google Firebase with automatically integrated authentication, sophisticated user management and full web-based blip editing."
       URL: https://github.com/anoff/devradar/blob/master/editor/setup.md#firebase-backend
       URLtitle: Setup Guide
       highlighted : false
@@ -52,7 +52,7 @@ usecases:
       
     - image : "images/team.jpg"
       URL : "https://editor.devradar.io/#/?load=N4IgtgpgLghiBcooEsoBsIJAcRmmAxigQAQBiEAJhAE4woD2AdiQCoQEAWTDaDA5gE8SAZVgEA1iAA0IAvQj8GNZBADOCANohWDXhtnsuTZAEcArupkgACvigAzZWAMgydSAHdlEjQF1ZDAA3CDQNeG0ACV5KawBBNTV1V1YVPHjKBgAHKBA-AF9ZACM0ZCzwzVB5KEVlQQQABlkUdEx4HFQAGRgikgBhAElrLhgmfisI0EoFLAAmBoBGAA4AWgaAdmsmCE9OiBC0BABmfICQYNDjwqqFJRp6+CPA5CYpds4oKHL4AHo-n541AAVmoAHTKfjWahqAgqHLIZhYABSMCCMBhcKgJBeJCgnAgJCKhAkECYlAA-CRAHwbgHpd6wtDBYAByDGooJBw04o3GFSmM3a82Wa02sm2u32l0ezQgAA9cu0wDBqNisS8oAxcfiSAQGGAwMxcXowuIpNcQNManNFgAWFYLWZbHZ7A4IWbSuVYGpqVVYzyoTia5BqEhiwnE0mxU6BCWHR5m6q1e6u56vLAfL5qX7-CTmIq0bZe0EIqHqWFlRhMLB9ZiwF60YP0EgwvCYZqoRntADSufz0CsshGYwmlXN-JAgtWG0d4pdUpANQ97WVDkI6qbsDJMBolBIThoJDwaBIDHM+51TFr233yi46igdArIYgVA0UfOMau0huNTuDzd5xeN4QHTb5-h+TJJFoIsGBLDFywRSt2mrC8YDrfdD01Ak8RefhXAZNoQAAEQYSCaE5blhz5S0BUWABONYjmnZ1JROM4LljE4vzkW46gQBZZGhMt4URdpUggRtBBPfcIPMSAUMfUoSRISTzFxGhxKxHVqGkEh+FQEgQhoNQEJ0mwACUSHUoJVE8HToAIUF6XbAiIIbYMtNbOQuSHXlR2o8c6IYpiP3gf8F3lHROCDJtnxcEhFIJGBdL0HdkGoGAdM8Ak1E4E80B3TISH1dTjwcFUQDfdjXXjHikznQTMQQrARCElAxgPMl13MBwHCc1osBsQQ8URAdvJ5LQqIIwV6IaAA2YLZyeedZQiiq2JCzjv0TB5+PnZyqwGH4+kI8ifImvypsCuaFpYyqNpqn9ePgJo9v69o4gAL1PAlCP2AB5cpTvGyYLqtBYZvm0UnRChY7tnWGuITX9jjbN6QAANUsdlXEHYGRwtS7wbWSGQDFZjY1mOHJUpxHaoeJb8KwOIxnMfAyNGijfIJsGIZuimqf52nHrql7GfaJFSQkF4cbGyjQZoonrqhmdbvWxaHu2vjUY7EABiYBw6G9GhzCIb6D2DatqCBuXuYV3nlfJ6q1epjXkee7WCPYGg6D3MBra5sdpuJvmnejWcaa2t3Rf296mGMkpPNxm3A6ukmyfu52ONdp7drFkAAHUIF6X7jP4SsObOkHbYCxW0+h8OBeqoXNbnPO+gAanb-3zuroOldJ+vVbD27m7dsKY5AT6zYGGAYBEbuq5T2uQ7jTPP0jp7x7RqeSpsH4RFn+eK7xyaeeDh2QsptfQuzuqt517BUEiXMF-xpf7YHlXY1h6+EY3u+PZYAAEKoCASbEkuRj7J38n3OuX8rjX1YvkIAA"
-      title: Manage team competences
+      title: Manage team competencies
       text: "Use devradar to track adoption of skills and technologies (<i>hold, assess, trial, adopt</i>) within your team or organization.
       Identify emerging technologies and guide innovation.<br><br>
       Plan and document technology adoption over time.

@@ -3,13 +3,13 @@ title: concept
 weight: 1
 ---
 
-The devradar represents skills as so called **blips** that are either rendered on a radar-like graph or in a list.
+The devradar represents skills as so called **blips** that are rendered either on a radar-like graph or in a list.
 
 ## Radar View
 
 The first one is the **radar** view that shows you all skills oriented in a polar coordinate system with `four quadrants`.
 Individual skills in the radar view are shown as circular **blips** (C) with a numeric _ID_ and colored by their respective quadrant (A).
-Each quadrant represents a certain group of skills, classical quadrants are _techniques, tools, frameworks (and languages), platforms_.
+Each quadrant represents a certain group of skills. Classical quadrants are _techniques_, _tools_, _frameworks (and languages)_, and _platforms_.
 The distance from blip to the radar center indicates the `adoption level` (B) for a certain skill.
 In addition to the center radar graph all skills are listed by name and their respective ID in the corresponding quadrant (C).
 
