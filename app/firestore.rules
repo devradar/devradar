@@ -13,24 +13,24 @@ service cloud.firestore {
 
     match /radars/{radar} {
       allow get: if isReadable(radar);
-      allow list: if isReadable(radar);
+      allow list: if request.query.limit <= 10 && isReadable(radar);
 			allow create: if isSignedIn();
       allow update, delete: if isOwner(radar) || hasRole('admin');
     }
     match /radars/{radar}/blips/{blip} {
       allow get: if isReadable(radar);
-      allow list: if isReadable(radar);
+      allow list: if request.query.limit <= 100 && isReadable(radar);
       allow write: if isOwner(radar) || hasRole('admin');
     }
     match /radars/{radar}/blips/{blip}/changes/{change} {
       allow get: if isReadable(radar);
-      allow list: if isReadable(radar);
+      allow list: if request.query.limit <= 100 && isReadable(radar);
       allow write: if isOwner(radar) || hasRole('admin');
     }
 
     match /radarAliases/{user} {
       allow get: if true;
-      allow list: if true;
+      allow list: request.query.limit <= 10 && if true;
       allow write: if request.auth.uid == user || hasRole('admin');
     }
     

@@ -54,3 +54,7 @@ npm run test:e2e
 
 The tests are also run in CI using the `testVolatile` backend.
 It is planned to create a E2E firebase environment to test complete behavior of the app with the actual database.
+
+## Known limits
+
+1. Blips and history entries are limited to 100 per radar
