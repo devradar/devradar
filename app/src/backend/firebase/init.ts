@@ -23,7 +23,8 @@ async function upsertUser (user): Promise<any> {
       name: user.displayName || user.uid,
       displayName: user.displayName,
       lastLogin: new Date().toISOString(),
-      email: user.email
+      email: user.email,
+      radar: ''
     }
     const docRef = await db.collection('users').doc(user.uid).set(doc)
     return Object.assign(docRef, { roles: {} })
@@ -35,6 +36,7 @@ async function upsertRadar (user): Promise<string> {
     const db = firebase.firestore()
     const getSnapshot = await db.collection('radars')
       .where('owner', '==', user.uid)
+      .limit(3)
       .get()
     let radarId
     if (getSnapshot.empty) {

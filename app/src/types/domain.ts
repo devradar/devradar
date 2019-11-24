@@ -1,10 +1,10 @@
 export interface Blip {
   title: string;
   category: number;
-  level: number;
-  link?: string;
-  description?: string;
-  changes?: BlipChange[];
+  description: string;
+  changes: BlipChange[];
+  link: string;
+  level?: number;
   id?: string;
   index?: number;
 }

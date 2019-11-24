@@ -33,21 +33,25 @@ function cleanBlip (blip: Blip): Blip {
   if (blip.changes) {
     changes = blip.changes.map(cleanChange)
   }
-  let level = blip.level
-  if (changes.length) {
-    level = changes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel
-  }
-  const { category, link, description, title, id } = blip
-  const newBlip = { category, link, description, title, changes, level, id }
+  const { category, link, description, title } = blip
+  const newBlip = { category, link, description, title, changes }
   if (!link) delete newBlip.link
-  if (!id) delete newBlip.id
   if (!description) newBlip.description = ''
   return newBlip
+}
+function addBlipLevelFromChanges (blip: Blip): Blip {
+  let level = blip.level
+  if (blip.changes.length) {
+    level = blip.changes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel
+  }
+  blip.level = level
+  return blip
 }
 export {
   getHash,
   getPseudoRand,
   getUUID,
   cleanBlip,
-  cleanChange
+  cleanChange,
+  addBlipLevelFromChanges
 }

@@ -3,7 +3,7 @@ service cloud.firestore {
     match /users/{user} {
      	allow get: if true;
       allow list: if hasRole('admin');
-      allow write: if request.auth.uid == user || hasRole('admin');
+      allow write: if isUserObject(request.resource.data) && (request.auth.uid == user || hasRole('admin'));
     }
     match /roles/{user} {
       allow get: if true;
@@ -14,23 +14,19 @@ service cloud.firestore {
     match /radars/{radar} {
       allow get: if isReadable(radar);
       allow list: if request.query.limit <= 10 && isReadable(radar);
-			allow create: if isSignedIn();
-      allow update, delete: if isOwner(radar) || hasRole('admin');
+			allow create: if isRadarObject(request.resource.data) && isSignedIn();
+      allow update, delete: if isRadarObject(request.resource.data) && (isOwner(radar) || hasRole('admin'));
     }
     match /radars/{radar}/blips/{blip} {
       allow get: if isReadable(radar);
       allow list: if request.query.limit <= 100 && isReadable(radar);
-      allow write: if isOwner(radar) || hasRole('admin');
-    }
-    match /radars/{radar}/blips/{blip}/changes/{change} {
-      allow get: if isReadable(radar);
-      allow list: if request.query.limit <= 100 && isReadable(radar);
-      allow write: if isOwner(radar) || hasRole('admin');
+      allow create, update: if isBlipObject(request.resource.data) && (isOwner(radar) || hasRole('admin'));
+      allow delete: if isOwner(radar) || hasRole('admin');
     }
 
     match /radarAliases/{user} {
       allow get: if true;
-      allow list: request.query.limit <= 10 && if true;
+      allow list: if request.query.limit <= 10;
       allow write: if request.auth.uid == user || hasRole('admin');
     }
     
@@ -55,6 +51,27 @@ service cloud.firestore {
     }
     function isReadable(radar) {
       return isOwner(radar) || isPublic(radar) || request.auth.uid in get(/databases/$(database)/documents/radars/$(radar)).data.readers
+    }
+
+    function isUserObject(data) {
+      return data.size() == 6 &&
+        data.keys().hasOnly(['uid', 'name', 'displayName', 'lastLogin', 'email', 'radar']) &&
+        data.name is string &&
+        data.displayName is string &&
+        data.lastLogin is string &&
+        data.email is string &&
+        data.radar is string;
+    }
+    function isRadarObject(data) {
+      return data.keys().hasOnly(['blips', 'categories', 'levels', 'owner', 'readers', 'isPublic'])
+    }
+    function isBlipObject(data) {
+      return data.keys().hasOnly(['title', 'category', 'link', 'changes', 'description']) &&
+        data.title is string &&
+        data.category is number &&
+        data.link is string &&
+        data.description is string &&
+        data.changes is list;
     }
   }
 }

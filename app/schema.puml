@@ -17,6 +17,7 @@ user : uid : String
 user : displayName : String
 user : lastLogin : String
 user : name : String
+user : email : String
 user : radar : radar._id
 
 users o-- user
@@ -45,8 +46,9 @@ radar o..o user
 object blip
 blip : _id : Firebase UID
 blip : title : String
-blip : category : String
-blip : level : String
+blip : description : String
+blip : category : Number
+blip : level : Number
 blip : link : String
 blip : changes : Array<change>
 

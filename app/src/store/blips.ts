@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { Module, GetterTree, MutationTree } from 'vuex'
 import { RootState, BlipsState as RadarState } from '@/types/vuex'
 import { Blip, Meta } from '@/types/domain';
-import { getUUID, cleanBlip } from '../util'
+import { getUUID, cleanBlip, addBlipLevelFromChanges } from '../util'
 import appConfig from '../config'
 
 const mutations: MutationTree<RadarState> = {
@@ -10,7 +10,6 @@ const mutations: MutationTree<RadarState> = {
     state.blips = []
   },
   addBlip (state: RadarState, blip: Blip) {
-    blip.id = blip.id || getUUID()
     blip.changes = blip.changes
       .map(c => Object.assign({ id: getUUID() }, c)) // make sure an existing ID has priority by correct assign order
     state.blips.push(blip)
@@ -49,16 +48,13 @@ const getters: GetterTree<RadarState, RootState> = {
       .filter(b => b.changes.length > 0 || b.level >= 0)
       .map(cleanBlip)
       .sort((a: Blip, b: Blip) => a.title > b.title ? 1 : -1)
+      .map(addBlipLevelFromChanges)
       .map((b, bIndex) => {
         const changes = b.changes.map((c, cIndex) => {
           // append a 'fake' index that is used for visuals only e.g. blip# in radar view
           Object.assign(c, { index: cIndex })
           return c
         })
-        if (changes.length) {
-          const level = changes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0].newLevel
-          b.level = level
-        }
         Object.assign(b, { index: bIndex })
         return b
       })
