@@ -1,7 +1,7 @@
 <p align="center">
   <img src="assets/logo-text.png">
   <br>
-  Track and manage skills as an individual and manage competences across a team.
+  Track and manage skills as an individual and manage competencies across a team.
 </p>
 
 [![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)

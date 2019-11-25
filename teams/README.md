@@ -9,7 +9,7 @@
 > Visit [devradar.io](https://devradar.io) for an introduction
 
 This repository holds the Web Application for devradar **teams**.
-A web based tool to manage competences in teams and organizations.
+A web based tool to manage competencies in teams and organizations.
 You need to create individual devradars for each team member to use the teams tool.
 
 <!-- TOC depthFrom:2 -->
