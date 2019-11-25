@@ -33,8 +33,8 @@ function cleanBlip (blip: Blip): Blip {
   if (blip.changes) {
     changes = blip.changes.map(cleanChange)
   }
-  const { category, link, description, title } = blip
-  const newBlip = { category, link, description, title, changes }
+  const { category, link, description, title, id } = blip
+  const newBlip = { category, link, description, title, changes, id }
   if (!link) delete newBlip.link
   if (!description) newBlip.description = ''
   return newBlip

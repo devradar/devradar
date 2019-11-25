@@ -106,7 +106,6 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
       description
     }
 
-    console.log(newBlip)
     const setSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).add(newBlip)
     newBlip['id'] = setSnapshot.id
     commit('addBlip', newBlip)
@@ -120,7 +119,6 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     blip.link = blip.link || ''
     // prepend https if nothing is there
     if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
-    console.log(blip)
     await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(cleanBlip(blip))
     commit('exchangeBlip', blip)
     commit('setLoading', false)
@@ -155,12 +153,8 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     const newChange = cleanChange(change)
     newChange.id = getUUID()
     blip.changes.push(newChange)
-    const dbBlip = JSON.parse(JSON.stringify(blip))
-    delete dbBlip.level
-    delete dbBlip.index
-    delete dbBlip.id
-    console.log(dbBlip)
-    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(dbBlip)
+    blip = cleanBlip(blip)
+    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(blip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },

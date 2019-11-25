@@ -2,7 +2,7 @@
   <v-container
     fluid
     grid-list-lg>
-    <new-blip v-if="user.uid === ownerId"></new-blip>
+    <new-blip v-if="userCanEdit"></new-blip>
     <new-change
     @submit="newChangeSubmit"
     @cancel="newChangeCancel"

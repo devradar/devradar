@@ -6,7 +6,7 @@
     <v-btn
       :dark="darkMode"
       fab bottom right fixed
-      v-if="user.uid === ownerId"
+      v-if="userCanEdit"
       @click="settingsModalVisible = true"
       data-cy="radar-settings-button"
       color="primary"
@@ -53,7 +53,7 @@ import appConfig from '../config'
       'meta', 'isLoading', 'isLoaded', 'ownerId'
     ]),
     ...mapGetters('user', [
-      'user'
+      'user', 'userCanEdit'
     ]),
     blips () {
       return this.$store.getters['blips/blipsWithIndex']
@@ -77,6 +77,7 @@ export default class Radar3 extends Vue {
   isLoaded: boolean
   isLoading: boolean
   ownerId: string
+  userCanEdit: boolean
 
   radarConfig: SkillradarOptions = {
     radius: 300,

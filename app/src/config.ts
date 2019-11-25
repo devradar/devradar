@@ -6,7 +6,6 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     project: process.env.VUE_APP_BACKEND_PROJECT,
     key: process.env.VUE_APP_BACKEND_KEY
   },
-  editPermissions: user => true,
   routes: [ // configure name, permissions & view ports
     { name: 'home' , icon: 'home', title: 'Home', path: '/', validator: user => true, location: ['toolbar'] },
     { name: 'login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar'] },

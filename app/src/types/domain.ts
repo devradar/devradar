@@ -4,8 +4,8 @@ export interface Blip {
   description: string;
   changes: BlipChange[];
   link: string;
+  id: string;
   level?: number;
-  id?: string;
   index?: number;
 }
 

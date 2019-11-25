@@ -23,10 +23,10 @@ const getters: GetterTree<UserState, RootState> = {
   userList (state: UserState) {
     return state.userList
   },
-  userCanEdit (state: UserState, getters) {
+  userCanEdit (state: UserState, getters, _, rootGetters) {
     const user = getters.user
-    if (!user || !user.roles) return false
-    return appConfig.editPermissions(user)
+    if (!user || !user.roles || !user.uid) return false
+    return user.uid === rootGetters['blips/ownerId']
   }
 }
 
