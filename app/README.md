@@ -83,6 +83,19 @@ npm run test:e2e
 The tests are also run in CI using the `testVolatile` backend.
 It is planned to create a E2E firebase environment to test complete behavior of the app with the actual database.
 
+### Running e2e with a real firestore database
+
+In development mode the app will connect to a secondary Firebase project.
+Supporting scripts to wipe the database and prepare users require [Admin access](https://firebase.google.com/docs/reference/admin/node) to this Firebase project.
+The admin key is expected to be at `app/firebase-adminsdk.json`.
+Keys can be created via the Firebase console.
+
+Available scripts:
+
+| script name | action |
+|---|---|
+| `cypress/support/wipe-firestore.js` | remove all collection data from firestore |
+
 ## Known limits
 
 1. Blips and history entries are limited to 100 per radar
