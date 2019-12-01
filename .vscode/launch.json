@@ -4,20 +4,21 @@
     {
       "type": "firefox",
       "request": "launch",
-      "name": "editor: firefox",
+      "name": "devradar: firefox",
       "url": "http://localhost:8080",
-      "webRoot": "${workspaceFolder}/src",
+      "webRoot": "${workspaceFolder}/app/src",
       "pathMappings": [{ "url": "webpack:///src/", "path": "${webRoot}/" }]
     },
     {
       "type": "chrome",
       "request": "launch",
-      "name": "vuejs: chrome",
+      "name": "devradar: chrome",
       "url": "http://localhost:8080",
-      "webRoot": "${workspaceFolder}/src",
+      "smartStep": true,
+      "webRoot": "${workspaceFolder}/app/src",
       "breakOnLoad": true,
       "sourceMapPathOverrides": {
-        "webpack:///src/*": "${webRoot}/*"
+        "webpack:///./src/*": "${webRoot}/*"
       }
     }    
   ]

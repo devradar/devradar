@@ -37,11 +37,17 @@ Vue.filter('limitString', function (str: string, limit: number = Infinity) {
 
 backend.init(store, appConfig)
 
-/* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   router,
   store,
   render: h => h(App),
   template: '<App/>',
   vuetify: new Vuetify(vuetifyOpts)
 }).$mount('#app')
+
+if (window['Cypress']) {
+  window['app'] = app
+  window['backend'] = backend
+  console.log('Running in cypress test mode')
+  console.log('backend configuration', appConfig.backend)
+}

@@ -23,9 +23,10 @@ export interface Meta {
 }
 
 export interface User {
-  id: string;
-  uid?: string;
+  uid: string;
   lastLogin: string;
   name: string;
-  displayName: string;
+  radar: string;
+  id?: string;
+  displayName?: string;
 }

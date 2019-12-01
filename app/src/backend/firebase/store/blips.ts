@@ -63,7 +63,6 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`)
       .limit(100)
       .get()
-    
     commit('dropBlips')
     blipSnapshot.forEach(async doc => {
       // @ts-ignore type checking of docs property
