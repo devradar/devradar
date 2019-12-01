@@ -11,7 +11,9 @@
     "start:ci": "serve dist --single --no-clipboard --listen 8080",
     "test": "npm run lint && npm run build",
     "cypress:ci": "cypress run --record",
-    "test:e2e": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
+    "test:e2e": "run-p --race start:ci cypress:run",
     "test:e2e:ci": "run-p --race start:ci cypress:ci"
   },
   "dependencies": {
