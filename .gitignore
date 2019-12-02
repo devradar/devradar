@@ -21,6 +21,7 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
+.env.*
 
 dist/
 .firebaserc
@@ -29,3 +30,4 @@ dist/
 
 **/cypress/screenshots/
 **/cypress/videos/
+firebase-adminsdk.json

@@ -10,7 +10,6 @@ async function upsertUser (user): Promise<any> {
   const doc = getSnapshot.data()
   if (doc) {
     const userUpdate = {
-      displayName: user.displayName,
       lastLogin: new Date().toISOString(),
       email: user.email
     }
@@ -21,12 +20,12 @@ async function upsertUser (user): Promise<any> {
     const doc = {
       uid: user.uid,
       name: user.displayName || user.uid,
-      displayName: user.displayName,
       lastLogin: new Date().toISOString(),
-      email: user.email
+      email: user.email,
+      radar: ''
     }
-    const docRef = await db.collection('users').doc(user.uid).set(doc)
-    return Object.assign(docRef, { roles: {} })
+    await db.collection('users').doc(user.uid).set(doc)
+    return Object.assign(doc, { roles: {} })
   }
 }
 
@@ -35,6 +34,7 @@ async function upsertRadar (user): Promise<string> {
     const db = firebase.firestore()
     const getSnapshot = await db.collection('radars')
       .where('owner', '==', user.uid)
+      .limit(3)
       .get()
     let radarId
     if (getSnapshot.empty) {
@@ -73,26 +73,24 @@ async function init (store, appConfig) {
   })
 
   // resolve after auth status is defined as logged in or not
-  return new Promise(resolve => {
-    firebase.auth().onAuthStateChanged(async oauthUser => {
-      if (oauthUser) {
-        const user = await upsertUser(oauthUser)
-        store.commit('user/setUser', user)
-        const radarId = await upsertRadar(user)
-        if (!store.getters['blips/radarId']) {
-          await store.dispatch('blips/getRadarLazy', radarId)
-          let radarIdOrAlias = radarId
-          if (store.getters['blips/radarAlias']) {
-            radarIdOrAlias = store.getters['blips/radarAlias']
-          }
-          router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
+  await firebase.auth().onAuthStateChanged(async oauthUser => {
+    if (oauthUser) {
+      const user = await upsertUser(oauthUser)
+      store.commit('user/setUser', user)
+      const radarId = await upsertRadar(user)
+      if (!store.getters['blips/radarId']) {
+        await store.dispatch('blips/getRadarLazy', radarId)
+        let radarIdOrAlias = radarId
+        if (store.getters['blips/radarAlias']) {
+          radarIdOrAlias = store.getters['blips/radarAlias']
         }
-        resolve(user)
-      } else { // user is not set (logout)
-        store.commit('user/setUser', { roles: {} })
-        resolve({})
+        router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
       }
-    })
+      return user
+    } else { // user is not set (logout)
+      store.commit('user/setUser', { roles: {} })
+      return {}
+    }
   })
 }
 

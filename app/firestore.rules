@@ -1,9 +1,11 @@
+rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{user} {
      	allow get: if true;
       allow list: if hasRole('admin');
-      allow write: if request.auth.uid == user || hasRole('admin');
+      allow write: if isUserObject(request.resource.data) && (request.auth.uid == user || hasRole('admin'));
     }
     match /roles/{user} {
       allow get: if true;
@@ -12,25 +14,21 @@ service cloud.firestore {
     }
 
     match /radars/{radar} {
-      allow get: if isReadable(radar);
-      allow list: if isReadable(radar);
-			allow create: if isSignedIn();
-      allow update, delete: if isOwner(radar) || hasRole('admin');
+      allow get: if isReadable(resource.data);
+      allow list: if request.query.limit <= 10 && isReadable(resource.data);
+			allow create: if isRadarObject(request.resource.data) && isSignedIn();
+      allow update, delete: if isRadarObject(request.resource.data) && (isOwner(resource.data) || hasRole('admin'));
     }
     match /radars/{radar}/blips/{blip} {
-      allow get: if isReadable(radar);
-      allow list: if isReadable(radar);
-      allow write: if isOwner(radar) || hasRole('admin');
-    }
-    match /radars/{radar}/blips/{blip}/changes/{change} {
-      allow get: if isReadable(radar);
-      allow list: if isReadable(radar);
-      allow write: if isOwner(radar) || hasRole('admin');
+      allow get: if isReadable(get(/databases/$(database)/documents/radars/$(radar)).data);
+      allow list: if request.query.limit <= 100 && isReadable(get(/databases/$(database)/documents/radars/$(radar)).data);
+      allow create, update: if isBlipObject(request.resource.data) && (isOwner(get(/databases/$(database)/documents/radars/$(radar)).data) || hasRole('admin'));
+      allow delete: if isOwner(get(/databases/$(database)/documents/radars/$(radar)).data) || hasRole('admin');
     }
 
     match /radarAliases/{user} {
       allow get: if true;
-      allow list: if true;
+      allow list: if request.query.limit <= 10;
       allow write: if request.auth.uid == user || hasRole('admin');
     }
     
@@ -47,14 +45,42 @@ service cloud.firestore {
     function hasAnyRole(roles) {
       return isSignedIn() && getRoles().keys().hasAny(roles);
     }
-    function isPublic(radar) {
-      return get(/databases/$(database)/documents/radars/$(radar)).data.isPublic == true
+    function isPublic(radarData) {
+      return radarData.isPublic == true
     }
-    function isOwner(radar) {
-      return isSignedIn() && request.auth.uid == get(/databases/$(database)/documents/radars/$(radar)).data.owner
+    function isOwner(radarData) {
+      return isSignedIn() && request.auth.uid == radarData.owner
     }
-    function isReadable(radar) {
-      return isOwner(radar) || isPublic(radar) || request.auth.uid in get(/databases/$(database)/documents/radars/$(radar)).data.readers
+    function isReadable(radarData) {
+      return isOwner(radarData) || isPublic(radarData) || request.auth.uid in radarData.readers
+    }
+
+    function isUserObject(data) {
+      return data.keys().hasOnly(['uid', 'name', 'lastLogin', 'email', 'radar']) &&
+        data.name is string &&
+        data.uid is string &&
+        data.lastLogin is string &&
+        data.email is string &&
+        data.radar is string;
+    }
+    function isRadarObject(data) {
+      return data.keys().hasOnly(['title', 'categories', 'levels', 'owner', 'readers', 'isPublic']) &&
+        data.title is string &&
+        data.categories is list && data.categories.size() <= 10 &&
+        data.levels is list && data.levels.size() <= 10 &&
+        data.owner is string &&
+        data.readers is list && data.readers.size() <= 100 &&
+        data.isPublic is bool;
+
+    }
+    function isBlipObject(data) {
+      return data.keys().hasOnly(['title', 'category', 'link', 'changes', 'description']) &&
+        data.title is string &&
+        data.category is number &&
+        data.link is string &&
+        data.description is string &&
+        data.changes is list &&
+        data.changes.size() <= 20;
     }
   }
 }

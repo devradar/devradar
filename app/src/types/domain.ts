@@ -1,11 +1,11 @@
 export interface Blip {
   title: string;
   category: number;
-  level: number;
-  link?: string;
-  description?: string;
-  changes?: BlipChange[];
-  id?: string;
+  description: string;
+  changes: BlipChange[];
+  link: string;
+  id: string;
+  level?: number;
   index?: number;
 }
 
@@ -23,9 +23,10 @@ export interface Meta {
 }
 
 export interface User {
-  id: string;
-  uid?: string;
+  uid: string;
   lastLogin: string;
   name: string;
-  displayName: string;
+  radar: string;
+  id?: string;
+  displayName?: string;
 }

@@ -60,7 +60,9 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setOwnerId', owner)
 
     // populate with blip info
-    const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`).get()
+    const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`)
+      .limit(100)
+      .get()
     commit('dropBlips')
     blipSnapshot.forEach(async doc => {
       // @ts-ignore type checking of docs property
@@ -83,9 +85,10 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setLoading', true)
     // prepend https if nothing is there
     const user = rootGetters['user/user']
-    const { title, category, level } = blip
-    let { link, changes } = blip
-    link = blip.link || ''
+    const { title, category } = blip
+    let { link, changes, description } = blip
+    link = link || ''
+    description = description || ''
     if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link
     // assign IDs to changes
     changes = changes
@@ -98,9 +101,10 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
       title,
       category,
       link,
-      level,
-      changes
+      changes,
+      description
     }
+
     const setSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).add(newBlip)
     newBlip['id'] = setSnapshot.id
     commit('addBlip', newBlip)
@@ -144,11 +148,11 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
   async addChange ({ commit, rootGetters }, { blip, change }: { blip: Blip; change: BlipChange }): Promise<void> {
     commit('setLoading', true)
     const user = rootGetters['user/user']
-    if (!blip.changes) blip.changes = []
+    if (!blip['changes']) blip.changes = []
     const newChange = cleanChange(change)
     newChange.id = getUUID()
     blip.changes.push(newChange)
-    if (blip.level) blip.level = newChange.newLevel
+    blip = cleanBlip(blip)
     await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(blip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
