@@ -1,6 +1,6 @@
 <template>
   <v-list two-line subheader>
-    <v-subheader inset>Team competences</v-subheader>
+    <v-subheader inset>Team competencies</v-subheader>
 
     <v-list-item
       avatar
