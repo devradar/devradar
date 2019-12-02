@@ -5,7 +5,8 @@ service cloud.firestore {
     match /users/{user} {
      	allow get: if true;
       allow list: if hasRole('admin');
-      allow write: if isUserObject(request.resource.data) && (request.auth.uid == user || hasRole('admin'));
+      allow create: if isUserObject(request.resource.data) && isUserObjectAllTypes(request.resource.data) && (request.auth.uid == user || hasRole('admin'));
+      allow update: if isUserObject(request.resource.data) && (request.auth.uid == user || hasRole('admin'));
     }
     match /roles/{user} {
       allow get: if true;
@@ -56,8 +57,10 @@ service cloud.firestore {
     }
 
     function isUserObject(data) {
-      return data.keys().hasOnly(['uid', 'name', 'lastLogin', 'email', 'radar']) &&
-        data.name is string &&
+      return data.keys().hasOnly(['uid', 'name', 'lastLogin', 'email', 'radar']);
+    }
+    function isUserObjectAllTypes(data) {
+      return data.name is string &&
         data.uid is string &&
         data.lastLogin is string &&
         data.email is string &&
@@ -71,7 +74,6 @@ service cloud.firestore {
         data.owner is string &&
         data.readers is list && data.readers.size() <= 100 &&
         data.isPublic is bool;
-
     }
     function isBlipObject(data) {
       return data.keys().hasOnly(['title', 'category', 'link', 'changes', 'description']) &&
