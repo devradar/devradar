@@ -21,7 +21,7 @@ async function upsertUser (user): Promise<any> {
       uid: user.uid,
       name: user.displayName || user.uid,
       lastLogin: new Date().toISOString(),
-      email: user.email,
+      email: user.email || '',
       radar: ''
     }
     await db.collection('users').doc(user.uid).set(doc)
@@ -40,6 +40,7 @@ async function upsertRadar (user): Promise<string> {
     if (getSnapshot.empty) {
       console.log('No radar found for this user; creating one..')
       const doc = {
+        title: `${user.name}'s devradar`,
         categories: appConfig.radarDefault.categories,
         levels: appConfig.radarDefault.levels,
         owner: user.uid,

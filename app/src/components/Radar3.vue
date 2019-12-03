@@ -145,8 +145,8 @@ export default class Radar3 extends Vue {
 .radarlegend {
   min-width: 100%;
 }
-.z-10 {
-  z-index: 10;
+.z-6 {
+  z-index: 6;
 }
 // to be moved into radarchart component
 

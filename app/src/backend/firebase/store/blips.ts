@@ -104,7 +104,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
       changes,
       description
     }
-
+    // TODO: debug missing link/description?
     const setSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).add(newBlip)
     newBlip['id'] = setSnapshot.id
     commit('addBlip', newBlip)
@@ -129,20 +129,17 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('removeBlip', blip)
     commit('setLoading', false)
   },
-  async setBlips({ commit, rootGetters }, blips: Blip[]): Promise<void> {
+  async setBlips({ commit, rootGetters, dispatch }, blips: Blip[]): Promise<void> {
     commit('setLoading', true)
     const user = rootGetters['user/user']
     // drop entire collection of blips
-    const collectionSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).get()
+    const collectionSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).limit(100).get()
     await Promise.all(collectionSnapshot.docs.map(docSnapshot => {
       return firebase.firestore().collection(`radars/${user.radar}/blips`).doc(docSnapshot.id).delete()
     }))
     commit('dropBlips')
     // add all new blips
-    await Promise.all(blips.map(b => {
-      commit('addBlip', b)
-      return firebase.firestore().collection(`radars/${user.radar}/blips`).add(b)
-    }))
+    await Promise.all(blips.map(cleanBlip).map(b => dispatch('addBlip', b)))
     commit('setLoading', false)
   },
   async addChange ({ commit, rootGetters }, { blip, change }: { blip: Blip; change: BlipChange }): Promise<void> {

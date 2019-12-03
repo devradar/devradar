@@ -37,6 +37,7 @@ function cleanBlip (blip: Blip): Blip {
   const newBlip = { category, link, description, title, changes, id }
   if (!link) delete newBlip.link
   if (!description) newBlip.description = ''
+  if (!id) delete newBlip.id
   return newBlip
 }
 function addBlipLevelFromChanges (blip: Blip): Blip {
