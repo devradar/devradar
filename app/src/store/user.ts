@@ -4,6 +4,13 @@ import { User } from '@/types/domain'
 import { RootState, UserState } from '@/types/vuex'
 import appConfig from '../config'
 
+const state: UserState = {
+  user: undefined,
+  userList: {}
+}
+
+const defaultState: UserState = JSON.parse(JSON.stringify(state))
+
 const mutations: MutationTree<UserState> = {
   setUser (state: UserState, payload: User) {
     state.user = payload
@@ -13,6 +20,11 @@ const mutations: MutationTree<UserState> = {
   },
   exchangeUser (state: UserState, user: User) {
     Vue.set(state.userList, user.id, user)
+  },
+  reset (state: UserState) {
+    for (const key in state) {
+      state[key] = defaultState[key]
+    }
   }
 }
 
@@ -28,11 +40,6 @@ const getters: GetterTree<UserState, RootState> = {
     if (!user || !user.roles || !user.uid) return false
     return user.uid === rootGetters['blips/ownerId']
   }
-}
-
-const state: UserState = {
-  user: undefined,
-  userList: {}
 }
 
 export const user = (backend): Module<UserState, RootState> => {
