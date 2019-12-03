@@ -11,11 +11,9 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component({
 })
 export default class Logout extends Vue {
-  mounted () {
-    firebase.auth().signOut()
-      .then(() => {
-        this.$router.replace('/')
-      })
+  async mounted () {
+    await this.$store.dispatch('user/logout')
+    this.$router.replace('/')
   }
 }
 </script>
