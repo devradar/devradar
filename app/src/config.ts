@@ -15,7 +15,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { name: 'radar', icon: 'track_changes', title: 'Radar', path: '/@:radarId', validator: user => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
   ],
   navEntries: [
-    { icon: 'help', title: 'Help', url: '//devradar.io/howto', validator: user => true, location: ['toolbar-menu'] }
+    { icon: 'help', title: 'Help', url: '//docs.devradar.io/howto', validator: user => true, location: ['toolbar-menu'] }
   ],
   theme: {
     dark: false,

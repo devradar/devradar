@@ -31,7 +31,7 @@ if ('googleAnalytics' in appConfig && 'id' in appConfig['googleAnalytics']) {
   })
 }
 
-Vue.filter('limitString', function (str: string, limit: number = Infinity) {
+Vue.filter('limitString', function (str: string, limit = Infinity) {
   return str.slice(0, limit) + (str.length > limit ? '..' : '')
 })
 

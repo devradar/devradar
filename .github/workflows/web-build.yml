@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@master
     - run: |
         cd web
-        hugo --gc --minify -d _site --baseURL //devradar.io
+        hugo --gc --minify -d _site --baseURL //docs.devradar.io
         touch _site/.nojekyll
       name: build hugo page
     - name: publish to gh-pages
@@ -28,5 +28,5 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ANOFF_GITHUB_TOKEN }}
         BRANCH: gh-pages
         FOLDER: web/_site
-        CNAME: devradar.io
+        CNAME: docs.devradar.io
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'

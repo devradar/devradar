@@ -38,6 +38,10 @@ summaryLength = "10"
   URL = "/howto"
   Name = "How To"
   [[params.nav.link]]
+  URL = "//devradar.io"
+  Name = "App"
+  NewTab = true
+  [[params.nav.link]]
   URL = "//editor.devradar.io"
   Name = "Editor"
   NewTab = true
@@ -50,7 +54,7 @@ summaryLength = "10"
 logo = "images/devradar-b.png"
 home = "Home"
 # Meta data
-description = "Skill management for individuals and teams"
+description = "Competence management for developers"
 author = "Andreas Offenhaeuser"
 
 # Google Analitycs

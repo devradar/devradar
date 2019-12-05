@@ -26,14 +26,16 @@
         </v-row>
         <v-row row>
           <v-col lg=4 md=8 sm=10 xs=12>
+            <router-link to="/login">
+              <v-btn 
+                dark 
+                class="intro-button green-bottom-border">Get Started
+              </v-btn>
+            </router-link>
+
             <v-btn 
               dark 
-              href="/login"
-              class="intro-button green-bottom-border">Get Started
-            </v-btn>
-            <v-btn 
-              dark 
-              href="http://devradar.io/howto"
+              href="http://docs.devradar.io/howto"
               target="_blank"
               class="intro-button green-bottom-border">Learn More
             </v-btn>

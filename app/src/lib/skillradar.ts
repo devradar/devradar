@@ -118,7 +118,8 @@ export class SkillradarChart {
       .append('g')
       .attr('transform', 'translate(' + (cfg.radius) + ',' + (cfg.radius) + ')')
     this.chartArea = g
-    let tooltip // eslint-disable-line prefer-const, // drawn at the end to be placed on top
+    // drawn at the end to be placed on top
+    let tooltip // eslint-disable-line prefer-const
     let isOverTooltip = false
     let isOverBlip = false
     // #############
