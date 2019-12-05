@@ -57,6 +57,13 @@ const actions = (appConfig): ActionTree<UserState, RootState> =>  ({ // eslint-d
         commit('exchangeUser', targetUser)
       })
       .catch(err => console.error(err))
+  },
+  async logout ({ commit }): Promise<any> {
+    commit('blips/setLoading', true, { root: true })
+    await firebase.auth().signOut()
+    commit('blips/reset', null, { root: true })
+    commit('user/reset', null, { root: true })
+    commit('blips/setLoading', false, { root: true })
   }
 })
 

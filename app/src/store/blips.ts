@@ -5,6 +5,22 @@ import { Blip, Meta } from '@/types/domain';
 import { getUUID, cleanBlip, addBlipLevelFromChanges } from '../util'
 import appConfig from '../config'
 
+const state: RadarState = {
+  id: '',
+  ownerId: '',
+  isPublic: false,
+  radarAlias: '',
+  blips: [],
+  isLoading: false,
+  meta: {
+    title: '',
+    categories: [],
+    levels: []
+  }
+}
+
+const defaultState: RadarState = JSON.parse(JSON.stringify(state))
+
 const mutations: MutationTree<RadarState> = {
   dropBlips (state: RadarState) {
     state.blips = []
@@ -39,6 +55,11 @@ const mutations: MutationTree<RadarState> = {
   },
   setId (state: RadarState, id: string) {
     state.id = id
+  },
+  reset (state: RadarState) {
+    for (const key in state) {
+      state[key] = defaultState[key]
+    }
   }
 }
 
@@ -96,19 +117,7 @@ const getters: GetterTree<RadarState, RootState> = {
   }
 }
 
-const state: RadarState = {
-  id: '',
-  ownerId: '',
-  isPublic: false,
-  radarAlias: '',
-  blips: [],
-  isLoading: false,
-  meta: {
-    title: '',
-    categories: [],
-    levels: []
-  }
-}
+
 
 export const blips = (backend): Module<RadarState, RootState> => {
   return {
