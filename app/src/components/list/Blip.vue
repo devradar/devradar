@@ -141,7 +141,7 @@ export default class Blip extends Vue {
   meta: Meta
   @Prop()
   blip: IBlip
-    
+
   deleteBlip () {
     this.$store.dispatch('blips/deleteBlip', this.blip)
   }

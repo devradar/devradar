@@ -64,7 +64,7 @@ async function upsertRadar (user): Promise<string> {
 async function init (store, appConfig) {
   if (!appConfig.backend.project || !appConfig.backend.key) {
     console.error('Misconfigured backend in config.ts, please provide backend.project and backend.key')
-    return Promise.reject()
+    return Promise.reject(new Error('Misconfigured backend in config.ts, please provide backend.project and backend.key'))
   }
   const app = firebase.initializeApp({ // eslint-disable-line @typescript-eslint/no-unused-vars
     apiKey: appConfig.backend.key,

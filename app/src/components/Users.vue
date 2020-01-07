@@ -104,7 +104,7 @@ export default class Users extends Vue {
       this.$store.dispatch('user/setRoles', { targetUser })
     }
   }
- 
+
   mounted () {
     this.$store.dispatch('user/getUserList')
   }

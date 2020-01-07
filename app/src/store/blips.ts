@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { Module, GetterTree, MutationTree } from 'vuex'
 import { RootState, BlipsState as RadarState } from '@/types/vuex'
-import { Blip, Meta } from '@/types/domain';
+import { Blip, Meta } from '@/types/domain'
 import { getUUID, cleanBlip, addBlipLevelFromChanges } from '../util'
 import appConfig from '../config'
 

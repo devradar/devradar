@@ -355,7 +355,6 @@ export default class Settings extends Vue {
   radarAliasUpdate () {
     this.reload()
   }
-  
 }
 </script>
 

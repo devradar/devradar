@@ -1,4 +1,4 @@
-import { Blip } from '@/types/domain';
+import { Blip } from '@/types/domain'
 import * as d3 from 'd3'
 import { getPseudoRand } from '../util'
 
@@ -105,7 +105,7 @@ export class SkillradarChart {
     const cfg = this.config
     cfg.elementCount = data.items.length
     cfg.levelCount = data.levels.length
-    
+
     const darkClass = cfg.dark ? 'dark' : ''
     // create a reference object with radar center being 0,0
     d3.select(id).select('svg').remove()
@@ -223,7 +223,7 @@ export class SkillradarChart {
         .transition().duration(cfg.transitionDurationMs)
         .attr('opacity', 0)
         .attr('visibility', 'hidden')
-      
+
       d3.selectAll('.legendEntry')
         .classed('highlight', false)
         .classed('grayed', false)
@@ -252,7 +252,7 @@ export class SkillradarChart {
       .attr('visibility', 'hidden')
       .attr('class', `tooltip ${darkClass}`)
       .attr('opacity', 0)
-    
+
     tooltip
       .append('rect')
       .attr('class', `tooltipRectangle ${darkClass}`)
@@ -321,7 +321,7 @@ export class SkillradarChart {
     // find legend width/height
     const legendTitleCharWidth = 8
     const legendTitleCharHeight = 16
-    
+
     // can not move <g> by em units so move individual elements
     const legendYoffset = (categoryNumber: number, entryNumber: number) => {
       return (entryNumber * 2 + categoryNumber * cfg.legendCategorySpacingEms + cfg.legendCategoryOffsetEms) * legendTitleCharHeight
@@ -387,12 +387,12 @@ export class SkillradarChart {
         const y = legendYoffset(categoryNumber, i + 1) + 2
         const x0 = 1 * legendTitleCharWidth
         const x1 = cfg.titleCutOff * legendTitleCharWidth + 2 * legendTitleCharHeight + (levelMaxLength + 2) * legendTitleCharWidth + cfg.legendCategoryOffsetEms * legendTitleCharHeight
-        return `${x0-3},${y-3} ${x0},${y} ${x1},${y} ${x1+3},${y+3}`
+        return `${x0 - 3},${y - 3} ${x0},${y} ${x1},${y} ${x1 + 3},${y + 3}`
       })
 
     legendWrapper
       .append('text')
-      .attr('class', 'legendTitle ${darkClass}')
+      .attr('class', `legendTitle ${darkClass}`)
       .attr('text-anchor', 'left')
       .attr('y', (d: BlipExtended, i: number) => {
         const category = categories[i]
@@ -401,7 +401,7 @@ export class SkillradarChart {
       })
       .attr('x', 2 * legendTitleCharHeight)
       .text((d: BlipExtended) => this.limitString(d.title, cfg.titleCutOff))
-    
+
     legendWrapper
       .append('text')
       .attr('class', `legendIndex ${darkClass}`)
@@ -413,7 +413,7 @@ export class SkillradarChart {
       })
       .attr('x', 1 * legendTitleCharHeight)
       .text((d: BlipExtended) => d.index + 1)
-    
+
     legendWrapper
       .append('text')
       .attr('class', `legendLevel ${darkClass}`)
@@ -456,10 +456,10 @@ export class SkillradarChart {
     const radialSegment = 2 * Math.PI / categoryCount
     return {
       angle: -blip.category * radialSegment + Math.PI / 4 + (getPseudoRand(blip.title) - 0.5) * radialSegment * 0.9,
-      radius: this.level2radius(blip.level) - width/2 - (Math.sqrt(getPseudoRand(blip.title)) - 0.5) * width / 2 * 0.9
+      radius: this.level2radius(blip.level) - width / 2 - (Math.sqrt(getPseudoRand(blip.title)) - 0.5) * width / 2 * 0.9
     }
   }
-  public rad2xy ({ angle, radius}: CoordPolar): CoordCarthesian {
+  public rad2xy ({ angle, radius }: CoordPolar): CoordCarthesian {
     return {
       x: radius * Math.cos(angle),
       y: -radius * Math.sin(angle)

@@ -11,7 +11,7 @@
         </v-container>
         <v-row>
           <v-col class="intro-text" lg=5 md=6 sm=10 xs=12>
-            Manage your competences as an individual or use devradar to create a team wide skill matrix. 
+            Manage your competences as an individual or use devradar to create a team wide skill matrix.
           </v-col>
         </v-row>
         <v-row>
@@ -26,15 +26,13 @@
         </v-row>
         <v-row row>
           <v-col lg=4 md=8 sm=10 xs=12>
-            <router-link to="/login">
-              <v-btn 
-                dark 
-                class="intro-button green-bottom-border">Get Started
-              </v-btn>
-            </router-link>
-
-            <v-btn 
-              dark 
+            <v-btn
+              dark
+              href="/login"
+              class="intro-button green-bottom-border">Get Started
+            </v-btn>
+            <v-btn
+              dark
               href="http://docs.devradar.io/howto"
               target="_blank"
               class="intro-button green-bottom-border">Learn More
@@ -44,7 +42,6 @@
       </v-container>
   </v-container>
 </template>
-
 
 <style lang="scss">
 @import '../assets/responsive.scss';
@@ -136,7 +133,7 @@
     min-height: 80%;
     width: auto;
     height: auto;
-    
+
     position: absolute;
     bottom: -25vh;
     right: -15vw;
@@ -172,11 +169,11 @@
   .intro-heading {
     font-size: 7vw;
   }
-  
+
   .intro-heading-spacing {
     margin-bottom: 0;
   }
-  
+
   .intro-text {
     font-size: 1.1em;
   }

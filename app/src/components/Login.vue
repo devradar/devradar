@@ -45,7 +45,7 @@ import { User } from '@/types/domain'
 export default class NewChange extends Vue {
   // computed
   user: User
-  
+
   public onLogin (provider) {
     this.$store.dispatch('user/oauthLogin', { provider })
   }

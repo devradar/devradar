@@ -6,7 +6,7 @@ import { blips } from './blips'
 import { comm } from './comm'
 import appConfig from '../config'
 import backend from '../backend/index'
-import { UserState, BlipsState, CommState } from '@/types/vuex';
+import { UserState, BlipsState, CommState } from '@/types/vuex'
 
 Vue.use(VueX)
 

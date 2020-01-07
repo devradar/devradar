@@ -7,7 +7,7 @@ import { RootState, UserState } from '@/types/vuex'
 const ghProvider = new firebase.auth.GithubAuthProvider()
 const twitterProvider = new firebase.auth.TwitterAuthProvider()
 
-const actions = (appConfig): ActionTree<UserState, RootState> =>  ({ // eslint-disable-line @typescript-eslint/no-unused-vars
+const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-disable-line @typescript-eslint/no-unused-vars
   oauthLogin (_, payload): void {
     let provider: firebase.auth.AuthProvider
     switch (payload.provider) {
