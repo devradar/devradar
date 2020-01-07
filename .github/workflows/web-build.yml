@@ -21,6 +21,7 @@ jobs:
         cd web
         hugo --gc --minify -d _site --baseURL //docs.devradar.io
         touch _site/.nojekyll
+        echo "docs.devradar.io" > CNAME
       name: build hugo page
     - name: publish to gh-pages
       uses: JamesIves/github-pages-deploy-action@master
@@ -28,5 +29,4 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ANOFF_GITHUB_TOKEN }}
         BRANCH: gh-pages
         FOLDER: web/_site
-        CNAME: docs.devradar.io
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
