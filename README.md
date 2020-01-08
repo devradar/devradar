@@ -39,9 +39,9 @@ Any developer can easily create their own devradar for free.
 
 | Milestone | Feature Focus | Release |
 |----|-----|-----|
-| [1.0](https://github.com/anoff/devradar/milestone/1) | Hosted service for Editor | 2019-11 |
-| [1.x](https://github.com/anoff/devradar/milestone/2) | Additional editor features like internationalization | 2020-01 |
-| [2.0](https://github.com/anoff/devradar/milestone/3) | Competence management for teams | 2020-03 |
+| [1.0](https://github.com/anoff/devradar/milestone/1) | Hosted service for Editor | 2020-Q1 |
+| [1.x](https://github.com/anoff/devradar/milestone/2) | Additional editor features like internationalization | 2020-Q2 |
+| [2.0](https://github.com/anoff/devradar/milestone/3) | Competence management for teams | 2020-Q4 |
 
 ## Demo
 
