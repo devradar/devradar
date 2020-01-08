@@ -38,7 +38,7 @@ async function upsertRadar (user): Promise<string> {
       .get()
     let radarId
     if (getSnapshot.empty) {
-      console.log('No radar found for this user; creating one..')
+      console.log('No radar found for this user; creating one..') // eslint-disable-line no-console
       const doc = {
         title: `${user.name}'s devradar`,
         categories: appConfig.radarDefault.categories,
@@ -63,7 +63,7 @@ async function upsertRadar (user): Promise<string> {
 }
 async function init (store, appConfig) {
   if (!appConfig.backend.project || !appConfig.backend.key) {
-    console.error('Misconfigured backend in config.ts, please provide backend.project and backend.key')
+    console.error('Misconfigured backend in config.ts, please provide backend.project and backend.key') // eslint-disable-line no-console
     return Promise.reject(new Error('Misconfigured backend in config.ts, please provide backend.project and backend.key'))
   }
   const app = firebase.initializeApp({ // eslint-disable-line @typescript-eslint/no-unused-vars

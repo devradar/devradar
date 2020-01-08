@@ -98,7 +98,7 @@ export default class Users extends Vue {
     this.userList[index].roles[role] = value
     const targetUser = this.userList[index]
     if (targetUser.uid === this.user.uid && role === 'admin') {
-      console.warn('Preventing admin removal for own user')
+      console.warn('Preventing admin removal for own user') // eslint-disable-line no-console
       this.$store.dispatch('user/getUserList')
     } else {
       this.$store.dispatch('user/setRoles', { targetUser })

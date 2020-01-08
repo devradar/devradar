@@ -48,6 +48,6 @@ const app = new Vue({
 if (window['Cypress']) {
   window['app'] = app
   window['backend'] = backend
-  console.log('Running in cypress test mode')
-  console.log('backend configuration', appConfig.backend)
+  console.log('Running in cypress test mode') // eslint-disable-line no-console
+  console.log('backend configuration', appConfig.backend) // eslint-disable-line no-console
 }

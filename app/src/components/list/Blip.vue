@@ -182,7 +182,7 @@ export default class Blip extends Vue {
     if (success) {
       this.$store.dispatch('comm/showSnackbar', 'Skill URL copied to clipboard')
     } else {
-      console.error(success)
+      console.error(success) // eslint-disable-line no-console
     }
   }
 

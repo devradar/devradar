@@ -18,12 +18,12 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
         provider = twitterProvider
         break
       default:
-        console.error(`Unknown provider: ${payload.provider}`)
+        console.error(`Unknown provider: ${payload.provider}`) // eslint-disable-line no-console
     }
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // store user until logout happens
     firebase.auth().signInWithPopup(provider) // authenticated user is propagated to state using the hook created in the `init` action
       .catch(error => {
-        console.error(error)
+        console.error(error) // eslint-disable-line no-console
       })
   },
   getUserList ({ commit }): void {
@@ -45,7 +45,7 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
           .reduce((p, doc) => Object.assign(p, { [doc.id]: doc }), {})
         commit('setUserList', users)
       })
-      .catch(err => console.error(err))
+      .catch(err => console.error(err)) // eslint-disable-line no-console
   },
   setRoles ({ commit }, { targetUser }): Promise<void> {
     const coll = firebase.firestore().collection('roles')
@@ -56,7 +56,7 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
       .then(() => {
         commit('exchangeUser', targetUser)
       })
-      .catch(err => console.error(err))
+      .catch(err => console.error(err)) // eslint-disable-line no-console
   },
   async logout ({ commit }): Promise<any> {
     commit('blips/setLoading', true, { root: true })

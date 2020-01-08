@@ -244,7 +244,7 @@ export default class Settings extends Vue {
     if (success) {
       this.$store.dispatch('comm/showSnackbar', 'content copied to clipboard')
     } else {
-      console.error(success)
+      console.error(success) // eslint-disable-line no-console
     }
   }
 
@@ -265,7 +265,7 @@ export default class Settings extends Vue {
       this.$store.dispatch('blips/setBlips', obj.blips)
       this.$store.dispatch('comm/showSnackbar', 'updated local blips + config')
     } catch (e) {
-      console.error('Error occured trying to decompress content', e)
+      console.error('Error occured trying to decompress content', e) // eslint-disable-line no-console
       this.$store.dispatch('comm/showSnackbar', 'error while trying to read uploaded file')
     }
   }
@@ -302,7 +302,7 @@ export default class Settings extends Vue {
         this.tmpTitleDirty = false
         break
       default:
-        console.error('Unknown type to save to metadata detected:', type)
+        console.error('Unknown type to save to metadata detected:', type) // eslint-disable-line no-console
         return
     }
     const newData = {}

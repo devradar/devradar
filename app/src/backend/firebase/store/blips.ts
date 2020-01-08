@@ -24,7 +24,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
           .limit(1)
           .get()
         if (aliasSnapshot.size === 0) {
-          console.error('No devradar found for this alias', alias)
+          console.error('No devradar found for this alias', alias) // eslint-disable-line no-console
           response = ''
         } else {
           const data = aliasSnapshot.docs[0].data()
