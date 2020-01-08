@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/auth'
 import appConfig from '../../config'
 import router from '../../router'
 
@@ -72,10 +73,17 @@ async function init (store, appConfig) {
     databaseURL: `https://${appConfig.backend.project}.firebaseio.com`,
     projectId: `${appConfig.backend.project}`
   })
-
+  if (window['Cypress']) {
+    console.log('disabling auth persistance')
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE) // disable auth cache in test mode
+  } else {
+    console.log('setting auth persistance')
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // store user until logout happens
+  }
   // resolve after auth status is defined as logged in or not
   await firebase.auth().onAuthStateChanged(async oauthUser => {
     if (oauthUser) {
+      console.log('auth change', oauthUser)
       const user = await upsertUser(oauthUser)
       store.commit('user/setUser', user)
       const radarId = await upsertRadar(user)

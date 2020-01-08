@@ -1,6 +1,11 @@
 /// <reference types="Cypress" />
+
 const devices = ['macbook-15', 'macbook-13', 'iphone-x']
 context('Radar View', () => {
+  before(() => {
+    cy.exec('node cypress/support/wipe-firestore.js')
+  })
+
   it('shows radar + legend responsively', () => {
     cy.visit('/@rick')
     devices.forEach(device => {

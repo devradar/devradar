@@ -12,7 +12,7 @@ async function purgeCollection(colRef) {
   await docRefs.map(ref => ref.delete())
   console.log(`Removed ${docRefs.length} (all) documents for collection '${colRef}'`)
 }
-async function purge() {
+async function purgeAll() {
   const collections = await admin.firestore().listCollections()
   collections.forEach(async collectionRef => {
     const id = collectionRef.id
@@ -24,4 +24,4 @@ async function purge() {
   })
 }
 
-purge()
+purgeAll()

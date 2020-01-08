@@ -20,7 +20,6 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
       default:
         console.error(`Unknown provider: ${payload.provider}`) // eslint-disable-line no-console
     }
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // store user until logout happens
     firebase.auth().signInWithPopup(provider) // authenticated user is propagated to state using the hook created in the `init` action
       .catch(error => {
         console.error(error) // eslint-disable-line no-console

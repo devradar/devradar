@@ -6,7 +6,6 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:e2e": "run-p --race start:ci cypress:run",
     "lint": "vue-cli-service lint",
     "cypress:ci": "cypress run --record",
     "cypress:open": "cypress open",
@@ -14,6 +13,7 @@
     "start": "npm run serve",
     "start:ci": "serve dist --single --no-clipboard --listen 8080",
     "test": "npm run lint && npm run build",
+    "test:e2e": "run-p --race start:ci cypress:open",
     "test:e2e:ci": "run-p --race start:ci cypress:ci"
   },
   "dependencies": {
