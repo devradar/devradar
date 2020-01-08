@@ -5,7 +5,7 @@ import VueAnalytics from 'vue-analytics'
 import Vuetify from 'vuetify'
 import App from './App.vue'
 import router from './router'
-//import './stylus/main.styl'
+// import './stylus/main.styl'
 import { store, backend } from './store'
 import appConfig from './config'
 import 'vuetify/dist/vuetify.min.css'
@@ -48,6 +48,6 @@ const app = new Vue({
 if (window['Cypress']) {
   window['app'] = app
   window['backend'] = backend
-  console.log('Running in cypress test mode')
-  console.log('backend configuration', appConfig.backend)
+  console.log('Running in cypress test mode') // eslint-disable-line no-console
+  console.log('backend configuration', appConfig.backend) // eslint-disable-line no-console
 }

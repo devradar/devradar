@@ -6,7 +6,7 @@ import { Blip, BlipChange, Meta } from '@/types/domain'
 import { RootState, BlipsState } from '@/types/vuex'
 import router from '@/router'
 
-const actions = (): ActionTree<BlipsState, RootState> =>  ({
+const actions = (): ActionTree<BlipsState, RootState> => ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
   async followRadarAlias ({ commit }, alias: string): Promise<string> {
     let response = ''
@@ -24,7 +24,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
           .limit(1)
           .get()
         if (aliasSnapshot.size === 0) {
-          console.error('No devradar found for this alias', alias)
+          console.error('No devradar found for this alias', alias) // eslint-disable-line no-console
           response = ''
         } else {
           const data = aliasSnapshot.docs[0].data()
@@ -74,7 +74,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setLoading', false)
   },
   // call getRadar if the id is different from the one currently in state
-  async getRadarLazy({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
+  async getRadarLazy ({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
     const loadedId = rootGetters['blips/radarId']
     const radarId = await dispatch('followRadarAlias', aliasOrId)
     if (loadedId !== radarId) {
@@ -129,7 +129,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('removeBlip', blip)
     commit('setLoading', false)
   },
-  async setBlips({ commit, rootGetters, dispatch }, blips: Blip[]): Promise<void> {
+  async setBlips ({ commit, rootGetters, dispatch }, blips: Blip[]): Promise<void> {
     commit('setLoading', true)
     const user = rootGetters['user/user']
     // drop entire collection of blips
@@ -162,14 +162,14 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },
-  async setMeta({ commit, rootGetters }, meta: Meta): Promise<void> {
+  async setMeta ({ commit, rootGetters }, meta: Meta): Promise<void> {
     commit('setLoading', true)
     const user = rootGetters['user/user']
     await firebase.firestore().collection(`radars`).doc(user.radar).update(meta)
     commit('setMeta', meta)
     commit('setLoading', false)
   },
-  async getRadarAlias({ commit, rootGetters }): Promise<void> {
+  async getRadarAlias ({ commit, rootGetters }): Promise<void> {
     const user = rootGetters['user/user']
     if (!user || !user.radar) return
     const aliasSnapshot = await firebase.firestore().collection('radarAliases').doc(user.uid).get()
@@ -180,7 +180,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
       commit('setRadarAlias', '')
     }
   },
-  async setRadarAlias({ commit, rootGetters }, { alias, radarId }: { alias: string; radarId: string }): Promise<void> {
+  async setRadarAlias ({ commit, rootGetters }, { alias, radarId }: { alias: string; radarId: string }): Promise<void> {
     const user = rootGetters['user/user']
     if (!user || !user.radar) return
     const doc = {
@@ -191,7 +191,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setRadarAlias', alias)
     router.push({ name: 'radar', params: { radarId: alias } })
   },
-  async isRadarAliasAvailable({ commit }, alias: string): Promise<boolean> {
+  async isRadarAliasAvailable ({ commit }, alias: string): Promise<boolean> {
     const aliasSnapshot = await firebase.firestore().collection('radarAliases')
       .where('alias', '==', alias)
       .limit(1)

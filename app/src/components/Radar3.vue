@@ -122,7 +122,7 @@ export default class Radar3 extends Vue {
   }
 
   @Watch('blips')
-  onPropertyChanged(value: Blip[], oldValue: Blip[]) {
+  onPropertyChanged (value: Blip[], oldValue: Blip[]) {
     this.renderChart()
   }
 }

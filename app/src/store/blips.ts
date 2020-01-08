@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { Module, GetterTree, MutationTree } from 'vuex'
 import { RootState, BlipsState as RadarState } from '@/types/vuex'
-import { Blip, Meta } from '@/types/domain';
+import { Blip, Meta } from '@/types/domain'
 import { getUUID, cleanBlip, addBlipLevelFromChanges } from '../util'
 import appConfig from '../config'
 
@@ -116,8 +116,6 @@ const getters: GetterTree<RadarState, RootState> = {
     return state.meta.levels.length > 0 && state.id.length > 0
   }
 }
-
-
 
 export const blips = (backend): Module<RadarState, RootState> => {
   return {

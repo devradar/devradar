@@ -6,13 +6,13 @@ import { blips } from './blips'
 import { comm } from './comm'
 import appConfig from '../config'
 import backend from '../backend/index'
-import { UserState, BlipsState, CommState } from '@/types/vuex';
+import { UserState, BlipsState, CommState } from '@/types/vuex'
 
 Vue.use(VueX)
 
 const backendActive = backend[appConfig.backend.type]
 if (!backendActive) {
-  console.error('No valid backend defined. Please choose:', Object.keys(backend))
+  console.error('No valid backend defined. Please choose:', Object.keys(backend)) // eslint-disable-line no-console
 }
 backendActive.type = appConfig.backend.type
 

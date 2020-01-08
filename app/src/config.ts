@@ -7,7 +7,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     key: process.env.VUE_APP_BACKEND_KEY
   },
   routes: [ // configure name, permissions & view ports
-    { name: 'home' , icon: 'home', title: 'Home', path: '/', validator: user => true, location: ['toolbar'] },
+    { name: 'home', icon: 'home', title: 'Home', path: '/', validator: user => true, location: ['toolbar'] },
     { name: 'login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar'] },
     { name: 'list', icon: 'list', title: 'History', path: '/^:radarId', validator: user => true, location: ['toolbar'], props: route => ({ blipName: route.query.q, radarId: route.params.radarId }) },
     { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
@@ -40,11 +40,11 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   footer: [
     { text: 'by Andreas Offenhaeuser',
-      link: '//anoff.io'},
+      link: '//anoff.io' },
     { text: 'Blog',
-      link: '//bloganoff.io'},
+      link: '//bloganoff.io' },
     { text: 'Legal',
-      link: '//anoff.github.io/legal'}
+      link: '//anoff.github.io/legal' }
   ],
   radarDefault: {
     categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],

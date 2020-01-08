@@ -51,7 +51,7 @@ import { VForm } from '@/types/misc'
     levels () {
       return this.$store.getters['blips/meta'].levels
     },
-    form() {
+    form () {
       return this.$refs.form as VForm
     }
   }

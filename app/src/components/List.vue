@@ -85,7 +85,7 @@ import { Blip, User } from '@/types/domain'
     ]),
     ...mapGetters('user', [
       'user', 'userCanEdit'
-    ]),
+    ])
   }
 })
 export default class List extends Vue {

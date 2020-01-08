@@ -141,7 +141,7 @@ export default class Blip extends Vue {
   meta: Meta
   @Prop()
   blip: IBlip
-    
+
   deleteBlip () {
     this.$store.dispatch('blips/deleteBlip', this.blip)
   }
@@ -182,7 +182,7 @@ export default class Blip extends Vue {
     if (success) {
       this.$store.dispatch('comm/showSnackbar', 'Skill URL copied to clipboard')
     } else {
-      console.error(success)
+      console.error(success) // eslint-disable-line no-console
     }
   }
 

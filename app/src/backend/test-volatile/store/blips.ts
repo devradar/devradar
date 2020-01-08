@@ -6,7 +6,7 @@ import router from '@/router'
 import radarAliases from '../mock-data/radarAliases'
 import radars from '../mock-data/radars'
 
-const actions = (): ActionTree<BlipsState, RootState> =>  ({
+const actions = (): ActionTree<BlipsState, RootState> => ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
   async followRadarAlias (_, alias: string): Promise<string> {
     if (radars[alias]) {
@@ -21,8 +21,8 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     const response = radars[id]
     if (response) {
       commit('setMeta', response.meta)
-      commit ('setIsPublic', response.meta.isPublic)
-      commit ('setId', id)
+      commit('setIsPublic', response.meta.isPublic)
+      commit('setId', id)
       commit('setOwnerId', response.meta.owner)
     }
 
@@ -37,7 +37,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setLoading', false)
   },
   // call getRadar if the id is different from the one currently in state
-  async getRadarLazy({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
+  async getRadarLazy ({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
     const loadedId = rootGetters['blips/radarId']
     const radarId = await dispatch('followRadarAlias', aliasOrId)
     if (loadedId !== radarId) {
@@ -83,7 +83,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('removeBlip', blip)
     commit('setLoading', false)
   },
-  async setBlips({ commit }, blips: Blip[]): Promise<void> {
+  async setBlips ({ commit }, blips: Blip[]): Promise<void> {
     commit('setLoading', true)
     commit('dropBlips')
     // add all new blips
@@ -108,15 +108,15 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },
-  async setMeta({ commit }, meta: Meta): Promise<void> {
+  async setMeta ({ commit }, meta: Meta): Promise<void> {
     commit('setLoading', true)
     commit('setMeta', meta)
     commit('setLoading', false)
   },
-  async getRadarAlias({ commit }): Promise<void> {
+  async getRadarAlias ({ commit }): Promise<void> {
     commit('setRadarAlias', '')
   },
-  async setRadarAlias({ commit }, { alias, radarId }: { alias: string; radarId: string }): Promise<void> {
+  async setRadarAlias ({ commit }, { alias, radarId }: { alias: string; radarId: string }): Promise<void> {
     const doc = {
       alias,
       radarId
@@ -124,7 +124,7 @@ const actions = (): ActionTree<BlipsState, RootState> =>  ({
     commit('setRadarAlias', alias)
     router.push({ name: 'radar', params: { radarId: alias } })
   },
-  async isRadarAliasAvailable(_, alias: string): Promise<boolean> {
+  async isRadarAliasAvailable (_, alias: string): Promise<boolean> {
     if (radarAliases[alias]) {
       return false
     }

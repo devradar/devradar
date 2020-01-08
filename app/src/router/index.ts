@@ -13,7 +13,7 @@ import appConfig from '@/config'
 Vue.use(Router)
 const routesCfg = appConfig.routes
 const components = {
-  home: Home,  
+  home: Home,
   list: List,
   login: Login,
   logout: Logout,
