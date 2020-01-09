@@ -7,12 +7,12 @@ admin.initializeApp({
   databaseURL: 'https://devradar-e2e.firebaseio.com'
 })
 
-async function purgeCollection(colRef) {
+async function purgeCollection (colRef) {
   const docRefs = await admin.firestore().collection(colRef).listDocuments()
   await docRefs.map(ref => ref.delete())
   console.log(`Removed ${docRefs.length} (all) documents for collection '${colRef}'`)
 }
-async function purgeAll() {
+async function purgeAll () {
   const collections = await admin.firestore().listCollections()
   collections.forEach(async collectionRef => {
     const id = collectionRef.id
