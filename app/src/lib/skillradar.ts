@@ -139,7 +139,7 @@ export class SkillradarChart {
     gridWrapper.selectAll('.gridLabel')
       .data(d3.range(0, cfg.levelCount))
       .enter().append('text')
-      .attr('class', `gridLabel ${darkClass}`)
+      .attr('class', (d: number) => `gridLabel label-${d} ${darkClass}`)
       .attr('text-anchor', 'middle')
       .attr('x', 4)
       .attr('y', (d: number) => -this.level2radius(d))

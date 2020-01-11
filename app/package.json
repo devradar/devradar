@@ -5,6 +5,7 @@
   "author": "Andreas Offenhaeuser <https://anoff.io>",
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:test": "vue-cli-service serve --mode test",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "cypress:ci": "cypress run --record",
@@ -13,7 +14,7 @@
     "start": "npm run serve",
     "start:ci": "serve dist --single --no-clipboard --listen 8080",
     "test": "npm run lint && npm run build",
-    "test:e2e": "run-p --race start:ci cypress:open",
+    "test:e2e": "npm run build -- --mode development && run-p --race start:ci cypress:open",
     "test:e2e:ci": "run-p --race start:ci cypress:ci"
   },
   "dependencies": {

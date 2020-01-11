@@ -10,6 +10,12 @@ context('Radar View', () => {
     cy.visit('/')
     cy.get('[data-cy=cookie-banner] button').click()
   })
+  
+  it('does not show settings button to anonymous users', () => {
+    cy.visit('/logout')
+    cy.visit('/@rick')
+    cy.get('[data-cy="radar-settings-button"]').should('not.exist')
+  })
 
   it('shows radar + legend responsively', () => {
     getBackend().then(backend => {
@@ -24,11 +30,5 @@ context('Radar View', () => {
       cy.get('[data-cy="radar-legendeast"]:visible').should('have.length', 1)
       cy.get('[data-cy="radar-settings-button"]').should('exist') // logged in user should see edit button
     })
-  })
-
-  it('does not show settings button to anonymous users', () => {
-    cy.visit('/logout')
-    cy.visit('/@rick')
-    cy.get('[data-cy="radar-settings-button"]').should('not.exist')
   })
 })

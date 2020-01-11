@@ -47,6 +47,7 @@
             <v-col cols="6" md="2">
               <v-btn icon color="secondary"
                 :disabled="!tmpTitleDirty"
+                data-cy="radar-settings-title-save"
                 @click="saveMeta('title')">
                 <v-icon>mdi-content-save</v-icon>
               </v-btn>
@@ -55,6 +56,7 @@
               <v-text-field v-model="tmpTitle"
                 persistent-hint hint="Radar title"
                 @change="tmpTitleDirty = true"
+                data-cy="radar-settings-title-field"
                 single-line required :rules="rules.title"></v-text-field>
             </v-col>
             <v-col cols="5" class="d-none d-md-flex">
@@ -68,6 +70,7 @@
             <v-col cols="6" md="2">
               <v-btn icon color="secondary"
                 :disabled="!tmpAliasDirty || tmpAliasErrors.length > 0"
+                data-cy="radar-settings-alias-save"
                 @click="saveAlias()">
                 <v-icon>mdi-content-save</v-icon>
               </v-btn>
@@ -76,6 +79,7 @@
               <v-text-field v-model="tmpAlias"
                 persistent-hint hint="devradar alias (must be unique)"
                 :error-messages="tmpAliasErrors"
+                data-cy="radar-settings-alias-field"
                 single-line required :rules="rules.alias"></v-text-field>
             </v-col>
             <v-col cols="5" class="d-none d-md-flex">
@@ -88,6 +92,7 @@
             <v-col cols="6" md="2">
               <v-btn icon color="secondary"
                 :disabled="!tmpLevelsDirty"
+                data-cy="radar-settings-levels-save"
                 @click="saveMeta('levels')">
                 <v-icon>mdi-content-save</v-icon>
               </v-btn>
@@ -96,24 +101,28 @@
               <v-text-field v-model="tmpLevels[0]"
                 persistent-hint hint="Outermost level"
                 @change="tmpLevelsDirty = true"
+                data-cy="radar-settings-levels-field-0"
                 single-line required :rules="rules.level"></v-text-field>
             </v-col>
             <v-col cols="6" md="2">
               <v-text-field v-model="tmpLevels[1]"
                 persistent-hint hint="Second level"
                 @change="tmpLevelsDirty = true"
+                data-cy="radar-settings-levels-field-1"
                 single-line required :rules="rules.level"></v-text-field>
             </v-col>
             <v-col cols="6" md="2">
               <v-text-field v-model="tmpLevels[2]"
                 persistent-hint hint="Third level"
                 @change="tmpLevelsDirty = true"
+                data-cy="radar-settings-levels-field-2"
                 single-line required :rules="rules.level"></v-text-field>
             </v-col>
             <v-col cols="6" md="2">
               <v-text-field v-model="tmpLevels[3]"
                 persistent-hint hint="Innermost level"
                 @change="tmpLevelsDirty = true"
+                data-cy="radar-settings-levels-field-3"
                 single-line required :rules="rules.level"></v-text-field>
             </v-col>
           </v-row>
@@ -124,6 +133,7 @@
             <v-col cols="6" md="2">
               <v-btn icon color="secondary"
                 :disabled="!tmpCategoriesDirty"
+                data-cy="radar-settings-categories-save"
                 @click="saveMeta('categories')">
                 <v-icon>mdi-content-save</v-icon>
               </v-btn>
@@ -132,24 +142,28 @@
               <v-text-field v-model="tmpCategories[0]"
                 persistent-hint hint="First category"
                 @change="tmpCategoriesDirty = true"
+                data-cy="radar-settings-categories-field-0"
                 single-line required :rules="rules.category"></v-text-field>
             </v-col>
             <v-col cols="6" md="2">
               <v-text-field v-model="tmpCategories[1]"
                 persistent-hint hint="Second category"
                 @change="tmpCategoriesDirty = true"
+                data-cy="radar-settings-categories-field-1"
                 single-line required :rules="rules.category"></v-text-field>
             </v-col>
             <v-col cols="6" md="2">
               <v-text-field v-model="tmpCategories[2]"
                 persistent-hint hint="Third category"
                 @change="tmpCategoriesDirty = true"
+                data-cy="radar-settings-categories-field-2"
                 single-line required :rules="rules.category"></v-text-field>
             </v-col>
             <v-col cols="6" md="2">
               <v-text-field v-model="tmpCategories[3]"
                 persistent-hint hint="Fourth category"
                 @change="tmpCategoriesDirty = true"
+                data-cy="radar-settings-categories-field-3"
                 single-line required :rules="rules.category"></v-text-field>
             </v-col>
           </v-row>
@@ -157,7 +171,9 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text @click="close()">Close</v-btn>
+        <v-btn text
+          data-cy="radar-settings-close"
+          @click="close()">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
