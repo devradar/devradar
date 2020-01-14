@@ -35,9 +35,10 @@ function cleanBlip (blip: Blip): Blip {
   }
   const { category, link, description, title, id } = blip
   const newBlip = { category, link, description, title, changes, id }
-  if (!link) delete newBlip.link
+  if (!link) newBlip.link = ''
+  else if (!/^https?:\/\//i.test(link)) newBlip.link = 'https://' + link
   if (!description) newBlip.description = ''
-  if (!id) delete newBlip.id
+  if (!id) newBlip.id = getUUID()
   return newBlip
 }
 function addBlipLevelFromChanges (blip: Blip): Blip {

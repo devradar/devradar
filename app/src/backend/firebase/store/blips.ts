@@ -85,40 +85,27 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     commit('setLoading', true)
     // prepend https if nothing is there
     const user = rootGetters['user/user']
-    const { title, category } = blip
-    let { link, changes, description } = blip
-    link = link || ''
-    description = description || ''
-    if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link
+    const nBlip = cleanBlip(blip)
+    const { changes } = blip
     // assign IDs to changes
-    changes = changes
+    nBlip.changes = changes
       .map(c => {
         if (!c.id) c.id = getUUID()
         return c
       })
       .map(cleanChange)
-    const newBlip = {
-      title,
-      category,
-      link,
-      changes,
-      description
-    }
     // TODO: debug missing link/description?
-    const setSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).add(newBlip)
-    newBlip['id'] = setSnapshot.id
-    commit('addBlip', newBlip)
+    const setSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).add(nBlip)
+    nBlip['id'] = setSnapshot.id
+    commit('addBlip', nBlip)
     commit('setLoading', false)
   },
   async updateBlip ({ commit, rootGetters }, blip: Blip): Promise<void> {
     commit('setLoading', true)
     // create copy of the store object to remove changes array/index for firebase entry
     const user = rootGetters['user/user']
-    blip.description = blip.description || ''
-    blip.link = blip.link || ''
-    // prepend https if nothing is there
-    if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
-    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(cleanBlip(blip))
+    const nBlip = cleanBlip(blip)
+    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(nBlip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },
@@ -149,8 +136,8 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     const newChange = cleanChange(change)
     newChange.id = getUUID()
     blip.changes.push(newChange)
-    blip = cleanBlip(blip)
-    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(blip)
+    const nBlip = cleanBlip(blip)
+    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(nBlip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },
@@ -158,7 +145,8 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     commit('setLoading', true)
     const user = rootGetters['user/user']
     blip.changes = blip.changes.filter(c => c.id !== change.id)
-    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(blip)
+    const nBlip = cleanBlip(blip)
+    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(nBlip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },

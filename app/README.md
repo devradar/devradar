@@ -98,4 +98,4 @@ Available scripts:
 
 ## Known limits
 
-1. Blips and history entries are limited to 100 per radar
+1. The Database allows a maximum of 100 Blips, 20 History entries per Blip and 10 Levels/Categories
