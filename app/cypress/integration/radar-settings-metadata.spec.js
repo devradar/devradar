@@ -6,7 +6,7 @@ context('Radar metadata', () => {
     cy.exec('node cypress/support/wipe-firestore.js')
     cy.visit('/')
     getBackend().then(backend => {
-      backend.test.login()
+      return backend.test.login()
     })
     cy.get('[data-cy=cookie-banner] button').click()
     cy.visit('/@rick')

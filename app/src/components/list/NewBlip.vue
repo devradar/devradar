@@ -5,6 +5,7 @@
       color="primary" v-model="fab"
       fab fixed bottom right
       v-if="userCanEdit"
+      data-cy="blip-new-button"
       id="floaty"
     >
       <v-icon>add</v-icon>
@@ -19,34 +20,47 @@
             <v-container grid-list-md>
               <v-layout row wrap>
                 <v-flex sm6 xs12>
-                  <v-text-field v-model="title" label="Title" required :rules="[v => !!v || 'Title is required']"></v-text-field>
+                  <v-text-field v-model="title" label="Title" required :rules="[v => !!v || 'Title is required']"
+                    data-cy="blip-new-title"
+                    ></v-text-field>
                 </v-flex>
                 <v-flex sm6 xs12>
-                  <v-text-field v-model="link" label="Link">
-                  </v-text-field>
+                  <v-text-field v-model="link" label="Link"
+                    data-cy="blip-new-link"
+                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-textarea v-model="description" label="Technology use" rows="3">
-                  </v-textarea>
+                  <v-textarea v-model="description" label="Technology use" rows="3"
+                  data-cy="blip-new-description"
+                  ></v-textarea>
                 </v-flex>
                 <v-flex sm6 xs12>
-                  <v-select :items="categories" v-model="category" label="Category" single-line required :rules="[v => !!v || 'Category is required']"></v-select>
+                  <v-select :items="categories" v-model="category" label="Category" single-line required :rules="[v => !!v || 'Category is required']"
+                    data-cy="blip-new-category"
+                  ></v-select>
                 </v-flex>
                 <v-flex sm6 xs12>
-                  <v-select :items="levels" v-model="level" label="Level" single-line required :rules="[v => !!v || 'Level is required']"></v-select>
+                  <v-select :items="levels" v-model="level" label="Level" single-line required :rules="[v => !!v || 'Level is required']"
+                    data-cy="blip-new-level"
+                  ></v-select>
                 </v-flex>
                 <v-flex xs12>
-                  <v-textarea v-model="changeText" label="Reason for change" rows="2">
-                  </v-textarea>
+                  <v-textarea v-model="changeText" label="Reason for change" rows="2"
+                  data-cy="blip-new-changeText"
+                  ></v-textarea>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click.stop="cancel">Cancel</v-btn>
+          <v-btn @click.stop="cancel"
+            data-cy="blip-new-cancel"
+          >Cancel</v-btn>
           <v-spacer></v-spacer>
-          <v-btn @click.stop="submit" color="primary">Save</v-btn>
+          <v-btn @click.stop="submit" color="primary"
+            data-cy="blip-new-submit"
+          >Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

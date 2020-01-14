@@ -4,8 +4,8 @@
         <v-row justify="space-around">
           <v-col cols="12" sm="6">
               <v-card-title class="headline" :class="{ dark: darkMode }" v-if="!isEditMode">
-                <a v-if="blip.link && blip.link.length > 0" :href="blip.link" target="_blank">{{blip.title | limitString(blipTitleCutOff)}}</a>
-                <span v-else>{{blip.title | limitString(blipTitleCutOff)}}</span>
+                <a v-if="blip.link && blip.link.length > 0" :href="blip.link" target="_blank" data-cy="blip-title">{{blip.title | limitString(blipTitleCutOff)}}</a>
+                <span v-else data-cy="blip-title">{{blip.title | limitString(blipTitleCutOff)}}</span>
                 <v-btn icon @click.stop="copyUrl(blip)"><v-icon>link</v-icon></v-btn>
               </v-card-title>
               <v-text-field
