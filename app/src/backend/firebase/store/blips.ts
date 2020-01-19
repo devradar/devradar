@@ -14,7 +14,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     try {
       radarSnapshot = await firebase.firestore().collection('radars').doc(alias).get()
     } catch (e) {
-      // ignore e
+      // will throw if an 'alias' parameter is actually a radarId, handle response in the finally block
     } finally {
       if (radarSnapshot.exists) { // provided string is not actually an alias but a valid ID
         response = radarSnapshot.id
@@ -24,7 +24,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
           .limit(1)
           .get()
         if (aliasSnapshot.size === 0) {
-          console.error('No devradar found for this alias (or ID)', alias) // eslint-disable-line no-console
+          console.error('No devradar found for this alias (or ID):', alias) // eslint-disable-line no-console
           response = ''
         } else {
           const data = aliasSnapshot.docs[0].data()
@@ -83,7 +83,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
   async getRadarLazy ({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
     const loadedId = rootGetters['blips/radarId']
     const radarId = await dispatch('followRadarAlias', aliasOrId)
-    if (loadedId !== radarId) {
+    if (loadedId !== radarId && radarId !== '') {
       return dispatch('getRadar', radarId)
     }
   },
@@ -101,7 +101,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
       })
       .map(cleanChange)
     // TODO: debug missing link/description?
-    const setSnapshot = await firebase.firestore().collection(`radars/${radarId}/blips`).add(nBlip)
+    const setSnapshot = await firebase.firestore().collection(`radars/${radarId}/blips`).add(JSON.parse(JSON.stringify(nBlip))) // JSON parsing to prevent this error from occuring: https://stackoverflow.com/questions/48156234/function-documentreference-set-called-with-invalid-data-unsupported-field-val
     nBlip['id'] = setSnapshot.id
     commit('addBlip', nBlip)
     commit('setLoading', false)
