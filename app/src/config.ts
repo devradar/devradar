@@ -50,7 +50,8 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],
     levels: [ 'Hold', 'Assess', 'Trial', 'Adopt' ],
     isPublic: true
-  }
+  },
+  isUnderTest: window['Cypress']
 }
 
 // precalculate some properties for later

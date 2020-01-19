@@ -33,6 +33,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { User } from '@/types/domain'
+import appConfig from '../config'
+import { backend } from '../store'
 
 @Component({
   computed: {
@@ -47,7 +49,11 @@ export default class NewChange extends Vue {
   user: User
 
   public onLogin (provider) {
-    this.$store.dispatch('user/oauthLogin', { provider })
+    if (appConfig.isUnderTest || appConfig.backend.project === 'devradar-e2e') { // use mocked login in test mode
+      backend.test.login()
+    } else {
+      this.$store.dispatch('user/oauthLogin', { provider })
+    }
   }
 }
 </script>

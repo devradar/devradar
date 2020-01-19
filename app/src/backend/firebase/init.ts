@@ -67,13 +67,14 @@ async function init (store, appConfig) {
     console.error('Misconfigured backend in config.ts, please provide backend.project and backend.key') // eslint-disable-line no-console
     return Promise.reject(new Error('Misconfigured backend in config.ts, please provide backend.project and backend.key'))
   }
+  store.commit('blips/setLoading', true)
   const app = firebase.initializeApp({ // eslint-disable-line @typescript-eslint/no-unused-vars
     apiKey: appConfig.backend.key,
     authDomain: `${appConfig.backend.project}.firebaseapp.com`,
     databaseURL: `https://${appConfig.backend.project}.firebaseio.com`,
     projectId: `${appConfig.backend.project}`
   })
-  if (window['Cypress']) {
+  if (appConfig.isUnderTest) {
     console.log('disabling auth persistance')
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE) // disable auth cache in test mode
   } else {
@@ -83,17 +84,17 @@ async function init (store, appConfig) {
   // resolve after auth status is defined as logged in or not
   await firebase.auth().onAuthStateChanged(async oauthUser => {
     if (oauthUser) {
-      console.log('auth change', oauthUser)
+      // console.log('auth change', oauthUser)
       const user = await upsertUser(oauthUser)
       store.commit('user/setUser', user)
       const radarId = await upsertRadar(user)
       if (!store.getters['blips/radarId']) {
         await store.dispatch('blips/getRadarLazy', radarId)
-        let radarIdOrAlias = radarId
-        if (store.getters['blips/radarAlias']) {
-          radarIdOrAlias = store.getters['blips/radarAlias']
-        }
-        router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
+        // let radarIdOrAlias = radarId
+        // if (store.getters['blips/radarAlias']) {
+        //   radarIdOrAlias = store.getters['blips/radarAlias']
+        // }
+        // router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
       }
       return user
     } else { // user is not set (logout)
