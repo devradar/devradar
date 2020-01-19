@@ -116,7 +116,6 @@ export default class List extends Vue {
 
   newChangeOpen (blipId) {
     this.newChangeBlip = this.blips.find(b => b.id === blipId)
-    console.log(this.newChangeBlip)
     this.newChangeModalVisible = true
   }
 

@@ -11,7 +11,7 @@
       <v-icon>add</v-icon>
     </v-btn>
     <v-dialog v-model="dialog" max-width="500px">
-      <v-card>
+      <v-card data-cy="blip-new-modal">
         <v-card-title class="title">
           Add new Blip
         </v-card-title>

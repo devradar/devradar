@@ -48,6 +48,11 @@ VUE_APP_BACKEND_KEY=...
 
 When running in development mode (i.e. using 'devradar-e2e' project), the login calls in [Login.vue](./src/components/Login.vue) are replaced by a stub login call that uses a bootstrapped account.
 
+The development database must be manually populated with two accounts for E-Mail signup:
+
+- morty@devradar.io : jessica
+- rick@devradar.io : sanchez
+
 **.env.production** is used when running `npm run build`
 
 ```text

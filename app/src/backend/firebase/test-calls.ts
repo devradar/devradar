@@ -7,6 +7,7 @@ import 'firebase/firestore'
 
 async function login (): Promise<any> {
   return firebase.auth().signInWithEmailAndPassword('rick@devradar.io', 'sanchez') // morty@devradar.io / jessica
+    .then(login => login.user.uid)
 }
 
 export default {

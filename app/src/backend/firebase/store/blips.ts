@@ -24,7 +24,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
           .limit(1)
           .get()
         if (aliasSnapshot.size === 0) {
-          console.error('No devradar found for this alias', alias) // eslint-disable-line no-console
+          console.error('No devradar found for this alias (or ID)', alias) // eslint-disable-line no-console
           response = ''
         } else {
           const data = aliasSnapshot.docs[0].data()
@@ -52,25 +52,31 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
   },
   async getRadar ({ commit, dispatch }, id: string): Promise<void> {
     commit('setLoading', true)
-    const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
-    const { categories, levels, title, isPublic = false, owner } = radarSnapshot.data()
-    commit('setMeta', { title: title || `devradar #${id}`, categories, levels })
-    commit('setIsPublic', isPublic)
-    commit('setId', id)
-    commit('setOwnerId', owner)
 
-    // populate with blip info
-    const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`)
-      .limit(100)
-      .get()
-    commit('dropBlips')
-    blipSnapshot.forEach(async doc => {
-      // @ts-ignore type checking of docs property
-      const blip = cleanBlip(doc.data())
-      blip.id = doc.id // ensure that firebase._id is used
-      commit('addBlip', blip)
-    })
-    await dispatch('findAliasForRadarId', id)
+    try {
+      const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
+      const { categories, levels, title, isPublic = false, owner } = radarSnapshot.data()
+      commit('setMeta', { title: title || `devradar #${id}`, categories, levels })
+      commit('setIsPublic', isPublic)
+      commit('setId', id)
+      commit('setOwnerId', owner)
+
+      // populate with blip info
+      const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`)
+        .limit(100)
+        .get()
+      commit('dropBlips')
+      blipSnapshot.forEach(async doc => {
+        // @ts-ignore type checking of docs property
+        const blip = cleanBlip(doc.data())
+        blip.id = doc.id // ensure that firebase._id is used
+        commit('addBlip', blip)
+      })
+      await dispatch('findAliasForRadarId', id)
+    } catch (e) {
+      console.error('Error while fetching radar: ', id) // eslint-disable-line no-console
+      console.error(e) // eslint-disable-line no-console
+    }
     commit('setLoading', false)
   },
   // call getRadar if the id is different from the one currently in state
@@ -81,10 +87,10 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
       return dispatch('getRadar', radarId)
     }
   },
-  async addBlip ({ commit, rootGetters }, blip: Blip): Promise<void> {
+  async addBlip ({ commit, getters }, blip: Blip): Promise<void> {
     commit('setLoading', true)
     // prepend https if nothing is there
-    const user = rootGetters['user/user']
+    const radarId = getters['radarId']
     const nBlip = cleanBlip(blip)
     const { changes } = blip
     // assign IDs to changes
@@ -95,7 +101,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
       })
       .map(cleanChange)
     // TODO: debug missing link/description?
-    const setSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).add(nBlip)
+    const setSnapshot = await firebase.firestore().collection(`radars/${radarId}/blips`).add(nBlip)
     nBlip['id'] = setSnapshot.id
     commit('addBlip', nBlip)
     commit('setLoading', false)
@@ -179,7 +185,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     commit('setRadarAlias', alias)
     router.push({ name: 'radar', params: { radarId: alias } })
   },
-  async isRadarAliasAvailable ({ commit }, alias: string): Promise<boolean> {
+  async isRadarAliasAvailable (_, alias: string): Promise<boolean> {
     const aliasSnapshot = await firebase.firestore().collection('radarAliases')
       .where('alias', '==', alias)
       .limit(1)
