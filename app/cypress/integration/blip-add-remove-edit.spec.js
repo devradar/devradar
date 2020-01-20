@@ -65,7 +65,7 @@ context('Blip editing', function () {
     cy.get('[data-cy="blip-title"]').contains(blipTitle).should('exist')
   })
 
-  it.only('removing a blip', function () {
+  it('removing one out of three blips', function () {
     cy.all(
       cy.get('@backend'),
       cy.fixture('blips'),
@@ -74,5 +74,24 @@ context('Blip editing', function () {
       .spread((backend, blipsFix, radarId) => {
         return Promise.all(blipsFix.blips.slice(0, 3).map(b => backend.test.addBlip(b)))
       })
+    let blip0, blip1, blip2
+    cy.get('[data-cy="blip"]').then($blips => {
+      cy.wrap($blips).should('have.length', 3)
+      blip0 = $blips.eq(0)
+      blip1 = $blips.eq(1)
+      blip2 = $blips.eq(2)
+      cy.wrap(blip1).should('exist')
+      cy.wrap(blip1).within(() => {
+        cy.get('[data-cy="blip-edit-button"]').click()
+        cy.get('[data-cy="blip-delete-button1"]').click()
+        cy.get('[data-cy="blip-delete-button2"]').click()
+      })
+    })
+    cy.get('[data-cy="blip"]').then($blips => {
+      cy.wrap($blips).should('have.length', 2)
+      cy.wrap(blip0).should('exist')
+      cy.wrap(blip1).should('not.exist')
+      cy.wrap(blip2).should('exist')
+    })
   })
 })
