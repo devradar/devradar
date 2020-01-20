@@ -59,8 +59,8 @@ jobs:
       - run: npm ci
         working-directory: app
       - run: |
-        npm i -g firebase-tools
-        firebase deploy --only firestore:rules --token ${{ secrets.FIREBASE_E2E_TOKEN }} --project ${{ secrets.FIREBASE_E2E_PROJECT }}
+          npm i -g firebase-tools
+          firebase deploy --only firestore:rules --token ${{ secrets.FIREBASE_E2E_TOKEN }} --project ${{ secrets.FIREBASE_E2E_PROJECT }}
       working-directory: app
       name: deploy firestore rules
       - run: npm run build
