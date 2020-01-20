@@ -1,5 +1,4 @@
 /// <reference types="Cypress" />
-const getBackend = () => cy.window().its('backend')
 const devices = ['macbook-15', 'macbook-13', 'iphone-x']
 
 context('Radar View', () => {
@@ -10,7 +9,7 @@ context('Radar View', () => {
     cy.visit('/')
     cy.get('[data-cy=cookie-banner] button').click()
   })
-  
+
   it('does not show settings button to anonymous users', () => {
     cy.visit('/logout')
     cy.visit('/@rick')
@@ -18,9 +17,7 @@ context('Radar View', () => {
   })
 
   it('shows radar + legend responsively', () => {
-    getBackend().then(backend => {
-      backend.test.login()
-    })
+    cy.getBackend().then(backend => backend.test.login())
     cy.visit('/@rick')
     devices.forEach(device => {
       cy.viewport(device)

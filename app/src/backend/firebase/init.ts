@@ -74,17 +74,16 @@ async function init (store, appConfig) {
     projectId: `${appConfig.backend.project}`
   })
   if (appConfig.isUnderTest) {
-    console.log('disabling auth persistance')
+    console.log('Disabling auth persistance') // eslint-disable-line no-console
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE) // disable auth cache in test mode
   } else {
-    console.log('setting auth persistance')
+    console.log('Setting auth persistance') // eslint-disable-line no-console
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // store user until logout happens
   }
   // resolve after auth status is defined as logged in or not
   await firebase.auth().onAuthStateChanged(async oauthUser => {
     store.commit('blips/setLoading', true)
     if (oauthUser) {
-      // console.log('auth change', oauthUser)
       const user = await upsertUser(oauthUser)
       const radarId = await upsertRadar(user)
       user.radar = radarId

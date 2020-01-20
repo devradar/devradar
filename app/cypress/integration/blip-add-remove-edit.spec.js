@@ -1,41 +1,11 @@
 /// <reference types="Cypress" />
-const getBackend = function () { return cy.window().its('backend') }
-
-const chainStart = Symbol('start of promise chain') // based on https://github.com/cypress-io/cypress/issues/915#issuecomment-568037175
-cy.all = function (...commands) {
-  const _ = Cypress._
-  const chain = cy.wrap(null, { log: false })
-  const stopCommand = _.find(cy.queue.commands, {
-    attributes: { chainerId: chain.chainerId }
-  })
-  const startCommand = _.find(cy.queue.commands, {
-    attributes: { chainerId: commands[0].chainerId }
-  })
-  const p = chain.then(() => {
-    return _(commands)
-      .map(cmd => {
-        return cmd[chainStart]
-          ? cmd[chainStart].attributes
-          : _.find(cy.queue.commands, {
-            attributes: { chainerId: cmd.chainerId }
-          }).attributes
-      })
-      .concat(stopCommand.attributes)
-      .slice(1)
-      .flatMap(cmd => {
-        return cmd.prev.get('subject')
-      })
-      .value()
-  })
-  p[chainStart] = startCommand
-  return p
-}
+require('../support/cy-all')
 
 context('Blip editing', function () {
   beforeEach(function () {
     cy.exec('node cypress/support/wipe-firestore.js')
     cy.visit('/')
-    getBackend()
+    cy.getBackend()
       .as('backend')
     cy.get('@backend')
       .then(backend => backend.test.login())
@@ -45,9 +15,13 @@ context('Blip editing', function () {
     cy.get('[data-cy=cookie-banner] button').click()
     cy.all(cy.get('@backend'), cy.get('@userId'))
       .spread((backend, userId) => backend.test.getRadarIdByUserId(userId))
+      .then(radarId => radarId)
       .as('radarId')
     cy.get('@radarId')
-      .then(radarId => cy.visit(`/^${radarId}`))
+      .then(radarId => {
+        console.log(radarId)
+        cy.visit(`/^${radarId}`)
+      })
   })
 
   it('adding a new blip', function () {

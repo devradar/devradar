@@ -1,40 +1,11 @@
 /// <reference types="Cypress" />
-const getBackend = () => cy.window().its('backend')
-const chainStart = Symbol('start of promise chain') // based on https://github.com/cypress-io/cypress/issues/915#issuecomment-568037175
-cy.all = function (...commands) {
-  const _ = Cypress._
-  const chain = cy.wrap(null, { log: false })
-  const stopCommand = _.find(cy.queue.commands, {
-    attributes: { chainerId: chain.chainerId }
-  })
-  const startCommand = _.find(cy.queue.commands, {
-    attributes: { chainerId: commands[0].chainerId }
-  })
-  const p = chain.then(() => {
-    return _(commands)
-      .map(cmd => {
-        return cmd[chainStart]
-          ? cmd[chainStart].attributes
-          : _.find(cy.queue.commands, {
-            attributes: { chainerId: cmd.chainerId }
-          }).attributes
-      })
-      .concat(stopCommand.attributes)
-      .slice(1)
-      .flatMap(cmd => {
-        return cmd.prev.get('subject')
-      })
-      .value()
-  })
-  p[chainStart] = startCommand
-  return p
-}
+require('../support/cy-all')
 
 context('Radar metadata', () => {
   before(() => {
     cy.exec('node cypress/support/wipe-firestore.js')
     cy.visit('/')
-    getBackend()
+    cy.getBackend()
       .as('backend')
     cy.get('@backend')
       .then(backend => backend.test.login())
@@ -63,6 +34,7 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-title-field"]').focus()
     cy.get('[data-cy="radar-settings-title-field"]').type('{selectall}{del}')
     cy.get('[data-cy="radar-settings-title-field"]').type('rick sanchez')
+    cy.wait(50)
     cy.get('[data-cy="radar-settings-close"]').focus()
     cy.get('[data-cy="radar-settings-title-save"]').click()
     cy.get('[data-cy="radar-settings-close"]').click()
