@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 const getBackend = function () { return cy.window().its('backend') }
 
-const chainStart = Symbol()
+const chainStart = Symbol('start of promise chain') // based on https://github.com/cypress-io/cypress/issues/915#issuecomment-568037175
 cy.all = function (...commands) {
   const _ = Cypress._
   const chain = cy.wrap(null, { log: false })
