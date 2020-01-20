@@ -74,7 +74,7 @@ jobs:
   firebase-deploy:
     name: "publish app.devradar.io"
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [test-lint, test-e2e-volatile, test-e2e-firebase]
+    needs: [test-lint, test-e2e-volatile, test-e2e-firestore]
     runs-on: ubuntu-latest
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
