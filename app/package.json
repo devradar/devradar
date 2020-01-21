@@ -6,8 +6,8 @@
   "scripts": {
     "build": "vue-cli-service build",
     "cypress:ci": "cypress run --record",
-    "cypress:ci:firebase": "cypress run --record --group firebase",
-    "cypress:ci:localstorage": "cypress run --record --group localstorage",
+    "cypress:ci:firebase": "cypress run --record --group firebase --ci-build-id ${GITHUB_SHA}",
+    "cypress:ci:localstorage": "cypress run --record --group localstorage --ci-build-id ${GITHUB_SHA}",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "lint": "vue-cli-service lint",
