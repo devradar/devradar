@@ -3,7 +3,7 @@ require('../support/cy-all')
 
 context('Radar metadata', () => {
   before(() => {
-    cy.exec('node cypress/support/wipe-firestore.js')
+    cy.clean()
     cy.visit('/')
     cy.getBackend()
       .as('backend')

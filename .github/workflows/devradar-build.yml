@@ -40,11 +40,11 @@ jobs:
       working-directory: app
     - run: |
         npm run build
-        npm run test:e2e:ci # cypress key provided via CYPRESS_RECORD_KEY env variable
+        npm run test:e2e:ci:localstorage # cypress key provided via CYPRESS_RECORD_KEY env variable
       name: cypress tests w/ local storage
       working-directory: app
 
-  test-e2e-firestore:
+  test-e2e-firebase:
     runs-on: ubuntu-latest
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
@@ -67,14 +67,14 @@ jobs:
       working-directory: app
     - run: |
         echo ${{ secrets.FIREBASE_E2E_ACCOUNTKEY }} > firebase-adminsdk.json # bootstrap adminsdk credentials
-        npm run test:e2e:ci # cypress key provided via CYPRESS_RECORD_KEY env variable
+        npm run test:e2e:ci:firebase # cypress key provided via CYPRESS_RECORD_KEY env variable
       name: cypress tests w/ firebase backend
       working-directory: app
     
   firebase-deploy:
     name: "publish app.devradar.io"
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [test-lint, test-e2e-volatile, test-e2e-firestore]
+    needs: [test-lint, test-e2e-volatile, test-e2e-firebase]
     runs-on: ubuntu-latest
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'

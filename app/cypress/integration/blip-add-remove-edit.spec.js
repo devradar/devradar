@@ -3,7 +3,7 @@ require('../support/cy-all')
 
 context('Blip editing', function () {
   beforeEach(function () {
-    cy.exec('node cypress/support/wipe-firestore.js')
+    cy.clean()
     cy.visit('/')
     cy.getBackend()
       .as('backend')

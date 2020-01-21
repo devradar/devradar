@@ -3,7 +3,7 @@ const devices = ['macbook-15', 'macbook-13', 'iphone-x']
 
 context('Radar View', () => {
   before(() => {
-    cy.exec('node cypress/support/wipe-firestore.js')
+    cy.clean()
   })
   beforeEach(() => {
     cy.visit('/')

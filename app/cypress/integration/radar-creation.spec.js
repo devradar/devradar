@@ -3,7 +3,7 @@ const getBackend = () => cy.window().its('backend')
 
 context('Radar created for new users', () => {
   before(() => {
-    cy.exec('node cypress/support/wipe-firestore.js')
+    cy.clean()
   })
   beforeEach(() => {
     cy.visit('/')

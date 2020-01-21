@@ -6,6 +6,8 @@
   "scripts": {
     "build": "vue-cli-service build",
     "cypress:ci": "cypress run --record",
+    "cypress:ci:firebase": "cypress run --record --group firebase",
+    "cypress:ci:localstorage": "cypress run --record --group localstorage",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "lint": "vue-cli-service lint",
@@ -14,7 +16,9 @@
     "serve:test": "vue-cli-service serve --mode test",
     "start": "npm run serve",
     "test": "npm run lint && npm run build",
-    "test:e2e:ci": "run-p --race serve:static cypress:ci"
+    "test:e2e:ci": "run-p --race serve:static cypress:ci",
+    "test:e2e:ci:firebase": "run-p --race serve:static cypress:ci:firebase",
+    "test:e2e:ci:localstorage": "run-p --race serve:static cypress:ci:localstorage"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",
