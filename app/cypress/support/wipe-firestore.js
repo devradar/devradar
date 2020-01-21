@@ -5,11 +5,17 @@ const path = require('path')
 
 const FIREBASE_FILE = '../../firebase-adminsdk.json'
 
+let serviceAccount = process.env['FIREBASE_SERVICEACCOUNT']
 if (!fs.existsSync(path.join(__dirname, FIREBASE_FILE))) {
-  console.warn('Firebase Account not found: ', FIREBASE_FILE)
-  process.exit(0)
+  if (!serviceAccount) {
+    console.warn('Firebase Account not found: ', FIREBASE_FILE)
+    process.exit(0)
+  } else {
+    serviceAccount = JSON.parse(serviceAccount)
+  }
+} else {
+  serviceAccount = require(FIREBASE_FILE)
 }
-const serviceAccount = require(FIREBASE_FILE)
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

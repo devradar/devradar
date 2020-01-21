@@ -51,6 +51,7 @@ jobs:
       VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_E2E_PROJECT }}
       VUE_APP_BACKEND_KEY: ${{ secrets.FIREBASE_E2E_CLIENTKEY }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
+      FIREBASE_SERVICEACCOUNT: ${{ secrets.FIREBASE_E2E_ACCOUNTKEY }}
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
@@ -66,7 +67,6 @@ jobs:
     - run: npm run build
       working-directory: app
     - run: |
-        echo "${{ secrets.FIREBASE_E2E_ACCOUNTKEY }}" > firebase-adminsdk.json # bootstrap adminsdk credentials
         npm run test:e2e:ci:firebase # cypress key provided via CYPRESS_RECORD_KEY env variable
       name: cypress tests w/ firebase backend
       working-directory: app
