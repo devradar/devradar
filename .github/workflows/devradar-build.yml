@@ -27,7 +27,7 @@ jobs:
       working-directory: app
 
   test-e2e-volatile:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
@@ -45,7 +45,7 @@ jobs:
       working-directory: app
 
   test-e2e-firebase:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
       VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_E2E_PROJECT }}
