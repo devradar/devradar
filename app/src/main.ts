@@ -45,9 +45,9 @@ const app = new Vue({
   vuetify: new Vuetify(vuetifyOpts)
 }).$mount('#app')
 
-if (window['Cypress']) {
+if (appConfig.isUnderTest) {
   window['app'] = app
   window['backend'] = backend
-  console.log('Running in cypress test mode') // eslint-disable-line no-console
+  console.warn(`Running in test mode with backend: ${backend.type}`) // eslint-disable-line no-console
   console.log('backend configuration', appConfig.backend) // eslint-disable-line no-console
 }

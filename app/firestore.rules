@@ -76,10 +76,11 @@ service cloud.firestore {
         data.isPublic is bool;
     }
     function isBlipObject(data) {
-      return data.keys().hasOnly(['title', 'category', 'link', 'changes', 'description']) &&
+      return data.keys().hasOnly(['title', 'category', 'link', 'changes', 'description', 'id']) &&
         data.title is string &&
         data.category is number &&
         data.link is string &&
+        data.id is string &&
         data.description is string &&
         data.changes is list &&
         data.changes.size() <= 20;

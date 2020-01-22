@@ -1,11 +1,11 @@
 <template>
-    <v-card>
+    <v-card data-cy="blip">
       <v-container>
         <v-row justify="space-around">
           <v-col cols="12" sm="6">
               <v-card-title class="headline" :class="{ dark: darkMode }" v-if="!isEditMode">
-                <a v-if="blip.link && blip.link.length > 0" :href="blip.link" target="_blank">{{blip.title | limitString(blipTitleCutOff)}}</a>
-                <span v-else>{{blip.title | limitString(blipTitleCutOff)}}</span>
+                <a v-if="blip.link && blip.link.length > 0" :href="blip.link" target="_blank" data-cy="blip-title">{{blip.title | limitString(blipTitleCutOff)}}</a>
+                <span v-else data-cy="blip-title">{{blip.title | limitString(blipTitleCutOff)}}</span>
                 <v-btn icon @click.stop="copyUrl(blip)"><v-icon>link</v-icon></v-btn>
               </v-card-title>
               <v-text-field
@@ -88,6 +88,7 @@
         <v-spacer></v-spacer>
         <v-btn icon
         v-if="!isEditMode && userCanEdit"
+        data-cy="blip-edit-button"
         @click.stop="editBlip()"><v-icon>edit</v-icon></v-btn>
         <v-btn icon
         v-if="!isEditMode && userCanEdit"
@@ -100,10 +101,12 @@
         @click.stop="cancelEditBlip()"><v-icon>clear</v-icon></v-btn>
         <v-btn icon
         v-if="isEditMode && !isDeleteMode"
+        data-cy="blip-delete-button1"
         @click.stop="isDeleteMode = true"><v-icon>delete</v-icon></v-btn>
         <v-btn icon
         color="error"
         v-if="isEditMode && isDeleteMode"
+        data-cy="blip-delete-button2"
         @click.stop="deleteBlip()"><v-icon>delete</v-icon></v-btn>
       </v-card-actions>
   </v-card>

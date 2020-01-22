@@ -29,7 +29,7 @@
       </router-link>
       <v-spacer></v-spacer>
       <v-toolbar-title class="hidden-xs-only">
-        <span class="radar-title">{{ meta.title }} </span>
+        <span class="radar-title" data-cy="app-title">{{ meta.title }}</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
@@ -112,11 +112,11 @@
         v-model="isLoading"
         hide-overlay
         persistent
-        data-cy="loadingDialog"
         width="300"
       >
         <v-card
           color="accent"
+          data-cy="loadingDialog"
           dark
         >
           <v-card-text>

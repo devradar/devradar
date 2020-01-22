@@ -11,11 +11,8 @@ on:
       - '.github/**'
 
 jobs:
-  test:
+  test-lint:
     runs-on: ubuntu-latest
-    env:
-      VUE_APP_BACKEND_TYPE: 'testVolatile'
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
@@ -28,14 +25,56 @@ jobs:
         npm run build
       name: check for lint and tsc errors
       working-directory: app
-    - run: npm run test:e2e:ci # cypress key provided via CYPRESS_RECORD_KEY env variable
-      name: end to end tests (frontend only)
+
+  test-e2e-volatile:
+    runs-on: ubuntu-latest
+    env:
+      VUE_APP_BACKEND_TYPE: 'testVolatile'
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm ci
+      working-directory: app
+    - run: |
+        npm run build
+        npm run test:e2e:ci:localstorage # cypress key provided via CYPRESS_RECORD_KEY env variable
+      name: cypress tests w/ local storage
       working-directory: app
 
+  test-e2e-firebase:
+    runs-on: ubuntu-latest
+    env:
+      VUE_APP_BACKEND_TYPE: 'firebase'
+      VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_E2E_PROJECT }}
+      VUE_APP_BACKEND_KEY: ${{ secrets.FIREBASE_E2E_CLIENTKEY }}
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
+      FIREBASE_SERVICEACCOUNT: ${{ secrets.FIREBASE_E2E_ACCOUNTKEY }}
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm ci
+      working-directory: app
+    - run: |
+        npm i -g firebase-tools
+        firebase deploy --only firestore:rules --token ${{ secrets.FIREBASE_E2E_TOKEN }} --project ${{ secrets.FIREBASE_E2E_PROJECT }}
+      working-directory: app
+      name: deploy firestore rules
+    - run: npm run build
+      working-directory: app
+    - run: |
+        npm run test:e2e:ci:firebase # cypress key provided via CYPRESS_RECORD_KEY env variable
+      name: cypress tests w/ firebase backend
+      working-directory: app
+    
   firebase-deploy:
     name: "publish app.devradar.io"
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: test
+    needs: [test-lint, test-e2e-volatile, test-e2e-firebase]
     runs-on: ubuntu-latest
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'

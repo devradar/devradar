@@ -2,7 +2,7 @@
   <v-dialog v-model="$parent.newChangeModalVisible" max-width="80%">
     <v-card>
       <v-card-title class="title">
-        Add new blip level
+        Add new entry to Blip history
       </v-card-title>
       <v-card-text>
         <v-form v-model="valid" ref="form">
@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, InjectReactive } from 'vue-property-decorator'
-import { Blip, BlipChange } from '@/types/domain'
+import { Component, Vue, Emit } from 'vue-property-decorator'
+import { BlipChange } from '@/types/domain'
 import { VForm } from '@/types/misc'
 
 @Component({
@@ -58,8 +58,6 @@ import { VForm } from '@/types/misc'
 })
 
 export default class NewChange extends Vue {
-  @InjectReactive() readonly newChangeBlip!: Blip
-
   valid: boolean = false
   dialog: boolean = true
   level: string = ''
@@ -74,14 +72,14 @@ export default class NewChange extends Vue {
   submit () {
     if (this.form.validate()) {
       setTimeout(() => this.reset(), 100)
-      return { change: this.change, blip: this.newChangeBlip }
+      return this.change
     }
   }
 
   @Emit()
   cancel () {
     setTimeout(() => this.reset(), 100)
-    return { change: this.change, blip: this.newChangeBlip }
+    return this.change
   }
 
   reset () {

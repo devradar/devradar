@@ -48,7 +48,7 @@ import NewBlip from './list/NewBlip.vue'
 import NewChange from './list/NewChange.vue'
 import BlipComponent from './list/Blip.vue'
 import router from '../router'
-import { Blip, User } from '@/types/domain'
+import { Blip, BlipChange, User } from '@/types/domain'
 
 @Component({
   components: {
@@ -93,7 +93,7 @@ export default class List extends Vue {
   blipName: string
   @Prop({ default: '' })
   radarId: string
-  @ProvideReactive() newChangeBlip: Blip
+  newChangeBlip: Blip
 
   searchTitle: string = this.blipName
   maxMonths: number = 0
@@ -119,8 +119,8 @@ export default class List extends Vue {
     this.newChangeModalVisible = true
   }
 
-  newChangeSubmit ({ blip, change }) {
-    this.$store.dispatch('blips/addChange', { blip, change })
+  newChangeSubmit (change: BlipChange) {
+    this.$store.dispatch('blips/addChange', { blip: this.newChangeBlip, change })
     this.newChangeModalVisible = false
     this.newChangeBlip = null
   }

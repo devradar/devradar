@@ -14,7 +14,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     try {
       radarSnapshot = await firebase.firestore().collection('radars').doc(alias).get()
     } catch (e) {
-      // ignore e
+      // will throw if an 'alias' parameter is actually a radarId, handle response in the finally block
     } finally {
       if (radarSnapshot.exists) { // provided string is not actually an alias but a valid ID
         response = radarSnapshot.id
@@ -24,7 +24,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
           .limit(1)
           .get()
         if (aliasSnapshot.size === 0) {
-          console.error('No devradar found for this alias', alias) // eslint-disable-line no-console
+          console.error('No devradar found for this alias (or ID):', alias) // eslint-disable-line no-console
           response = ''
         } else {
           const data = aliasSnapshot.docs[0].data()
@@ -52,73 +52,66 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
   },
   async getRadar ({ commit, dispatch }, id: string): Promise<void> {
     commit('setLoading', true)
-    const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
-    const { categories, levels, title, isPublic = false, owner } = radarSnapshot.data()
-    commit('setMeta', { title: title || `devradar #${id}`, categories, levels })
-    commit('setIsPublic', isPublic)
-    commit('setId', id)
-    commit('setOwnerId', owner)
 
-    // populate with blip info
-    const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`)
-      .limit(100)
-      .get()
-    commit('dropBlips')
-    blipSnapshot.forEach(async doc => {
-      // @ts-ignore type checking of docs property
-      const blip = cleanBlip(doc.data())
-      blip.id = doc.id // ensure that firebase._id is used
-      commit('addBlip', blip)
-    })
-    await dispatch('findAliasForRadarId', id)
+    try {
+      const radarSnapshot = await firebase.firestore().collection('radars').doc(id).get()
+      const { categories, levels, title, isPublic = false, owner } = radarSnapshot.data()
+      commit('setMeta', { title: title || `devradar #${id}`, categories, levels })
+      commit('setIsPublic', isPublic)
+      commit('setId', id)
+      commit('setOwnerId', owner)
+
+      // populate with blip info
+      const blipSnapshot = await firebase.firestore().collection(`radars/${radarSnapshot.id}/blips`)
+        .limit(100)
+        .get()
+      commit('dropBlips')
+      blipSnapshot.forEach(async doc => {
+        // @ts-ignore type checking of docs property
+        const blip = cleanBlip(doc.data())
+        blip.id = doc.id // ensure that firebase._id is used
+        commit('addBlip', blip)
+      })
+      await dispatch('findAliasForRadarId', id)
+    } catch (e) {
+      console.error('Error while fetching radar: ', id) // eslint-disable-line no-console
+      console.error(e) // eslint-disable-line no-console
+    }
     commit('setLoading', false)
   },
   // call getRadar if the id is different from the one currently in state
   async getRadarLazy ({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
     const loadedId = rootGetters['blips/radarId']
     const radarId = await dispatch('followRadarAlias', aliasOrId)
-    if (loadedId !== radarId) {
+    if (loadedId !== radarId && radarId !== '') {
       return dispatch('getRadar', radarId)
     }
   },
-  async addBlip ({ commit, rootGetters }, blip: Blip): Promise<void> {
+  async addBlip ({ commit, getters }, blip: Blip): Promise<void> {
     commit('setLoading', true)
     // prepend https if nothing is there
-    const user = rootGetters['user/user']
-    const { title, category } = blip
-    let { link, changes, description } = blip
-    link = link || ''
-    description = description || ''
-    if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link
+    const radarId = getters['radarId']
+    const nBlip = cleanBlip(blip)
+    const { changes } = blip
     // assign IDs to changes
-    changes = changes
+    nBlip.changes = changes
       .map(c => {
         if (!c.id) c.id = getUUID()
         return c
       })
       .map(cleanChange)
-    const newBlip = {
-      title,
-      category,
-      link,
-      changes,
-      description
-    }
     // TODO: debug missing link/description?
-    const setSnapshot = await firebase.firestore().collection(`radars/${user.radar}/blips`).add(newBlip)
-    newBlip['id'] = setSnapshot.id
-    commit('addBlip', newBlip)
+    const setSnapshot = await firebase.firestore().collection(`radars/${radarId}/blips`).add(JSON.parse(JSON.stringify(nBlip))) // JSON parsing to prevent this error from occuring: https://stackoverflow.com/questions/48156234/function-documentreference-set-called-with-invalid-data-unsupported-field-val
+    nBlip['id'] = setSnapshot.id
+    commit('addBlip', nBlip)
     commit('setLoading', false)
   },
   async updateBlip ({ commit, rootGetters }, blip: Blip): Promise<void> {
     commit('setLoading', true)
     // create copy of the store object to remove changes array/index for firebase entry
     const user = rootGetters['user/user']
-    blip.description = blip.description || ''
-    blip.link = blip.link || ''
-    // prepend https if nothing is there
-    if (blip.link && !/^https?:\/\//i.test(blip.link)) blip.link = 'https://' + blip.link
-    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(cleanBlip(blip))
+    const nBlip = cleanBlip(blip)
+    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(nBlip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },
@@ -149,8 +142,8 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     const newChange = cleanChange(change)
     newChange.id = getUUID()
     blip.changes.push(newChange)
-    blip = cleanBlip(blip)
-    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(blip)
+    const nBlip = cleanBlip(blip)
+    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(nBlip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },
@@ -158,7 +151,8 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     commit('setLoading', true)
     const user = rootGetters['user/user']
     blip.changes = blip.changes.filter(c => c.id !== change.id)
-    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(blip)
+    const nBlip = cleanBlip(blip)
+    await firebase.firestore().collection(`radars/${user.radar}/blips`).doc(blip.id).update(nBlip)
     commit('exchangeBlip', blip)
     commit('setLoading', false)
   },
@@ -191,7 +185,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     commit('setRadarAlias', alias)
     router.push({ name: 'radar', params: { radarId: alias } })
   },
-  async isRadarAliasAvailable ({ commit }, alias: string): Promise<boolean> {
+  async isRadarAliasAvailable (_, alias: string): Promise<boolean> {
     const aliasSnapshot = await firebase.firestore().collection('radarAliases')
       .where('alias', '==', alias)
       .limit(1)

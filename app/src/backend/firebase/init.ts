@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/auth'
 import appConfig from '../../config'
 import router from '../../router'
 
@@ -72,23 +73,27 @@ async function init (store, appConfig) {
     databaseURL: `https://${appConfig.backend.project}.firebaseio.com`,
     projectId: `${appConfig.backend.project}`
   })
-
+  if (appConfig.isUnderTest) {
+    console.log('Disabling auth persistance') // eslint-disable-line no-console
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE) // disable auth cache in test mode
+  } else {
+    console.log('Setting auth persistance') // eslint-disable-line no-console
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // store user until logout happens
+  }
   // resolve after auth status is defined as logged in or not
   await firebase.auth().onAuthStateChanged(async oauthUser => {
+    store.commit('blips/setLoading', true)
     if (oauthUser) {
       const user = await upsertUser(oauthUser)
-      store.commit('user/setUser', user)
       const radarId = await upsertRadar(user)
+      user.radar = radarId
+      store.commit('user/setUser', user)
       if (!store.getters['blips/radarId']) {
         await store.dispatch('blips/getRadarLazy', radarId)
-        let radarIdOrAlias = radarId
-        if (store.getters['blips/radarAlias']) {
-          radarIdOrAlias = store.getters['blips/radarAlias']
-        }
-        router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
       }
       return user
     } else { // user is not set (logout)
+      store.commit('blips/setLoading', false)
       store.commit('user/setUser', { roles: {} })
       return {}
     }

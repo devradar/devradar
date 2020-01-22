@@ -46,6 +46,13 @@ VUE_APP_BACKEND_PROJECT=devradar-e2e
 VUE_APP_BACKEND_KEY=...
 ```
 
+When running in development mode (i.e. using 'devradar-e2e' project), the login calls in [Login.vue](./src/components/Login.vue) are replaced by a stub login call that uses a bootstrapped account.
+
+The development database must be manually populated with two accounts for E-Mail signup:
+
+- morty@devradar.io : jessica
+- rick@devradar.io : sanchez
+
 **.env.production** is used when running `npm run build`
 
 ```text
@@ -98,4 +105,4 @@ Available scripts:
 
 ## Known limits
 
-1. Blips and history entries are limited to 100 per radar
+1. The Database allows a maximum of 100 Blips, 20 History entries per Blip and 10 Levels/Categories
