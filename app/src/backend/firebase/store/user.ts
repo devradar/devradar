@@ -6,6 +6,7 @@ import { RootState, UserState } from '@/types/vuex'
 
 const ghProvider = new firebase.auth.GithubAuthProvider()
 const twitterProvider = new firebase.auth.TwitterAuthProvider()
+const googleProvider = new firebase.auth.GoogleAuthProvider()
 
 const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-disable-line @typescript-eslint/no-unused-vars
   oauthLogin (_, payload): void {
@@ -16,6 +17,9 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
         break
       case 'twitter':
         provider = twitterProvider
+        break
+      case 'google':
+        provider = googleProvider
         break
       default:
         console.error(`Unknown provider: ${payload.provider}`) // eslint-disable-line no-console

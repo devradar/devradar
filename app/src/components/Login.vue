@@ -1,32 +1,30 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex xs12 sm6 offset-sm3>
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="6" lg="4">
         <v-card>
           <v-card-text>
-            <v-container>
-                <v-layout row>
-                  <v-flex xs6 class="text-xs-center">
-                    <v-btn v-on:click="onLogin('twitter')"
-                    data-cy="user-login" mx-auto>Login using Twitter</v-btn>
-                  </v-flex>
-                  <v-flex xs6 class="text-xs-center">
-                    <v-btn v-on:click="onLogin('github')"
-                    data-cy="admin-login" mx-auto>Login using GitHub</v-btn>
-                  </v-flex>
-                  <v-flex xs6 class="text-xs-center">
-                    <v-btn v-on:click="onLogin('google')"
-                    mx-auto>Login using Google</v-btn>
-                  </v-flex>
-                </v-layout>
-                <v-layout row>
-                  <span>user: {{ user }}</span>
-                </v-layout>
-            </v-container>
+            <v-row justify="center">
+              <v-col cols="12" class="login-col login-twitter">
+                <v-btn v-on:click="onLogin('twitter')"
+                data-cy="user-login" mx-auto>
+                <v-icon left>mdi-twitter</v-icon>Login using Twitter</v-btn>
+              </v-col>
+              <v-col cols="12" class="login-col login-github">
+                <v-btn v-on:click="onLogin('github')"
+                data-cy="admin-login" mx-auto>
+                <v-icon left>mdi-github</v-icon>Login using GitHub</v-btn>
+              </v-col>
+              <v-col cols="12" class="login-col login-google">
+                <v-btn v-on:click="onLogin('google')"
+                mx-auto>
+                <v-icon left>mdi-google</v-icon>Login using Google</v-btn>
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -50,6 +48,7 @@ export default class NewChange extends Vue {
 
   public onLogin (provider) {
     if (appConfig.isUnderTest || appConfig.backend.project === 'devradar-e2e') { // use mocked login in test mode
+      console.warn('Started stubbed login process')
       backend.test.login()
     } else {
       this.$store.dispatch('user/oauthLogin', { provider })
@@ -57,3 +56,9 @@ export default class NewChange extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.login-col {
+  text-align: center;
+}
+</style>
