@@ -1,5 +1,5 @@
 ---
-title: devradar Teams (Preview)
+title: devradar Teams (Alpha)
 ---
 
 Import your team's devradars, and track progress in your team members' competencies.

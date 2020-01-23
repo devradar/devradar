@@ -35,15 +35,11 @@ summaryLength = "10"
   URL = "/"
   Name = "Home"
   [[params.nav.link]]
-  URL = "/howto"
-  Name = "How To"
+  URL = "/about"
+  Name = "About"
   [[params.nav.link]]
   URL = "//devradar.io"
   Name = "App"
-  NewTab = true
-  [[params.nav.link]]
-  URL = "//editor.devradar.io"
-  Name = "Editor"
   NewTab = true
   # [[params.nav.link]]
   # URL = "//docs.devradar.io"
