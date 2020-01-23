@@ -6,8 +6,6 @@
 
 [![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 [![License check](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
-[![Build Status](https://github.com/anoff/devradar/workflows/editor/badge.svg)](https://github.com/anoff/devradar/actions)
-[![Build Status](https://github.com/anoff/devradar/workflows/teams/badge.svg)](https://github.com/anoff/devradar/actions)
 [![Build Status](https://github.com/anoff/devradar/workflows/web/badge.svg)](https://github.com/anoff/devradar/actions)
 
 [![Gitter](https://badgen.net/badge/chat/on%20gitter/cyan?icon=gitter)](https://gitter.im/devradar/discuss)
@@ -17,18 +15,16 @@
 [![Standard](https://badgen.net/badge/code%20style/standard/pink)](https://standardjs.com/)
 
 
-**Get more information: [devradar homepage](https://devradar.io)** 
+**Get more information: [devradar homepage](https://docs.devradar.io)** 
 
-**Try it out: [devradar editor](http://editor.devradar.io/)**
+**Try it out: [devradar](http://devradar.io/)**
 
 This repository holds the individual projects making up the devradar ecosystem:
 
-* [Editor](editor/): track and visualize tech skills (Vue)
-* [Teams](teams/): manage skills across an entire team (Vue)
-* [Web](web/): devradar landing page at [devradar.io](//devradar.io) (Hugo)
-* [App](app/): hosted devradar service (Vue)
-
-See [anoff/devradar-static](https://github.com/anoff/devradar-static) for an easy to setup version of the devradar to present your own tech skills.
+* [App](app/): devradar application (Vue)
+* [Web](web/): devradar landing page at [docs.devradar.io](//docs.devradar.io) (Hugo)
+* [Editor](editor/): LEGACY version without backend
+* [Teams](teams/): ALPHA version of teams features
 
 ## Roadmap
 
@@ -43,25 +39,9 @@ Any developer can easily create their own devradar for free.
 | [1.x](https://github.com/anoff/devradar/milestone/2) | Additional editor features like internationalization | 2020-Q2 |
 | [2.0](https://github.com/anoff/devradar/milestone/3) | Competence management for teams | 2020-Q4 |
 
-## Demo
-
-### devradar editor
-
-Create and update your skill information
-
-<img src="assets/editor-demo.gif" alt="video of the editor app">
-
-### devradar teams
-
-Compare your teams target skills with existing team devradars
-
-<img src="assets/teams-demo.gif" alt="video of the teams app">
-
-<br />
-
 ## License & Attributions
 
-Copyright 2019 Andreas Offenhaeuser <https://anoff.io>
+Copyright 2019 - 2020 Andreas Offenhaeuser <https://anoff.io>
 
 All devradar code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.
 

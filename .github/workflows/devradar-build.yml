@@ -72,7 +72,7 @@ jobs:
       working-directory: app
     
   firebase-deploy:
-    name: "publish app.devradar.io"
+    name: "publish devradar.io"
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [test-lint, test-e2e-volatile, test-e2e-firebase]
     runs-on: ubuntu-latest

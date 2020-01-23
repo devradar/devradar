@@ -1,21 +1,23 @@
 banner:
-  title : "Skill management<br>for developers"
+  title : "Competence management<br>for developers"
 
 about:
   enable : true
-  content : "Manage your skills as an individual using the devradar editor or track competence management within your team by using both the editor and the devradar teams app."
+  content : "Manage your competencies as an individual using the devradar editor or track competence management within your team by using both the editor and the devradar teams app."
   item:
-    - text: "Manage skills via web UI"
+    - text: "Manage competencies via web UI"
     - text: "View all skills in a list or radar view"
     - text: "Import/export via `.toml` files"
-    - text: "Overlay your team's devradars and focus on the key skills"
+    - text: "Create shareable url devradar.io/@yourname"
+    - text: "Login with Twitter/GitHub/Google Account"
+    - text: "(soon) Overlay your team's devradars and focus on the key skills"
 
 features:
   enable: true
   title: Features
 
 tiles:
-  enable : true
+  enable : false
   title: Setup options
   item : 
     - title : "Serverless"
@@ -40,7 +42,7 @@ tiles:
       highlighted : false
 
 usecases:
-  enable : true
+  enable : false
   item:
     - image : "images/use_case1_small.jpg"
       URL : "https://editor.devradar.io/#/?load=N4IgtgpgLghiBcooEsoBsIJAWQPYCcoBPAZwAIAHCfE3AOxjQD8z8YATGfEAGhAGMYUCAHMCyCCQQBtEABVcuNFL5yI-ABZ1kARwCuk3iAAKaIQDMCYFSABibSAHcCAaykBdPhgBuEZTJAAOVxvZH5MPgBJOmF8SHZkIQiQAEF2bxg6cPYjADVoakyQdwBfPgAjNGQKKXhpUEFhMXwiBAAGPhR0THgQAHFUABkYcrIAYUijTUyRQzrQTmEsACY2gEYADgBaNoB2IzoIR0GIXzQEAGYSzxAfP0uyhqTm1vgLztQMLD7cKY0Zub1ECLHogVabLZrZYHI4nM7tToQAAeUCwAGU9FR8OYYCQoDwyPx8LgSCQtvxcGAKMgMOwCWA9GgUFsKGYoJY4mRkeo9LBKoZrl5Tvd4G1HgJngRXssvMg6C4sBooFAavAAPQatUuPTlaiHYQkAB0yF+fHYkiJ1RQ9CwY3osDl1HIQjIJEEXw+3SwAGkdXqCjZpnRZrUgSCVuttnsYcdhedRYLbnH2uLGqIpQgZbc5QrekqVSR1Zr2Lh+C5qMbTcCLfgrSa6Lb7TBHfgyIw0GQoBoIJ2NHKRDYul9egARUvl7h8IMhmQLJIRtYATh2FxjcJFy0Td3jm54TyaGfgazNNbrNt6cnwEBdRFwelbJf4ekgMSE9bIVXLZFvek7V5dFLmgSIioGQvg0PWBLGAASqwpwSI4BLQPwhpGEOoKPs65CAck06AnOSy9OCy5tKufCHLG8LwFmwgolgkRtmArq4GQYi4OwbZQL2yDkLqgh6CQPYMQJPagcKLSON2V4AIQgFuybUamkotAiIDoVg2BCGY5R-ACoYEaCxE7AAbGuClXDc24PHuEoHipbyesOIAAPJUHQYy5Lpwb4cC85EesJGmeRsLmfJVFXDZaYvJcjmgsYRBdjaU7-N5+m+YRYIBSZZlUWsYUinlkXKa87xqZ8oIAFIwBkbq1hQqLJXps7pYZWVtEFIAUeuO75T1RV2SVsW2miaJeTO8wtQugU5SKFlCuFSkDQgx5lV6o6SMgIgNo1qXNeG-lLtlwWUbNvXWfu6b2St6nrRAFBkCcXDaMGY0+ftmWHe1M09ZZCm7hd0XUUNvQAEJoOO0xyq9aXvUZX3Hd1mZnYp-WXa8HSrU5KR0CQyD8tDe1+R900IwpYq-VRYqo4DGM3akABe949tB2AExNsNtR1XUKXlFMFYtaOqXTYzduYbNhkTcNcyFVGbnzP0lEAA"

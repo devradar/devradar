@@ -6,7 +6,7 @@
   <section class="section" style="padding-bottom: 0;">
   <div class="toc">
     <div class="toc-links">
-      {{ range where .Site.RegularPages "Type" "howto" }}
+      {{ range where .Site.RegularPages "Type" "about" }}
         <div class="toc-link-container">
           <a class="btn toc-link-text" href="#{{ .Title | urlize }}">{{ .Title | humanize }}</a>
         </div>
@@ -15,9 +15,9 @@
   </div>
   </section>
 
-  <section class="section howto">
+  <section class="section about">
     <div class="container">
-      {{ range where .Site.RegularPages "Type" "howto" }}
+      {{ range where .Site.RegularPages "Type" "about" }}
         <a class="toc-anchor" id="{{ .Title | urlize }}"></a>
         {{ partial "content-type/card" . }}
       {{ end }}
