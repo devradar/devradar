@@ -86,6 +86,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     if (loadedId !== radarId && radarId !== '') {
       return dispatch('getRadar', radarId)
     }
+    return Promise.resolve()
   },
   async addBlip ({ commit, getters }, blip: Blip): Promise<void> {
     commit('setLoading', true)

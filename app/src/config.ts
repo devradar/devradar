@@ -8,13 +8,13 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   },
   routes: [ // configure name, permissions & view ports
     { name: 'home', icon: 'home', title: 'Home', path: '/', validator: user => true, location: ['toolbar'] },
-    { name: 'login', icon: 'meeting_room', title: 'Login', path: '/login', validator: user => !user.uid, location: ['toolbar'] },
     { name: 'list', icon: 'list', title: 'History', path: '/^:radarId', validator: user => true, location: ['toolbar'], props: route => ({ blipName: route.query.q, radarId: route.params.radarId }) },
     { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
     { name: 'users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
     { name: 'radar', icon: 'track_changes', title: 'Radar', path: '/@:radarId', validator: user => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
   ],
   navEntries: [
+    { icon: 'meeting_room', title: 'Login', action: app => app.loginModalVisible = true , validator: user => !user.uid, location: ['toolbar'] },
     { icon: 'help', title: 'Help', url: '//docs.devradar.io/howto', validator: user => true, location: ['toolbar-menu'] }
   ],
   theme: {

@@ -36,9 +36,7 @@
         <v-btn text
           v-for="elm in toolbarItemsStatic"
           v-bind:key="elm.title"
-          v-bind:href="elm.url"
-          target="_blank"
-          >
+          @click="handleNavClick(elm)">
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
         </v-btn>
@@ -63,8 +61,7 @@
           <v-list>
             <v-list-item v-for="elm in toolbarMenuItemsStatic"
               v-bind:key="elm.title"
-              v-bind:href="elm.url"
-              target="_blank">
+              @click="handleNavClick(elm)">
               <v-list-item-title>
                 <v-icon left>{{elm.icon}}</v-icon>
                 {{ elm.title }}
@@ -89,8 +86,7 @@
         <v-list>
           <v-list-item v-for="elm in toolbarItemsStatic.concat(toolbarMenuItemsStatic)"
             v-bind:key="elm.title"
-            v-bind:href="elm.url"
-            target="_blank">
+            @click="handleNavClick(elm)">
             <v-list-item-title>
               <v-icon left>{{elm.icon}}</v-icon>
               {{ elm.title }}
@@ -155,9 +151,9 @@
 import CookieLaw from 'vue-cookie-law'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import appConfig from './config'
-import { app } from 'firebase'
 import { mapGetters } from 'vuex'
-import { Blip, Meta, User } from '@/types/domain'
+import { Meta, User } from '@/types/domain'
+import Login from '@/components/Login.vue'
 
 @Component({
   computed: {
@@ -171,7 +167,7 @@ import { Blip, Meta, User } from '@/types/domain'
       'snackbar'
     ])
   },
-  components: { CookieLaw }
+  components: { CookieLaw, Login }
 })
 export default class App extends Vue {
   showNavdrawer: boolean = false
@@ -181,6 +177,8 @@ export default class App extends Vue {
   toolbarMenuItemsRouter: object[] = []
   toolbarItemsStatic: object[] = []
   toolbarMenuItemsStatic: object[] = []
+  loginModalVisible: boolean = false
+
   // computed
   isLoading: boolean
   meta: Meta
@@ -222,6 +220,14 @@ export default class App extends Vue {
       .filter(i => i.location.includes('toolbar-menu'))
   }
 
+  handleNavClick (item) {
+    if (item.url) {
+      window.open(item.url, '_blank')
+    } else if (item.action) {
+      console.log('do stuff', item) // eslint-disable-line no-console
+      this.loginModalVisible = true
+    }
+  }
   mounted () {
     this.updateToolbarItems()
   }
@@ -231,6 +237,10 @@ export default class App extends Vue {
   @Watch('user')
   radarIdChange () {
     this.updateToolbarItems()
+  }
+
+  loginModalClose () {
+    this.loginModalVisible = false
   }
 }
 </script>

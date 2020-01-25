@@ -30,3 +30,11 @@ export interface User {
   id?: string;
   displayName?: string;
 }
+
+export enum LoginState {
+  NOT_LOGGED_IN = 0,
+  LOGIN_PENDING,
+  LOGGED_IN,
+  LOGOUT_PENDING,
+  LOGGED_OUT
+}

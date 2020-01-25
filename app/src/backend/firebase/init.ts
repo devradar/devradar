@@ -3,6 +3,7 @@ import 'firebase/firestore'
 import 'firebase/auth'
 import appConfig from '../../config'
 import router from '../../router'
+import { LoginState } from '@/types/domain'
 
 async function upsertUser (user): Promise<any> {
   // upsert into user collection
@@ -91,10 +92,20 @@ async function init (store, appConfig) {
       if (!store.getters['blips/radarId']) {
         await store.dispatch('blips/getRadarLazy', radarId)
       }
+      store.commit('blips/setLoading', false)
+      // navigate app to radar view after login
+      if (!['radar', 'history'].includes(router.currentRoute.name)) {
+        let radarIdOrAlias = radarId
+        if (store.getters['blips/radarAlias']) {
+          radarIdOrAlias = store.getters['blips/radarAlias']
+        }
+        router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
+      }
+      store.commit('user/loginState', LoginState.LOGGED_IN)
       return user
     } else { // user is not set (logout)
       store.commit('blips/setLoading', false)
-      store.commit('user/setUser', { roles: {} })
+      store.commit('user/reset')
       return {}
     }
   })
