@@ -12,7 +12,7 @@ on:
 
 jobs:
   site:
-    name: "publish devradar.io"
+    name: "publish docs"
     container: anoff/hugo-asciidoctor
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +21,7 @@ jobs:
         cd web
         hugo --gc --minify -d _site --baseURL //docs.devradar.io
         touch _site/.nojekyll
-        echo "docs.devradar.io" > CNAME
+        echo "docs.devradar.io" > _site/CNAME
       name: build hugo page
     - name: publish to gh-pages
       uses: JamesIves/github-pages-deploy-action@master
