@@ -7,7 +7,6 @@
       >
       <span><v-icon dark left>check</v-icon>{{ snackbar.text }}</span>
     </v-snackbar>
-    </v-btn>
     <v-app-bar
     scroll-off-screen
     dense app
