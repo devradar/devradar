@@ -15,7 +15,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   ],
   navEntries: [
     { icon: 'meeting_room', title: 'Login', action: app => (app.loginModalVisible = true), validator: user => !user.uid, location: ['toolbar'] },
-    { icon: 'help', title: 'Help', url: '//docs.devradar.io/howto', validator: () => true, location: ['toolbar-menu'] }
+    { icon: 'help', title: 'Help', url: '//docs.devradar.io/about', validator: () => true, location: ['toolbar-menu'] }
   ],
   theme: {
     dark: false,
