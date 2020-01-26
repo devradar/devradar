@@ -210,6 +210,7 @@ export default class App extends Vue {
       item.action(this)
     }
   }
+
   mounted () {
     this.updateToolbarItems()
   }

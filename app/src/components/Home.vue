@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-container class="full-height-width-view align-items-col margin-left-10">
         <v-row >
-          <v-col class="intro-heading-spacing" lg=12 md=12 sm=12 xs=12>
+          <v-col class="intro-heading-spacing" lg=12 md=12 sm=12 cols=12>
             <h1 class="intro-heading">Competence Management <br /> for developers</h1>
           </v-col>
         </v-row>
@@ -10,12 +10,12 @@
           <img src="heading_radar.png" class="intro-radar-img" />
         </v-container>
         <v-row>
-          <v-col class="intro-text" lg=5 md=6 sm=10 xs=12>
+          <v-col class="intro-text" lg=5 md=6 sm=10 cols=12>
             Manage your competences as an individual or use devradar to create a team wide skill matrix.
           </v-col>
         </v-row>
         <v-row>
-          <v-col class="intro-listing-container" lg=4 md=8 sm=10 xs=12>
+          <v-col class="intro-listing-container" lg=4 md=8 sm=10 cols=12>
             <ul class="intro-listing">
               <li>Manage skills via web UI</li>
               <li>View all skills in a list or radar view</li>
@@ -25,17 +25,15 @@
           </v-col>
         </v-row>
         <v-row row>
-          <v-col lg=4 md=8 sm=10 xs=12>
+          <v-col lg=4 md=8 sm=10 cols=12>
             <v-btn
               dark
-              href="/login"
-              class="intro-button green-bottom-border">Get Started
+              disabled>Get Started
             </v-btn>
             <v-btn
               dark
-              href="http://docs.devradar.io/howto"
-              target="_blank"
-              class="intro-button green-bottom-border">Learn More
+              href="//docs.devradar.io/"
+              target="_blank">Learn More
             </v-btn>
           </v-col>
         </v-row>
@@ -48,11 +46,10 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component({})
 export default class App extends Vue {
-
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../assets/responsive.scss';
 
 .margin-left-10 {
@@ -98,18 +95,6 @@ export default class App extends Vue {
   padding-right: 10px;
 }
 
-.green-bottom-border:hover::after {
-    content: '';
-    width: 80%;
-    position: absolute;
-    left: 10%;
-    bottom: 1px;
-
-    border-width: 0 0 1px;
-    border-style: solid;
-    border-color: #27db2b;
-}
-
 .intro-heading {
   font-size: 5vw;
   line-height: 125%;
@@ -119,13 +104,8 @@ export default class App extends Vue {
   font-size: 1.25em;
 }
 
-.intro-button {
-    margin-right: 10px;
-    margin-top: 20px;
-}
-
 @include larger($breakpoint-sm) {
-.intro-radar-container {
+  .intro-radar-container {
     width: 80vw;
     height: 80vh;
     position: absolute;
