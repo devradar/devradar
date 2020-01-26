@@ -7,6 +7,7 @@
       >
       <span><v-icon dark left>check</v-icon>{{ snackbar.text }}</span>
     </v-snackbar>
+    </v-btn>
     <v-app-bar
     scroll-off-screen
     dense app
@@ -104,26 +105,9 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-dialog
-        v-model="isLoading"
-        hide-overlay
-        persistent
-        width="300"
-      >
-        <v-card
-          color="accent"
-          data-cy="loadingDialog"
-          dark
-        >
-          <v-card-text>
-            Loading radar..
-            <v-progress-linear
-              indeterminate
-              class="mb-0"
-            ></v-progress-linear>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+      <loading-modal></loading-modal>
+      <login-modal
+      @close="loginModalVisible = false" :visible="loginModalVisible"></login-modal>
       <v-container fluid fill-height>
         <router-view></router-view>
       </v-container>
@@ -153,12 +137,13 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import appConfig from './config'
 import { mapGetters } from 'vuex'
 import { Meta, User } from '@/types/domain'
-import Login from '@/components/Login.vue'
+import LoginModal from '@/components/app/LoginModal.vue'
+import LoadingModal from '@/components/app/LoadingModal.vue'
 
 @Component({
   computed: {
     ...mapGetters('blips', [
-      'meta', 'radarAlias', 'radarId', 'isLoading'
+      'meta', 'radarAlias', 'radarId'
     ]),
     ...mapGetters('user', [
       'user'
@@ -167,7 +152,7 @@ import Login from '@/components/Login.vue'
       'snackbar'
     ])
   },
-  components: { CookieLaw, Login }
+  components: { CookieLaw, LoginModal, LoadingModal }
 })
 export default class App extends Vue {
   showNavdrawer: boolean = false
@@ -180,7 +165,6 @@ export default class App extends Vue {
   loginModalVisible: boolean = false
 
   // computed
-  isLoading: boolean
   meta: Meta
   radarId: string
   radarAlias: string
@@ -224,8 +208,7 @@ export default class App extends Vue {
     if (item.url) {
       window.open(item.url, '_blank')
     } else if (item.action) {
-      console.log('do stuff', item) // eslint-disable-line no-console
-      this.loginModalVisible = true
+      item.action(this)
     }
   }
   mounted () {
@@ -237,10 +220,6 @@ export default class App extends Vue {
   @Watch('user')
   radarIdChange () {
     this.updateToolbarItems()
-  }
-
-  loginModalClose () {
-    this.loginModalVisible = false
   }
 }
 </script>

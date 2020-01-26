@@ -1,10 +1,15 @@
 <template>
-  <v-dialog v-model="visible" max-width="960px">
+  <v-dialog
+  v-model="isVisible"
+  max-width="960px"
+  eager
+  @input="close()"
+  >
     <v-card>
       <v-card-title>
-        <span class="headline">Login/Register</span>
+        <span class="headline">Login</span>
       </v-card-title>
-      <v-card-text justify="center">
+      <v-card-text>
         <section id="firebaseui-auth-container"></section>
       </v-card-text>
     </v-card>
@@ -12,19 +17,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from 'vue-property-decorator'
+import { Component, Vue, Emit, PropSync } from 'vue-property-decorator'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
-import { LoginState } from '../types/domain'
+// import { LoginState } from '../types/domain'
 
-@Component({})
-export default class NewChange extends Vue {
-  visible: true
+@Component
+export default class LoginModal extends Vue {
+  @PropSync('visible', { type: Boolean })
+  isVisible!: boolean
 
   public mounted () {
-    console.log('mounted login') // eslint-disable-line no-console
     const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
     const uiConfig = {
       callbacks: {
@@ -36,13 +41,13 @@ export default class NewChange extends Vue {
         firebase.auth.GoogleAuthProvider.PROVIDER_ID
       ]
     }
-    this.$store.commit('users/loginState', LoginState.LOGIN_PENDING)
+    // this.$store.commit('users/setLoginState', LoginState.LOGIN_PENDING)
     ui.start('#firebaseui-auth-container', uiConfig)
   }
 
   @Emit()
   close () {
-    return 0
+    return true
   }
 }
 </script>

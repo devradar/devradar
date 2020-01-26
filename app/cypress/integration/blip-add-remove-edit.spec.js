@@ -19,7 +19,6 @@ context('Blip editing', function () {
       .as('radarId')
     cy.get('@radarId')
       .then(radarId => {
-        console.log(radarId)
         cy.visit(`/^${radarId}`)
       })
   })

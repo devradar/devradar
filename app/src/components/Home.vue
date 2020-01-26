@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <login></login>
     <v-container class="full-height-width-view align-items-col margin-left-10">
         <v-row >
           <v-col class="intro-heading-spacing" lg=12 md=12 sm=12 xs=12>
@@ -46,11 +45,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Login from '@/components/Login.vue'
 
-@Component({
-  components: { Login }
-})
+@Component({})
 export default class App extends Vue {
 
 }
