@@ -36,9 +36,7 @@
         <v-btn text
           v-for="elm in toolbarItemsStatic"
           v-bind:key="elm.title"
-          v-bind:href="elm.url"
-          target="_blank"
-          >
+          @click="handleNavClick(elm)">
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
         </v-btn>
@@ -63,8 +61,7 @@
           <v-list>
             <v-list-item v-for="elm in toolbarMenuItemsStatic"
               v-bind:key="elm.title"
-              v-bind:href="elm.url"
-              target="_blank">
+              @click="handleNavClick(elm)">
               <v-list-item-title>
                 <v-icon left>{{elm.icon}}</v-icon>
                 {{ elm.title }}
@@ -89,8 +86,7 @@
         <v-list>
           <v-list-item v-for="elm in toolbarItemsStatic.concat(toolbarMenuItemsStatic)"
             v-bind:key="elm.title"
-            v-bind:href="elm.url"
-            target="_blank">
+            @click="handleNavClick(elm)">
             <v-list-item-title>
               <v-icon left>{{elm.icon}}</v-icon>
               {{ elm.title }}
@@ -108,26 +104,9 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-dialog
-        v-model="isLoading"
-        hide-overlay
-        persistent
-        width="300"
-      >
-        <v-card
-          color="accent"
-          data-cy="loadingDialog"
-          dark
-        >
-          <v-card-text>
-            Loading radar..
-            <v-progress-linear
-              indeterminate
-              class="mb-0"
-            ></v-progress-linear>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+      <loading-modal></loading-modal>
+      <login-modal
+      @close="loginModalVisible = false" :visible="loginModalVisible"></login-modal>
       <v-container fluid fill-height>
         <router-view></router-view>
       </v-container>
@@ -155,14 +134,15 @@
 import CookieLaw from 'vue-cookie-law'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import appConfig from './config'
-import { app } from 'firebase'
 import { mapGetters } from 'vuex'
-import { Blip, Meta, User } from '@/types/domain'
+import { Meta, User } from '@/types/domain'
+import LoginModal from '@/components/app/LoginModal.vue'
+import LoadingModal from '@/components/app/LoadingModal.vue'
 
 @Component({
   computed: {
     ...mapGetters('blips', [
-      'meta', 'radarAlias', 'radarId', 'isLoading'
+      'meta', 'radarAlias', 'radarId'
     ]),
     ...mapGetters('user', [
       'user'
@@ -171,7 +151,7 @@ import { Blip, Meta, User } from '@/types/domain'
       'snackbar'
     ])
   },
-  components: { CookieLaw }
+  components: { CookieLaw, LoginModal, LoadingModal }
 })
 export default class App extends Vue {
   showNavdrawer: boolean = false
@@ -181,8 +161,9 @@ export default class App extends Vue {
   toolbarMenuItemsRouter: object[] = []
   toolbarItemsStatic: object[] = []
   toolbarMenuItemsStatic: object[] = []
+  loginModalVisible: boolean = false
+
   // computed
-  isLoading: boolean
   meta: Meta
   radarId: string
   radarAlias: string
@@ -220,6 +201,14 @@ export default class App extends Vue {
       .filter(i => i.location.includes('toolbar'))
     this.toolbarMenuItemsStatic = navEntries
       .filter(i => i.location.includes('toolbar-menu'))
+  }
+
+  handleNavClick (item) {
+    if (item.url) {
+      window.open(item.url, '_blank')
+    } else if (item.action) {
+      item.action(this)
+    }
   }
 
   mounted () {

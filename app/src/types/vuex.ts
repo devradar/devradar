@@ -1,4 +1,4 @@
-import { Blip, Meta, User } from './domain'
+import { Blip, Meta, User, LoginState } from './domain'
 
 export interface BlipsState {
   id: string;
@@ -13,6 +13,7 @@ export interface BlipsState {
 export interface UserState {
   user: User;
   userList: any;
+  loginState: LoginState;
 }
 
 export interface SettingsState {

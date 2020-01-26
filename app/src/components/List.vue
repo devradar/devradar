@@ -8,7 +8,7 @@
     @cancel="newChangeCancel"
     ></new-change>
     <v-row justify="space-around">
-      <v-col xs="12" sm="5" md="4">
+      <v-col cols="12" sm="5" md="4">
         <v-text-field
           v-model="searchTitle"
           label="Search.."
@@ -18,7 +18,7 @@
         >
         </v-text-field>
       </v-col>
-      <v-col xs="12" sm="6" md="4">
+      <v-col cols="12" sm="6" md="4">
         <v-slider
           v-model="maxMonths"
           thumb-label

@@ -1,30 +1,10 @@
 import firebase from 'firebase/app'
-import 'firebase/auth'
 import 'firebase/firestore'
 import { ActionTree } from 'vuex'
 import { RootState, UserState } from '@/types/vuex'
-
-const ghProvider = new firebase.auth.GithubAuthProvider()
-const twitterProvider = new firebase.auth.TwitterAuthProvider()
+import { LoginState } from '@/types/domain'
 
 const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-disable-line @typescript-eslint/no-unused-vars
-  oauthLogin (_, payload): void {
-    let provider: firebase.auth.AuthProvider
-    switch (payload.provider) {
-      case 'github':
-        provider = ghProvider
-        break
-      case 'twitter':
-        provider = twitterProvider
-        break
-      default:
-        console.error(`Unknown provider: ${payload.provider}`) // eslint-disable-line no-console
-    }
-    firebase.auth().signInWithPopup(provider) // authenticated user is propagated to state using the hook created in the `init` action
-      .catch(error => {
-        console.error(error) // eslint-disable-line no-console
-      })
-  },
   getUserList ({ commit }): void {
     Promise.all([
       firebase.firestore().collection('users').get(),
@@ -59,6 +39,7 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
   },
   async logout ({ commit }): Promise<any> {
     commit('blips/setLoading', true, { root: true })
+    commit('user/loginState', LoginState.LOGOUT_PENDING, { root: true })
     await firebase.auth().signOut()
     commit('blips/reset', null, { root: true })
     commit('user/reset', null, { root: true })

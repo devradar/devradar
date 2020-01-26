@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import { Module, GetterTree, MutationTree } from 'vuex'
-import { User } from '@/types/domain'
+import { User, LoginState } from '@/types/domain'
 import { RootState, UserState } from '@/types/vuex'
 import appConfig from '../config'
 
 const state: UserState = {
   user: undefined,
-  userList: {}
+  userList: {},
+  loginState: LoginState.NOT_LOGGED_IN
 }
 
 const defaultState: UserState = JSON.parse(JSON.stringify(state))
@@ -25,6 +26,10 @@ const mutations: MutationTree<UserState> = {
     for (const key in state) {
       state[key] = defaultState[key]
     }
+    state.loginState = LoginState.NOT_LOGGED_IN
+  },
+  setLoginState (state: UserState, loginState: LoginState) {
+    state.loginState = loginState
   }
 }
 
@@ -39,6 +44,9 @@ const getters: GetterTree<UserState, RootState> = {
     const user = getters.user
     if (!user || !user.roles || !user.uid) return false
     return user.uid === rootGetters['blips/ownerId']
+  },
+  loginState (state: UserState) {
+    return state.loginState
   }
 }
 
