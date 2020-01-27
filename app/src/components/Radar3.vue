@@ -1,18 +1,7 @@
 <template>
   <v-container grid-list fluid
     class="radarcontainer">
-    <settings
-      @close="settingsModalClose"></settings>
-    <v-btn
-      :dark="darkMode"
-      fab bottom right fixed
-      v-if="userCanEdit"
-      @click="settingsModalVisible = true"
-      data-cy="radar-settings-button"
-      color="primary"
-    >
-      <v-icon>mdi-settings</v-icon>
-    </v-btn>
+    <new-blip v-if="userCanEdit"></new-blip>
     <v-row justify="space-around">
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
         <div id="legendwest" class="radarlegend" data-cy="radar-legendwest"></div>
@@ -40,13 +29,13 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import { Blip, Meta, User } from '@/types/domain'
-import Settings from './Settings.vue'
+import NewBlip from './list/NewBlip.vue'
 import { SkillradarChart, SkillradarOptions, SkillradarData } from '../lib/skillradar'
 import appConfig from '../config'
 
 @Component({
   components: {
-    Settings
+    NewBlip
   },
   computed: {
     ...mapGetters('blips', [
@@ -69,7 +58,7 @@ export default class Radar3 extends Vue {
   radarId: string
   chart: SkillradarChart
   darkMode: boolean = appConfig.theme.dark
-  settingsModalVisible: boolean = false
+
   // computed
   blips: Blip[]
   meta: Meta
@@ -116,13 +105,13 @@ export default class Radar3 extends Vue {
     }
   }
 
-  settingsModalClose () {
-    this.settingsModalVisible = false
+  @Watch('blips')
+  onBlipsChanged () {
     this.renderChart()
   }
 
-  @Watch('blips')
-  onPropertyChanged (value: Blip[], oldValue: Blip[]) {
+  @Watch('meta')
+  onMetaChanged () {
     this.renderChart()
   }
 }

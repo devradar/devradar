@@ -12,7 +12,7 @@
       <v-card-text v-if="useFirebaseAuth">
         <section id="firebaseui-auth-container"></section>
       </v-card-text>
-      <v-card-text v-else>
+      <v-card-text v-if="!useFirebaseAuth || showMockLogin">
         <v-layout row>
           <v-flex xs6 class="text-xs-center">
             <v-btn mx-auto
@@ -38,6 +38,9 @@ import { backend } from '@/store'
   computed: {
     useFirebaseAuth () {
       return appConfig.backend.type === 'firebase'
+    },
+    showMockLogin () {
+      return appConfig.backend.project === 'devradar-e2e'
     }
   }
 })
@@ -66,9 +69,7 @@ export default class LoginModal extends Vue {
   }
 
   dummyLogin () {
-    if (appConfig.isUnderTest) {
-      backend.test.login()
-    }
+    backend.test.login()
   }
 
   @Emit()

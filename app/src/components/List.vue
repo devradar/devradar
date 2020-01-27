@@ -4,8 +4,8 @@
     grid-list-lg>
     <new-blip v-if="userCanEdit"></new-blip>
     <new-change
-    @submit="newChangeSubmit"
-    @cancel="newChangeCancel"
+      @submit="newChangeSubmit"
+      @cancel="newChangeCancel"
     ></new-change>
     <v-row justify="space-around">
       <v-col cols="12" sm="5" md="4">
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, ProvideReactive } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import NewBlip from './list/NewBlip.vue'
 import NewChange from './list/NewChange.vue'
@@ -94,10 +94,10 @@ export default class List extends Vue {
   @Prop({ default: '' })
   radarId: string
   newChangeBlip: Blip
-
   searchTitle: string = this.blipName
   maxMonths: number = 0
   newChangeModalVisible: boolean = false
+
   // computed
   blips: Blip[]
   userCanEdit: boolean

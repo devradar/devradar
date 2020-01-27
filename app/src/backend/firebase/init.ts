@@ -101,7 +101,7 @@ async function init (store, appConfig) {
         }
         router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
       }
-      store.commit('user/loginState', LoginState.LOGGED_IN)
+      store.commit('user/setLoginState', LoginState.LOGGED_IN)
       return user
     } else { // user is not set (logout)
       store.commit('blips/setLoading', false)

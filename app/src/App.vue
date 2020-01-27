@@ -104,9 +104,11 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <loading-modal></loading-modal>
-      <login-modal
-      @close="loginModalVisible = false" :visible="loginModalVisible"></login-modal>
+      <loading-indicator></loading-indicator>
+      <login
+        @close="loginModalVisible = false" :visible="loginModalVisible"></login>
+      <settings
+        @close="settingsModalVisible = false" :visible="settingsModalVisible"></settings>
       <v-container fluid fill-height>
         <router-view></router-view>
       </v-container>
@@ -136,8 +138,9 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import appConfig from './config'
 import { mapGetters } from 'vuex'
 import { Meta, User } from '@/types/domain'
-import LoginModal from '@/components/app/LoginModal.vue'
-import LoadingModal from '@/components/app/LoadingModal.vue'
+import Login from '@/components/app/Login.vue'
+import LoadingIndicator from '@/components/app/LoadingIndicator.vue'
+import Settings from '@/components/app/Settings.vue'
 
 @Component({
   computed: {
@@ -151,7 +154,7 @@ import LoadingModal from '@/components/app/LoadingModal.vue'
       'snackbar'
     ])
   },
-  components: { CookieLaw, LoginModal, LoadingModal }
+  components: { CookieLaw, Login, LoadingIndicator, Settings }
 })
 export default class App extends Vue {
   showNavdrawer: boolean = false
@@ -162,6 +165,7 @@ export default class App extends Vue {
   toolbarItemsStatic: object[] = []
   toolbarMenuItemsStatic: object[] = []
   loginModalVisible: boolean = false
+  settingsModalVisible: boolean = false
 
   // computed
   meta: Meta

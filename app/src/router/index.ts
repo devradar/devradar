@@ -5,7 +5,6 @@ import Home from '@/components/Home.vue'
 import List from '@/components/List.vue'
 import Logout from '@/components/Logout.vue'
 import Users from '@/components/Users.vue'
-import Settings from '@/components/Settings.vue'
 import AuthGuard from './auth-guard'
 import appConfig from '@/config'
 
@@ -16,7 +15,6 @@ const components = {
   list: List,
   logout: Logout,
   users: Users,
-  settings: Settings,
   radar: Radar3
 }
 const routes = routesCfg

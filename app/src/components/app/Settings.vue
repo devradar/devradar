@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="$parent.settingsModalVisible" max-width="960px">
+  <v-dialog v-model="isVisible" max-width="960px" @input="close()">
     <v-card>
       <v-card-title>
         <span class="headline">devradar settings</span>
@@ -180,7 +180,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Watch } from 'vue-property-decorator'
+import { Component, Vue, Emit, Watch, PropSync } from 'vue-property-decorator'
 import copy from 'clipboard-copy'
 import TOML from '@iarna/toml'
 import { mapGetters } from 'vuex'
@@ -229,12 +229,8 @@ function stripIds (blip) {
   }
 })
 export default class Settings extends Vue {
-  // computed
-  meta: Meta
-  blipsClean: Blip[]
-  userCanEdit: boolean
-  radarAlias: string
-  radarId: string
+  @PropSync('visible', { type: Boolean })
+  isVisible!: boolean
 
   // local data
   contentToml: string = ''
@@ -254,6 +250,13 @@ export default class Settings extends Vue {
   tmpAlias: string = ''
   tmpAliasDirty: boolean = false
   tmpAliasErrors: string[] = []
+
+  // computed
+  meta: Meta
+  blipsClean: Blip[]
+  userCanEdit: boolean
+  radarAlias: string
+  radarId: string
 
   copyToClipboard (content) {
     const success = copy(content)
