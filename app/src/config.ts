@@ -14,9 +14,9 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { name: 'radar', icon: 'track_changes', title: 'Radar', path: '/@:radarId', validator: () => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
   ],
   navEntries: [
-    { icon: 'settings', title: 'Settings', action: app => (app.settingsModalVisible = true), validator: user => user.uid, location: ['toolbar-menu'] },
-    { icon: 'meeting_room', title: 'Login', action: app => (app.loginModalVisible = true), validator: user => !user.uid, location: ['toolbar'] },
-    { icon: 'help', title: 'Help', url: '//docs.devradar.io/about', validator: () => true, location: ['toolbar-menu'] }
+    { name: 'settings', icon: 'settings', title: 'Settings', action: app => (app.settingsModalVisible = true), validator: user => user.uid, location: ['toolbar-menu'] },
+    { name: 'login', icon: 'meeting_room', title: 'Login', action: app => (app.loginModalVisible = true), validator: user => !user.uid, location: ['toolbar'] },
+    { name: 'help', icon: 'help', title: 'Help', url: '//docs.devradar.io/about', validator: () => true, location: ['toolbar-menu'] }
   ],
   theme: {
     dark: false,
