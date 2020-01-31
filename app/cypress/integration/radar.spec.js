@@ -1,13 +1,19 @@
 /// <reference types="Cypress" />
 const devices = ['macbook-15', 'macbook-13', 'iphone-x']
-
-context('Radar View', () => {
+context('Radar', () => {
   before(() => {
     cy.clean()
   })
   beforeEach(() => {
     cy.visit('/')
     cy.get('[data-cy=cookie-banner] button').click()
+  })
+
+  it('login should happen in less than 10s', () => {
+    cy.viewport('macbook-13')
+    cy.get('header').contains('Radar').should('not.exist')
+    cy.getBackend().then(backend => backend.test.login())
+    cy.get('header').contains('Radar', { timeout: 10e3 }).should('be.visible')
   })
 
   it('does not show settings button to anonymous users', () => {
