@@ -1,10 +1,6 @@
-name: devradar
+name: devradar-pr
 
 on:
-  push:
-    paths:
-      - 'app/**'
-      - '.github/**'
   pull_request:
     paths:
       - 'app/**'
@@ -40,7 +36,7 @@ jobs:
       working-directory: app
     - run: |
         npm run build
-        npm run test:e2e:ci:localstorage # cypress key provided via CYPRESS_RECORD_KEY env variable
+        npm run test:e2e:ci:localstorage:record # cypress key provided via CYPRESS_RECORD_KEY env variable
       name: cypress tests w/ local storage
       working-directory: app
 
@@ -67,31 +63,6 @@ jobs:
     - run: npm run build
       working-directory: app
     - run: |
-        npm run test:e2e:ci:firebase # cypress key provided via CYPRESS_RECORD_KEY env variable
+        npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
       name: cypress tests w/ firebase backend
       working-directory: app
-    
-  firebase-deploy:
-    name: "publish devradar.io"
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [test-lint, test-e2e-volatile, test-e2e-firebase]
-    runs-on: ubuntu-latest
-    env:
-      VUE_APP_BACKEND_TYPE: 'firebase'
-      VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_DAAS_PROJECT }}
-      VUE_APP_BACKEND_KEY: ${{ secrets.FIREBASE_DAAS_CLIENTKEY }}
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12
-    - run: |
-        cd app
-        npm ci
-        npm run build
-      name: build
-    - run: |
-        cd app
-        npm i -g firebase-tools
-        firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets.FIREBASE_DAAS_PROJECT }}
-      name: deploy to firebase

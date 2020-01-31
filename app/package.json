@@ -7,7 +7,9 @@
     "build": "vue-cli-service build",
     "cypress:ci": "cypress run --record",
     "cypress:ci:firebase": "cypress run --record --group firebase --ci-build-id ${GITHUB_SHA}",
+    "cypress:ci:firebase:record": "npm run cypress:ci:firebase -- --record",
     "cypress:ci:localstorage": "cypress run --record --group localstorage --ci-build-id ${GITHUB_SHA}",
+    "cypress:ci:localstorage:record": "npm run cypress:ci:localstorage -- --record",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "lint": "vue-cli-service lint",
@@ -18,7 +20,9 @@
     "test": "npm run lint && npm run build",
     "test:e2e:ci": "run-p --race serve:static cypress:ci",
     "test:e2e:ci:firebase": "run-p --race serve:static cypress:ci:firebase",
-    "test:e2e:ci:localstorage": "run-p --race serve:static cypress:ci:localstorage"
+    "test:e2e:ci:firebase:record": "run-p --race serve:static cypress:ci:firebase:record",
+    "test:e2e:ci:localstorage": "run-p --race serve:static cypress:ci:localstorage",
+    "test:e2e:ci:localstorage:record": "run-p --race serve:static cypress:ci:localstorage:record"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",
