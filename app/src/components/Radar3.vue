@@ -6,7 +6,7 @@
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
         <div id="legendwest" class="radarlegend" data-cy="radar-legendwest"></div>
       </v-col>
-      <v-col cols="12" sm="6" class="text-center z-10">
+      <v-col cols="12" sm="6" class="text-center z-6">
         <div id="radarchart" class="d-inline" data-cy="radarSvg"></div>
       </v-col>
       <v-col cols="3" xl="2" class="d-none d-sm-flex">
@@ -85,11 +85,11 @@ export default class Radar3 extends Vue {
     }
     // Call function to draw the Radar chart
     // Will expect that data is in %'s
-    this.chart.drawChart('#radarchart', data)
     this.chart.drawLegend('#legendeast', data, (blip: Blip) => blip.category < 2, 'down')
     this.chart.drawLegend('#legendwest', data, (blip: Blip) => blip.category >= 2, 'up')
     this.chart.drawLegend('#legendeast-small', data, (blip: Blip) => blip.category < 2, 'down')
     this.chart.drawLegend('#legendwest-small', data, (blip: Blip) => blip.category >= 2, 'up')
+    this.chart.drawChart('#radarchart', data)
   }
 
   public fetchRadarData () {
@@ -141,28 +141,28 @@ export default class Radar3 extends Vue {
 
 .radar-chart {
   .tooltip {
-    font-size: 18px;
+    font-size: 20px;
     fill: #444;
     .tooltipTitle {
-      font-size: 28px;
+      font-size: 16px;
       font-weight: bold;
       cursor: default;
       &.category-0 {
       }
     }
     .tooltipDate {
-      font-size: 20px;
+      font-size: 12px;
     }
     .tooltipLevel {
-      font-size: 20px;
+      font-size: 12px;
     }
     .tooltipText {
-      font-size: 16px;
+      font-size: 10px;
       cursor: default;
     }
     .tooltipRectangle {
       fill: #eee;
-      rx: 3px;
+      rx: 2px;
       &.dark {
         fill: #333;
       }
