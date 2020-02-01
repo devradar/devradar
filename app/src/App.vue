@@ -36,7 +36,7 @@
         <v-btn text
           v-for="elm in toolbarItemsStatic"
           v-bind:key="elm.title"
-          data-cy="app-nav-static"
+          :data-cy="`app-nav-static-${elm.name}`"
           @click="handleNavClick(elm)">
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
@@ -134,6 +134,7 @@
     </span>
     </v-col>
   </v-footer>
+  <v-tour name="myTour" :steps="steps"></v-tour>
   </v-app>
 </template>
 
@@ -172,6 +173,23 @@ export default class App extends Vue {
   loginModalVisible: boolean = false
   settingsModalVisible: boolean = false
 
+  steps: any[] = [
+    {
+      target: '[data-cy="app-nav-static-login"]',
+      content: `Start your <strong>devradar journey</strong>!`
+    },
+    {
+      target: '[data-cy="blip-new-button"]',
+      content: 'Create a new skill entry'
+    },
+    {
+      target: '[data-v-step="2"]',
+      content: 'Try it, you\'ll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.',
+      params: {
+        placement: 'top'
+      }
+    }
+  ]
   // computed
   meta: Meta
   radarId: string
@@ -222,6 +240,7 @@ export default class App extends Vue {
 
   mounted () {
     this.updateToolbarItems()
+    this.$tours['myTour'].start()
   }
 
   @Watch('radarId')
