@@ -134,7 +134,7 @@
     </span>
     </v-col>
   </v-footer>
-  <v-tour name="myTour" :steps="steps"></v-tour>
+  <intro></intro>
   </v-app>
 </template>
 
@@ -147,6 +147,7 @@ import { Meta, User } from '@/types/domain'
 import Login from '@/components/app/Login.vue'
 import LoadingIndicator from '@/components/app/LoadingIndicator.vue'
 import Settings from '@/components/app/Settings.vue'
+import Intro from '@/components/app/Intro.vue'
 
 @Component({
   computed: {
@@ -160,7 +161,7 @@ import Settings from '@/components/app/Settings.vue'
       'snackbar'
     ])
   },
-  components: { CookieLaw, Login, LoadingIndicator, Settings }
+  components: { CookieLaw, Login, LoadingIndicator, Settings, Intro }
 })
 export default class App extends Vue {
   showNavdrawer: boolean = false
@@ -173,23 +174,6 @@ export default class App extends Vue {
   loginModalVisible: boolean = false
   settingsModalVisible: boolean = false
 
-  steps: any[] = [
-    {
-      target: '[data-cy="app-nav-static-login"]',
-      content: `Start your <strong>devradar journey</strong>!`
-    },
-    {
-      target: '[data-cy="blip-new-button"]',
-      content: 'Create a new skill entry'
-    },
-    {
-      target: '[data-v-step="2"]',
-      content: 'Try it, you\'ll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.',
-      params: {
-        placement: 'top'
-      }
-    }
-  ]
   // computed
   meta: Meta
   radarId: string
@@ -240,7 +224,6 @@ export default class App extends Vue {
 
   mounted () {
     this.updateToolbarItems()
-    this.$tours['myTour'].start()
   }
 
   @Watch('radarId')

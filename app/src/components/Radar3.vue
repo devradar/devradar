@@ -103,6 +103,9 @@ export default class Radar3 extends Vue {
     if (!this.isLoading) {
       this.fetchRadarData()
     }
+    if (this.$tours && this.$tours.intro.currentStep === 0) {
+      this.$tours.intro.nextStep()
+    }
   }
 
   @Watch('blips')
