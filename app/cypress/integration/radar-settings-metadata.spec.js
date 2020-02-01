@@ -30,7 +30,8 @@ context('Radar metadata', () => {
   })
 
   it('changes title via settings', () => {
-    cy.get('[data-cy="radar-settings-button"]').click()
+    cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
+    cy.get('[data-cy="app-nav-static-settings"]').click()
     cy.get('[data-cy="radar-settings-title-field"]').focus()
     cy.get('[data-cy="radar-settings-title-field"]').type('{selectall}{del}')
     cy.get('[data-cy="radar-settings-title-field"]').type('rick sanchez')
@@ -43,7 +44,8 @@ context('Radar metadata', () => {
   })
 
   it('changes levels via settings', () => {
-    cy.get('[data-cy="radar-settings-button"]').click()
+    cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
+    cy.get('[data-cy="app-nav-static-settings"]').click()
     cy.get('[data-cy="radar-settings-levels-field-0"]').focus()
     cy.get('[data-cy="radar-settings-levels-field-0"]').type('{selectall}{del}')
     cy.get('[data-cy="radar-settings-levels-field-0"]').type('best')
@@ -68,7 +70,8 @@ context('Radar metadata', () => {
   })
 
   it('changes categories via settings', () => {
-    cy.get('[data-cy="radar-settings-button"]').click()
+    cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
+    cy.get('[data-cy="app-nav-static-settings"]').click()
     cy.get('[data-cy="radar-settings-categories-field-0"]').focus()
     cy.get('[data-cy="radar-settings-categories-field-0"]').type('{selectall}{del}')
     cy.get('[data-cy="radar-settings-categories-field-0"]').type('summer')
