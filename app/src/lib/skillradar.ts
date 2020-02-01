@@ -15,7 +15,6 @@ export interface SkillradarOptions {
   legendCategoryOffsetEms?: number;
   dark?: boolean;
   tooltipWidth?: number;
-  tooltipHeight?: number;
 }
 
 export interface SkillradarData {
@@ -87,8 +86,7 @@ export class SkillradarChart {
       legendCategorySpacingEms: 8,
       legendCategoryOffsetEms: 2,
       dark: false,
-      tooltipWidth: 360,
-      tooltipHeight: 200
+      tooltipWidth: 320
     }
 
     if (options) {
@@ -182,16 +180,17 @@ export class SkillradarChart {
         }
         tooltip
           .select('.tooltipLevel')
-          .text(`${prevLevel !== null ? data.levels[prevLevel] + ' —' : '🆕'} ${data.levels[newLevel]}`)
+          .text(`${prevLevel !== null ? data.levels[prevLevel] + ' —' : '🔰'} ${data.levels[newLevel]}`)
         tooltip
           .select('.tooltipText')
           .text(sortedChanges[0].text.replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, '$1'))
-          .call(textWrap, cfg.tooltipWidth * 0.8)
+          .call(textWrap, cfg.tooltipWidth * 0.9)
         tooltip
           .select('.tooltipDate')
           .text(sortedChanges[0].date)
         tooltip
           .select('.tooltipRectangle')
+          .attr('height', tooltip.select('.tooltipText').node().getBoundingClientRect().height + 60)
         tooltip
           .transition().duration(cfg.transitionDurationMs)
           .attr('visibility', 'visible')
@@ -256,7 +255,7 @@ export class SkillradarChart {
     tooltip
       .append('rect')
       .attr('class', `tooltipRectangle ${darkClass}`)
-      .attr('height', cfg.tooltipHeight)
+      .attr('height', cfg.tooltipWidth)
       .attr('width', cfg.tooltipWidth)
       .attr('anchor', 'start')
 
@@ -264,28 +263,28 @@ export class SkillradarChart {
       .append('text')
       .attr('class', `tooltipTitle ${darkClass}`)
       .attr('text-anchor', 'start')
-      .attr('y', 28)
-      .attr('x', 16)
+      .attr('y', 20)
+      .attr('x', 14)
       .attr('width', cfg.tooltipWidth * 0.9)
     tooltip
       .append('text')
       .attr('class', `tooltipDate ${darkClass}`)
       .attr('text-anchor', 'start')
-      .attr('y', 54)
+      .attr('y', 42)
       .attr('x', 14)
       .attr('width', cfg.tooltipWidth * 0.6)
     tooltip
       .append('text')
       .attr('class', `tooltipLevel ${darkClass}`)
       .attr('text-anchor', 'end')
-      .attr('y', 54)
+      .attr('y', 42)
       .attr('x', cfg.tooltipWidth - 20)
       .attr('width', cfg.tooltipWidth * 0.4)
     tooltip
       .append('text')
       .attr('class', `tooltipText ${darkClass}`)
       .attr('text-anchor', 'start')
-      .attr('y', 80)
+      .attr('y', 70)
       .attr('x', 14)
       .attr('width', cfg.tooltipWidth * 0.8)
     tooltip.on('mouseover', function () {
