@@ -43,7 +43,8 @@ const app = new Vue({
   render: h => h(App),
   template: '<App/>',
   vuetify: new Vuetify(vuetifyOpts)
-}).$mount('#app')
+})
+app.$mount('#app')
 
 if (appConfig.isUnderTest) {
   window['app'] = app

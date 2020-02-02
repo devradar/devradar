@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn
-      @click.stop="dialog = true"
+      @click.stop="addButtonClick()"
       color="primary" v-model="fab"
       fab fixed bottom right
       v-if="userCanEdit"
@@ -121,6 +121,11 @@ export default class NewBlip extends Vue {
   categories: string[]
   levels: string[]
   form: VForm
+
+  addButtonClick () {
+    this.$store.dispatch('intro/event', 'add-blip-open')
+    this.dialog = true
+  }
 
   submit () {
     if (this.form.validate()) {

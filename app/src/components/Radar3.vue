@@ -97,15 +97,14 @@ export default class Radar3 extends Vue {
   }
 
   mounted () {
+    console.log('radarcomp: mounted')
     if (this.isLoaded) {
       this.renderChart()
     }
     if (!this.isLoading) {
       this.fetchRadarData()
     }
-    if (this.$tours && this.$tours.intro.currentStep === 0) {
-      this.$tours.intro.nextStep()
-    }
+    this.$store.dispatch('intro/event', 'radar-loaded')
   }
 
   @Watch('blips')

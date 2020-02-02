@@ -1,7 +1,8 @@
-<template>
+  <template>
   <v-tour name="intro" :steps="steps" :options="{ highlight: true }">
     <template slot-scope="tour">
       <transition name="fade">
+        <!-- eslint-disable vue/no-use-v-if-with-v-for -->
         <v-step
           v-if="tour.currentStep === index"
           v-for="(step, index) of tour.steps"
@@ -27,29 +28,22 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { mapGetters } from 'vuex'
 
-@Component()
+@Component({
+  computed: {
+    ...mapGetters('intro', [
+      'steps'
+    ])
+  }
+})
 export default class App extends Vue {
-  steps: any[] = [
-    {
-      target: '[data-cy="app-nav-static-login"]',
-      content: `Start your <strong>devradar journey</strong>!`
-    },
-    {
-      target: '[data-cy="blip-new-button"]',
-      content: 'Create a new skill entry'
-    },
-    {
-      target: '[data-v-step="2"]',
-      content: 'Try it, you\'ll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.',
-      params: {
-        placement: 'top'
-      }
-    }
-  ]
+  // computed
+  steps: any[]
 
   mounted () {
-    this.$tours.intro.start()
+    console.log('introcomp: mounted -> set tour')
+    this.$store.dispatch('intro/setTourObject', this)
   }
 }
 </script>

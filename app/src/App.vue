@@ -83,6 +83,7 @@
       </v-toolbar-items>
     </v-app-bar>
     <v-content>
+      <intro></intro>
       <v-navigation-drawer
         v-model="showNavdrawer"
         absolute
@@ -134,7 +135,6 @@
     </span>
     </v-col>
   </v-footer>
-  <intro></intro>
   </v-app>
 </template>
 
@@ -224,6 +224,7 @@ export default class App extends Vue {
 
   mounted () {
     this.updateToolbarItems()
+    this.$store.dispatch('intro/startIntro')
   }
 
   @Watch('radarId')
