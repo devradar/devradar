@@ -8,7 +8,7 @@ import { store, backend } from './store'
 import appConfig from './config'
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
-require('vue-tour/dist/vue-tour.css')
+import 'vue-tour/dist/vue-tour.css'
 
 Vue.use(Vuetify)
 Vue.use(VueTour)

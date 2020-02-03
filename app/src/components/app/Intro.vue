@@ -1,5 +1,5 @@
   <template>
-  <v-tour name="intro" :steps="steps" :options="{ highlight: true }">
+  <v-tour name="intro" :steps="steps" :options="{ highlight: false }">
     <template slot-scope="tour">
       <transition name="fade">
         <!-- eslint-disable vue/no-use-v-if-with-v-for -->
@@ -14,10 +14,12 @@
           :is-first="tour.isFirst"
           :is-last="tour.isLast"
           :labels="tour.labels"
+          :highlight="tour.highlight"
         >
           <template>
             <div slot="actions">
-              <button @click="tour.stop" class="btn btn-primary">Stop intro</button>
+              <button class="btn btn-primary" v-if="index === 2">Next Step</button>
+              <button @click="tour.stop" class="btn btn-primary">Skip Tutorial</button>
             </div>
           </template>
         </v-step>
@@ -42,8 +44,7 @@ export default class App extends Vue {
   steps: any[]
 
   mounted () {
-    console.log('introcomp: mounted -> set tour')
-    this.$store.dispatch('intro/setTourObject', this)
+    this.$store.dispatch('intro/setTourObject', this) // make sure the vuex statemachine has access to to the $tours object
   }
 }
 </script>

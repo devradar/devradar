@@ -1,0 +1,18 @@
+.v-step {
+  background: #333 !important;
+  color: #fff !important;
+  -webkit-filter: drop-shadow(0 0 8px #0ddd0d) !important;
+  filter: drop-shadow(0 0 8px #0ddd0d) !important;
+
+  .btn {
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin: 0 10px;
+  }
+}
+
+// .v-tour__target--highlighted { // add fullscreen grayout
+//   box-shadow: 0 0 0 99999px rgba(0,0,0,.6) !important;
+//   z-index: 1000;
+// }

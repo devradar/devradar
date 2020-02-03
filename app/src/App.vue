@@ -1,5 +1,6 @@
 <template>
   <v-app fill-height>
+    <intro></intro>
     <v-snackbar
       v-model="snackbar.active"
       color="success"
@@ -83,7 +84,6 @@
       </v-toolbar-items>
     </v-app-bar>
     <v-content>
-      <intro></intro>
       <v-navigation-drawer
         v-model="showNavdrawer"
         absolute
@@ -237,6 +237,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+@import '@/assets/intro.scss';
 .z-30 {
   z-index: 30 !important;
 }
