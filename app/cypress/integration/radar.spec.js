@@ -20,7 +20,7 @@ context('Radar', () => {
     cy.visit('/logout')
     cy.visit('/@rick')
     cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
-    cy.get('[data-cy="app-nav-static-settings"]').should('not.be.visible')
+    cy.get('[data-cy="app-nav-settings"]').should('not.be.visible')
   })
 
   it('shows radar + legend responsively', () => {
@@ -33,9 +33,9 @@ context('Radar', () => {
       cy.get('[data-cy="radar-legendwest"]:visible').should('have.length', 1)
       cy.get('[data-cy="radar-legendeast"]:visible').should('have.length', 1)
       cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
-      cy.get('[data-cy="app-nav-static-settings"]').should('be.visible')
+      cy.get('[data-cy="app-nav-settings"]').should('be.visible')
       cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
-      cy.get('[data-cy="app-nav-static-settings"]').should('not.be.visible')
+      cy.get('[data-cy="app-nav-settings"]').should('not.be.visible')
     })
   })
 })

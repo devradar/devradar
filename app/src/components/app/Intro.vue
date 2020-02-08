@@ -19,8 +19,14 @@
         >
           <template>
             <div slot="actions">
-              <button class="btn btn-primary" v-if="index === 2" data-cy="intro-next-step">Next Step</button>
-              <button @click="tour.stop" class="btn btn-primary" data-cy="intro-skip-tutorial">Skip Tutorial</button>
+              <v-btn color="primary" small class="ma-1"
+                v-if="[2,12].includes(index)"
+                data-cy="intro-next-step">Next Step</v-btn>
+               <v-btn color="primary" small class="ma-1"
+                v-if="[6,8].includes(index)"
+                @click="$store.dispatch('intro/next')" data-cy="intro-next-step">Next Step</v-btn>
+              <v-btn color="secondary" outlined x-small class="ma-1"
+                @click="tour.stop" data-cy="intro-skip-tutorial">Stop</v-btn>
             </div>
           </template>
         </v-step>
