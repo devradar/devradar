@@ -71,7 +71,7 @@ const actions: ActionTree<IntroState, RootState> = {
     if (getters.steps && getters.step >= 0) {
       requiredTransition = getters.steps[getters.step].transition
     }
-    console.log('Event fired:', event, 'required for next transition:', requiredTransition)
+    // console.log('Event fired:', event, 'required for next transition:', requiredTransition)
     if (event === requiredTransition) {
       setTimeout(() => dispatch('next'), 100) // artificial delay to make sure all other vue render processes took place
     }
