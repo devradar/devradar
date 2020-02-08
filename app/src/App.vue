@@ -224,7 +224,6 @@ export default class App extends Vue {
 
   mounted () {
     this.updateToolbarItems()
-    this.$store.dispatch('intro/startIntro')
   }
 
   @Watch('radarId')

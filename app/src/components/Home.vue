@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-container class="full-height-width-view align-items-col margin-left-10">
+    <v-container class="full-height-width-view align-items-col ml-3">
         <v-row >
           <v-col class="intro-heading-spacing" lg=12 md=12 sm=12 cols=12>
             <h1 class="intro-heading">Competence Management <br /> for developers</h1>
@@ -27,11 +27,14 @@
         <v-row row>
           <v-col lg=4 md=8 sm=10 cols=12>
             <v-btn
-              dark
-              disabled>Get Started
+              class="me-10" dark raised
+              @click="$store.dispatch('intro/startIntro')"
+            >
+              <v-icon left>mdi-comment-question</v-icon>
+              Start Tour
             </v-btn>
             <v-btn
-              dark
+              class="mx-10" dark raised
               href="//docs.devradar.io/"
               target="_blank">Learn More
             </v-btn>
@@ -51,10 +54,6 @@ export default class App extends Vue {
 
 <style lang="scss" scoped>
 @import '../assets/responsive.scss';
-
-.margin-left-10 {
-  margin-left: 10px !important;
-}
 
 .full-height-width-view {
   height: 100%;
