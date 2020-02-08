@@ -29,6 +29,7 @@
             <v-btn
               class="me-10" dark raised
               @click="$store.dispatch('intro/startIntro')"
+              data-cy="home-tour-button"
             >
               <v-icon left>mdi-comment-question</v-icon>
               Start Tour

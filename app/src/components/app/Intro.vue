@@ -15,11 +15,12 @@
           :is-last="tour.isLast"
           :labels="tour.labels"
           :highlight="tour.highlight"
+          data-cy="intro-step"
         >
           <template>
             <div slot="actions">
-              <button class="btn btn-primary" v-if="index === 2">Next Step</button>
-              <button @click="tour.stop" class="btn btn-primary">Skip Tutorial</button>
+              <button class="btn btn-primary" v-if="index === 2" data-cy="intro-next-step">Next Step</button>
+              <button @click="tour.stop" class="btn btn-primary" data-cy="intro-skip-tutorial">Skip Tutorial</button>
             </div>
           </template>
         </v-step>
