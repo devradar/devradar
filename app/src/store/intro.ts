@@ -95,14 +95,13 @@ const actions: ActionTree<IntroState, RootState> = {
   startIntro ({ commit, rootGetters, dispatch }): void {
     commit('setActive', true)
     tour.start()
-    console.log('starting tour', rootGetters['user/user'].uid)
 
     if (rootGetters['user/loginState'] === LoginState.LOGGED_IN) { // move to radar view if already logged in
       const radarIdOrAlias = rootGetters['blips/radarAlias'] || rootGetters['blips/radarId']
       if (radarIdOrAlias) {
         setTimeout(() => router.push({ name: 'radar', params: { radarId: radarIdOrAlias } }), 100)
       } else {
-        console.warn('User already logged in but no radarId/Alias available')
+        console.warn('User already logged in but no radarId/Alias available') // eslint-disable-line no-console
       }
     }
   },
@@ -111,7 +110,6 @@ const actions: ActionTree<IntroState, RootState> = {
     tour.stop()
   },
   next ({ getters, dispatch }): void {
-    console.log('nextz')
     if (getters.isLastStep) {
       dispatch('stopIntro')
     } else {
