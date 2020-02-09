@@ -11,7 +11,7 @@ context('Radar metadata', () => {
       .then(backend => backend.test.login())
       .as('userId')
     cy.get('[data-cy="loadingDialog"]', { timeout: 10e3 }).should('be.visible')
-    cy.get('[data-cy="loadingDialog"]').should('not.be.visible')
+    cy.get('[data-cy="loadingDialog"]', { timeout: 10e3 }).should('not.be.visible')
     cy.wait(1000) // delay to make sure the getRadarId call does not fail
     cy.get('[data-cy=cookie-banner] button').click()
     cy.all(cy.get('@backend'), cy.get('@userId'))
