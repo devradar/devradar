@@ -43,13 +43,13 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     { text: 'by Andreas Offenhaeuser',
       link: '//anoff.io' },
     { text: 'Blog',
-      link: '//bloganoff.io' },
+      link: '//blog.anoff.io' },
     { text: 'Legal',
       link: '//anoff.github.io/legal' }
   ],
   radarDefault: {
     categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],
-    levels: [ 'Hold', 'Assess', 'Trial', 'Adopt' ],
+    levels: [ 'Novice', 'Intermediate', 'Advanced', 'Veteran' ],
     isPublic: true
   },
   isUnderTest: (!!window['Cypress'])
