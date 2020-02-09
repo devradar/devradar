@@ -62,6 +62,7 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-close"]').focus()
     cy.get('[data-cy="radar-settings-levels-save"]').click()
     cy.get('[data-cy="radar-settings-close"]').click()
+    cy.wait(100)
     cy.get('[data-cy="radarSvg"]').within($form => {
       cy.get('.label-0').should('have.text', 'best')
       cy.get('.label-1').should('have.text', 'grandson')
@@ -88,6 +89,7 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-close"]').focus()
     cy.get('[data-cy="radar-settings-categories-save"]').click()
     cy.get('[data-cy="radar-settings-close"]').click()
+    cy.wait(100)
     cy.get('.radarlegend:visible').within($form => {
       cy.get('.radar-legend > .legendCategory.category-0').should('have.text', 'summer')
       cy.get('.radar-legend > .legendCategory.category-1').should('have.text', 'ruined')
