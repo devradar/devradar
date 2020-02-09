@@ -92,7 +92,7 @@ const actions: ActionTree<IntroState, RootState> = {
   setTourObject (_, app): void {
     tour = app['$tours'].intro
   },
-  startIntro ({ commit, rootGetters, dispatch }): void {
+  startIntro ({ commit, rootGetters }): void {
     commit('setActive', true)
     tour.start()
 

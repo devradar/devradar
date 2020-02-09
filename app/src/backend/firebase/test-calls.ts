@@ -37,12 +37,12 @@ async function getRadarIdByUserId (userId: string): Promise<string> {
       .where('owner', '==', userId)
       .limit(3)
       .get()
-    if (getSnapshot.docChanges()[0].doc) {
-      return getSnapshot.docChanges()[0].doc.id
+    if (getSnapshot.size > 0) {
+      return getSnapshot.docs[0].data().id
     }
     retryCount--
   }
-  return Promise.reject(new Error(`Reached max retries while trying to getRadarIdByUserId(${userId})`))
+  throw new Error(`Reached max retries while trying to getRadarIdByUserId(${userId})`)
 }
 export default {
   login,

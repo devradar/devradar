@@ -105,6 +105,7 @@ async function init (store, appConfig) {
       store.dispatch('intro/event', 'login')
       return user
     } else { // user is not set (logout)
+      store.commit('user/setLoginState', LoginState.LOGGED_OUT)
       store.commit('blips/setLoading', false)
       store.commit('user/reset')
       return {}
