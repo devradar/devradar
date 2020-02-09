@@ -31,11 +31,18 @@ async function addBlip (blip: Blip): Promise<any> {
 }
 
 async function getRadarIdByUserId (userId: string): Promise<string> {
-  const getSnapshot = await firebase.firestore().collection('radars')
-    .where('owner', '==', userId)
-    .limit(3)
-    .get()
-  return getSnapshot.docChanges()[0].doc.id
+  let retryCount = 5
+  while (retryCount) {
+    const getSnapshot = await firebase.firestore().collection('radars')
+      .where('owner', '==', userId)
+      .limit(3)
+      .get()
+    if (getSnapshot.docChanges()[0].doc) {
+      return getSnapshot.docChanges()[0].doc.id
+    }
+    retryCount--
+  }
+  return Promise.reject(new Error(`Reached max retries while trying to getRadarIdByUserId(${userId})`))
 }
 export default {
   login,
