@@ -1,5 +1,6 @@
 <template>
   <v-app fill-height>
+    <intro></intro>
     <v-snackbar
       v-model="snackbar.active"
       color="success"
@@ -36,7 +37,7 @@
         <v-btn text
           v-for="elm in toolbarItemsStatic"
           v-bind:key="elm.title"
-          data-cy="app-nav-static"
+          :data-cy="`app-nav-${elm.name}`"
           @click="handleNavClick(elm)">
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
@@ -46,7 +47,7 @@
           v-bind:key="elm.title"
           router
           v-bind:to="elm.updatedPath"
-          data-cy="app-nav-router"
+          :data-cy="`app-nav-${elm.name}`"
           >
           <v-icon left>{{elm.icon}}</v-icon>
           <span class="hidden-md-only">{{elm.title}}</span>
@@ -64,15 +65,18 @@
           <v-list>
             <v-list-item v-for="elm in toolbarMenuItemsStatic"
               v-bind:key="elm.title"
-              :data-cy="`app-nav-static-${elm.name}`"
+              :data-cy="`app-nav-${elm.name}`"
               @click="handleNavClick(elm)">
               <v-list-item-title>
                 <v-icon left>{{elm.icon}}</v-icon>
                 {{ elm.title }}
                 </v-list-item-title>
             </v-list-item>
-            <v-list-item v-for="elm in toolbarMenuItemsRouter" v-bind:key="elm.title" v-bind:to="elm.updatedPath"
-            data-cy="app-nav-router" router>
+            <v-list-item v-for="elm in toolbarMenuItemsRouter"
+            v-bind:key="elm.title"
+            v-bind:to="elm.updatedPath"
+            :data-cy="`app-nav-${elm.name}`"
+            router>
               <v-list-item-title>
                 <v-icon left>{{elm.icon}}</v-icon>
                 {{ elm.title }}
@@ -146,6 +150,7 @@ import { Meta, User } from '@/types/domain'
 import Login from '@/components/app/Login.vue'
 import LoadingIndicator from '@/components/app/LoadingIndicator.vue'
 import Settings from '@/components/app/Settings.vue'
+import Intro from '@/components/app/Intro.vue'
 
 @Component({
   computed: {
@@ -159,7 +164,7 @@ import Settings from '@/components/app/Settings.vue'
       'snackbar'
     ])
   },
-  components: { CookieLaw, Login, LoadingIndicator, Settings }
+  components: { CookieLaw, Login, LoadingIndicator, Settings, Intro }
 })
 export default class App extends Vue {
   showNavdrawer: boolean = false
@@ -234,6 +239,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+@import '@/assets/intro.scss';
 .z-30 {
   z-index: 30 !important;
 }

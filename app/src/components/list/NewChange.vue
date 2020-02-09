@@ -11,15 +11,18 @@
               <v-flex sm6 xs12 d-flex>
                 <v-layout row wrap>
                   <v-flex xs12>
-                    <v-select :items="levels" v-model="level" label="Level" single-line required :rules="[v => !!v || 'Level is required']"></v-select>
+                    <v-select :items="levels" v-model="level" label="Level" single-line required :rules="[v => !!v || 'Level is required']"
+                      data-cy="blip-history-level" @change="$store.dispatch('intro/event', 'blip-history-level-changed')"></v-select>
                   </v-flex>
                   <v-flex xs12>
-                    <v-textarea v-model="changeText" label="Reason for change" rows="2"></v-textarea>
+                    <v-textarea v-model="changeText" label="Reason for change" rows="2"
+                      data-cy="blip-history-reason" @change="$store.dispatch('intro/event', 'blip-history-reason-changed')"></v-textarea>
                   </v-flex>
                 </v-layout>
               </v-flex>
               <v-flex md4 sm6 xs12>
-                <v-date-picker v-model="date" type="month"></v-date-picker>
+                <v-date-picker v-model="date" type="month"
+                  data-cy="blip-history-date" @change="$store.dispatch('intro/event', 'blip-history-date-changed')"></v-date-picker>
               </v-flex>
             </v-layout>
           </v-container>
@@ -28,7 +31,7 @@
       <v-card-actions>
         <v-btn @click.stop="cancel">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click.stop="submit">Save</v-btn>
+        <v-btn color="primary" @click.stop="submit" data-cy="blip-history-submit">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -71,6 +74,7 @@ export default class NewChange extends Vue {
   @Emit()
   submit () {
     if (this.form.validate()) {
+      this.$store.dispatch('intro/event', 'blip-history-submit')
       setTimeout(() => this.reset(), 100)
       return this.change
     }

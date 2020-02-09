@@ -30,3 +30,7 @@ export interface CommState {
 export interface RootState {
   version: string;
 }
+
+export interface IntroState {
+  isActive: boolean;
+}

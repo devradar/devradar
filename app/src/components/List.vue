@@ -117,6 +117,7 @@ export default class List extends Vue {
   newChangeOpen (blipId) {
     this.newChangeBlip = this.blips.find(b => b.id === blipId)
     this.newChangeModalVisible = true
+    this.$store.dispatch('intro/event', 'blip-history-open')
   }
 
   newChangeSubmit (change: BlipChange) {
@@ -133,6 +134,10 @@ export default class List extends Vue {
   mounted () {
     if (!this.isLoading) {
       this.$store.dispatch('blips/getRadarLazy', this.radarId)
+    }
+    this.$store.dispatch('intro/event', 'list-loaded')
+    if (this.userCanEdit) {
+      this.$store.dispatch('intro/event', 'list-editable')
     }
   }
 }

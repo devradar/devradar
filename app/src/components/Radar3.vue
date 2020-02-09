@@ -103,6 +103,10 @@ export default class Radar3 extends Vue {
     if (!this.isLoading) {
       this.fetchRadarData()
     }
+    this.$store.dispatch('intro/event', 'radar-loaded')
+    if (this.userCanEdit) {
+      this.$store.dispatch('intro/event', 'radar-editable')
+    }
   }
 
   @Watch('blips')
@@ -113,6 +117,14 @@ export default class Radar3 extends Vue {
   @Watch('meta')
   onMetaChanged () {
     this.renderChart()
+  }
+
+  @Watch('userCanEdit')
+  onUserChange () {
+  // fire on user change if radar was load prior to login
+    if (this.userCanEdit) {
+      this.$store.dispatch('intro/event', 'radar-editable')
+    }
   }
 }
 </script>

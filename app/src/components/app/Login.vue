@@ -70,10 +70,12 @@ export default class LoginModal extends Vue {
 
   dummyLogin () {
     backend.test.login()
+    this.close()
   }
 
   @Emit()
   close () {
+    this.isVisible = false
     return true
   }
 }

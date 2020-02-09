@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn
-      @click.stop="dialog = true"
+      @click.stop="addButtonClick()"
       color="primary" v-model="fab"
       fab fixed bottom right
       v-if="userCanEdit"
@@ -21,7 +21,7 @@
               <v-layout row wrap>
                 <v-flex sm6 xs12>
                   <v-text-field v-model="title" label="Title" required :rules="[v => !!v || 'Title is required']"
-                    data-cy="blip-new-title"
+                    data-cy="blip-new-title" @change="$store.dispatch('intro/event', 'add-blip-title-changed')"
                     ></v-text-field>
                 </v-flex>
                 <v-flex sm6 xs12>
@@ -36,12 +36,12 @@
                 </v-flex>
                 <v-flex sm6 xs12>
                   <v-select :items="categories" v-model="category" label="Category" single-line required :rules="[v => !!v || 'Category is required']"
-                    data-cy="blip-new-category"
+                    data-cy="blip-new-category" @change="$store.dispatch('intro/event', 'add-blip-category-changed')"
                   ></v-select>
                 </v-flex>
                 <v-flex sm6 xs12>
                   <v-select :items="levels" v-model="level" label="Level" single-line required :rules="[v => !!v || 'Level is required']"
-                    data-cy="blip-new-level"
+                    data-cy="blip-new-level" @change="$store.dispatch('intro/event', 'add-blip-level-changed')"
                   ></v-select>
                 </v-flex>
                 <v-flex xs12>
@@ -122,8 +122,14 @@ export default class NewBlip extends Vue {
   levels: string[]
   form: VForm
 
+  addButtonClick () {
+    this.$store.dispatch('intro/event', 'add-blip-open')
+    this.dialog = true
+  }
+
   submit () {
     if (this.form.validate()) {
+      this.$store.dispatch('intro/event', 'add-blip-submit')
       this.$store.dispatch('blips/addBlip', Object.assign(this.blip, { changes: [this.change] }))
       this.dialog = false
       this.clear()

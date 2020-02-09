@@ -4,6 +4,7 @@ import VuexPersistence from 'vuex-persist'
 import { user } from './user'
 import { blips } from './blips'
 import { comm } from './comm'
+import { intro } from './intro'
 import appConfig from '../config'
 import backend from '../backend/index'
 import { UserState, BlipsState, CommState } from '@/types/vuex'
@@ -20,7 +21,7 @@ backendActive.type = appConfig.backend.type
 const storePlugins = []
 if (backendActive.type === 'localstorage') {
   storePlugins.push((new VuexPersistence({
-    key: 'devradar-editor',
+    key: 'devradar',
     storage: window.localStorage,
     reducer: (state: {
       user: UserState;
@@ -33,7 +34,8 @@ const store = new VueX.Store({
   modules: {
     user: user(backendActive),
     blips: blips(backendActive),
-    comm: comm()
+    comm: comm(),
+    intro: intro()
   },
   plugins: storePlugins
 })

@@ -6,7 +6,6 @@
               <v-card-title class="headline" :class="{ dark: darkMode }" v-if="!isEditMode">
                 <a v-if="blip.link && blip.link.length > 0" :href="blip.link" target="_blank" data-cy="blip-title">{{blip.title | limitString(blipTitleCutOff)}}</a>
                 <span v-else data-cy="blip-title">{{blip.title | limitString(blipTitleCutOff)}}</span>
-                <v-btn icon @click.stop="copyUrl(blip)"><v-icon>link</v-icon></v-btn>
               </v-card-title>
               <v-text-field
               v-model="tempBlip.title"
@@ -92,6 +91,7 @@
         @click.stop="editBlip()"><v-icon>edit</v-icon></v-btn>
         <v-btn icon
         v-if="!isEditMode && userCanEdit"
+        data-cy="blip-change-button"
         @click.stop="addChange()"><v-icon>playlist_add</v-icon></v-btn>
         <v-btn icon
         v-if="isEditMode"
@@ -174,19 +174,6 @@ export default class Blip extends Vue {
 
   deleteChange (blip, change) {
     this.$store.dispatch('blips/deleteChange', { blip, change })
-  }
-
-  copyUrl () {
-    const b = this.blip
-    // @ts-ignore ignore the injected .rootPath
-    let url = `${window.location.origin}/#/${appConfig.routes.find(r => r.view === 'List').rootPath}/${b.title}`
-    url = url.replace(/([^:]\/)\/+/g, '$1') // remove potential duplicate //, except http(s)://
-    const success = copy(url)
-    if (success) {
-      this.$store.dispatch('comm/showSnackbar', 'Skill URL copied to clipboard')
-    } else {
-      console.error(success) // eslint-disable-line no-console
-    }
   }
 
   markdown (string = '') {

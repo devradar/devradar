@@ -11,7 +11,7 @@ context('Radar metadata', () => {
       .then(backend => backend.test.login())
       .as('userId')
     cy.get('[data-cy="loadingDialog"]', { timeout: 10e3 }).should('be.visible')
-    cy.get('[data-cy="loadingDialog"]').should('not.be.visible')
+    cy.get('[data-cy="loadingDialog"]', { timeout: 10e3 }).should('not.be.visible')
     cy.wait(1000) // delay to make sure the getRadarId call does not fail
     cy.get('[data-cy=cookie-banner] button').click()
     cy.all(cy.get('@backend'), cy.get('@userId'))
@@ -32,7 +32,7 @@ context('Radar metadata', () => {
 
   it('changes title via settings', () => {
     cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
-    cy.get('[data-cy="app-nav-static-settings"]').click()
+    cy.get('[data-cy="app-nav-settings"]').click()
     cy.get('[data-cy="radar-settings-title-field"]').focus()
     cy.get('[data-cy="radar-settings-title-field"]').type('{selectall}{del}')
     cy.get('[data-cy="radar-settings-title-field"]').type('rick sanchez')
@@ -46,7 +46,7 @@ context('Radar metadata', () => {
 
   it('changes levels via settings', () => {
     cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
-    cy.get('[data-cy="app-nav-static-settings"]').click()
+    cy.get('[data-cy="app-nav-settings"]').click()
     cy.get('[data-cy="radar-settings-levels-field-0"]').focus()
     cy.get('[data-cy="radar-settings-levels-field-0"]').type('{selectall}{del}')
     cy.get('[data-cy="radar-settings-levels-field-0"]').type('best')
@@ -62,6 +62,7 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-close"]').focus()
     cy.get('[data-cy="radar-settings-levels-save"]').click()
     cy.get('[data-cy="radar-settings-close"]').click()
+    cy.wait(100)
     cy.get('[data-cy="radarSvg"]').within($form => {
       cy.get('.label-0').should('have.text', 'best')
       cy.get('.label-1').should('have.text', 'grandson')
@@ -72,7 +73,7 @@ context('Radar metadata', () => {
 
   it('changes categories via settings', () => {
     cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
-    cy.get('[data-cy="app-nav-static-settings"]').click()
+    cy.get('[data-cy="app-nav-settings"]').click()
     cy.get('[data-cy="radar-settings-categories-field-0"]').focus()
     cy.get('[data-cy="radar-settings-categories-field-0"]').type('{selectall}{del}')
     cy.get('[data-cy="radar-settings-categories-field-0"]').type('summer')
@@ -88,6 +89,7 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-close"]').focus()
     cy.get('[data-cy="radar-settings-categories-save"]').click()
     cy.get('[data-cy="radar-settings-close"]').click()
+    cy.wait(100)
     cy.get('.radarlegend:visible').within($form => {
       cy.get('.radar-legend > .legendCategory.category-0').should('have.text', 'summer')
       cy.get('.radar-legend > .legendCategory.category-1').should('have.text', 'ruined')
