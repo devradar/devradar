@@ -27,7 +27,7 @@
         <v-row row>
           <v-col lg=4 md=8 sm=10 cols=12>
             <v-btn
-              class="me-10" dark raised
+              class="me-5 mb-5" dark raised
               @click="$store.dispatch('intro/startIntro')"
               data-cy="home-tour-button"
             >
@@ -35,7 +35,7 @@
               Start Tour
             </v-btn>
             <v-btn
-              class="mx-10" dark raised
+              class="mb-5" dark raised
               href="//docs.devradar.io/"
               target="_blank">Learn More
             </v-btn>
