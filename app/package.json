@@ -16,12 +16,10 @@
     "serve:test": "vue-cli-service serve --mode test",
     "start": "npm run serve",
     "test": "npm run lint && npm run build",
-    "test:e2e:ci": "run-p --race serve:static cypress:ci",
-    "test:e2e:ci:firebase": "run-p --race serve:static cypress:run",
+    "test:e2e:run": "run-p --race serve:static cypress:run",
     "test:e2e:ci:firebase:record": "run-p --race serve:static cypress:ci:firebase",
-    "test:e2e:ci:localstorage": "run-p --race serve:static cypress:run",
     "test:e2e:ci:localstorage:record": "run-p --race serve:static cypress:ci:localstorage",
-    "test:e2e:local": "npm run build -- --mode development && npm run test:e2e:ci:firebase && npm run test:e2e:ci:localstorage"
+    "test:e2e:local": "npm run build -- --mode development && npm run test:e2e:run && npm run build -- --mode test && npm run test:e2e:run"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",

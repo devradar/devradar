@@ -1,6 +1,7 @@
 <template>
   <v-overlay v-model="isLoading">
     <v-progress-circular
+      data-cy="loadingDialog"
       indeterminate
       size="100"
       width="13"
