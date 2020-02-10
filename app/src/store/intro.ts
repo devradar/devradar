@@ -3,9 +3,12 @@ import { RootState, IntroState } from '@/types/vuex'
 import { LoginState } from '@/types/domain'
 import router from '@/router'
 
+/*
+  the steps attach to the DOM element matching `target` and will automatically go to the next step once the `transition` event is received via dispatch('intro/event', 'login', { root: true })
+*/
 const steps = [
   { // 0
-    target: '[data-cy="app-nav-login"]',
+    target: '[data-tour-login="true"]',
     content: `Start your <strong>devradar journey</strong> by logging in with your GitHub/Twitter/Google Account.`,
     transition: 'radar-editable'
   },
@@ -40,7 +43,7 @@ const steps = [
     content: 'Save your skill after filling out all required attributes. <b>Optional:</b> Fill in the other descriptions for future reference',
     transition: 'add-blip-submit',
     params: {
-      placement: 'right'
+      placement: 'bottom'
     }
   },
   { // 6
@@ -49,7 +52,7 @@ const steps = [
     transition: ''
   },
   {
-    target: '[data-cy="app-nav-list"]',
+    target: '[data-tour-history="true"]',
     content: 'Change into <strong>History view</strong> to make changes to existing skills if you level-up',
     transition: 'list-loaded'
   },
