@@ -36,7 +36,7 @@ jobs:
       working-directory: app
     - run: |
         npm run build
-        npm run test:e2e:ci:localstorage # cypress key provided via CYPRESS_RECORD_KEY env variable
+        npm run test:e2e:run # cypress key provided via CYPRESS_RECORD_KEY env variable
       name: cypress tests w/ local storage
       working-directory: app
 
@@ -62,7 +62,7 @@ jobs:
     - run: npm run build
       working-directory: app
     - run: |
-        npm run test:e2e:ci:firebase # cypress key provided via CYPRESS_RECORD_KEY env variable
+        npm run test:e2e:run # cypress key provided via CYPRESS_RECORD_KEY env variable
       name: cypress tests w/ firebase backend
       working-directory: app
     
