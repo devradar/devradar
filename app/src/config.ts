@@ -4,6 +4,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
   backend: {
     type: process.env.VUE_APP_BACKEND_TYPE || 'testVolatile',
     project: process.env.VUE_APP_BACKEND_PROJECT,
+    authDomain: 'auth.firebase.devradar.io',
     key: process.env.VUE_APP_BACKEND_KEY
   },
   routes: [ // configure name, permissions & view ports
