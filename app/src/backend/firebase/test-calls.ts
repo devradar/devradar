@@ -31,7 +31,7 @@ async function addBlip (blip: Blip): Promise<any> {
 }
 
 async function getRadarIdByUserId (userId: string): Promise<string> {
-  let retryCount = 5
+  let retryCount = 9
   while (retryCount) {
     const getSnapshot = await firebase.firestore().collection('radars')
       .where('owner', '==', userId)
@@ -40,6 +40,7 @@ async function getRadarIdByUserId (userId: string): Promise<string> {
     if (getSnapshot.size > 0) {
       return getSnapshot.docs[0].data().id
     }
+    await new Promise((resolve) => setTimeout(() => resolve(), 200))
     retryCount--
   }
   throw new Error(`Reached max retries while trying to getRadarIdByUserId(${userId})`)

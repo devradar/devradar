@@ -4,6 +4,7 @@ require('../support/cy-all')
 context('Radar metadata', () => {
   before(() => {
     cy.clean()
+    cy.wait(3000)
     cy.visit('/')
     cy.getBackend()
       .as('backend')
@@ -61,8 +62,9 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-levels-field-3"]').type('all')
     cy.get('[data-cy="radar-settings-close"]').focus()
     cy.get('[data-cy="radar-settings-levels-save"]').click()
+    cy.wait(300)
     cy.get('[data-cy="radar-settings-close"]').click()
-    cy.wait(100)
+    cy.wait(300)
     cy.get('[data-cy="radarSvg"]').within($form => {
       cy.get('.label-0').should('have.text', 'best')
       cy.get('.label-1').should('have.text', 'grandson')
@@ -88,8 +90,9 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-categories-field-3"]').type('today')
     cy.get('[data-cy="radar-settings-close"]').focus()
     cy.get('[data-cy="radar-settings-categories-save"]').click()
+    cy.wait(300)
     cy.get('[data-cy="radar-settings-close"]').click()
-    cy.wait(100)
+    cy.wait(300)
     cy.get('.radarlegend:visible').within($form => {
       cy.get('.radar-legend > .legendCategory.category-0').should('have.text', 'summer')
       cy.get('.radar-legend > .legendCategory.category-1').should('have.text', 'ruined')

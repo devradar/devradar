@@ -4,6 +4,7 @@ require('../support/cy-all')
 context('Blip editing', function () {
   beforeEach(function () {
     cy.clean()
+    cy.wait(3000)
     cy.visit('/')
     cy.getBackend()
       .as('backend')
@@ -36,6 +37,7 @@ context('Blip editing', function () {
     cy.get('.menuable__content__active .v-list-item__content:visible')
       .then(listItems => listItems[0].click())
     cy.get('[data-cy="blip-new-submit"]').click()
+    cy.wait(700)
     cy.get('[data-cy="blip-title"]').contains(blipTitle).should('exist')
   })
 
@@ -61,6 +63,7 @@ context('Blip editing', function () {
         cy.get('[data-cy="blip-delete-button2"]').click()
       })
     })
+    cy.wait(300)
     cy.get('[data-cy="blip"]').then($blips => {
       cy.wrap($blips).should('have.length', 2)
       cy.wrap(blip0).should('exist')

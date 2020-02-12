@@ -19,7 +19,8 @@
     "test:e2e:run": "run-p --race serve:static cypress:run",
     "test:e2e:ci:firebase:record": "run-p --race serve:static cypress:ci:firebase",
     "test:e2e:ci:localstorage:record": "run-p --race serve:static cypress:ci:localstorage",
-    "test:e2e:local": "npm run build -- --mode development && npm run test:e2e:run && npm run build -- --mode test && npm run test:e2e:run"
+    "test:e2e:local": "npm run build -- --mode development && npm run test:e2e:run && npm run build -- --mode test && npm run test:e2e:run",
+    "test:local": "npm run lint && npm run test:e2e:local"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",
