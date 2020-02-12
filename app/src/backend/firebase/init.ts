@@ -70,7 +70,7 @@ async function init (store, appConfig) {
   }
   const app = firebase.initializeApp({ // eslint-disable-line @typescript-eslint/no-unused-vars
     apiKey: appConfig.backend.key,
-    authDomain: `${appConfig.backend.project}.firebaseapp.com`,
+    authDomain: appConfig.backend.authDomain || `${appConfig.backend.project}.firebaseapp.com`,
     databaseURL: `https://${appConfig.backend.project}.firebaseio.com`,
     projectId: `${appConfig.backend.project}`
   })
