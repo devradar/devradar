@@ -46,7 +46,8 @@ jobs:
   test-e2e-firebase:
     strategy:
       matrix:
-        os: [ubuntu-16.04, macos-10.15]    
+        os: [ubuntu-16.04, macos-10.15]
+      max-parallel: 1
     runs-on: ${{ matrix.os }}
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
