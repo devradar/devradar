@@ -1,190 +1,53 @@
 ---
 kind: pipeline
-name: editor
+name: e2e-pr-volatile
 
+trigger:
+  event:
+  - pull_request
 steps:
-- name: lint
-  image: node:lts-slim
+- name: test-e2e-volatile
+  image: cypress/base:8
+  environment:
+    VUE_APP_BACKEND_TYPE: 'testVolatile'
   commands:
-  - cd editor
-  - npm ci
-  - npm run lint
-
-- name: build static release
-  image: node:lts-slim
-  commands:
-  - cd editor
-  - cp -R .build/static/** .
+  - cd app
   - npm ci
   - npm run build
-  - npx yarn import # generate yarn.lock
-  - npx yarn licenses generate-disclaimer > dist/DISCLAIMER
-  - sed -i.bk -E -e "s^href=([\"']?)/([^/]+)^href=\1\2^g" -e "s^src=([\"']?)/([^/]+)^src=\1\2^g" dist/index.html # make resource includes relative to support non-root hosting
-  - rm dist/index.html.bk
-- name: deploy to devradar-static:gh-pages
-  image: alpine/git
-  environment:
-    username:
-      from_secret: GITHUB_USERNAME
-    password:
-      from_secret: GITHUB_TOKEN
-  commands:
-  - export tmpdir=/drone/src/.pages_tmp
-  - apk add rsync
-  - mkdir $tmpdir
-  - git clone -b gh-pages --single-branch https://$username:$password@github.com/anoff/devradar-static.git $tmpdir
-  - rsync --delete --exclude .git -r /drone/src/editor/dist/ $tmpdir/
-  - cd $tmpdir
-  - git status --porcelain
-  - git add .
-  - git config user.email ""
-  - git config user.name "CI Joe" 
-  - git diff-index --quiet HEAD || git commit -m "commit static devradar"
-  - git push origin HEAD:gh-pages
-  when:
-    branch:
-    - master
-    event:
-    - push
-- name: publish release
-  image: plugins/github-release
-  settings:
-    api_key:
-      from_secret: GITHUB_TOKEN
-    files: dist/*
-    checksum:
-      - md5
-    prerelease: true
-  when:
-    event:
-    - tag
-    branch:
-    - master
+  - npm run test:e2e:run
 
-- name: git reset.
-  image: alpine/git
-  commands:
-  - git reset --hard
-- name: build editor.devradar.io
-  image: node:lts-slim
-  commands:
-  - cd editor
-  - cp -R .build/editor/** .
-  - npm ci
-  - npm run build
-- name: deploy editor.devradar.io
-  image: node:lts-alpine
-  environment:
-    NETLIFY_SITE_ID:
-      from_secret: NETLIFY_EDITOR_ID
-    NETLIFY_AUTH_TOKEN:
-      from_secret: NETLIFY_TOKEN
-  commands:
-    - cd editor
-    - npm install -g netlify-cli
-    - netlify deploy --dir=dist --prod
-  when:
-    branch:
-    - master
-    event:
-    - push
-- name: docker publish editor
-  image: plugins/docker
-  settings:
-    username:
-      from_secret: DOCKER_USERNAME
-    password:
-      from_secret: DOCKER_PASSWORD
-    repo: anoff/devradar
-    target: editor
-    tags: latest
-    dockerfile: editor/Dockerfile
-    context: editor/
-  when:
-    branch:
-    - master
-    event:
-    - push
+---
+kind: pipeline
+name: e2e-pr-firebase
 
-- name: git reset..
-  image: alpine/git
-  commands:
-  - git reset --hard
-- name: build & deploy radar.anoff.io
+trigger:
+  event:
+  - pull_request
+steps:
+- name: deploy firebase rules
   image: node:lts-slim
   environment:
     FIREBASE_PROJECT:
-      from_secret: FIREBASE_PROJECT
+      from_secret: FIREBASE_E2E_PROJECT
     FIREBASE_TOKEN:
-      from_secret: FIREBASE_TOKEN
+      from_secret: FIREBASE_E2E_TOKEN
   commands:
-  - cd editor
-  - npm ci
-  - cp -R .build/anoff/** .
-  - npm run build
+  - cd app
   - npm i -g firebase-tools
-  - firebase deploy --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
-  when:
-    branch:
-    - master
-    event:
-    - push
-
----
-kind: pipeline
-name: teams
-
-steps:
-- name: lint
-  image: node:lts-slim
-  commands:
-  - cd teams
-  - npm ci
-  - npm run lint
-- name: build
-  image: node:lts-slim
-  commands:
-  - cd teams
-  - npm ci
-  - npm run build
-- name: netlify deploy
-  image: node:lts-alpine
+  - firebase deploy --only firestore:rules --token "$FIREBASE_TOKEN" --project $FIREBASE_PROJECT
+- name: test-e2e-firebase
+  image: cypress/base:8
   environment:
-    NETLIFY_SITE_ID:
-      from_secret: NETLIFY_TEAMS_ID
-    NETLIFY_AUTH_TOKEN:
-      from_secret: NETLIFY_TOKEN
+    VUE_APP_BACKEND_TYPE: 'firebase'
+    VUE_APP_BACKEND_PROJECT:
+      from_secret: FIREBASE_E2E_PROJECT
+    VUE_APP_BACKEND_KEY:
+      from_secret: FIREBASE_E2E_CLIENTKEY
+    FIREBASE_SERVICEACCOUNT:
+      from_secret: FIREBASE_E2E_ACCOUNTKEY
   commands:
-    - cd teams
-    - npm install -g netlify-cli
-    - netlify deploy --dir=dist --prod
-  when:
-    branch:
-    - master
-    event:
-    - push
-
----
-kind: pipeline
-name: web
-
-steps:
-- name: build
-  image: anoff/hugo-asciidoctor
-  commands:
-  - cd web
-  - hugo --gc --minify -d _site --baseURL //devradar.io
-  - touch _site/.nojekyll
-- name: publish  
-  image: plugins/gh-pages
-  settings:
-    username:
-      from_secret: github_username
-    password:
-      from_secret: github_token
-    pages_directory: web/_site
-  when:
-    branch:
-    - master
-    event:
-    - push
+  - cd app
+  - npm ci
+  - node cypress/wipe-firestore.js
+  - npm run build
+  - npm run test:e2e:run

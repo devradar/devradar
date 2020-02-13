@@ -23,7 +23,10 @@ jobs:
       working-directory: app
 
   test-e2e-volatile:
-    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, macos-10.15]    
+    runs-on: ${{ matrix.os }}
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
@@ -36,12 +39,15 @@ jobs:
       working-directory: app
     - run: |
         npm run build
-        test:e2e:run
+        npm run test:e2e:run
       name: cypress tests w/ local storage
       working-directory: app
 
   test-e2e-firebase:
-    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, macos-10.15]    
+    runs-on: ${{ matrix.os }}
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
       VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_E2E_PROJECT }}
