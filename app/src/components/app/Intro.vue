@@ -16,6 +16,7 @@
           :labels="tour.labels"
           :highlight="tour.highlight"
           data-cy="intro-step"
+          :class="{ 'z-10': [0,7].includes(tour.currentStep) }"
         >
           <template>
             <div slot="actions">
@@ -55,3 +56,9 @@ export default class App extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.z-10 {
+  z-index: 10 !important;
+}
+</style>

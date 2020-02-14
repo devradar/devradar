@@ -1,24 +1,13 @@
 <template>
-  <v-dialog
-    v-model="isLoading"
-    hide-overlay
-    persistent
-    width="300"
-  >
-    <v-card
-      color="accent"
+  <v-overlay v-model="isLoading">
+    <v-progress-circular
       data-cy="loadingDialog"
-      dark
-    >
-      <v-card-text>
-        Loading radar..
-        <v-progress-linear
-          indeterminate
-          class="mb-0"
-        ></v-progress-linear>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
+      indeterminate
+      size="100"
+      width="13"
+      color="accent"
+    ></v-progress-circular>
+  </v-overlay>
 </template>
 
 <script lang="ts">
@@ -35,7 +24,6 @@ import { mapGetters } from 'vuex'
 })
 export default class App extends Vue {
   darkMode: boolean = appConfig.theme.dark
-
   // computed
   isLoading: boolean
 }

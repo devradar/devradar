@@ -5,9 +5,8 @@ import { Blip } from '@/types/domain'
 
 async function login (): Promise<any> {
   store.commit('blips/setLoading', true)
-  await store.dispatch('user/oauthLogin', { provider: 'github' })
-  await new Promise((resolve) => setTimeout(() => resolve(), 500))
-  return store.dispatch('blips/getRadarLazy', 'rick')
+  setTimeout(() => store.dispatch('user/oauthLogin', { provider: 'github' }), 500)
+  setTimeout(() => store.dispatch('blips/getRadarLazy', 'rick'), 1000)
 }
 
 async function addBlip (blip: Blip): Promise<any> {

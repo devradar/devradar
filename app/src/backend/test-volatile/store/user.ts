@@ -15,6 +15,7 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
     }
     commit('setUser', user)
     commit('user/setLoginState', LoginState.LOGGED_IN, { root: true })
+    commit('blips/setLoading', false, { root: true })
     dispatch('intro/event', 'login', { root: true })
   },
   getUserList (_): void {

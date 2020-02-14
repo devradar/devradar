@@ -3,6 +3,7 @@ const devices = ['macbook-15', 'macbook-13', 'iphone-x']
 context('Radar', () => {
   before(() => {
     cy.clean()
+    cy.wait(3000)
   })
   beforeEach(() => {
     cy.visit('/')
@@ -13,6 +14,7 @@ context('Radar', () => {
     cy.viewport('macbook-13')
     cy.get('header').contains('Radar').should('not.exist')
     cy.getBackend().then(backend => backend.test.login())
+    cy.wait(1000)
     cy.get('header').contains('Radar', { timeout: 10e3 }).should('be.visible')
   })
 
