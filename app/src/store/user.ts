@@ -7,7 +7,7 @@ import appConfig from '../config'
 const state: UserState = {
   user: undefined,
   userList: {},
-  loginState: LoginState.NOT_LOGGED_IN
+  loginState: LoginState.UNKNOWN
 }
 
 const defaultState: UserState = JSON.parse(JSON.stringify(state))
@@ -26,7 +26,7 @@ const mutations: MutationTree<UserState> = {
     for (const key in state) {
       state[key] = defaultState[key]
     }
-    state.loginState = LoginState.NOT_LOGGED_IN
+    state.loginState = LoginState.LOGGED_OUT
   },
   setLoginState (state: UserState, loginState: LoginState) {
     state.loginState = loginState
@@ -37,10 +37,13 @@ const getters: GetterTree<UserState, RootState> = {
   user (state: UserState) {
     return state.user || {}
   },
+  radarId (_state: UserState, getters) {
+    return getters.user.radar
+  },
   userList (state: UserState) {
     return state.userList
   },
-  userCanEdit (state: UserState, getters, _, rootGetters) {
+  userCanEdit (_state: UserState, getters, _rootState, rootGetters) {
     const user = getters.user
     if (!user || !user.roles || !user.uid) return false
     return user.uid === rootGetters['blips/ownerId']

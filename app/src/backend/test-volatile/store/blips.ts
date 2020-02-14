@@ -8,7 +8,7 @@ import radars from '../mock-data/radars'
 
 const actions = (): ActionTree<BlipsState, RootState> => ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
-  async followRadarAlias (_, alias: string): Promise<string> {
+  async followRadarAlias (_context, alias: string): Promise<string> {
     if (radars[alias]) {
       return alias
     }
@@ -124,7 +124,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     commit('setRadarAlias', alias)
     router.push({ name: 'radar', params: { radarId: alias } })
   },
-  async isRadarAliasAvailable (_, alias: string): Promise<boolean> {
+  async isRadarAliasAvailable (_context, alias: string): Promise<boolean> {
     if (radarAliases[alias]) {
       return false
     }

@@ -32,9 +32,9 @@ export interface User {
 }
 
 export enum LoginState {
-  NOT_LOGGED_IN = 0,
-  LOGIN_PENDING,
+  LOGIN_PENDING = 0,
   LOGGED_IN,
   LOGOUT_PENDING,
-  LOGGED_OUT
+  LOGGED_OUT,
+  UNKNOWN
 }

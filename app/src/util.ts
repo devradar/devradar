@@ -49,6 +49,7 @@ function addBlipLevelFromChanges (blip: Blip): Blip {
   blip.level = level
   return blip
 }
+
 export {
   getHash,
   getPseudoRand,

@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import NewBlip from './list/NewBlip.vue'
 import NewChange from './list/NewChange.vue'
@@ -138,6 +138,13 @@ export default class List extends Vue {
     this.$store.dispatch('intro/event', 'list-loaded')
     if (this.userCanEdit) {
       this.$store.dispatch('intro/event', 'list-editable')
+    }
+  }
+
+  @Watch('isLoading')
+  onDoneLoading (_oldValue: boolean, newValue: boolean) {
+    if (newValue === true) {
+      this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }
   }
 }
