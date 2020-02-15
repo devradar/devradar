@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Radar3 from '@/components/Radar3.vue'
+import Radar from '@/components/Radar.vue'
 import Home from '@/components/Home.vue'
 import List from '@/components/List.vue'
 import Logout from '@/components/Logout.vue'
@@ -15,7 +15,7 @@ const components = {
   list: List,
   logout: Logout,
   users: Users,
-  radar: Radar3
+  radar: Radar
 }
 const routes = routesCfg
   .map(r => ({

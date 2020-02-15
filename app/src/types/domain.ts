@@ -38,3 +38,8 @@ export enum LoginState {
   LOGGED_OUT,
   UNKNOWN
 }
+
+export enum RadarTabState {
+  RadarChart = 0,
+  History
+}

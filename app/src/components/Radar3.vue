@@ -94,6 +94,7 @@ export default class Radar3 extends Vue {
   }
 
   mounted () {
+    console.log('radar mounted')
     if (this.isLoaded) {
       this.renderChart()
     }
