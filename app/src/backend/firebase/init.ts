@@ -93,19 +93,16 @@ async function init (store, appConfig) {
       user.radar = radarId
       store.commit('user/setUser', user)
       store.commit('user/setLoginState', LoginState.LOGGED_IN)
-      if (!store.getters['blips/radarId']) {
-        await store.dispatch('blips/getRadarLazy', radarId)
-      }
-      store.commit('blips/setLoading', false)
       // navigate app to radar view after login
       if (!['radar', 'history'].includes(router.currentRoute.name)) {
         let radarIdOrAlias = radarId
         if (store.getters['blips/radarAlias']) {
           radarIdOrAlias = store.getters['blips/radarAlias']
         }
-        // router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
+        await store.dispatch('blips/getRadarLazy', radarIdOrAlias)
       }
       store.dispatch('intro/event', 'login')
+      store.commit('blips/setLoading', false)
       return user
     } else { // user is not set (logout)
       store.commit('user/setLoginState', LoginState.LOGGED_OUT)

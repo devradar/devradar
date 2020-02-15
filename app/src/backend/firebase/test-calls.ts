@@ -8,8 +8,17 @@ import { Blip } from '@/types/domain'
 import { getUUID, cleanChange, cleanBlip } from '@/util'
 import { store } from '../../store'
 
-async function login (): Promise<any> {
-  return firebase.auth().signInWithEmailAndPassword('rick@devradar.io', 'sanchez') // morty@devradar.io / jessica
+async function login (user: string = 'rick'): Promise<any> {
+  let credentials
+  switch (user) {
+    case 'rick':
+      credentials = 'rick@devradar.io:sanchez'
+      break
+    case 'morty':
+      credentials = 'morty@devradar.io:jessica'
+      break
+  }
+  return firebase.auth().signInWithEmailAndPassword(credentials.split(':')[0], credentials.split(':')[1])
     .then(login => login.user.uid)
 }
 

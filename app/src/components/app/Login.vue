@@ -18,6 +18,10 @@
             <v-btn mx-auto
             @click="dummyLogin()">Login as Rick (Testmode)</v-btn>
           </v-flex>
+          <v-flex xs6 class="text-xs-center">
+            <v-btn mx-auto
+            @click="dummyLogin('morty')">Login as Morty (Testmode)</v-btn>
+          </v-flex>
         </v-layout>
       </v-card-text>
     </v-card>
@@ -54,6 +58,7 @@ export default class LoginModal extends Vue {
   public mounted () {
     if (this.useFirebaseAuth) {
       const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
+      ui.reset() // make sure the UI works after login/logout cycle for another login
       const uiConfig = {
         callbacks: {
           signInSuccessWithAuthResult: () => false
@@ -68,8 +73,8 @@ export default class LoginModal extends Vue {
     }
   }
 
-  dummyLogin () {
-    backend.test.login()
+  dummyLogin (user: string) {
+    backend.test.login(user)
     this.close()
   }
 
