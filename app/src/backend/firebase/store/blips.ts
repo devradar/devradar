@@ -85,11 +85,11 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     let targetId = aliasOrId
     if (aliasOrId.toLocaleLowerCase() === 'me') { // shortcut for going to own radar
       if (rootGetters['user/loginState'] === LoginState.LOGGED_OUT) {
-        console.warn('TODO: redirect to 404/401')
+        console.warn('TODO: redirect to 404/401') // eslint-disable-line no-console
       } else {
         targetId = rootGetters['user/radarId']
         if (!targetId) {
-          console.warn('Could not resolve radarId', targetId)
+          console.warn('Could not resolve radarId', targetId) // eslint-disable-line no-console
         }
       }
     } else { // loading a radar by ID or alias
@@ -97,7 +97,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
       if (loadedId !== radarId && radarId !== '') {
         return dispatch('getRadar', radarId)
       } else if (radarId === '') {
-        console.warn('TODO: redirect to 404/401')
+        console.warn('TODO: redirect to 404/401') // eslint-disable-line no-console
       }
     }
     return Promise.resolve()
