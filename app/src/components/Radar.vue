@@ -34,6 +34,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import List from './List.vue'
 import Radar3 from './Radar3.vue'
+import router from '../router'
 import { RadarTabState } from '@/types/domain'
 
 @Component({
@@ -61,6 +62,20 @@ export default class Radar extends Vue {
 
   tabChange (newTab: number) {
     // console.log(newTab, this.activeTabName)
+    switch (newTab) {
+      case 0:
+        router.replace({ path: `/@${this.radarId}` })
+        break
+      case 1:
+        router.replace({ path: `/@${this.radarId}/history` })
+        break
+    }
+  }
+
+  mounted () {
+    if (this.$route.params.mode === 'history') {
+      this.tab = 1
+    }
   }
 }
 </script>

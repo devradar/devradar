@@ -90,11 +90,9 @@ import { Blip, BlipChange, User } from '@/types/domain'
 })
 export default class List extends Vue {
   @Prop({ default: '' })
-  blipName: string
-  @Prop({ default: '' })
   radarId: string
   newChangeBlip: Blip
-  searchTitle: string = this.blipName
+  searchTitle: string = ''
   maxMonths: number = 0
   newChangeModalVisible: boolean = false
 
@@ -108,9 +106,9 @@ export default class List extends Vue {
 
   searchUpdated () {
     if (this.searchTitle) {
-      router.replace({ name: 'list', params: { radarId: this.radarId }, query: { q: this.searchTitle } })
+      router.replace({ path: `/@${this.radarId}/history`, query: { q: this.searchTitle } })
     } else {
-      router.replace({ name: 'list', params: { radarId: this.radarId } })
+      router.replace({ path: `/@${this.radarId}/history` })
     }
   }
 
@@ -139,6 +137,7 @@ export default class List extends Vue {
     if (this.userCanEdit) {
       this.$store.dispatch('intro/event', 'list-editable')
     }
+    this.searchTitle = this.$route.query.q || '' // populate blip search with URL query parameters ?q=sauce
   }
 
   @Watch('isLoading')

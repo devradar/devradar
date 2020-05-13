@@ -206,7 +206,7 @@ export default class App extends Vue {
         if (i.path) {
           i['updatedPath'] = i.path
             .replace(':radarId', this.radarAlias || this.radarId)
-            .replace(':blipName?', '')
+            .replace('/:mode?', '')
         }
         return i
       })
