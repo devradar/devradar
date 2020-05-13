@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Radar from '@/components/Radar.vue'
 import Home from '@/components/Home.vue'
 import List from '@/components/List.vue'
+import ErrorPage from '@/components/ErrorPage.vue'
 import Logout from '@/components/Logout.vue'
 import Users from '@/components/Users.vue'
 import AuthGuard from './auth-guard'
@@ -15,7 +16,8 @@ const components = {
   list: List,
   logout: Logout,
   users: Users,
-  radar: Radar
+  radar: Radar,
+  error: ErrorPage
 }
 const routes = routesCfg
   .map(r => ({

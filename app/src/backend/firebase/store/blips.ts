@@ -85,11 +85,13 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     let targetId = aliasOrId
     if (aliasOrId.toLocaleLowerCase() === 'me') { // shortcut for going to own radar
       if (rootGetters['user/loginState'] === LoginState.LOGGED_OUT) {
-        console.warn('TODO: redirect to 404/401') // eslint-disable-line no-console
+        console.warn('Could not resolve radarId', targetId) // eslint-disable-line no-console
+        router.push({ name: 'error', params: { errorCode: '404' } })
       } else {
         targetId = rootGetters['user/radarId']
         if (!targetId) {
           console.warn('Could not resolve radarId', targetId) // eslint-disable-line no-console
+          router.push({ name: 'error', params: { errorCode: '404' } })
         }
       }
     } else { // loading a radar by ID or alias
@@ -97,7 +99,8 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
       if (loadedId !== radarId && radarId !== '') {
         return dispatch('getRadar', radarId)
       } else if (radarId === '') {
-        console.warn('TODO: redirect to 404/401') // eslint-disable-line no-console
+        console.warn('entry does not exist for radarId', radarId) // eslint-disable-line no-console
+        router.push({ name: 'error', params: { errorCode: '404' } })
       }
     }
     return Promise.resolve()

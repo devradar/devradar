@@ -12,6 +12,7 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     // { name: 'list', icon: 'list', title: 'History', path: '/^:radarId', validator: () => true, location: ['toolbar'], props: route => ({ blipName: route.query.q, radarId: route.params.radarId }) },
     { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
     { name: 'users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
+    { name: 'error', icon: '', title: 'error', path: '/wtf/:errorCode', validator: () => true, location: [] },
     { name: 'radar', icon: 'track_changes', title: 'Me', path: '/@:radarId', validator: () => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
   ],
   navEntries: [
