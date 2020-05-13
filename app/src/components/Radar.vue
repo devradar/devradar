@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0">
+  <v-container fluid class="pa-0 height-100">
     <v-tabs
       v-model="tab"
       centered
@@ -23,7 +23,7 @@
         <radar3 :radarId="radarId"></radar3>
       </v-tab-item>
       <v-tab-item>
-        <list></list>
+        <list :radarId="radarId"></list>
       </v-tab-item>
     </v-tabs-items>
   </v-container>
@@ -60,7 +60,7 @@ export default class Radar extends Vue {
   isLoaded: boolean
 
   tabChange (newTab: number) {
-    console.log(newTab, this.activeTabName)
+    // console.log(newTab, this.activeTabName)
   }
 }
 </script>
@@ -68,5 +68,8 @@ export default class Radar extends Vue {
 <style lang="scss" scoped>
 .v-tab--active {
   color: black !important;
+}
+.height-100 {
+  height: 100%;
 }
 </style>
