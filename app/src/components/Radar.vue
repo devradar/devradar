@@ -10,11 +10,11 @@
     >
       <v-tab>
         <v-icon left>track_changes</v-icon>
-        Chart
+        Radar View
       </v-tab>
       <v-tab>
         <v-icon left>list</v-icon>
-        History
+        Skill Diary
       </v-tab>
     </v-tabs>
 
