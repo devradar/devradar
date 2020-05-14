@@ -3,24 +3,33 @@
 import { store } from '../../store'
 import { Blip } from '@/types/domain'
 
-async function login (): Promise<any> {
+async function login (user = 'rick'): Promise<string> {
+  const userId = user + 'UserUid'
   store.commit('blips/setLoading', true)
-  setTimeout(() => store.dispatch('user/oauthLogin', { provider: 'github' }), 500)
-  setTimeout(() => store.dispatch('blips/getRadarLazy', 'rick'), 1000)
+  // fake async behavior
+  setTimeout(() => store.dispatch('user/oauthLogin', { provider: user === 'rick' ? 'github' : 'something' }), 500)
+  setTimeout(() => store.dispatch('blips/getRadarLazy', user), 1000)
+  return new Promise(resolve => {
+    setTimeout(() => resolve(userId), 700)
+  })
 }
 
 async function addBlip (blip: Blip): Promise<any> {
   return store.dispatch('blips/addBlip', blip)
 }
 
+async function dropBlips (): Promise<any> {
+  return store.dispatch('blips/setBlips', [])
+}
+
 async function getRadarIdByUserId (userId: string): Promise<string> {
   let radarId
   switch (userId) {
     case 'rickUserUid':
-      radarId = 'rick'
+      radarId = 'rick' // has 4 blips
       break
     case 'mortyUserUid':
-      radarId = ''
+      radarId = 'morty' // has 0 blips
       break
   }
   return Promise.resolve(radarId)
@@ -29,5 +38,6 @@ async function getRadarIdByUserId (userId: string): Promise<string> {
 export default {
   login,
   addBlip,
+  dropBlips,
   getRadarIdByUserId
 }
