@@ -18,7 +18,10 @@ context('Intro', () => {
   })
 
   it.only('tour start for logged-in users should be on radar page', () => {
-    cy.getBackend().then(backend => backend.test.login())
+    cy.getBackend().then(backend => {
+      backend.test.login()
+      return null // make sure we don't wait for this promise to resolve; otherwise the loadingbar can not be caught
+    })
     cy.get('[data-cy="loadingDialog"]', { timeout: 10e3 }).should('be.visible')
     cy.get('[data-cy="loadingDialog"]').should('not.be.visible')
     cy.visit('/') // wait until radar is fully loaded for some reason..

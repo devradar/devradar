@@ -4,31 +4,19 @@ require('../support/cy-all')
 context('Radar metadata', () => {
   before(() => {
     cy.clean()
-    cy.wait(3000)
     cy.visit('/')
     cy.getBackend()
       .as('backend')
     cy.get('@backend')
-      .then(backend => backend.test.login())
+      .then(backend => cy.wrap(backend.test.login()))
       .as('userId')
-    cy.get('[data-cy="loadingDialog"]', { timeout: 10e3 }).should('be.visible')
-    cy.get('[data-cy="loadingDialog"]', { timeout: 10e3 }).should('not.be.visible')
-    cy.wait(1000) // delay to make sure the getRadarId call does not fail
+    cy.get('header').contains('Me', { timeout: 5e3 }).should('be.visible')
     cy.get('[data-cy=cookie-banner] button').click()
     cy.all(cy.get('@backend'), cy.get('@userId'))
-      .spread((backend, userId) => backend.test.getRadarIdByUserId(userId))
+      .spread((backend, userId) => cy.wrap(backend.test.getRadarIdByUserId(userId)))
       .as('radarId')
     cy.visit('/@rick')
     cy.get('[data-cy="radarSvg"]').should('be.visible')
-
-    cy.all(
-      cy.get('@backend'),
-      cy.fixture('blips'),
-      cy.get('@radarId')
-    )
-      .spread((backend, blipsFix, radarId) => {
-        return Promise.all(blipsFix.blips.map(b => backend.test.addBlip(b)))
-      })
   })
 
   it('changes title via settings', () => {
