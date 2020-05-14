@@ -137,7 +137,7 @@ export default class List extends Vue {
     if (this.userCanEdit) {
       this.$store.dispatch('intro/event', 'list-editable')
     }
-    this.searchTitle = this.$route.query.q || '' // populate blip search with URL query parameters ?q=sauce
+    this.searchTitle = this.$route.query.q as string || '' // populate blip search with URL query parameters ?q=sauce
   }
 
   @Watch('isLoading')
