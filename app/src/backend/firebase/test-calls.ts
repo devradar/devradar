@@ -8,8 +8,17 @@ import { Blip } from '@/types/domain'
 import { getUUID, cleanChange, cleanBlip } from '@/util'
 import { store } from '../../store'
 
-async function login (): Promise<any> {
-  return firebase.auth().signInWithEmailAndPassword('rick@devradar.io', 'sanchez') // morty@devradar.io / jessica
+async function login (user: string = 'rick'): Promise<any> {
+  let credentials
+  switch (user) {
+    case 'rick':
+      credentials = 'rick@devradar.io:sanchez'
+      break
+    case 'morty':
+      credentials = 'morty@devradar.io:jessica'
+      break
+  }
+  return firebase.auth().signInWithEmailAndPassword(credentials.split(':')[0], credentials.split(':')[1])
     .then(login => login.user.uid)
 }
 
@@ -30,6 +39,10 @@ async function addBlip (blip: Blip): Promise<any> {
   return store.dispatch('blips/addBlip', blip)
 }
 
+async function dropBlips (): Promise<any> {
+  return store.dispatch('blips/setBlips', [])
+}
+
 async function getRadarIdByUserId (userId: string): Promise<string> {
   let retryCount = 9
   while (retryCount) {
@@ -38,7 +51,7 @@ async function getRadarIdByUserId (userId: string): Promise<string> {
       .limit(3)
       .get()
     if (getSnapshot.size > 0) {
-      return getSnapshot.docs[0].data().id
+      return getSnapshot.docs[0].id
     }
     await new Promise((resolve) => setTimeout(() => resolve(), 200))
     retryCount--
@@ -48,5 +61,6 @@ async function getRadarIdByUserId (userId: string): Promise<string> {
 export default {
   login,
   addBlip,
+  dropBlips,
   getRadarIdByUserId
 }

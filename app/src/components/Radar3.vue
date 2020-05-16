@@ -39,7 +39,7 @@ import appConfig from '../config'
   },
   computed: {
     ...mapGetters('blips', [
-      'meta', 'isLoading', 'isLoaded', 'ownerId'
+      'meta', 'isLoading', 'isLoaded', 'ownerId', 'aliasOrId'
     ]),
     ...mapGetters('user', [
       'user', 'userCanEdit'
@@ -67,6 +67,7 @@ export default class Radar3 extends Vue {
   isLoading: boolean
   ownerId: string
   userCanEdit: boolean
+  aliasOrId: string
 
   radarConfig: SkillradarOptions = {
     radius: 300,
@@ -92,16 +93,12 @@ export default class Radar3 extends Vue {
     this.chart.drawChart('#radarchart', data)
   }
 
-  public fetchRadarData () {
-    this.$store.dispatch('blips/getRadarLazy', this.radarId)
-  }
-
   mounted () {
     if (this.isLoaded) {
       this.renderChart()
     }
     if (!this.isLoading) {
-      this.fetchRadarData()
+      this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }
     this.$store.dispatch('intro/event', 'radar-loaded')
     if (this.userCanEdit) {
@@ -124,6 +121,12 @@ export default class Radar3 extends Vue {
   // fire on user change if radar was load prior to login
     if (this.userCanEdit) {
       this.$store.dispatch('intro/event', 'radar-editable')
+    }
+  }
+  @Watch('isLoading')
+  onDoneLoading (_oldValue: boolean, newValue: boolean) {
+    if (newValue === true) {
+      this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }
   }
 }

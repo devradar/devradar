@@ -1,0 +1,90 @@
+<template>
+  <v-container fluid class="pa-0 height-100">
+    <v-tabs
+      v-model="tab"
+      centered
+      background-color="accent"
+      slider-color="black"
+      @change="tabChange"
+      v-if="isLoaded"
+    >
+      <v-tab>
+        <v-icon left>track_changes</v-icon>
+        Radar View
+      </v-tab>
+      <v-tab>
+        <v-icon left>list</v-icon>
+        Skill Diary
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item>
+        <radar3 :radarId="radarId"></radar3>
+      </v-tab-item>
+      <v-tab-item>
+        <list :radarId="radarId"></list>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-container>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator'
+import { mapGetters } from 'vuex'
+import List from './List.vue'
+import Radar3 from './Radar3.vue'
+import router from '../router'
+import { RadarTabState } from '@/types/domain'
+
+@Component({
+  components: {
+    Radar3,
+    List
+  },
+  computed: {
+    activeTabName () {
+      return RadarTabState[this.tab]
+    },
+    ...mapGetters('blips', [
+      'isLoaded'
+    ])
+  }
+})
+export default class Radar extends Vue {
+  @Prop({ default: '' })
+  radarId: string
+  tab: number = 0
+
+  // computed
+  activeTabName: RadarTabState
+  isLoaded: boolean
+
+  tabChange (newTab: number) {
+    // console.log(newTab, this.activeTabName)
+    switch (newTab) {
+      case 0:
+        router.replace({ path: `/@${this.radarId}` })
+        break
+      case 1:
+        router.replace({ path: `/@${this.radarId}/history` })
+        break
+    }
+  }
+
+  mounted () {
+    if (this.$route.params.mode === 'history') {
+      this.tab = 1
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.v-tab--active {
+  color: black !important;
+}
+.height-100 {
+  height: 100%;
+}
+</style>

@@ -9,10 +9,10 @@
       <span><v-icon dark left>check</v-icon>{{ snackbar.text }}</span>
     </v-snackbar>
     <v-app-bar
-    scroll-off-screen
-    dense app
-    color="accent"
-    class="github-corner-padding z-30"
+      scroll-off-screen
+      dense app flat
+      color="accent"
+      class="github-corner-padding z-30"
     >
     <v-app-bar-nav-icon
       class="hidden-md-and-up"
@@ -122,7 +122,7 @@
         @close="loginModalVisible = false" :visible="loginModalVisible"></login>
       <settings
         @close="settingsModalVisible = false" :visible="settingsModalVisible"></settings>
-      <v-container fluid fill-height>
+      <v-container fluid fill-height class="pa-0">
         <router-view></router-view>
       </v-container>
     </v-content>
@@ -206,7 +206,7 @@ export default class App extends Vue {
         if (i.path) {
           i['updatedPath'] = i.path
             .replace(':radarId', this.radarAlias || this.radarId)
-            .replace(':blipName?', '')
+            .replace('/:mode?', '')
         }
         return i
       })
@@ -278,7 +278,14 @@ footer .entry:after {
 footer .entry:last-child:after {
   content: "";
 }
-
+.v-btn--active {
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: black;
+}
+.v-btn--active:before {
+  opacity: 0 !important;
+}
 // cookie consent component
 .Cookie--devradar {
   background: #333;

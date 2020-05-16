@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import NewBlip from './list/NewBlip.vue'
 import NewChange from './list/NewChange.vue'
@@ -90,11 +90,9 @@ import { Blip, BlipChange, User } from '@/types/domain'
 })
 export default class List extends Vue {
   @Prop({ default: '' })
-  blipName: string
-  @Prop({ default: '' })
   radarId: string
   newChangeBlip: Blip
-  searchTitle: string = this.blipName
+  searchTitle: string = ''
   maxMonths: number = 0
   newChangeModalVisible: boolean = false
 
@@ -108,9 +106,9 @@ export default class List extends Vue {
 
   searchUpdated () {
     if (this.searchTitle) {
-      router.replace({ name: 'list', params: { radarId: this.radarId }, query: { q: this.searchTitle } })
+      router.replace({ path: `/@${this.radarId}/history`, query: { q: this.searchTitle } })
     } else {
-      router.replace({ name: 'list', params: { radarId: this.radarId } })
+      router.replace({ path: `/@${this.radarId}/history` })
     }
   }
 
@@ -138,6 +136,14 @@ export default class List extends Vue {
     this.$store.dispatch('intro/event', 'list-loaded')
     if (this.userCanEdit) {
       this.$store.dispatch('intro/event', 'list-editable')
+    }
+    this.searchTitle = this.$route.query.q as string || '' // populate blip search with URL query parameters ?q=sauce
+  }
+
+  @Watch('isLoading')
+  onDoneLoading (_oldValue: boolean, newValue: boolean) {
+    if (newValue === true) {
+      this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }
   }
 }

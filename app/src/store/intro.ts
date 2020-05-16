@@ -92,7 +92,7 @@ const steps = [
 ]
 let tour // store reference to $tours object
 const actions: ActionTree<IntroState, RootState> = {
-  setTourObject (_, app): void {
+  setTourObject (_context, app): void {
     tour = app['$tours'].intro
   },
   startIntro ({ commit, rootGetters }): void {

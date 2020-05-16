@@ -8,11 +8,12 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     key: process.env.VUE_APP_BACKEND_KEY
   },
   routes: [ // configure name, permissions & view ports
-    { name: 'home', icon: 'home', title: 'Home', path: '/', validator: () => true, location: ['toolbar'] },
-    { name: 'list', icon: 'list', title: 'History', path: '/^:radarId', validator: () => true, location: ['toolbar'], props: route => ({ blipName: route.query.q, radarId: route.params.radarId }) },
+    { name: 'home', icon: 'home', title: 'Home', path: '/', validator: () => true, location: ['toolbar'], props: null },
+    // { name: 'list', icon: 'list', title: 'History', path: '/^:radarId', validator: () => true, location: ['toolbar'], props: route => ({ blipName: route.query.q, radarId: route.params.radarId }) },
     { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
     { name: 'users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
-    { name: 'radar', icon: 'track_changes', title: 'Radar', path: '/@:radarId', validator: () => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
+    { name: 'error', icon: '', title: 'unlisted', path: '/wtf/:errorCode', validator: () => true, location: [] },
+    { name: 'radar', icon: 'track_changes', title: 'Me', path: '/@:radarId/:mode?', validator: () => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
   ],
   navEntries: [
     { name: 'settings', icon: 'settings', title: 'Settings', action: app => (app.settingsModalVisible = true), validator: user => user.uid, location: ['toolbar-menu'] },
