@@ -3,24 +3,21 @@ require('../support/cy-all')
 
 context('Blip editing', function () {
   beforeEach(function () {
-    const user = 'morty' // see test-calls.ts implementation for mapping
-    const userId = 'mortyUserUid'
+    const testUser = 'morty' // see test-calls.ts implementation for mapping
     cy.clean()
     cy.visit('/')
     cy.getBackend()
       .as('backend')
     cy.get('@backend')
-      .then(backend => {
-        backend.test.login(user)
-        return null // make sure we don't wait for this promise to resolve; otherwise the loadingbar can not be caught
-      })
-    cy.get('[data-cy="loadingDialog"]', { timeout: 5e3 }).should('be.visible')
-    cy.get('[data-cy="loadingDialog"]', { timeout: 10e3 }).should('not.be.visible')
-    cy.log('Using userId: ' + userId)
+      .then(backend => cy.wrap(backend.test.login(testUser)))
+      .as('userId')
+    cy.get('@userId')
+      .then(userId => cy.log('Using userId: ' + userId))
+    cy.get('header').contains('Me', { timeout: 5e3 }).should('be.visible')
     cy.wait(1000) // delay to make sure the getRadarId call does not fail
     cy.get('[data-cy=cookie-banner] button').click()
-    cy.get('@backend')
-      .then(backend => cy.wrap(backend.test.getRadarIdByUserId(userId)))
+    cy.all(cy.get('@backend'), cy.get('@userId'))
+      .spread((backend, userId) => cy.wrap(backend.test.getRadarIdByUserId(userId)))
       .as('radarId')
     cy.get('@radarId')
       .then(radarId => {
@@ -30,6 +27,9 @@ context('Blip editing', function () {
   })
 
   it('adding a new blip', function () {
+    cy.get('@backend')
+      .then(backend => backend.test.dropBlips())
+    cy.wait(200)
     const blipTitle = 'blipA'
     cy.get('[data-cy="blip-title"]').should('not.exist')
     cy.get('[data-cy="blip-new-button"]:visible').click({ force: true })
@@ -46,6 +46,9 @@ context('Blip editing', function () {
   })
 
   it('removing one out of three blips', function () {
+    cy.get('@backend')
+      .then(backend => backend.test.dropBlips())
+    cy.wait(200)
     cy.all(
       cy.get('@backend'),
       cy.fixture('blips'),

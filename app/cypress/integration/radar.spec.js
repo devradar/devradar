@@ -1,4 +1,6 @@
 /// <reference types="Cypress" />
+require('../support/cy-all')
+
 const devices = ['macbook-15', 'macbook-13', 'iphone-x']
 context('Radar', () => {
   before(() => {
@@ -6,6 +8,8 @@ context('Radar', () => {
   })
   beforeEach(() => {
     cy.visit('/')
+    cy.getBackend()
+      .as('backend')
     cy.get('[data-cy=cookie-banner] button').click()
   })
 
@@ -24,8 +28,18 @@ context('Radar', () => {
   })
 
   it('shows radar + legend responsively', () => {
-    cy.getBackend().then(backend => backend.test.login('rick'))
-    cy.visit('/@rick')
+    const testUser = 'rick'
+    cy.get('@backend')
+      .then(backend => cy.wrap(backend.test.login(testUser)))
+      .as('userId')
+    cy.all(cy.get('@backend'), cy.get('@userId'))
+      .spread((backend, userId) => cy.wrap(backend.test.getRadarIdByUserId(userId)))
+      .as('radarId')
+    cy.get('@radarId')
+      .then(radarId => {
+        cy.log('Using radarId: ' + radarId)
+        cy.visit(`/@${radarId}`)
+      })
     devices.forEach(device => {
       cy.viewport(device)
       cy.get('[data-cy="radarSvg"]').should('be.visible')
