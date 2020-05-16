@@ -12,7 +12,7 @@
         <v-icon left>track_changes</v-icon>
         Radar View
       </v-tab>
-      <v-tab>
+      <v-tab data-tour-diary="true">
         <v-icon left>list</v-icon>
         Skill Diary
       </v-tab>

@@ -58,7 +58,17 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+@import '../../assets/responsive.scss';
+
 .z-10 {
   z-index: 10 !important;
+}
+@include larger($breakpoint-lg) {
+  .v-step {
+    max-width: 640px !important;
+    min-width: 480px !important;
+    min-height: 130px !important;
+    font-size: 1.6rem !important;
+  }
 }
 </style>
