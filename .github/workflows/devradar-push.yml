@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
@@ -23,7 +23,7 @@ jobs:
       working-directory: app
 
   test-e2e-volatile:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
     steps:

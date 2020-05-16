@@ -44,7 +44,6 @@ async function dropBlips (): Promise<any> {
 }
 
 async function getRadarIdByUserId (userId: string): Promise<string> {
-  console.log('get radar')
   let retryCount = 9
   while (retryCount) {
     const getSnapshot = await firebase.firestore().collection('radars')
@@ -52,7 +51,6 @@ async function getRadarIdByUserId (userId: string): Promise<string> {
       .limit(3)
       .get()
     if (getSnapshot.size > 0) {
-      console.log(getSnapshot.docs[0].id)
       return getSnapshot.docs[0].id
     }
     await new Promise((resolve) => setTimeout(() => resolve(), 200))
