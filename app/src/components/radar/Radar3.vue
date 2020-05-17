@@ -29,9 +29,9 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import { Blip, Meta, User } from '@/types/domain'
-import NewBlip from './list/NewBlip.vue'
-import { SkillradarChart, SkillradarOptions, SkillradarData } from '../lib/skillradar'
-import appConfig from '../config'
+import NewBlip from './NewBlip.vue'
+import { SkillradarChart, SkillradarOptions, SkillradarData } from '@/lib/skillradar'
+import appConfig from '@/config'
 
 @Component({
   components: {

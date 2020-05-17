@@ -120,8 +120,6 @@
       <loading-indicator></loading-indicator>
       <login
         @close="loginModalVisible = false" :visible="loginModalVisible"></login>
-      <settings
-        @close="settingsModalVisible = false" :visible="settingsModalVisible"></settings>
       <v-container fluid fill-height class="pa-0">
         <router-view></router-view>
       </v-container>
@@ -153,7 +151,6 @@ import { mapGetters } from 'vuex'
 import { Meta, User } from '@/types/domain'
 import Login from '@/components/app/Login.vue'
 import LoadingIndicator from '@/components/app/LoadingIndicator.vue'
-import Settings from '@/components/app/Settings.vue'
 import Intro from '@/components/app/Intro.vue'
 import Octocat from '@/components/app/Octocat.vue'
 
@@ -169,7 +166,7 @@ import Octocat from '@/components/app/Octocat.vue'
       'snackbar'
     ])
   },
-  components: { CookieLaw, Login, LoadingIndicator, Settings, Intro, Octocat }
+  components: { CookieLaw, Login, LoadingIndicator, Intro, Octocat }
 })
 export default class App extends Vue {
   showNavdrawer: boolean = false
@@ -180,7 +177,6 @@ export default class App extends Vue {
   toolbarItemsStatic: object[] = []
   toolbarMenuItemsStatic: object[] = []
   loginModalVisible: boolean = false
-  settingsModalVisible: boolean = false
 
   // computed
   meta: Meta

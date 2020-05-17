@@ -16,6 +16,10 @@
         <v-icon left>list</v-icon>
         Skill Diary
       </v-tab>
+      <v-tab>
+        <v-icon left>settings</v-icon>
+        Config
+      </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -25,6 +29,9 @@
       <v-tab-item>
         <list :radarId="radarId"></list>
       </v-tab-item>
+      <v-tab-item>
+        <settings :radarId="radarId"></settings>
+      </v-tab-item>
     </v-tabs-items>
   </v-container>
 </template>
@@ -32,15 +39,17 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
-import List from './List.vue'
-import Radar3 from './Radar3.vue'
+import List from './radar/List.vue'
+import Radar3 from './radar/Radar3.vue'
+import Settings from './radar/Settings.vue'
 import router from '../router'
 import { RadarTabState } from '@/types/domain'
 
 @Component({
   components: {
     Radar3,
-    List
+    List,
+    Settings
   },
   computed: {
     activeTabName () {
@@ -69,12 +78,17 @@ export default class Radar extends Vue {
       case 1:
         router.replace({ path: `/@${this.radarId}/history` })
         break
+      case 2:
+        router.replace({ path: `/@${this.radarId}/settings` })
+        break
     }
   }
 
   mounted () {
     if (this.$route.params.mode === 'history') {
       this.tab = 1
+    } else if (this.$route.params.mode === 'settings') {
+      this.tab = 2
     }
   }
 }
