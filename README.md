@@ -21,10 +21,8 @@
 
 This repository holds the individual projects making up the devradar ecosystem:
 
-* [App](app/): devradar application (Vue)
-* [Web](web/): devradar landing page at [docs.devradar.io](//docs.devradar.io) (Hugo)
-* [Editor](editor/): LEGACY version without backend
-* [Teams](teams/): ALPHA version of teams features
+* [app](app/): devradar application (Vue)
+* [web](web/): devradar landing page at [docs.devradar.io](//docs.devradar.io) (Hugo)
 
 ## Roadmap
 
@@ -36,8 +34,9 @@ Any developer can easily create their own devradar for free.
 | Milestone | Feature Focus | Release |
 |----|-----|-----|
 | [1.0](https://github.com/anoff/devradar/milestone/1) | Hosted service for Editor | 2020-Q1 |
-| [1.x](https://github.com/anoff/devradar/milestone/2) | Additional editor features like internationalization | 2020-Q2 |
-| [2.0](https://github.com/anoff/devradar/milestone/3) | Competence management for teams | 2020-Q4 |
+| [1.x](https://github.com/anoff/devradar/milestone/2) | Smaller feature adds | 2020-Q3 |
+| [2.0](https://github.com/anoff/devradar/milestone/3) | Competence management for teams | 2020-Q3 |
+| [2.x](https://github.com/anoff/devradar/milestone/4) | Bigger feature changes like internationalization | 2021 |
 
 ## License & Attributions
 

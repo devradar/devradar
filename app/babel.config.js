@@ -1,1 +1,4 @@
-../editor/babel.config.js
+/* global module */
+module.exports = {
+  presets: [ [ '@vue/app', { useBuiltIns: 'entry' } ] ]
+}
