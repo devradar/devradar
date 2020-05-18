@@ -114,7 +114,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import copy from 'clipboard-copy'
 import MarkdownIt from 'markdown-it'
 import appConfig from '@/config'
 import { Blip as IBlip, Meta } from '@/types/domain'

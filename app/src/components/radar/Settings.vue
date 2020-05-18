@@ -172,7 +172,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Watch, PropSync } from 'vue-property-decorator'
+import { Component, Vue, Emit, Watch } from 'vue-property-decorator'
 import copy from 'clipboard-copy'
 import TOML from '@iarna/toml'
 import { mapGetters } from 'vuex'
@@ -224,7 +224,7 @@ export default class Settings extends Vue {
   // local data
   contentToml: string = ''
   uploadFile: any = null
-  rules: any = {
+  rules: object = {
     level: [val => (val || '').length > 0 || 'Level name cannot be empty'],
     category: [val => (val || '').length > 0 || 'Category name cannot be empty'],
     title: [val => (val || '').length > 0 || 'Title cannot be empty'],
@@ -257,7 +257,7 @@ export default class Settings extends Vue {
   }
 
   generateToml () {
-    const obj: any = {
+    const obj: object = {
       meta: this.meta,
       blips: this.blipsClean
     }
@@ -336,7 +336,7 @@ export default class Settings extends Vue {
   }
 
   aliasAvailable (value: string) {
-    return true
+    return value !== null
   }
   @Watch('tmpAlias')
   async tmpAliasKeydown (newValue: string) {

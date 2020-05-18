@@ -20,7 +20,7 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
   },
   getUserList (_context): void {
   },
-  setRoles (_context, { targetUser }): void {
+  setRoles (_context, _target): void {
   },
   async logout ({ commit }): Promise<any> {
     commit('blips/setLoading', true, { root: true })

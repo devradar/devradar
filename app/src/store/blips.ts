@@ -71,7 +71,7 @@ const getters: GetterTree<RadarState, RootState> = {
       .sort((a: Blip, b: Blip) => a.title > b.title ? 1 : -1)
       .map(addBlipLevelFromChanges)
       .map((b, bIndex) => {
-        const changes = b.changes.map((c, cIndex) => {
+        b.changes.map((c, cIndex) => {
           // append a 'fake' index that is used for visuals only e.g. blip# in radar view
           Object.assign(c, { index: cIndex })
           return c

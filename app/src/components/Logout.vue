@@ -4,8 +4,6 @@
 </template>
 
 <script lang="ts">
-import firebase from 'firebase/app'
-import 'firebase/auth'
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({

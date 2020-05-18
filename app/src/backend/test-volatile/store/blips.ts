@@ -116,11 +116,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
   async getRadarAlias ({ commit }): Promise<void> {
     commit('setRadarAlias', '')
   },
-  async setRadarAlias ({ commit }, { alias, radarId }: { alias: string; radarId: string }): Promise<void> {
-    const doc = {
-      alias,
-      radarId
-    }
+  async setRadarAlias ({ commit }, { alias }: { alias: string }): Promise<void> {
     commit('setRadarAlias', alias)
     router.push({ name: 'radar', params: { radarId: alias } })
   },
