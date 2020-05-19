@@ -75,34 +75,34 @@ async function init (store, appConfig) {
     projectId: `${appConfig.backend.project}`
   })
   if (appConfig.isUnderTest) {
-    console.log('Disabling auth persistance') // eslint-disable-line no-console
+    console.info('Disabling auth persistance') // eslint-disable-line no-console
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE) // disable auth cache in test mode
   } else {
-    console.log('Setting auth persistance') // eslint-disable-line no-console
+    console.info('Setting auth persistance') // eslint-disable-line no-console
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // store user until logout happens
   }
+  store.commit('user/setLoginState', LoginState.UNKNOWN)
+  store.commit('blips/setLoading', true)
   // resolve after auth status is defined as logged in or not
   await firebase.auth().onAuthStateChanged(async oauthUser => {
+    store.commit('user/setLoginState', LoginState.LOGIN_PENDING)
     store.commit('blips/setLoading', true)
     if (oauthUser) {
       const user = await upsertUser(oauthUser)
       const radarId = await upsertRadar(user)
       user.radar = radarId
       store.commit('user/setUser', user)
-      if (!store.getters['blips/radarId']) {
-        await store.dispatch('blips/getRadarLazy', radarId)
-      }
-      store.commit('blips/setLoading', false)
+      store.commit('user/setLoginState', LoginState.LOGGED_IN)
       // navigate app to radar view after login
       if (!['radar', 'history'].includes(router.currentRoute.name)) {
         let radarIdOrAlias = radarId
         if (store.getters['blips/radarAlias']) {
           radarIdOrAlias = store.getters['blips/radarAlias']
         }
-        router.push({ name: 'radar', params: { radarId: radarIdOrAlias } })
+        await store.dispatch('blips/getRadarLazy', radarIdOrAlias)
       }
-      store.commit('user/setLoginState', LoginState.LOGGED_IN)
       store.dispatch('intro/event', 'login')
+      store.commit('blips/setLoading', false)
       return user
     } else { // user is not set (logout)
       store.commit('user/setLoginState', LoginState.LOGGED_OUT)

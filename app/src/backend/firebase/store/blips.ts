@@ -1,14 +1,14 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import { ActionTree } from 'vuex'
-import { getUUID, cleanChange, cleanBlip } from '../../../util'
-import { Blip, BlipChange, Meta } from '@/types/domain'
+import { getUUID, cleanChange, cleanBlip } from '@/util'
+import { Blip, BlipChange, Meta, LoginState } from '@/types/domain'
 import { RootState, BlipsState } from '@/types/vuex'
 import router from '@/router'
 
 const actions = (): ActionTree<BlipsState, RootState> => ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
-  async followRadarAlias ({ commit }, alias: string): Promise<string> {
+  async followRadarAlias ({ commit }, alias: string = ''): Promise<string> {
     let response = ''
     let radarSnapshot: any = {}
     try {
@@ -82,9 +82,26 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
   // call getRadar if the id is different from the one currently in state
   async getRadarLazy ({ dispatch, rootGetters }, aliasOrId: string): Promise<void> {
     const loadedId = rootGetters['blips/radarId']
-    const radarId = await dispatch('followRadarAlias', aliasOrId)
-    if (loadedId !== radarId && radarId !== '') {
-      return dispatch('getRadar', radarId)
+    let targetId = aliasOrId
+    if (aliasOrId.toLocaleLowerCase() === 'me') { // shortcut for going to own radar
+      if (rootGetters['user/loginState'] === LoginState.LOGGED_OUT) {
+        console.warn('Could not resolve radarId', targetId) // eslint-disable-line no-console
+        router.push({ name: 'error', params: { errorCode: '404' } })
+      } else {
+        targetId = rootGetters['user/radarId']
+        if (!targetId) {
+          console.warn('Could not resolve radarId', targetId) // eslint-disable-line no-console
+          router.push({ name: 'error', params: { errorCode: '404' } })
+        }
+      }
+    } else { // loading a radar by ID or alias
+      const radarId = await dispatch('followRadarAlias', targetId)
+      if (loadedId !== radarId && radarId !== '') {
+        return dispatch('getRadar', radarId)
+      } else if (radarId === '') {
+        console.warn('entry does not exist for radarId', radarId) // eslint-disable-line no-console
+        router.push({ name: 'error', params: { errorCode: '404' } })
+      }
     }
     return Promise.resolve()
   },
@@ -186,7 +203,7 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
     commit('setRadarAlias', alias)
     router.push({ name: 'radar', params: { radarId: alias } })
   },
-  async isRadarAliasAvailable (_, alias: string): Promise<boolean> {
+  async isRadarAliasAvailable (_context, alias: string): Promise<boolean> {
     const aliasSnapshot = await firebase.firestore().collection('radarAliases')
       .where('alias', '==', alias)
       .limit(1)

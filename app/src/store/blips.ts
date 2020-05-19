@@ -114,6 +114,9 @@ const getters: GetterTree<RadarState, RootState> = {
   },
   isLoaded (state: RadarState) {
     return state.meta.levels.length > 0 && state.id.length > 0
+  },
+  aliasOrId (state: RadarState) {
+    return state.radarAlias || state.id
   }
 }
 
