@@ -41,7 +41,7 @@ jobs:
 
   firebase-deploy:
     name: "publish devradar.io"
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    #if: github.event_name == 'push' && github.ref == 'refs/heads/master' # YOLO deployments
     needs: [test-lint, test-e2e-volatile]
     runs-on: ubuntu-latest
     env:
