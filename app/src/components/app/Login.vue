@@ -58,7 +58,6 @@ export default class LoginModal extends Vue {
   public mounted () {
     if (this.useFirebaseAuth) {
       const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
-      ui.reset() // make sure the UI works after login/logout cycle for another login
       const uiConfig = {
         callbacks: {
           signInSuccessWithAuthResult: () => false
