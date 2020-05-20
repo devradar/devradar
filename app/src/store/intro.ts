@@ -15,12 +15,19 @@ const steps = [
   {
     target: '[data-cy="blip-new-button"]',
     content: 'Create a new skill entry',
-    transition: 'add-blip-open'
+    transition: 'add-blip-open',
+    params: {
+      position: 'left'
+    }
+
   },
   { // 2
     target: '[data-cy="blip-new-title"]',
     content: 'Enter the title of your first skill<br>example: Kubernetes, TDD, C#',
-    transition: 'add-blip-title-changed'
+    transition: 'add-blip-title-changed',
+    params: {
+      placement: 'bottom'
+    }
   },
   {
     target: '[data-cy="blip-new-category"]',
@@ -40,7 +47,7 @@ const steps = [
   },
   {
     target: '[data-cy="blip-new-submit"]',
-    content: 'Save your skill after filling out all required attributes. <b>Optional:</b> Fill in the other descriptions for future reference',
+    content: 'Save your skill after filling out all required attributes. <b>Optional:</b> Fill in the other fields to provide some background how you acquired this skill.',
     transition: 'add-blip-submit',
     params: {
       placement: 'bottom'
@@ -52,18 +59,21 @@ const steps = [
     transition: ''
   },
   {
-    target: '[data-tour-history="true"]',
-    content: 'Change into <strong>History view</strong> to make changes to existing skills if you level-up',
-    transition: 'list-loaded'
+    target: '[data-tour-diary="true"]',
+    content: 'Change into <strong>Diary view</strong> to make changes to existing skills if you level-up',
+    transition: 'list-loaded',
+    params: {
+      position: 'bottom'
+    }
   },
   { // 8
     target: '[data-cy=blip]',
-    content: 'Your skills are rendered as text cards on this page. Here you can update and edit information to skill entries you previously made',
+    content: 'All your skills are rendered as cards with all the changes you made over time. Here you can update and edit information to skill entries you previously made',
     transition: ''
   },
   {
     target: '[data-cy=blip-change-button]',
-    content: 'Click here to create another <b>History Entry</b> for this skill. This is typically used when your skills improve. Most users review their devradar periodically <i>every 4-8 weeks</i>',
+    content: 'Click here to create another <b>Entry</b> for this skill. This is typically used when your skills improve. Most users review their devradar periodically <i>every 4-8 weeks</i>',
     transition: 'blip-history-open'
   },
   { // 10
