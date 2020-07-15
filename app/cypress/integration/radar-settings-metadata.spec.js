@@ -70,7 +70,7 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-levels-field-3"]').type('{selectall}{del}')
     cy.get('[data-cy="radar-settings-levels-field-3"]').type(field3)
     cy.get('[data-cy="radar-tab-radar"]').focus()
-    //cy.wait(50)
+    cy.wait(50)
     cy.get('[data-cy="radar-settings-levels-save"]').click()
     cy.wait(400)
     cy.get('[data-cy="radar-tab-radar"]').click()
@@ -108,7 +108,7 @@ context('Radar metadata', () => {
     cy.get('[data-cy="radar-settings-categories-save"]').click()
     cy.wait(400)
     cy.get('[data-cy="radar-tab-radar"]').click()
-    //cy.wait(300)
+    cy.wait(300)
     cy.get('.radarlegend:visible').within($form => {
       cy.get('.radar-legend > .legendCategory.category-0').should('have.text', field0)
       cy.get('.radar-legend > .legendCategory.category-1').should('have.text', field1)
