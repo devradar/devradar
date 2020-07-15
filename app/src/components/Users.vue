@@ -92,7 +92,7 @@ export default class Users extends Vue {
   roles: []
   // computed
   user: User
-  userList: any
+  userList: object
 
   setRole (index, role, value) {
     this.userList[index].roles[role] = value

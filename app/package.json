@@ -27,7 +27,6 @@
     "@types/d3": "^5.7.2",
     "@types/uuid": "^3.4.6",
     "axios": "^0.19.1",
-    "clipboard-copy": "^3.1.0",
     "core-js": "^3.6.2",
     "d3": "^5.15.0",
     "firebase": "^7.14.3",

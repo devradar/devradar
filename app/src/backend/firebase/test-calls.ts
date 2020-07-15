@@ -8,7 +8,7 @@ import { Blip } from '@/types/domain'
 import { getUUID, cleanChange, cleanBlip } from '@/util'
 import { store } from '../../store'
 
-async function login (user: string = 'rick'): Promise<any> {
+async function login (user: string = 'rick'): Promise<string> {
   let credentials
   switch (user) {
     case 'rick':
@@ -22,7 +22,7 @@ async function login (user: string = 'rick'): Promise<any> {
     .then(login => login.user.uid)
 }
 
-async function addBlipToFirestore (radarId: string, blip: Blip): Promise<any> {
+async function addBlipToFirestore (radarId: string, blip: Blip): Promise<void> {
   const nBlip = cleanBlip(blip)
   const { changes } = blip
   // assign IDs to changes
@@ -32,14 +32,15 @@ async function addBlipToFirestore (radarId: string, blip: Blip): Promise<any> {
       return c
     })
     .map(cleanChange)
-  return firebase.firestore().collection(`radars/${radarId}/blips`).add(nBlip)
+  await firebase.firestore().collection(`radars/${radarId}/blips`).add(nBlip)
+  return null
 }
 
-async function addBlip (blip: Blip): Promise<any> {
+async function addBlip (blip: Blip): Promise<void> {
   return store.dispatch('blips/addBlip', blip)
 }
 
-async function dropBlips (): Promise<any> {
+async function dropBlips (): Promise<void> {
   return store.dispatch('blips/setBlips', [])
 }
 
@@ -61,6 +62,7 @@ async function getRadarIdByUserId (userId: string): Promise<string> {
 export default {
   login,
   addBlip,
+  addBlipToFirestore,
   dropBlips,
   getRadarIdByUserId
 }

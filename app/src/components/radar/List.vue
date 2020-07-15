@@ -44,10 +44,10 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
-import NewBlip from './list/NewBlip.vue'
-import NewChange from './list/NewChange.vue'
-import BlipComponent from './list/Blip.vue'
-import router from '../router'
+import NewBlip from './NewBlip.vue'
+import NewChange from './NewChange.vue'
+import BlipComponent from './Blip.vue'
+import router from '@/router'
 import { Blip, BlipChange, User } from '@/types/domain'
 
 @Component({

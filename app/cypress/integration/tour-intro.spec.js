@@ -17,7 +17,7 @@ context('Intro', () => {
     cy.get('[data-cy=intro-step]').should('not.exist')
   })
 
-  it.only('tour start for logged-in users should be on radar page', () => {
+  it('tour start for logged-in users should be on radar page', () => {
     cy.get('header').contains('Me').should('not.exist')
     cy.getBackend().then(backend => backend.test.login('rick'))
     cy.get('header').contains('Me', { timeout: 10e3 }).should('be.visible')

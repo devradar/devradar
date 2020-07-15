@@ -37,7 +37,7 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
       })
       .catch(err => console.error(err)) // eslint-disable-line no-console
   },
-  async logout ({ commit }): Promise<any> {
+  async logout ({ commit }): Promise<void> {
     commit('blips/setLoading', true, { root: true })
     commit('user/setLoginState', LoginState.LOGOUT_PENDING, { root: true })
     await firebase.auth().signOut()

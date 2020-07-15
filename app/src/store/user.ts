@@ -16,7 +16,7 @@ const mutations: MutationTree<UserState> = {
   setUser (state: UserState, payload: User) {
     state.user = payload
   },
-  setUserList (state: UserState, users: any) {
+  setUserList (state: UserState, users: object) {
     state.userList = users
   },
   exchangeUser (state: UserState, user: User) {
