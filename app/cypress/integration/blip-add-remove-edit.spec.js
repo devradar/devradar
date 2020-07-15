@@ -11,7 +11,7 @@ context('Blip editing', function () {
     cy.get('@backend')
       .then(backend => cy.wrap(backend.test.login(testUser)))
       .as('userId')
-    cy.get('@userId')
+    cy.get('@userId') 
       .then(userId => cy.log('Using userId: ' + userId))
     cy.get('header').contains('Me', { timeout: 5e3 }).should('be.visible')
     cy.wait(1000) // delay to make sure the getRadarId call does not fail

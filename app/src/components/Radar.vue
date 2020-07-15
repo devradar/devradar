@@ -8,15 +8,15 @@
       @change="tabChange"
       v-if="isLoaded"
     >
-      <v-tab>
+      <v-tab data-cy="radar-tab-radar">
         <v-icon left>track_changes</v-icon>
         Radar View
       </v-tab>
-      <v-tab data-tour-diary="true">
+      <v-tab data-tour-diary="true" data-cy="radar-tab-diary">
         <v-icon left>list</v-icon>
         Skill Diary
       </v-tab>
-      <v-tab>
+      <v-tab data-cy="radar-tab-settings">
         <v-icon left>settings</v-icon>
         Config
       </v-tab>
