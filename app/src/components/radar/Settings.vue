@@ -29,14 +29,6 @@
           Upload
         </v-btn>
       </v-col>
-      <v-col cols="10" md="4" class="text-center">
-        <v-card-text>Copy TOML content to clipboard</v-card-text>
-        <v-btn
-          @click.end="copyToClipboard(contentToml)">
-          <v-icon left>mdi-paperclip</v-icon>
-          Copy
-        </v-btn>
-      </v-col>
     </v-row>
     <v-row justify="start">
       <span class="title grey--text text--darken-3">Radar Setup</span>
@@ -66,7 +58,7 @@
     <v-row justify="space-around" align="center">
       <v-col cols="6" md="2">
         <v-card-subtitle>Alias</v-card-subtitle>
-        <v-card-text>devradar.io/[alias]</v-card-text>
+        <v-card-text>devradar.io/@[alias]</v-card-text>
       </v-col>
       <v-col cols="6" md="2">
         <v-btn icon color="secondary"
@@ -173,8 +165,7 @@
 
 <script lang="ts">
 import { Component, Vue, Emit, Watch } from 'vue-property-decorator'
-import copy from 'clipboard-copy'
-import TOML from '@iarna/toml'
+import TOML, { JsonMap } from '@iarna/toml'
 import { mapGetters } from 'vuex'
 import { Blip, Meta } from '@/types/domain'
 
@@ -247,21 +238,12 @@ export default class Settings extends Vue {
   radarAlias: string
   radarId: string
 
-  copyToClipboard (content) {
-    const success = copy(content)
-    if (success) {
-      this.$store.dispatch('comm/showSnackbar', 'content copied to clipboard')
-    } else {
-      console.error(success) // eslint-disable-line no-console
-    }
-  }
-
   generateToml () {
     const obj: object = {
       meta: this.meta,
       blips: this.blipsClean
     }
-    const str = TOML.stringify(obj) as string
+    const str = TOML.stringify(obj as JsonMap) as string
     this.contentToml = str
   }
 
