@@ -30,6 +30,7 @@
     </v-row>
     <v-row justify="space-between">
       <v-col cols="12" lg="6" xl="4"
+        data-cy="blipsList"
         v-for="blip in filteredBlips" :key="blip.id">
         <blip
           :blip="blip"
