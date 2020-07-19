@@ -47,7 +47,7 @@ import appConfig from '@/config'
     blips () {
       return this.$store.getters['blips/blipsWithIndex']
         .map(b => {
-          b['detailsUrl'] = `/#/^${this.radarId}?q=${b.title}`
+          b['detailsUrl'] = `/#/@${this.radarId}/history?q=${b.title}`
           return b
         })
     }
