@@ -18,8 +18,9 @@ async function login (user: string = 'rick'): Promise<string> {
       credentials = 'morty@devradar.io:jessica'
       break
   }
-  return firebase.auth().signInWithEmailAndPassword(credentials.split(':')[0], credentials.split(':')[1])
-    .then(login => login.user.uid)
+  const [email, password] = credentials.split(':')
+  const login = await firebase.auth().signInWithEmailAndPassword(email, password)
+  return login.user.uid
 }
 
 async function addBlipToFirestore (radarId: string, blip: Blip): Promise<void> {
