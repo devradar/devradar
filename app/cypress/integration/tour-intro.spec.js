@@ -1,8 +1,7 @@
 /// <reference types="Cypress" />
 context('Intro', () => {
   beforeEach(() => {
-    cy.visit('/')
-    cy.get('[data-cy=cookie-banner] button').click()
+    cy.gohome()
   })
 
   it('should star tour via button', () => {
