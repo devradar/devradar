@@ -1,0 +1,26 @@
+name: 'Cross-OS Test'
+on:
+  schedule:
+    - cron:  '0 2 * * *' # UTC time
+
+jobs:
+  test-e2e:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    env:
+      VUE_APP_BACKEND_TYPE: 'testVolatile'
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm ci
+      working-directory: app
+    - run: |
+        npm run build
+        npm run test:e2e:run
+      name: End-To-End tests on ${{ matrix.os }} w/ local backend
+      working-directory: app

@@ -1,4 +1,4 @@
-name: stale
+name: 'Mark stale issues'
 on:
   schedule:
   - cron: "0 0 * * *"

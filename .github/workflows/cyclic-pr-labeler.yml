@@ -1,4 +1,4 @@
-name: pr-labeler
+name: 'Assign PR labels'
 on:
   schedule:
   - cron: "0 0 * * *"
