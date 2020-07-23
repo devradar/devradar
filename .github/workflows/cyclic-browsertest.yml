@@ -1,0 +1,27 @@
+name: 'Cross-browser Testing'
+on: [push]
+
+
+jobs:
+  test-e2e:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        browser: ['chrome', 'firefox']
+    container:
+      image: cypress/browsers:node12.16.1-chrome80-ff73
+      options: --user 1001 # see [firefox restriction](https://github.com/cypress-io/github-action#firefox)
+      env:
+        VUE_APP_BACKEND_TYPE: 'testVolatile'
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm ci
+      working-directory: app
+    - run: |
+        npm run build
+        npm run test:e2e:run:${{ matrix.browser }}
+      name: End-To-End tests on ${{ matrix.browser }} w/ local backend
+      working-directory: app
