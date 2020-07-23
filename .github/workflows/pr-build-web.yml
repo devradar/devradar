@@ -1,4 +1,4 @@
-name: web
+name: docs.devradar.io
 
 on:
   push:

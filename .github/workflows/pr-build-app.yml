@@ -1,4 +1,4 @@
-name: devradar-pr
+name: devradar.io - PR
 
 on:
   pull_request:
@@ -7,8 +7,8 @@ on:
       - '.github/**'
 
 jobs:
-  test-lint:
-    runs-on: ubuntu-latest
+  test-lint-eslint:
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
@@ -16,17 +16,25 @@ jobs:
         node-version: 12
     - run: npm ci
       working-directory: app
-    - run: |
-        npm run lint
-        npm run build
-      name: check for lint and tsc errors
+    - run: npm run lint
+      name: eslint/standard
+      working-directory: app
+
+  test-lint-tsc:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm ci
+      working-directory: app
+    - run: npm run build
+      name: tsc build
       working-directory: app
 
   test-e2e-volatile:
-    strategy:
-      matrix:
-        os: [ubuntu-18.04, macos-10.15]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-18.04
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
