@@ -1,4 +1,4 @@
-name: devradar-push
+name: devradar.io
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - '.github/**'
 
 jobs:
-  test-lint:
+  test-lint-eslint:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
@@ -16,10 +16,21 @@ jobs:
         node-version: 12
     - run: npm ci
       working-directory: app
-    - run: |
-        npm run lint
-        npm run build
-      name: check for lint and tsc errors
+    - run: npm run lint
+      name: eslint/standard
+      working-directory: app
+
+  test-lint-tsc:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm ci
+      working-directory: app
+    - run: npm run build
+      name: tsc build
       working-directory: app
 
   test-e2e-volatile:
@@ -42,8 +53,8 @@ jobs:
   firebase-deploy:
     name: "publish devradar.io"
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [test-lint, test-e2e-volatile]
-    runs-on: ubuntu-latest
+    needs: [test-lint-eslint, test-lint-tsc, test-e2e-volatile]
+    runs-on: ubuntu-18.04
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
       VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_DAAS_PROJECT }}

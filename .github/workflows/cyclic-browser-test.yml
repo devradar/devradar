@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        browser: ['chrome', 'firefox']
+        browser: [chrome, firefox, electron]
     container: # run in container to have specific versions of browsers available
       image: cypress/browsers:node12.16.1-chrome80-ff73
       options: --user 1001 # see [firefox restriction](https://github.com/cypress-io/github-action#firefox)
