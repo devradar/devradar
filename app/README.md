@@ -5,15 +5,17 @@
 </p>
 
 [![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
-[![License check](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
-[![Build Status](https://github.com/anoff/devradar/workflows/devradar/badge.svg)](https://github.com/anoff/devradar/actions)
 [![Cypress.io tests](https://img.shields.io/badge/cypress.io-E2E%20Tests-brightgreen.svg)](https://dashboard.cypress.io/#/projects/gumn5q/runs)
-
-[![Gitter](https://badgen.net/badge/chat/on%20gitter/cyan?icon=gitter)](https://gitter.im/devradar/discuss)
-[![Dependabot status](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)](https://dependabot.com/)
 [![VueJS](https://badgen.net/badge/built%20with/Vue.js/cyan)](https://vuejs.org/)
 [![TypeScript](https://badgen.net/badge/code/TypeScript/blue)](https://www.typescriptlang.org/)
 [![Standard](https://badgen.net/badge/code%20style/standard/pink)](https://standardjs.com/)
+
+[![Gitter](https://badgen.net/badge/chat/on%20gitter/cyan?icon=gitter)](https://gitter.im/devradar/discuss)
+[![License check](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
+
+![devradar.io](https://github.com/anoff/devradar/workflows/devradar.io/badge.svg)
+![Cross-OS Test](https://github.com/anoff/devradar/workflows/Cross-OS%20Test/badge.svg)
+![Cross-Browser Test](https://github.com/anoff/devradar/workflows/Cross-Browser%C2%A0Test/badge.svg)
 
 # Development
 
