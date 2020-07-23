@@ -5,23 +5,12 @@ context('Radar metadata', () => {
   before(() => {
     const testUser = 'rick'
     cy.clean()
-    cy.visit('/')
-    cy.getBackend()
-      .as('backend')
-    cy.get('@backend')
-      .then(backend => cy.wrap(backend.test.login(testUser)))
-      .as('userId')
-    cy.get('@userId')
-      .then(userId => cy.log('Using userId: ' + userId))
-    cy.get('header').contains('Me', { timeout: 5e3 }).should('be.visible')
-    cy.get('[data-cy=cookie-banner] button').click()
-    cy.all(cy.get('@backend'), cy.get('@userId'))
-      .spread((backend, userId) => cy.wrap(backend.test.getRadarIdByUserId(userId)))
-      .as('radarId')
+    cy.gohome()
+    cy.login(testUser, { reroute: true, fetchRadarId: true })
 
     cy.log('Adding 4 dummy blips')
     cy.all(
-      cy.get('@backend'),
+      cy.getBackend(),
       cy.fixture('blips'),
       cy.get('@radarId')
     )

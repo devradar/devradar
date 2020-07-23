@@ -7,16 +7,13 @@ context('Radar', () => {
     cy.clean()
   })
   beforeEach(() => {
-    cy.visit('/')
-    cy.getBackend()
-      .as('backend')
-    cy.get('[data-cy=cookie-banner] button').click()
+    cy.gohome()
   })
 
   it('login should happen in less than 10s', () => {
     cy.viewport('macbook-13')
     cy.get('header').contains('Me').should('not.exist')
-    cy.getBackend().then(backend => backend.test.login('rick'))
+    cy.login('rick')
     cy.get('header').contains('Me', { timeout: 10e3 }).should('be.visible')
   })
 
@@ -28,18 +25,7 @@ context('Radar', () => {
   })
 
   it('shows radar + legend responsively', () => {
-    const testUser = 'rick'
-    cy.get('@backend')
-      .then(backend => cy.wrap(backend.test.login(testUser)))
-      .as('userId')
-    cy.all(cy.get('@backend'), cy.get('@userId'))
-      .spread((backend, userId) => cy.wrap(backend.test.getRadarIdByUserId(userId)))
-      .as('radarId')
-    cy.get('@radarId')
-      .then(radarId => {
-        cy.log('Using radarId: ' + radarId)
-        cy.visit(`/@${radarId}`)
-      })
+    cy.login('rick', { reroute: true })
     devices.forEach(device => {
       cy.viewport(device)
       cy.get('[data-cy="radarSvg"]').should('be.visible')
@@ -53,14 +39,11 @@ context('Radar', () => {
   })
 
   it('allows navigation from radar to history view by clicking blip', () => {
-    const testUser = 'rick'
-    cy.get('@backend')
-      .then(backend => backend.test.login(testUser))
-    cy.get('[data-cy="app-nav-radar"]').click() // navigate first to make sure login is finished
-    cy.get('@backend')
+    cy.login('rick', { reroute: true })
+    cy.getBackend()
       .then(backend => backend.test.dropBlips())
     cy.all(
-      cy.get('@backend'),
+      cy.getBackend()
       cy.fixture('blips')
     )
       .spread((backend, blipsFix) => backend.test.addBlip(blipsFix.blips[0]))
