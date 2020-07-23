@@ -1,6 +1,7 @@
-name: 'Cross-browser Testing'
-on: [push]
-
+name: 'Cross-Browser Test'
+on:
+  schedule:
+    - cron:  '0 2 * * *' # UTC time
 
 jobs:
   test-e2e:
@@ -8,11 +9,12 @@ jobs:
     strategy:
       matrix:
         browser: ['chrome', 'firefox']
-    container:
+    container: # run in container to have specific versions of browsers available
       image: cypress/browsers:node12.16.1-chrome80-ff73
       options: --user 1001 # see [firefox restriction](https://github.com/cypress-io/github-action#firefox)
       env:
         VUE_APP_BACKEND_TYPE: 'testVolatile'
+    timeout-minutes: 15
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
