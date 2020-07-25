@@ -16,7 +16,7 @@ jobs:
     container: anoff/hugo-asciidoctor
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - run: |
         cd web
         hugo --gc --minify -d _site --baseURL //docs.devradar.io

@@ -15,7 +15,7 @@ jobs:
   test-lint-eslint:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         node-version: 12
@@ -28,7 +28,7 @@ jobs:
   test-lint-tsc:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         node-version: 12
@@ -44,7 +44,7 @@ jobs:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         node-version: 12
@@ -65,7 +65,7 @@ jobs:
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
       FIREBASE_SERVICEACCOUNT: ${{ secrets.FIREBASE_E2E_ACCOUNTKEY }}
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         node-version: 12
