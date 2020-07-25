@@ -70,7 +70,7 @@ jobs:
     - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
       name: add auth token for npm packages
     - run: npm ci
-    - run: npm build
+    - run: npm run build
     - run: |
         npm i -g firebase-tools
         firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets.FIREBASE_DAAS_PROJECT }}

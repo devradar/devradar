@@ -28,6 +28,6 @@ jobs:
     - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
       name: add auth token for npm packages
     - run: npm ci
-    - run: npm build
+    - run: npm run build
     - run: npm run test:e2e:run:${{ matrix.browser }}
       name: End-To-End tests on ${{ matrix.browser }} w/ local backend
