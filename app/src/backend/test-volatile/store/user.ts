@@ -1,9 +1,10 @@
 import { ActionTree } from 'vuex'
+import Router from 'vue-router'
 import { RootState, UserState } from '@/types/vuex'
 import { LoginState } from '@/types/domain'
 import users from '../mock-data/users'
 
-const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-disable-line @typescript-eslint/no-unused-vars
+const actions = (router: Router, appConfig: any): ActionTree<UserState, RootState> => ({ // eslint-disable-line @typescript-eslint/no-unused-vars
   oauthLogin ({ commit, dispatch }, payload): void {
     let user
     switch (payload.provider) {
@@ -31,6 +32,4 @@ const actions = (appConfig): ActionTree<UserState, RootState> => ({ // eslint-di
   }
 })
 
-export default {
-  actions
-}
+export default actions
