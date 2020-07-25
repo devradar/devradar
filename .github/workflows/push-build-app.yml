@@ -5,6 +5,10 @@ on:
     paths:
       - 'app/**'
       - '.github/**'
+defaults:
+  run:
+    shell: bash
+    working-directory: app
 
 jobs:
   test-lint-eslint:
@@ -14,11 +18,11 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
     - run: npm ci
-      working-directory: app
     - run: npm run lint
       name: eslint/standard
-      working-directory: app
 
   test-lint-tsc:
     runs-on: ubuntu-18.04
@@ -27,11 +31,11 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
     - run: npm ci
-      working-directory: app
     - run: npm run build
       name: tsc build
-      working-directory: app
 
   test-e2e-volatile:
     runs-on: ubuntu-18.04
@@ -42,13 +46,12 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
     - run: npm ci
-      working-directory: app
-    - run: |
-        npm run build
-        npm run test:e2e:run
+    - run: npm run build
+    - run: npm run test:e2e:run
       name: cypress tests w/ local storage
-      working-directory: app
 
   firebase-deploy:
     name: "publish devradar.io"
@@ -64,13 +67,11 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
+    - run: npm ci
+    - run: npm build
     - run: |
-        cd app
-        npm ci
-        npm run build
-      name: build
-    - run: |
-        cd app
         npm i -g firebase-tools
         firebase deploy --token ${{ secrets.FIREBASE_DAAS_TOKEN }} --project ${{ secrets.FIREBASE_DAAS_PROJECT }}
       name: deploy to firebase

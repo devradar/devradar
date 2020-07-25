@@ -6,6 +6,11 @@ on:
       - 'app/**'
       - '.github/**'
 
+defaults:
+  run:
+    shell: bash
+    working-directory: app
+
 jobs:
   test-lint-eslint:
     runs-on: ubuntu-18.04
@@ -14,11 +19,11 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
     - run: npm ci
-      working-directory: app
     - run: npm run lint
       name: eslint/standard
-      working-directory: app
 
   test-lint-tsc:
     runs-on: ubuntu-18.04
@@ -27,11 +32,11 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
     - run: npm ci
-      working-directory: app
     - run: npm run build
       name: tsc build
-      working-directory: app
 
   test-e2e-volatile:
     runs-on: ubuntu-18.04
@@ -43,13 +48,13 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
     - run: npm ci
-      working-directory: app
     - run: |
         npm run build
         npm run test:e2e:run
       name: cypress tests w/ local storage
-      working-directory: app
 
   test-e2e-firebase:
     runs-on: ubuntu-18.04
@@ -64,17 +69,11 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
     - run: npm ci
-      working-directory: app
-    - run: |
-        npm i -g firebase-tools
-        firebase deploy --only firestore:rules --token ${{ secrets.FIREBASE_E2E_TOKEN }} --project ${{ secrets.FIREBASE_E2E_PROJECT }}
-      working-directory: app
-      name: deploy firestore rules
     - run: npm run build
-      working-directory: app
     - run: |
         npm run test:e2e:run
         # npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
       name: cypress tests w/ firebase backend
-      working-directory: app

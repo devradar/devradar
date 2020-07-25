@@ -4,6 +4,7 @@ import { RootState, BlipsState as RadarState } from '@/types/vuex'
 import { Blip, Meta } from '@/types/domain'
 import { getUUID, cleanBlip, addBlipLevelFromChanges } from '../util'
 import appConfig from '../config'
+import router from '../router'
 
 const state: RadarState = {
   id: '',
@@ -125,7 +126,7 @@ export const blips = (backend): Module<RadarState, RootState> => {
     namespaced: true,
     state,
     getters,
-    actions: backend.store.blips.actions(appConfig),
+    actions: backend.store.blips(router, appConfig),
     mutations
   }
 }

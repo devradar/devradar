@@ -1,12 +1,12 @@
 import { ActionTree } from 'vuex'
+import Router from 'vue-router'
 import { getUUID, cleanChange, cleanBlip } from '../../../util'
 import { Blip, BlipChange, Meta } from '@/types/domain'
 import { RootState, BlipsState } from '@/types/vuex'
-import router from '@/router'
 import radarAliases from '../mock-data/radarAliases'
 import radars from '../mock-data/radars'
 
-const actions = (): ActionTree<BlipsState, RootState> => ({
+const actions = (router: Router, appConfig: any): ActionTree<BlipsState, RootState> => ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
   async followRadarAlias (_context, alias: string): Promise<string> {
     if (radars[alias]) {
@@ -128,6 +128,4 @@ const actions = (): ActionTree<BlipsState, RootState> => ({
   }
 })
 
-export default {
-  actions
-}
+export default actions

@@ -40,13 +40,13 @@ context('Radar', () => {
 
   it('allows navigation from radar to history view by clicking blip', () => {
     cy.login('rick', { reroute: true })
-    cy.getBackend()
-      .then(backend => backend.test.dropBlips())
+    cy.getTestUtils()
+      .then(utils => utils.dropBlips())
     cy.all(
-      cy.getBackend()
+      cy.getTestUtils()
       cy.fixture('blips')
     )
-      .spread((backend, blipsFix) => backend.test.addBlip(blipsFix.blips[0]))
+      .spread((utils, blipsFix) => utils.addBlip(blipsFix.blips[0]))
     cy.get('[data-cy="radarSvg"]').should('be.visible') // verify that we start on the radar chart view
     cy.get('.blip').then($blips => {
       cy.wrap($blips).should('have.length', 1)

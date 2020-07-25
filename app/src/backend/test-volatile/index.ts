@@ -9,5 +9,5 @@ export default {
     blips,
     user
   },
-  test
+  testUtils: test
 }

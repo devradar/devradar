@@ -3,6 +3,7 @@ import { Module, GetterTree, MutationTree } from 'vuex'
 import { User, LoginState } from '@/types/domain'
 import { RootState, UserState } from '@/types/vuex'
 import appConfig from '../config'
+import router from '../router'
 
 const state: UserState = {
   user: undefined,
@@ -58,7 +59,7 @@ export const user = (backend): Module<UserState, RootState> => {
     namespaced: true,
     state,
     getters,
-    actions: backend.store.user.actions(appConfig),
+    actions: backend.store.user(router, appConfig),
     mutations
   }
 }
