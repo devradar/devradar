@@ -35,7 +35,7 @@ Vue.filter('limitString', function (str: string, limit = Infinity) {
   return str.slice(0, limit) + (str.length > limit ? '..' : '')
 })
 
-backend.init(store, appConfig)
+backend.init(store, router, appConfig)
 
 const app = new Vue({
   router,
@@ -49,6 +49,7 @@ app.$mount('#app')
 if (appConfig.isUnderTest) {
   window['app'] = app
   window['backend'] = backend
+  window['testUtils'] = backend.testUtils(store, router, appConfig)
   console.warn(`Running in Test Mode with Backend: ${backend.type}`) // eslint-disable-line no-console
   console.log('Backend Configuration', appConfig.backend) // eslint-disable-line no-console
 }

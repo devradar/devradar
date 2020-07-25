@@ -30,13 +30,13 @@
 
 <script lang="ts">
 import { Component, Vue, Emit, PropSync } from 'vue-property-decorator'
-import firebase from 'firebase/app'
 import 'firebase/auth'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
 import appConfig from '@/config'
-import { backend } from '@/store'
-// import { LoginState } from '../types/domain'
+import { backend, store } from '@/store'
+import router from '@/router'
+const firebase = backend.firebase
 
 @Component({
   computed: {
@@ -73,7 +73,8 @@ export default class LoginModal extends Vue {
   }
 
   dummyLogin (user: string) {
-    backend.test.login(user)
+    const testUtils = backend.testUtils(store, router, appConfig)
+    testUtils.login(user)
     this.close()
   }
 
