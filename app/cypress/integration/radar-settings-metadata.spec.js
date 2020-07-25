@@ -10,12 +10,12 @@ context('Radar metadata', () => {
 
     cy.log('Adding 4 dummy blips')
     cy.all(
-      cy.getBackend(),
+      cy.getTestUtils(),
       cy.fixture('blips'),
       cy.get('@radarId')
     )
-      .spread((backend, blipsFix, radarId) => {
-        return Promise.all(blipsFix.blips.map(b => backend.test.addBlip(b)))
+      .spread((utils, blipsFix, radarId) => {
+        return Promise.all(blipsFix.blips.map(b => utils.addBlip(b)))
       })
     cy.get('header').contains('Me', { timeout: 5e3 }).click()
     cy.get('[data-cy="radarSvg"]').should('be.visible')

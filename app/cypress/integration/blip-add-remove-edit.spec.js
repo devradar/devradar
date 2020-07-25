@@ -32,11 +32,11 @@ context('Blip editing', function () {
     cy.dropBlips()
     cy.wait(200)
     cy.all(
-      cy.getBackend(),
+      cy.getTestUtils(),
       cy.fixture('blips'),
     )
-      .spread((backend, blipsFix) => {
-        return Promise.all(blipsFix.blips.slice(0, 3).map(b => backend.test.addBlip(b)))
+      .spread((utils, blipsFix) => {
+        return Promise.all(blipsFix.blips.slice(0, 3).map(b => utils.addBlip(b)))
       })
     let blip0, blip1, blip2
     cy.get('[data-cy="blip"]').then($blips => {
