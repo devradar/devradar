@@ -42,6 +42,6 @@ Any developer can easily create their own devradar for free.
 
 Copyright 2019 - 2020 Andreas Offenhaeuser <https://anoff.io>
 
-All devradar code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.
+This code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_large)

@@ -3,6 +3,11 @@ on:
   schedule:
     - cron:  '0 2 * * *' # UTC time
 
+defaults:
+  run:
+    shell: bash
+    working-directory: app
+
 jobs:
   test-e2e:
     runs-on: ubuntu-18.04
@@ -20,10 +25,9 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
     - run: npm ci
-      working-directory: app
-    - run: |
-        npm run build
-        npm run test:e2e:run:${{ matrix.browser }}
+    - run: npm build
+    - run: npm run test:e2e:run:${{ matrix.browser }}
       name: End-To-End tests on ${{ matrix.browser }} w/ local backend
-      working-directory: app
