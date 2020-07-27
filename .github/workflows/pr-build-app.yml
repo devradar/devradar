@@ -1,15 +1,10 @@
 name: devradar.io - PR
 
-on:
-  pull_request:
-    paths:
-      - 'app/**'
-      - '.github/**'
+on: [pull_request]
 
 defaults:
   run:
     shell: bash
-    working-directory: app
 
 jobs:
   test-lint-eslint:

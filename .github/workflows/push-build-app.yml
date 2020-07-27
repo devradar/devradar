@@ -1,14 +1,10 @@
 name: devradar.io
 
-on:
-  push:
-    paths:
-      - 'app/**'
-      - '.github/**'
+on: [push]
+
 defaults:
   run:
     shell: bash
-    working-directory: app
 
 jobs:
   test-lint-eslint:
@@ -52,6 +48,28 @@ jobs:
     - run: npm run build
     - run: npm run test:e2e:run
       name: cypress tests w/ local storage
+
+  test-e2e-firebase:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' # run only on master to make sure badge works and records are not wasted
+    runs-on: ubuntu-18.04
+    env:
+      VUE_APP_BACKEND_TYPE: 'firebase'
+      VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_E2E_PROJECT }}
+      VUE_APP_BACKEND_KEY: ${{ secrets.FIREBASE_E2E_CLIENTKEY }}
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
+      FIREBASE_SERVICEACCOUNT: ${{ secrets.FIREBASE_E2E_ACCOUNTKEY }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+      name: add auth token for npm packages
+    - run: npm ci
+    - run: npm run build
+    - run: |
+        npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
+      name: cypress tests w/ firebase backend
 
   firebase-deploy:
     name: "publish devradar.io"

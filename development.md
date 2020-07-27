@@ -1,23 +1,4 @@
-<p align="center">
-  <img src="../assets/logo-text.png">
-  <br>
-  Track and manage skills as an individual and manage competencies across a team.
-</p>
-
-[![License](https://badgen.net/badge/license/MIT/blue)](LICENSE)
-[![Cypress.io tests](https://img.shields.io/badge/cypress.io-E2E%20Tests-brightgreen.svg)](https://dashboard.cypress.io/#/projects/gumn5q/runs)
-[![VueJS](https://badgen.net/badge/built%20with/Vue.js/cyan)](https://vuejs.org/)
-[![TypeScript](https://badgen.net/badge/code/TypeScript/blue)](https://www.typescriptlang.org/)
-[![Standard](https://badgen.net/badge/code%20style/standard/pink)](https://standardjs.com/)
-
-[![Gitter](https://badgen.net/badge/chat/on%20gitter/cyan?icon=gitter)](https://gitter.im/devradar/discuss)
-[![License check](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fanoff%2Fdevradar.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fanoff%2Fdevradar?ref=badge_shield)
-
-![devradar.io](https://github.com/anoff/devradar/workflows/devradar.io/badge.svg)
-![Cross-OS Test](https://github.com/anoff/devradar/workflows/Cross-OS%20Test/badge.svg)
-![Cross-Browser Test](https://github.com/anoff/devradar/workflows/Cross-Browser%C2%A0Test/badge.svg)
-
-# Development
+# Development Guide
 
 The project is built with the `vue-cli` and for local development you need to have Node.js installed. Please follow the official [Node.js download](https://nodejs.org/en/) instructions.
 
@@ -104,7 +85,3 @@ Available scripts:
 | script name | action |
 |---|---|
 | `cypress/support/wipe-firestore.js` | remove all collection data from firestore |
-
-## Known limits
-
-1. The Database allows a maximum of 100 Blips, 20 History entries per Blip and 10 Levels/Categories

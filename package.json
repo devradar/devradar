@@ -29,7 +29,7 @@
     "test:local": "npm run lint && npm run test:e2e:local"
   },
   "dependencies": {
-    "@devradar-io/backend-firebase": "^1.0.0",
+    "@devradar/backend-firebase": "^1.0.0",
     "@iarna/toml": "^2.2.5",
     "@types/d3": "^5.7.2",
     "@types/uuid": "^8.0.0",
