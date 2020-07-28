@@ -1,4 +1,4 @@
-import firebase from '@devradar-io/backend-firebase'
+import firebase from '@devradar/backend-firebase'
 import testVolatile from './test-volatile'
 
 export default {
