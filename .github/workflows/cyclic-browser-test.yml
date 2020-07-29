@@ -14,8 +14,8 @@ jobs:
       matrix:
         browser: [chrome, firefox, electron]
     container: # run in container to have specific versions of browsers available
-      image: cypress/browsers:node12.16.1-chrome80-ff73
-      options: --user 1001 # see [firefox restriction](https://github.com/cypress-io/github-action#firefox)
+      image: cypress/browsers:node13.8.0-chrome81-ff75 # full list at https://github.com/cypress-io/cypress-docker-images/tree/master/browsers
+      options: --ipc=host --user 1001 # see [firefox restriction](https://github.com/cypress-io/github-action#firefox)
       env:
         VUE_APP_BACKEND_TYPE: 'testVolatile'
     timeout-minutes: 15
