@@ -26,5 +26,7 @@ Cypress.Commands.add('login', (user = 'rick', options = { }) => {
 
 Cypress.Commands.add('gohome', () => {
   cy.visit('/')
-  cy.get('[data-cy=cookie-banner] button').click()
+  cy.get('[data-cy=cookie-banner] button')
+    .scrollIntoView()
+    .click()
 })
