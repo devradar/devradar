@@ -17,7 +17,7 @@ context('Radar metadata', () => {
       .spread((utils, blipsFix, radarId) => {
         return Promise.all(blipsFix.blips.map(b => utils.addBlip(b)))
       })
-    cy.get('header').contains('Me', { timeout: 5e3 }).click()
+    cy.get('[data-cy="app-nav-radar"]', { timeout: 5e3 }).click()
     cy.get('[data-cy="radarSvg"]').should('be.visible')
   })
 

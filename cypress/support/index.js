@@ -10,10 +10,10 @@ Cypress.Commands.add('dropBlips', () => {
     .then(utils => utils.dropBlips())
 })
 
-Cypress.Commands.add('login', (user = 'rick', options = { }) => {
+Cypress.Commands.add('login', (user = 'rick', options = { setAlias: true }) => {
   cy.getTestUtils()
-  .then(utils => utils.login(user))
-  .as('userId')
+    .then(utils => utils.login(user))
+    .as('userId')
   if (options.reroute === true) {
     cy.get('[data-cy="app-nav-radar"]').click() // navigate first to make sure login is finished
   }
@@ -21,6 +21,13 @@ Cypress.Commands.add('login', (user = 'rick', options = { }) => {
     cy.all(cy.getTestUtils(), cy.get('@userId'))
       .spread((utils, userId) => cy.wrap(utils.getRadarIdByUserId(userId)))
       .as('radarId')
+  }
+  if (options.setAlias === false) {
+    cy.all(cy.getTestUtils(), cy.get('@radarId'))
+    cy.get('@radarId')
+      .then(radarId => {
+        store.dispatch('blips/setRadarAlias', { alias: 'rick', radarId: radarId })
+      })
   }
 })
 

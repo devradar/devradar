@@ -12,16 +12,20 @@ context('Radar', () => {
 
   it('login should happen in less than 10s', () => {
     cy.viewport('macbook-13')
-    cy.get('header').contains('Me').should('not.exist')
+    cy.get('[data-cy="app-nav-radar"]').should('not.exist')
     cy.login('rick')
-    cy.get('header').contains('Me', { timeout: 10e3 }).should('be.visible')
+    cy.get('[data-cy="app-nav-radar"]', { timeout: 10e3 }).should('be.visible')
   })
 
   it('does not show settings button to anonymous users', () => {
     cy.visit('/logout')
     cy.visit('/@rick')
-    cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
-    cy.get('[data-cy="app-nav-settings"]').should('not.be.visible')
+    cy.get('[data-cy="radarSvg"]').should('be.visible')
+    cy.get('[data-cy="radar-tab-settings"]').should('not.be.visible')
+    // shows button after login
+    cy.login('rick')
+    cy.get('[data-cy="app-nav-radar"]').should('be.visible')
+    cy.get('[data-cy="radar-tab-settings"]', { timeout: 15e3 }).should('be.visible') // TODO: this timeout is way too long..
   })
 
   it('shows radar + legend responsively', () => {
