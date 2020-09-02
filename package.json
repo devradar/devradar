@@ -73,7 +73,6 @@
   "config": {
     "cz-conventional-kawaii": {
       "scopes": [
-        "app"
       ],
       "quick": false
     }
