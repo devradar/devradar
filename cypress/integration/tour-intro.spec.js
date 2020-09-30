@@ -17,9 +17,9 @@ context('Intro', () => {
   })
 
   it('tour start for logged-in users should be on radar page', () => {
-    cy.get('header').contains('Me').should('not.exist')
+    cy.get('[data-cy="app-nav-radar"]').should('not.exist')
     cy.getTestUtils().then(utils => utils.login('rick'))
-    cy.get('header').contains('Me', { timeout: 10e3 }).should('be.visible')
+    cy.get('[data-cy="app-nav-radar"]', { timeout: 10e3 }).should('be.visible')
     cy.visit('/') // wait until radar is fully loaded for some reason..
     cy.wait(500)
     cy.get('[data-cy=home-tour-button]').click()

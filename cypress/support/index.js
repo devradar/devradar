@@ -10,23 +10,37 @@ Cypress.Commands.add('dropBlips', () => {
     .then(utils => utils.dropBlips())
 })
 
-Cypress.Commands.add('login', (user = 'rick', options = { }) => {
+Cypress.Commands.add('login', (user = 'rick', options = { setAlias: true, waitForLogin: false }) => {
   cy.getTestUtils()
-  .then(utils => utils.login(user))
-  .as('userId')
+    .then(utils => utils.login(user))
+    .as('userId')
+  cy.get('[data-cy="app-nav-login"]', { timeout: 10e3 }).should('not.be.visible') // wait for login to propagate (in case of firebase takes a while)
+  cy.get('[data-cy="app-nav-radar"]').should('be.visible')
   if (options.reroute === true) {
-    cy.get('[data-cy="app-nav-radar"]').click() // navigate first to make sure login is finished
+    cy.get('[data-cy="app-nav-radar"]', { timeout: 10e3 }).click() // navigate first to make sure login is finished
   }
-  if (options.fetchRadarId === true) {
+  if (options.fetchRadarId === true || options.setAlias === true) {
     cy.all(cy.getTestUtils(), cy.get('@userId'))
       .spread((utils, userId) => cy.wrap(utils.getRadarIdByUserId(userId)))
       .as('radarId')
+  }
+  if (options.setAlias === true) {
+    cy.all(cy.window().its('app'), cy.get('@radarId'))
+      .spread((app, radarId) => {
+        app.$store.dispatch('blips/setRadarAlias', { alias: 'rick', radarId: radarId })
+      })
   }
 })
 
 Cypress.Commands.add('gohome', () => {
   cy.visit('/')
-  cy.get('[data-cy=cookie-banner] button')
-    .scrollIntoView()
-    .click()
+  cy.window()
+    .then(window => {
+      const cookieIsSet = window.localStorage.getItem('cookie:accepted') === 'true'
+      if (!cookieIsSet) {
+        cy.get('[data-cy=cookie-banner] button')
+          .scrollIntoView()
+          .click()
+      }
+    })
 })

@@ -5,6 +5,10 @@ const devices = ['macbook-15', 'macbook-13', 'iphone-x']
 context('Radar', () => {
   before(() => {
     cy.clean()
+    cy.gohome()
+    cy.login('rick', { setAlias: true }) // bootstrap the rick radar into the wiped database
+    cy.visit('/logout')
+    cy.get('[data-cy="app-nav-login"]').should('be.visible') // wait for logout
   })
   beforeEach(() => {
     cy.gohome()
@@ -12,16 +16,23 @@ context('Radar', () => {
 
   it('login should happen in less than 10s', () => {
     cy.viewport('macbook-13')
-    cy.get('header').contains('Me').should('not.exist')
+    cy.get('[data-cy="app-nav-radar"]').should('not.exist')
     cy.login('rick')
-    cy.get('header').contains('Me', { timeout: 10e3 }).should('be.visible')
+    cy.get('[data-cy="app-nav-radar"]', { timeout: 10e3 }).should('be.visible')
   })
 
-  it('does not show settings button to anonymous users', () => {
+  it('does not show settings to anonymous users', () => {
     cy.visit('/logout')
     cy.visit('/@rick')
-    cy.get('[data-cy="app-nav-toggle"]').click({ force: true })
-    cy.get('[data-cy="app-nav-settings"]').should('not.be.visible')
+    cy.get('[data-cy="radarSvg"]').should('be.visible')
+    cy.get('[data-cy="radar-tab-settings"]').should('not.be.visible')
+  })
+
+  it('does show settings for logged in users', () => {  
+    // shows button after login
+    cy.login('rick')
+    cy.get('[data-cy="app-nav-radar"]', { timeout: 10e3 }).should('be.visible')
+    cy.get('[data-cy="radar-tab-settings"]').should('be.visible')
   })
 
   it('shows radar + legend responsively', () => {
@@ -43,7 +54,7 @@ context('Radar', () => {
     cy.getTestUtils()
       .then(utils => utils.dropBlips())
     cy.all(
-      cy.getTestUtils()
+      cy.getTestUtils(),
       cy.fixture('blips')
     )
       .spread((utils, blipsFix) => utils.addBlip(blipsFix.blips[0]))

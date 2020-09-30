@@ -16,7 +16,7 @@
         <v-icon left>list</v-icon>
         Skill Diary
       </v-tab>
-      <v-tab data-cy="radar-tab-settings">
+      <v-tab data-cy="radar-tab-settings" v-if="userCanEdit">
         <v-icon left>settings</v-icon>
         Config
       </v-tab>
@@ -29,7 +29,7 @@
       <v-tab-item>
         <list :radarId="radarId"></list>
       </v-tab-item>
-      <v-tab-item>
+      <v-tab-item v-if="userCanEdit">
         <settings :radarId="radarId"></settings>
       </v-tab-item>
     </v-tabs-items>
@@ -57,6 +57,9 @@ import { RadarTabState } from '@/types/domain'
     },
     ...mapGetters('blips', [
       'isLoaded'
+    ]),
+    ...mapGetters('user', [
+      'userCanEdit'
     ])
   }
 })
@@ -68,6 +71,7 @@ export default class Radar extends Vue {
   // computed
   activeTabName: RadarTabState
   isLoaded: boolean
+  userCanEdit: boolean
 
   tabChange (newTab: number) {
     // console.log(newTab, this.activeTabName)
