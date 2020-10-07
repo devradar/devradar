@@ -13,9 +13,9 @@
 [![License Check](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdevradar%2Fdevradar.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdevradar%2Fdevradar?ref=badge_shield)
 [![E2E Test](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/detailed/gumn5q/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/gumn5q/runs)
 
-![devradar.io](https://github.com/devradar/devradar/workflows/devradar.io/badge.svg?branch=master)
-![Cross-OS Test](https://github.com/devradar/devradar/workflows/Cross-OS%20Test/badge.svg)
-![Cross-Browser Test](https://github.com/devradar/devradar/workflows/Cross-Browser%C2%A0Test/badge.svg)
+[![devradar.io](https://github.com/devradar/devradar/workflows/devradar.io/badge.svg?branch=master)](https://github.com/devradar/devradar/actions?query=workflow%3Adevradar.io)
+[![Cross-OS Test](https://github.com/devradar/devradar/workflows/Cross-OS%20Test/badge.svg)](https://github.com/devradar/devradar/actions?query=workflow%3A%22Cross-OS+Test%22)
+[![Cross-Browser Test](https://github.com/devradar/devradar/workflows/Cross-Browser%C2%A0Test/badge.svg)](https://github.com/devradar/devradar/actions?query=workflow%3ACross-Browser%C2%A0Test)
 
 # Roadmap
 
