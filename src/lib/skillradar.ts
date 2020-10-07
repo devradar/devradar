@@ -453,9 +453,10 @@ export class SkillradarChart {
       width = this.level2radius(blip.level) - this.level2radius(blip.level + 1)
     }
     const radialSegment = 2 * Math.PI / categoryCount
+    const pseudoString = blip.title.repeat(parseInt(blip.id)) // increase entropy to quick-fix https://github.com/devradar/devradar/issues/16
     return {
-      angle: -blip.category * radialSegment + Math.PI / 4 + (getPseudoRand(blip.title) - 0.5) * radialSegment * 0.9,
-      radius: this.level2radius(blip.level) - width / 2 - (Math.sqrt(getPseudoRand(blip.title)) - 0.5) * width / 2 * 0.9
+      angle: -blip.category * radialSegment + Math.PI / 4 + (getPseudoRand(pseudoString) - 0.5) * radialSegment * 0.9,
+      radius: this.level2radius(blip.level) - width / 2 - (Math.sqrt(getPseudoRand(pseudoString)) - 0.5) * width / 2 * 0.9
     }
   }
   public rad2xy ({ angle, radius }: CoordPolar): CoordCarthesian {
