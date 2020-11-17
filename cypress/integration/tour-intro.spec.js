@@ -24,6 +24,6 @@ context('Intro', () => {
     cy.wait(500)
     cy.get('[data-cy=home-tour-button]').click()
     cy.wait(700)
-    cy.get('[data-cy=intro-step]').contains('Create a new')
+    cy.get('[data-cy=intro-step]').contains('Create a new', { includeShadowDom: true })
   })
 })
