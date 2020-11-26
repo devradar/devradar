@@ -40,7 +40,7 @@ Cypress.Commands.add('gohome', () => {
       if (!cookieIsSet) {
         cy.get('[data-cy=cookie-banner] button')
           .scrollIntoView()
-          .click()
+          .click({ force: true })
       }
     })
 })
