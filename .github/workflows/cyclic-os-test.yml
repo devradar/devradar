@@ -15,7 +15,6 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest]
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
-    timeout-minutes: 30
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -25,5 +24,9 @@ jobs:
       name: add auth token for npm packages
     - run: npm ci
     - run: npm run build
-    - run: npm run test:e2e:run
+    - uses: nick-invision/retry@v2
       name: End-To-End tests on ${{ matrix.os }} w/ local backend
+      with:
+        timeout_minutes: 20
+        max_attempts: 3
+        command: npm run test:e2e:run

@@ -46,10 +46,13 @@ jobs:
     - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
       name: add auth token for npm packages
     - run: npm ci
-    - run: |
-        npm run build
-        npm run test:e2e:run
+    - run: npm run build
+    - uses: nick-invision/retry@v2
       name: cypress tests w/ local storage
+      with:
+        timeout_minutes: 20
+        max_attempts: 3
+        command: npm run test:e2e:run
 
   test-e2e-firebase:
     runs-on: ubuntu-18.04
@@ -68,7 +71,11 @@ jobs:
       name: add auth token for npm packages
     - run: npm ci
     - run: npm run build
-    - run: |
-        npm run test:e2e:run
-        # npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
+    - uses: nick-invision/retry@v2
       name: cypress tests w/ firebase backend
+      with:
+        timeout_minutes: 20
+        max_attempts: 3
+        command: |
+        # npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
+        npm run test:e2e:run
