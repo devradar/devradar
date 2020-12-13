@@ -76,6 +76,4 @@ jobs:
       with:
         timeout_minutes: 20
         max_attempts: 3
-        command: |
-        # npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
-        npm run test:e2e:run
+        command: npm run test:e2e:run
