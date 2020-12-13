@@ -46,8 +46,13 @@ jobs:
       name: add auth token for npm packages
     - run: npm ci
     - run: npm run build
-    - run: npm run test:e2e:run
       name: cypress tests w/ local storage
+    - uses: nick-invision/retry@v2
+      name: cypress tests w/ local storage
+      with:
+        timeout_minutes: 20
+        max_attempts: 3
+        command: npm run test:e2e:run
 
   test-e2e-firebase:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' # run only on master to make sure badge works and records are not wasted
@@ -67,14 +72,17 @@ jobs:
       name: add auth token for npm packages
     - run: npm ci
     - run: npm run build
-    - run: |
-        npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
+    - uses: nick-invision/retry@v2
       name: cypress tests w/ firebase backend
+      with:
+        timeout_minutes: 20
+        max_attempts: 3
+        command: npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
 
   firebase-deploy:
     name: "publish devradar.io"
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [test-lint-eslint, test-lint-tsc, test-e2e-volatile]
+    needs: [test-lint-eslint, test-lint-tsc, test-e2e-volatile, test-e2e-firebase]
     runs-on: ubuntu-18.04
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
