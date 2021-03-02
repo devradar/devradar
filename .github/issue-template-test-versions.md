@@ -1,7 +1,7 @@
 ---
 title: Update test infrastructure
 assignees: anoff
-labels: 'kind:housekeeping'
+labels: kind:housekeeping
 ---
 Make sure devradar is tested against the latest browser and OS versions.
 Update all workflows:
