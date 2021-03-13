@@ -8,6 +8,6 @@ context('Application cookie banner', () => {
   it('gets removed after clicking button', () => {
     cy.visit('/')
     cy.get('[data-cy=cookie-banner] button').click()
-    cy.get('[data-cy=cookie-banner]').should('not.be.visible')
+    cy.get('[data-cy=cookie-banner]').should('not.exist')
   })
 })

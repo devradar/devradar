@@ -25,7 +25,7 @@ context('Radar', () => {
     cy.visit('/logout')
     cy.visit('/@rick')
     cy.get('[data-cy="radarSvg"]').should('be.visible')
-    cy.get('[data-cy="radar-tab-settings"]').should('not.be.visible')
+    cy.get('[data-cy="radar-tab-settings"]').should('not.exist')
   })
 
   it('does show settings for logged in users', () => {  
@@ -40,7 +40,7 @@ context('Radar', () => {
     devices.forEach(device => {
       cy.viewport(device)
       cy.get('[data-cy="radarSvg"]').should('be.visible')
-      cy.get('[data-cy="loadingDialog"]').should('not.be.visible')
+      cy.get('[data-cy="loadingDialog"]').should('not.exist')
       cy.get('[data-cy="radar-legendwest"]:visible').should('have.length', 1)
       cy.get('[data-cy="radar-legendeast"]:visible').should('have.length', 1)
       cy.get('[data-cy="radar-tab-diary"]').should('be.visible')
