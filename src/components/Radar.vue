@@ -74,7 +74,7 @@ export default class Radar extends Vue {
   isLoaded: boolean
   userCanEdit: boolean
 
-  tabChange (newTab: number) {
+  tabChange (newTab: number) : void {
     // console.log(newTab, this.activeTabName)
     switch (newTab) {
       case 0:
@@ -89,7 +89,7 @@ export default class Radar extends Vue {
     }
   }
 
-  activateTabFromRoute () {
+  activateTabFromRoute () : void {
     if (this.$route.params.mode === 'history') {
       this.tab = 1
     } else if (this.$route.params.mode === 'settings') {
@@ -97,17 +97,17 @@ export default class Radar extends Vue {
     }
   }
 
-  locationHashChange () {
+  locationHashChange () : void {
     this.activateTabFromRoute()
   }
 
-  mounted () {
+  mounted () : void {
     this.activateTabFromRoute()
     // hack to force vue.js to react to a URL change that is being triggered by the d3 radar elements via <a href>
     window.addEventListener('hashchange', this.locationHashChange)
   }
 
-  beforeDestroy () {
+  beforeDestroy () : void {
     // cleanup hack before leaving the component
     window.removeEventListener('hashchange', this.locationHashChange)
   }

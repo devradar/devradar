@@ -4,7 +4,7 @@ import { RootState, UserState } from '@/types/vuex'
 import { LoginState } from '@/types/domain'
 import users from '../mock-data/users'
 
-const actions = (router: Router, appConfig: any): ActionTree<UserState, RootState> => ({ // eslint-disable-line @typescript-eslint/no-unused-vars
+const actions = (router: Router, _appConfig: never): ActionTree<UserState, RootState> => ({ // eslint-disable-line @typescript-eslint/no-unused-vars
   oauthLogin ({ commit, dispatch }, payload): void {
     let user
     switch (payload.provider) {
@@ -19,13 +19,15 @@ const actions = (router: Router, appConfig: any): ActionTree<UserState, RootStat
     commit('blips/setLoading', false, { root: true })
     dispatch('intro/event', 'login', { root: true })
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getUserList (_context): void {
     // nop
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setRoles (_context, _target): void {
     // nop
   },
-  async logout ({ commit }): Promise<any> {
+  async logout ({ commit }): Promise<void> {
     commit('blips/setLoading', true, { root: true })
     commit('blips/reset', null, { root: true })
     commit('user/reset', null, { root: true })

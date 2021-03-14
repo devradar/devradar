@@ -99,7 +99,7 @@ export class SkillradarChart {
     this.config = cfg
   }
 
-  public drawChart (id: string, data: SkillradarData) {
+  public drawChart (id: string, data: SkillradarData) : void {
     const cfg = this.config
     cfg.elementCount = data.items.length
     cfg.levelCount = data.levels.length
@@ -294,7 +294,7 @@ export class SkillradarChart {
     })
   }
 
-  public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean, direction: string) {
+  public drawLegend (id: string, data: SkillradarData, filterFn: (b: Blip) => boolean, direction: string) : void {
     const cfg = this.config
     const darkClass = cfg.dark ? 'dark' : ''
     const blips = data.items

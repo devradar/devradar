@@ -6,7 +6,8 @@ import { RootState, BlipsState } from '@/types/vuex'
 import radarAliases from '../mock-data/radarAliases'
 import radars from '../mock-data/radars'
 
-const actions = (router: Router, appConfig: any): ActionTree<BlipsState, RootState> => ({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const actions = (router: Router, _appConfig: never): ActionTree<BlipsState, RootState> => ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
   async followRadarAlias (_context, alias: string): Promise<string> {
     if (radars[alias]) {

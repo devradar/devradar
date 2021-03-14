@@ -1,4 +1,4 @@
-async function init () {
+async function init () : Promise<void> {
   return new Promise(resolve => {
     resolve()
   })

@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+import { User } from '@/types/domain'
 
 const config = { // needs to be ES6 module so it can be imported by webpack
   backend: {
@@ -8,15 +9,15 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     key: process.env.VUE_APP_BACKEND_KEY
   },
   routes: [ // configure name, permissions & view ports
-    { name: 'home', icon: 'home', title: 'Home', path: '/', validator: () => true, location: ['toolbar'], props: null },
-    { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: user => user.uid, location: ['toolbar-menu'] },
-    { name: 'users', icon: 'people', title: 'Users', path: '/users', validator: user => user.uid && user.roles.admin, location: ['toolbar-menu'] },
-    { name: 'error', icon: '', title: 'unlisted', path: '/wtf/:errorCode', validator: () => true, location: [] },
-    { name: 'radar', icon: 'track_changes', title: 'Me', path: '/@:radarId/:mode?', validator: () => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
+    { name: 'home', icon: 'home', title: 'Home', path: '/', validator: () : boolean => true, location: ['toolbar'], props: null },
+    { name: 'logout', icon: 'exit_to_app', title: 'Logout', path: '/logout', validator: (user : User) : boolean => !!user.uid, location: ['toolbar-menu'] },
+    { name: 'users', icon: 'people', title: 'Users', path: '/users', validator: (user : User) : boolean => user.uid && user.roles.admin, location: ['toolbar-menu'] },
+    { name: 'error', icon: '', title: 'unlisted', path: '/wtf/:errorCode', validator: () : boolean => true, location: [] },
+    { name: 'radar', icon: 'track_changes', title: 'Me', path: '/@:radarId/:mode?', validator: () : boolean => true, location: ['toolbar'] } // due to the wildcard URL this should be the last entry
   ],
   navEntries: [
-    { name: 'login', icon: 'meeting_room', title: 'Login', action: app => (app.loginModalVisible = true), validator: user => !user.uid, location: ['toolbar'] },
-    { name: 'help', icon: 'help', title: 'Help', url: '//docs.devradar.io/about', validator: () => true, location: ['toolbar-menu'] }
+    { name: 'login', icon: 'meeting_room', title: 'Login', action: app => (app.loginModalVisible = true), validator: (user: User) : boolean => !user.uid, location: ['toolbar'] },
+    { name: 'help', icon: 'help', title: 'Help', url: '//docs.devradar.io/about', validator: () : boolean => true, location: ['toolbar-menu'] }
   ],
   theme: {
     dark: false,

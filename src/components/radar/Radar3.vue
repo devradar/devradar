@@ -80,7 +80,7 @@ export default class Radar3 extends Vue {
     this.chart = new SkillradarChart(this.radarConfig)
   }
 
-  public renderChart () {
+  public renderChart () : void {
     const data: SkillradarData = {
       items: this.blips,
       levels: this.meta.levels,
@@ -95,7 +95,7 @@ export default class Radar3 extends Vue {
     this.chart.drawChart('#radarchart', data)
   }
 
-  mounted () {
+  mounted () : void {
     if (this.isLoaded) {
       this.renderChart()
     }
@@ -109,17 +109,17 @@ export default class Radar3 extends Vue {
   }
 
   @Watch('blips')
-  onBlipsChanged () {
+  onBlipsChanged () : void {
     this.renderChart()
   }
 
   @Watch('meta')
-  onMetaChanged () {
+  onMetaChanged () : void {
     this.renderChart()
   }
 
   @Watch('userCanEdit')
-  onUserChange () {
+  onUserChange () : void {
   // fire on user change if radar was load prior to login
     if (this.userCanEdit) {
       this.$store.dispatch('intro/event', 'radar-editable')
@@ -127,7 +127,7 @@ export default class Radar3 extends Vue {
   }
 
   @Watch('isLoading')
-  onDoneLoading (_oldValue: boolean, newValue: boolean) {
+  onDoneLoading (_oldValue: boolean, newValue: boolean) : void {
     if (newValue === true) {
       this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }

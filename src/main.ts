@@ -47,7 +47,7 @@ const app = new Vue({
 app.$mount('#app')
 
 if (appConfig.isUnderTest) {
-  const wAny: any = window
+  const wAny : any = window // cast to any to prevent type errors for the self-injected attributes
   wAny.app = app
   wAny.backend = backend
   wAny.testUtils = backend.testUtils(store, router, appConfig)

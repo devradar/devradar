@@ -1,3 +1,10 @@
+export interface BlipChange {
+  date: string;
+  newLevel: number;
+  text?: string;
+  id?: string;
+}
+
 export interface Blip {
   title: string;
   category: number;
@@ -9,19 +16,17 @@ export interface Blip {
   index?: number;
 }
 
-export interface BlipChange {
-  date: string;
-  newLevel: number;
-  text?: string;
-  id?: string;
-}
-
 export interface Meta {
   title: string;
   categories: string[];
   levels: string[];
 }
 
+export interface UserRole {
+  admin?: boolean;
+  editor?: boolean;
+  viewer?: boolean;
+}
 export interface User {
   uid: string;
   lastLogin: string;
@@ -29,6 +34,7 @@ export interface User {
   radar: string;
   id?: string;
   displayName?: string;
+  roles?: UserRole;
 }
 
 export enum LoginState {

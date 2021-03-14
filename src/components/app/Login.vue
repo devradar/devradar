@@ -55,7 +55,7 @@ export default class LoginModal extends Vue {
   // computed
   useFirebaseAuth: boolean
 
-  public mounted () {
+  public mounted () : void {
     if (this.useFirebaseAuth) {
       const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
       const uiConfig = {
@@ -72,14 +72,14 @@ export default class LoginModal extends Vue {
     }
   }
 
-  dummyLogin (user: string) {
+  dummyLogin (user: string) : void {
     const testUtils = backend.testUtils(store, router, appConfig)
     testUtils.login(user)
     this.close()
   }
 
   @Emit()
-  close () {
+  close () : boolean {
     this.isVisible = false
     return true
   }

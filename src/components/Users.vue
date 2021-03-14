@@ -92,9 +92,9 @@ export default class Users extends Vue {
   roles: []
   // computed
   user: User
-  userList: object
+  userList: Record<string, any>
 
-  setRole (index, role, value) {
+  setRole (index : number, role : string, value : boolean) : void {
     this.userList[index].roles[role] = value
     const targetUser = this.userList[index]
     if (targetUser.uid === this.user.uid && role === 'admin') {
@@ -105,7 +105,7 @@ export default class Users extends Vue {
     }
   }
 
-  mounted () {
+  mounted () : void {
     this.$store.dispatch('user/getUserList')
   }
 }

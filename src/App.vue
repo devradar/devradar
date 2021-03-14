@@ -171,11 +171,11 @@ import Octocat from '@/components/app/Octocat.vue'
 export default class App extends Vue {
   showNavdrawer = false
   darkMode: boolean = appConfig.theme.dark
-  footerEntries: object[] = appConfig.footer
-  toolbarItemsRouter: object[] = []
-  toolbarMenuItemsRouter: object[] = []
-  toolbarItemsStatic: object[] = []
-  toolbarMenuItemsStatic: object[] = []
+  footerEntries: Record<string, unknown>[] = appConfig.footer
+  toolbarItemsRouter: Record<string, unknown>[] = []
+  toolbarMenuItemsRouter: Record<string, unknown>[] = []
+  toolbarItemsStatic: Record<string, unknown>[] = []
+  toolbarMenuItemsStatic: Record<string, unknown>[] = []
   loginModalVisible = false
 
   // computed
@@ -188,7 +188,7 @@ export default class App extends Vue {
     text: string;
   };
 
-  updateToolbarItems () {
+  updateToolbarItems () : void {
     const routes = appConfig.routes
       .filter(i => i.validator(this.user))
       .filter(i => {
@@ -218,7 +218,7 @@ export default class App extends Vue {
       .filter(i => i.location.includes('toolbar-menu'))
   }
 
-  handleNavClick (item) {
+  handleNavClick (item) : void {
     if (item.url) {
       window.open(item.url, '_blank')
     } else if (item.action) {
@@ -226,14 +226,14 @@ export default class App extends Vue {
     }
   }
 
-  mounted () {
+  mounted () : void {
     this.updateToolbarItems()
   }
 
   @Watch('radarId')
   @Watch('radarAlias')
   @Watch('user')
-  radarIdChange () {
+  radarIdChange () : void {
     this.updateToolbarItems()
   }
 }

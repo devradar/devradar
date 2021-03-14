@@ -12,7 +12,7 @@ export interface BlipsState {
 
 export interface UserState {
   user: User;
-  userList: object;
+  userList: Record<string, unknown>;
   loginState: LoginState;
 }
 

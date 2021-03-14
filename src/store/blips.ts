@@ -121,7 +121,7 @@ const getters: GetterTree<RadarState, RootState> = {
   }
 }
 
-export const blips = (backend): Module<RadarState, RootState> => {
+export const blips = (backend : any): Module<RadarState, RootState> => {
   return {
     namespaced: true,
     state,

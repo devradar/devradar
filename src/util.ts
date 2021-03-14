@@ -17,7 +17,7 @@ function getPseudoRand (str: string): number {
   return (h + Math.pow(2, 31)) / Math.pow(2, 32)
 }
 
-function getUUID () {
+function getUUID () : string {
   return uuidv4()
 }
 

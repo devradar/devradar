@@ -9,7 +9,7 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component({
 })
 export default class Logout extends Vue {
-  async mounted () {
+  async mounted () : Promise<void> {
     await this.$store.dispatch('user/logout')
     this.$router.replace('/')
   }
