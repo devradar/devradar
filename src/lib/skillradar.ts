@@ -166,7 +166,7 @@ export class SkillradarChart {
           .attr('opacity', 0)
 
         tooltip
-          .attr('transform', this.attributes['transform'].value)
+          .attr('transform', (this.attributes as any).transform.value)
           .select('.tooltipTitle')
           .text(blip.title)
           .attr('class', `tooltipTitle category-${blip.category}`)
@@ -444,6 +444,7 @@ export class SkillradarChart {
       .attr('x', '0em')
       .text((d: number) => data.categories[d])
   }
+
   public blip2rad (blip: Blip): CoordPolar {
     const categoryCount = 4
     let width: number
@@ -459,12 +460,14 @@ export class SkillradarChart {
       radius: this.level2radius(blip.level) - width / 2 - (Math.sqrt(getPseudoRand(pseudoString)) - 0.5) * width / 2 * 0.9
     }
   }
+
   public rad2xy ({ angle, radius }: CoordPolar): CoordCarthesian {
     return {
       x: radius * Math.cos(angle),
       y: -radius * Math.sin(angle)
     }
   }
+
   private level2radius (level: number): number {
     const levelCount = this.config.levelCount
     const radius = this.config.radius
@@ -473,6 +476,7 @@ export class SkillradarChart {
     const factor = (level / levelCount) * (innerFactor - outerFactor) + outerFactor
     return radius / levelCount * (levelCount - level) * factor
   }
+
   private limitString (str: string, length: number): string {
     if (str.length > length) {
       return str.slice(0, length - 2) + '..'

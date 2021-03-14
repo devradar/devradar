@@ -9,10 +9,10 @@ const actions = (router: Router, appConfig: any): ActionTree<UserState, RootStat
     let user
     switch (payload.provider) {
       case 'github':
-        user = users['rick']
+        user = users.rick
         break
       default:
-        user = users['morty']
+        user = users.morty
     }
     commit('setUser', user)
     commit('user/setLoginState', LoginState.LOGGED_IN, { root: true })
@@ -20,8 +20,10 @@ const actions = (router: Router, appConfig: any): ActionTree<UserState, RootStat
     dispatch('intro/event', 'login', { root: true })
   },
   getUserList (_context): void {
+    // nop
   },
   setRoles (_context, _target): void {
+    // nop
   },
   async logout ({ commit }): Promise<any> {
     commit('blips/setLoading', true, { root: true })

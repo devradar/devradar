@@ -19,10 +19,10 @@ const vuetifyOpts = {
 
 Vue.config.productionTip = false
 
-if ('googleAnalytics' in appConfig && 'id' in appConfig['googleAnalytics']) {
+if ('googleAnalytics' in appConfig && 'id' in appConfig.googleAnalytics) {
   Vue.use(VueAnalytics, {
-    id: appConfig['googleAnalytics']['id'],
-    disabled: !appConfig['googleAnalytics']['enabled'],
+    id: appConfig.googleAnalytics.id,
+    disabled: !appConfig.googleAnalytics.enabled,
     debug: {
       // turn on only in prod https://github.com/MatteoGabriele/vue-analytics/blob/9b7125472dc1313823e6c03538434d22b4edad8a/docs/turn-off-development.md
       sendHitTask: process.env.NODE_ENV === 'production'
@@ -47,9 +47,10 @@ const app = new Vue({
 app.$mount('#app')
 
 if (appConfig.isUnderTest) {
-  window['app'] = app
-  window['backend'] = backend
-  window['testUtils'] = backend.testUtils(store, router, appConfig)
+  const wAny: any = window
+  wAny.app = app
+  wAny.backend = backend
+  wAny.testUtils = backend.testUtils(store, router, appConfig)
   console.warn(`Running in Test Mode with Backend: ${backend.type}`) // eslint-disable-line no-console
   console.log('Backend Configuration', appConfig.backend) // eslint-disable-line no-console
 }

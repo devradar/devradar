@@ -61,11 +61,11 @@ import { VForm } from '@/types/misc'
 })
 
 export default class NewChange extends Vue {
-  valid: boolean = false
-  dialog: boolean = true
-  level: string = ''
+  valid = false
+  dialog = true
+  level = ''
   date: string = new Date().toISOString().slice(0, 7)
-  changeText: string = ''
+  changeText = ''
   // computed
   change: BlipChange
   levels: string[]

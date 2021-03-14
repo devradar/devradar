@@ -170,7 +170,7 @@ import { mapGetters } from 'vuex'
 import { Blip, Meta } from '@/types/domain'
 
 function saveAs (filename, text) {
-  var element = document.createElement('a')
+  const element = document.createElement('a')
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
   element.setAttribute('download', filename)
 
@@ -213,7 +213,7 @@ function stripIds (blip) {
 })
 export default class Settings extends Vue {
   // local data
-  contentToml: string = ''
+  contentToml = ''
   uploadFile: any = null
   rules: object = {
     level: [val => (val || '').length > 0 || 'Level name cannot be empty'],
@@ -221,14 +221,15 @@ export default class Settings extends Vue {
     title: [val => (val || '').length > 0 || 'Title cannot be empty'],
     alias: [val => this.aliasAvailable(val) || 'Alias must be unique'] // TODO: implement uniqueness check
   }
+
   tmpLevels: string[] = []
-  tmpLevelsDirty: boolean = false
+  tmpLevelsDirty = false
   tmpCategories: string[] = []
-  tmpCategoriesDirty: boolean = false
-  tmpTitle: string = ''
-  tmpTitleDirty: boolean = false
-  tmpAlias: string = ''
-  tmpAliasDirty: boolean = false
+  tmpCategoriesDirty = false
+  tmpTitle = ''
+  tmpTitleDirty = false
+  tmpAlias = ''
+  tmpAliasDirty = false
   tmpAliasErrors: string[] = []
 
   // computed
@@ -320,6 +321,7 @@ export default class Settings extends Vue {
   aliasAvailable (value: string) {
     return value !== null
   }
+
   @Watch('tmpAlias')
   async tmpAliasKeydown (newValue: string) {
     this.tmpAliasDirty = true
@@ -341,6 +343,7 @@ export default class Settings extends Vue {
   mounted () {
     this.reload()
   }
+
   @Watch('radarAlias')
   radarAliasUpdate () {
     this.reload()

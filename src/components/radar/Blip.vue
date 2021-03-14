@@ -130,10 +130,10 @@ const md = new MarkdownIt()
   }
 })
 export default class Blip extends Vue {
-  isEditMode: boolean = false
+  isEditMode = false
   tempBlip: IBlip
-  isDeleteMode: boolean = false
-  showChangeDialog: boolean = false
+  isDeleteMode = false
+  showChangeDialog = false
   blipForChange: IBlip
   blipTitleCutOff: number = appConfig.blips.titleCutOff
   darkMode: boolean = appConfig.theme.dark

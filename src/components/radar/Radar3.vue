@@ -47,7 +47,7 @@ import appConfig from '@/config'
     blips () {
       return this.$store.getters['blips/blipsWithIndex']
         .map(b => {
-          b['detailsUrl'] = `/#/@${this.radarId}/history?q=${b.title}`
+          b.detailsUrl = `/#/@${this.radarId}/history?q=${b.title}`
           return b
         })
     }
@@ -56,6 +56,7 @@ import appConfig from '@/config'
 export default class Radar3 extends Vue {
   @Prop({ default: '' })
   radarId: string
+
   chart: SkillradarChart
   darkMode: boolean = appConfig.theme.dark
 
@@ -73,6 +74,7 @@ export default class Radar3 extends Vue {
     radius: 300,
     dark: this.darkMode
   }
+
   constructor () {
     super()
     this.chart = new SkillradarChart(this.radarConfig)
@@ -123,6 +125,7 @@ export default class Radar3 extends Vue {
       this.$store.dispatch('intro/event', 'radar-editable')
     }
   }
+
   @Watch('isLoading')
   onDoneLoading (_oldValue: boolean, newValue: boolean) {
     if (newValue === true) {

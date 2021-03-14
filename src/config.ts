@@ -40,25 +40,31 @@ const config = { // needs to be ES6 module so it can be imported by webpack
     id: 'UA-XYZ'
   },
   footer: [
-    { text: 'by Andreas Offenhaeuser',
-      link: '//anoff.io' },
-    { text: 'Blog',
-      link: '//blog.anoff.io' },
-    { text: 'Legal',
-      link: '//anoff.github.io/legal' }
+    {
+      text: 'by Andreas Offenhaeuser',
+      link: '//anoff.io'
+    },
+    {
+      text: 'Blog',
+      link: '//blog.anoff.io'
+    },
+    {
+      text: 'Legal',
+      link: '//anoff.github.io/legal'
+    }
   ],
   radarDefault: {
-    categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],
-    levels: [ 'Novice', 'Intermediate', 'Advanced', 'Veteran' ],
+    categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'],
+    levels: ['Novice', 'Intermediate', 'Advanced', 'Veteran'],
     isPublic: true
   },
-  isUnderTest: (!!window['Cypress'])
+  isUnderTest: (!!(window as any).Cypress)
 }
 
 // precalculate some properties for later
 config.routes = config.routes
   .map(i => {
-    i['rootPath'] = i.path.split(':')[0] // path property without a potential query param
+    (i as any).rootPath = i.path.split(':')[0] // path property without a potential query param
     return i
   })
 

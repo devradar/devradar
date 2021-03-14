@@ -29,7 +29,6 @@ const actions = (router: Router, appConfig: any): ActionTree<BlipsState, RootSta
     // populate with blip info
     commit('dropBlips')
     response.blips.forEach(b => {
-      // @ts-ignore type checking of docs property
       const blip = cleanBlip(b)
       blip.id = getUUID()
       commit('addBlip', blip)
@@ -57,14 +56,14 @@ const actions = (router: Router, appConfig: any): ActionTree<BlipsState, RootSta
         return c
       })
       .map(cleanChange)
-    const newBlip = {
+    const newBlip: Blip = {
       title,
       category,
       link,
       level,
-      changes
+      changes,
+      id: getUUID()
     }
-    newBlip['id'] = getUUID()
     commit('addBlip', newBlip)
     commit('setLoading', false)
   },

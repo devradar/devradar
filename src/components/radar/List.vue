@@ -92,10 +92,11 @@ import { Blip, BlipChange, User } from '@/types/domain'
 export default class List extends Vue {
   @Prop({ default: '' })
   radarId: string
+
   newChangeBlip: Blip
-  searchTitle: string = ''
-  maxMonths: number = 0
-  newChangeModalVisible: boolean = false
+  searchTitle = ''
+  maxMonths = 0
+  newChangeModalVisible = false
 
   // computed
   blips: Blip[]

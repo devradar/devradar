@@ -169,14 +169,14 @@ import Octocat from '@/components/app/Octocat.vue'
   components: { CookieLaw, Login, LoadingIndicator, Intro, Octocat }
 })
 export default class App extends Vue {
-  showNavdrawer: boolean = false
+  showNavdrawer = false
   darkMode: boolean = appConfig.theme.dark
   footerEntries: object[] = appConfig.footer
   toolbarItemsRouter: object[] = []
   toolbarMenuItemsRouter: object[] = []
   toolbarItemsStatic: object[] = []
   toolbarMenuItemsStatic: object[] = []
-  loginModalVisible: boolean = false
+  loginModalVisible = false
 
   // computed
   meta: Meta
@@ -200,7 +200,7 @@ export default class App extends Vue {
       })
       .map(i => {
         if (i.path) {
-          i['updatedPath'] = i.path
+          (i as any).updatedPath = i.path
             .replace(':radarId', this.radarAlias || this.radarId)
             .replace('/:mode?', '')
         }

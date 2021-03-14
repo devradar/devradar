@@ -66,7 +66,8 @@ import { RadarTabState } from '@/types/domain'
 export default class Radar extends Vue {
   @Prop({ default: '' })
   radarId: string
-  tab: number = 0
+
+  tab = 0
 
   // computed
   activeTabName: RadarTabState

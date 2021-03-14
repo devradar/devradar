@@ -105,15 +105,15 @@ import { VForm } from '@/types/misc'
 })
 
 export default class NewBlip extends Vue {
-  valid: boolean = false
-  fab: boolean = false
-  dialog: boolean = false
-  category: string = ''
-  level: string = ''
-  title: string = ''
-  link: string = ''
-  description: string = ''
-  changeText: string = ''
+  valid = false
+  fab = false
+  dialog = false
+  category = ''
+  level = ''
+  title = ''
+  link = ''
+  description = ''
+  changeText = ''
   // computed
   blip: Blip
   change: BlipChange

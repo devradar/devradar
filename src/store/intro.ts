@@ -9,7 +9,7 @@ import router from '@/router'
 const steps = [
   { // 0
     target: '[data-tour-login="true"]',
-    content: `Start your <strong>devradar journey</strong> by logging in with your GitHub/Twitter/Google Account.`,
+    content: 'Start your <strong>devradar journey</strong> by logging in with your GitHub/Twitter/Google Account.',
     transition: 'radar-editable'
   },
   {
@@ -103,7 +103,7 @@ const steps = [
 let tour // store reference to $tours object
 const actions: ActionTree<IntroState, RootState> = {
   setTourObject (_context, app): void {
-    tour = app['$tours'].intro
+    tour = app.$tours.intro
   },
   startIntro ({ commit, rootGetters }): void {
     commit('setActive', true)
