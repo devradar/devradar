@@ -6,7 +6,8 @@ import { RootState, BlipsState } from '@/types/vuex'
 import radarAliases from '../mock-data/radarAliases'
 import radars from '../mock-data/radars'
 
-const actions = (router: Router, appConfig: any): ActionTree<BlipsState, RootState> => ({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const actions = (router: Router, _appConfig: never): ActionTree<BlipsState, RootState> => ({
   // return the devradar ID for a given alias (also returns ID if input is already a valid ID)
   async followRadarAlias (_context, alias: string): Promise<string> {
     if (radars[alias]) {
@@ -29,7 +30,6 @@ const actions = (router: Router, appConfig: any): ActionTree<BlipsState, RootSta
     // populate with blip info
     commit('dropBlips')
     response.blips.forEach(b => {
-      // @ts-ignore type checking of docs property
       const blip = cleanBlip(b)
       blip.id = getUUID()
       commit('addBlip', blip)
@@ -57,14 +57,14 @@ const actions = (router: Router, appConfig: any): ActionTree<BlipsState, RootSta
         return c
       })
       .map(cleanChange)
-    const newBlip = {
+    const newBlip: Blip = {
       title,
       category,
       link,
       level,
-      changes
+      changes,
+      id: getUUID()
     }
-    newBlip['id'] = getUUID()
     commit('addBlip', newBlip)
     commit('setLoading', false)
   },

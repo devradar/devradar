@@ -61,18 +61,18 @@ import { VForm } from '@/types/misc'
 })
 
 export default class NewChange extends Vue {
-  valid: boolean = false
-  dialog: boolean = true
-  level: string = ''
+  valid = false
+  dialog = true
+  level = ''
   date: string = new Date().toISOString().slice(0, 7)
-  changeText: string = ''
+  changeText = ''
   // computed
   change: BlipChange
   levels: string[]
   form: VForm
 
   @Emit()
-  submit () {
+  submit () : BlipChange {
     if (this.form.validate()) {
       this.$store.dispatch('intro/event', 'blip-history-submit')
       setTimeout(() => this.reset(), 100)
@@ -81,12 +81,12 @@ export default class NewChange extends Vue {
   }
 
   @Emit()
-  cancel () {
+  cancel () : BlipChange {
     setTimeout(() => this.reset(), 100)
     return this.change
   }
 
-  reset () {
+  reset () : void {
     this.level = null
     this.date = new Date().toISOString().slice(0, 7)
     this.changeText = null

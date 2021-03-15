@@ -3,8 +3,8 @@ export default {
   rick: {
     meta: {
       title: 'Sanchez Skills',
-      categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],
-      levels: [ 'Novice', 'Intermediate', 'Advanced', 'Veteran' ],
+      categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'],
+      levels: ['Novice', 'Intermediate', 'Advanced', 'Veteran'],
       isPublic: true,
       owner: 'rickUserUid'
     },
@@ -63,11 +63,11 @@ export default {
   morty: {
     meta: {
       title: 'Morty Skills',
-      categories: [ 'Tools', 'Techniques', 'Platforms', 'Frameworks' ],
-      levels: [ 'Novice', 'Intermediate', 'Advanced', 'Veteran' ],
+      categories: ['Tools', 'Techniques', 'Platforms', 'Frameworks'],
+      levels: ['Novice', 'Intermediate', 'Advanced', 'Veteran'],
       isPublic: true,
       owner: 'mortyUserUid'
     },
-    blips: [ ]
+    blips: []
   }
 }

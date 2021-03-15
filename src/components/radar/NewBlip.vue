@@ -105,15 +105,15 @@ import { VForm } from '@/types/misc'
 })
 
 export default class NewBlip extends Vue {
-  valid: boolean = false
-  fab: boolean = false
-  dialog: boolean = false
-  category: string = ''
-  level: string = ''
-  title: string = ''
-  link: string = ''
-  description: string = ''
-  changeText: string = ''
+  valid = false
+  fab = false
+  dialog = false
+  category = ''
+  level = ''
+  title = ''
+  link = ''
+  description = ''
+  changeText = ''
   // computed
   blip: Blip
   change: BlipChange
@@ -122,12 +122,12 @@ export default class NewBlip extends Vue {
   levels: string[]
   form: VForm
 
-  addButtonClick () {
+  addButtonClick () : void {
     this.$store.dispatch('intro/event', 'add-blip-open')
     this.dialog = true
   }
 
-  submit () {
+  submit () : void {
     if (this.form.validate()) {
       this.$store.dispatch('intro/event', 'add-blip-submit')
       this.$store.dispatch('blips/addBlip', Object.assign(this.blip, { changes: [this.change] }))
@@ -136,12 +136,12 @@ export default class NewBlip extends Vue {
     }
   }
 
-  cancel () {
+  cancel () : void {
     this.dialog = false
     this.clear()
   }
 
-  clear () {
+  clear () : void {
     this.category = ''
     this.level = ''
     this.title = ''

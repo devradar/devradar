@@ -47,7 +47,7 @@ import appConfig from '@/config'
     blips () {
       return this.$store.getters['blips/blipsWithIndex']
         .map(b => {
-          b['detailsUrl'] = `/#/@${this.radarId}/history?q=${b.title}`
+          b.detailsUrl = `/#/@${this.radarId}/history?q=${b.title}`
           return b
         })
     }
@@ -56,6 +56,7 @@ import appConfig from '@/config'
 export default class Radar3 extends Vue {
   @Prop({ default: '' })
   radarId: string
+
   chart: SkillradarChart
   darkMode: boolean = appConfig.theme.dark
 
@@ -73,12 +74,13 @@ export default class Radar3 extends Vue {
     radius: 300,
     dark: this.darkMode
   }
+
   constructor () {
     super()
     this.chart = new SkillradarChart(this.radarConfig)
   }
 
-  public renderChart () {
+  public renderChart () : void {
     const data: SkillradarData = {
       items: this.blips,
       levels: this.meta.levels,
@@ -93,7 +95,7 @@ export default class Radar3 extends Vue {
     this.chart.drawChart('#radarchart', data)
   }
 
-  mounted () {
+  mounted () : void {
     if (this.isLoaded) {
       this.renderChart()
     }
@@ -107,24 +109,25 @@ export default class Radar3 extends Vue {
   }
 
   @Watch('blips')
-  onBlipsChanged () {
+  onBlipsChanged () : void {
     this.renderChart()
   }
 
   @Watch('meta')
-  onMetaChanged () {
+  onMetaChanged () : void {
     this.renderChart()
   }
 
   @Watch('userCanEdit')
-  onUserChange () {
+  onUserChange () : void {
   // fire on user change if radar was load prior to login
     if (this.userCanEdit) {
       this.$store.dispatch('intro/event', 'radar-editable')
     }
   }
+
   @Watch('isLoading')
-  onDoneLoading (_oldValue: boolean, newValue: boolean) {
+  onDoneLoading (_oldValue: boolean, newValue: boolean) : void {
     if (newValue === true) {
       this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }

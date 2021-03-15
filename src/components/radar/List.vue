@@ -92,10 +92,11 @@ import { Blip, BlipChange, User } from '@/types/domain'
 export default class List extends Vue {
   @Prop({ default: '' })
   radarId: string
+
   newChangeBlip: Blip
-  searchTitle: string = ''
-  maxMonths: number = 0
-  newChangeModalVisible: boolean = false
+  searchTitle = ''
+  maxMonths = 0
+  newChangeModalVisible = false
 
   // computed
   blips: Blip[]
@@ -105,7 +106,7 @@ export default class List extends Vue {
   ownerId: string
   user: User
 
-  searchUpdated () {
+  searchUpdated () : void {
     if (this.searchTitle) {
       router.replace({ path: `/@${this.radarId}/history`, query: { q: this.searchTitle } })
     } else {
@@ -113,24 +114,24 @@ export default class List extends Vue {
     }
   }
 
-  newChangeOpen (blipId) {
+  newChangeOpen (blipId : string) : void {
     this.newChangeBlip = this.blips.find(b => b.id === blipId)
     this.newChangeModalVisible = true
     this.$store.dispatch('intro/event', 'blip-history-open')
   }
 
-  newChangeSubmit (change: BlipChange) {
+  newChangeSubmit (change: BlipChange) : void {
     this.$store.dispatch('blips/addChange', { blip: this.newChangeBlip, change })
     this.newChangeModalVisible = false
     this.newChangeBlip = null
   }
 
-  newChangeCancel () {
+  newChangeCancel () : void {
     this.newChangeBlip = null
     this.newChangeModalVisible = false
   }
 
-  mounted () {
+  mounted () : void {
     if (!this.isLoading) {
       this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }
@@ -142,7 +143,7 @@ export default class List extends Vue {
   }
 
   @Watch('isLoading')
-  onDoneLoading (_oldValue: boolean, newValue: boolean) {
+  onDoneLoading (_oldValue: boolean, newValue: boolean) : void {
     if (newValue === true) {
       this.$store.dispatch('blips/getRadarLazy', this.radarId)
     }

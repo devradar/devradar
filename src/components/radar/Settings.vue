@@ -169,8 +169,8 @@ import TOML, { JsonMap } from '@iarna/toml'
 import { mapGetters } from 'vuex'
 import { Blip, Meta } from '@/types/domain'
 
-function saveAs (filename, text) {
-  var element = document.createElement('a')
+function saveAs (filename, text) : void {
+  const element = document.createElement('a')
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
   element.setAttribute('download', filename)
 
@@ -180,7 +180,7 @@ function saveAs (filename, text) {
   document.body.removeChild(element)
 }
 
-function stripIds (blip) {
+function stripIds (blip) : Blip {
   blip.changes.map(c => {
     delete c.id
     return c
@@ -213,22 +213,23 @@ function stripIds (blip) {
 })
 export default class Settings extends Vue {
   // local data
-  contentToml: string = ''
-  uploadFile: any = null
-  rules: object = {
-    level: [val => (val || '').length > 0 || 'Level name cannot be empty'],
-    category: [val => (val || '').length > 0 || 'Category name cannot be empty'],
-    title: [val => (val || '').length > 0 || 'Title cannot be empty'],
-    alias: [val => this.aliasAvailable(val) || 'Alias must be unique'] // TODO: implement uniqueness check
+  contentToml = ''
+  uploadFile = ''
+  rules: Record<string, unknown> = {
+    level: [(val : string) => (val || '').length > 0 || 'Level name cannot be empty'],
+    category: [(val : string) => (val || '').length > 0 || 'Category name cannot be empty'],
+    title: [(val : string) => (val || '').length > 0 || 'Title cannot be empty'],
+    alias: [(val : string) => this.aliasAvailable(val) || 'Alias must be unique'] // TODO: implement uniqueness check
   }
+
   tmpLevels: string[] = []
-  tmpLevelsDirty: boolean = false
+  tmpLevelsDirty = false
   tmpCategories: string[] = []
-  tmpCategoriesDirty: boolean = false
-  tmpTitle: string = ''
-  tmpTitleDirty: boolean = false
-  tmpAlias: string = ''
-  tmpAliasDirty: boolean = false
+  tmpCategoriesDirty = false
+  tmpTitle = ''
+  tmpTitleDirty = false
+  tmpAlias = ''
+  tmpAliasDirty = false
   tmpAliasErrors: string[] = []
 
   // computed
@@ -238,8 +239,8 @@ export default class Settings extends Vue {
   radarAlias: string
   radarId: string
 
-  generateToml () {
-    const obj: object = {
+  generateToml () : void {
+    const obj: Record<string, unknown> = {
       meta: this.meta,
       blips: this.blipsClean
     }
@@ -248,7 +249,7 @@ export default class Settings extends Vue {
   }
 
   // move content from view to vuex
-  loadContent () {
+  loadContent () : void {
     try {
       const obj = TOML.parse(this.contentToml)
       this.$store.dispatch('blips/setMeta', obj.meta)
@@ -260,7 +261,7 @@ export default class Settings extends Vue {
     }
   }
 
-  uploadToml (file) {
+  uploadToml (file : Blob) : void {
     const reader = new FileReader()
     if (file) {
       reader.addEventListener('load', () => {
@@ -272,11 +273,11 @@ export default class Settings extends Vue {
     }
   }
 
-  downloadToml () {
+  downloadToml () : void {
     saveAs(`devradar-${this.meta.title.replace(/[^a-zA-Z0-9 _-]/g, '')}.toml`, this.contentToml)
   }
 
-  saveMeta (type) {
+  saveMeta (type : string) : void {
     let content
     switch (type) {
       case 'categories':
@@ -303,13 +304,13 @@ export default class Settings extends Vue {
     this.$store.dispatch('comm/showSnackbar', `updated ${type} metadata`)
   }
 
-  saveAlias () {
+  saveAlias () : void {
     this.$store.dispatch('blips/setRadarAlias', { alias: this.tmpAlias, radarId: this.radarId })
     this.$store.dispatch('comm/showSnackbar', `updated your devradar alias to: ${this.tmpAlias}`)
     this.tmpAliasDirty = false
   }
 
-  reload () {
+  reload () : void {
     this.tmpLevels = Array.from(this.meta.levels)
     this.tmpCategories = Array.from(this.meta.categories)
     this.tmpTitle = this.meta.title
@@ -317,11 +318,12 @@ export default class Settings extends Vue {
     this.generateToml()
   }
 
-  aliasAvailable (value: string) {
+  aliasAvailable (value: string) : boolean {
     return value !== null
   }
+
   @Watch('tmpAlias')
-  async tmpAliasKeydown (newValue: string) {
+  async tmpAliasKeydown (newValue: string) : Promise<void> {
     this.tmpAliasDirty = true
     this.tmpAliasErrors = []
     if (!/^[a-zA-Z0-9-_ ]+$/.test(newValue)) {
@@ -334,15 +336,16 @@ export default class Settings extends Vue {
   }
 
   @Emit()
-  close () {
+  close () : number {
     return 0
   }
 
-  mounted () {
+  mounted () : void {
     this.reload()
   }
+
   @Watch('radarAlias')
-  radarAliasUpdate () {
+  radarAliasUpdate () : void {
     this.reload()
   }
 }

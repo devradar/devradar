@@ -169,14 +169,14 @@ import Octocat from '@/components/app/Octocat.vue'
   components: { CookieLaw, Login, LoadingIndicator, Intro, Octocat }
 })
 export default class App extends Vue {
-  showNavdrawer: boolean = false
+  showNavdrawer = false
   darkMode: boolean = appConfig.theme.dark
-  footerEntries: object[] = appConfig.footer
-  toolbarItemsRouter: object[] = []
-  toolbarMenuItemsRouter: object[] = []
-  toolbarItemsStatic: object[] = []
-  toolbarMenuItemsStatic: object[] = []
-  loginModalVisible: boolean = false
+  footerEntries: Record<string, unknown>[] = appConfig.footer
+  toolbarItemsRouter: Record<string, unknown>[] = []
+  toolbarMenuItemsRouter: Record<string, unknown>[] = []
+  toolbarItemsStatic: Record<string, unknown>[] = []
+  toolbarMenuItemsStatic: Record<string, unknown>[] = []
+  loginModalVisible = false
 
   // computed
   meta: Meta
@@ -188,7 +188,7 @@ export default class App extends Vue {
     text: string;
   };
 
-  updateToolbarItems () {
+  updateToolbarItems () : void {
     const routes = appConfig.routes
       .filter(i => i.validator(this.user))
       .filter(i => {
@@ -200,7 +200,7 @@ export default class App extends Vue {
       })
       .map(i => {
         if (i.path) {
-          i['updatedPath'] = i.path
+          (i as any).updatedPath = i.path
             .replace(':radarId', this.radarAlias || this.radarId)
             .replace('/:mode?', '')
         }
@@ -218,7 +218,7 @@ export default class App extends Vue {
       .filter(i => i.location.includes('toolbar-menu'))
   }
 
-  handleNavClick (item) {
+  handleNavClick (item) : void {
     if (item.url) {
       window.open(item.url, '_blank')
     } else if (item.action) {
@@ -226,14 +226,14 @@ export default class App extends Vue {
     }
   }
 
-  mounted () {
+  mounted () : void {
     this.updateToolbarItems()
   }
 
   @Watch('radarId')
   @Watch('radarAlias')
   @Watch('user')
-  radarIdChange () {
+  radarIdChange () : void {
     this.updateToolbarItems()
   }
 }

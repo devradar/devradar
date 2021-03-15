@@ -102,7 +102,7 @@ context('Radar metadata', () => {
       cy.get('.radar-legend > .legendCategory.category-0').should('have.text', field0)
       cy.get('.radar-legend > .legendCategory.category-1').should('have.text', field1)
       cy.get('.radar-legend > .legendCategory.category-2').should('have.text', field2)
-      cy.get('.radar-legend > .legendCategory.category-3').should('have.text', field3
+      cy.get('.radar-legend > .legendCategory.category-3').should('have.text', field3)
     })
   })
 })

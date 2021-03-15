@@ -17,7 +17,7 @@ const mutations: MutationTree<UserState> = {
   setUser (state: UserState, payload: User) {
     state.user = payload
   },
-  setUserList (state: UserState, users: object) {
+  setUserList (state: UserState, users: Record<string, unknown>) {
     state.userList = users
   },
   exchangeUser (state: UserState, user: User) {
@@ -54,7 +54,7 @@ const getters: GetterTree<UserState, RootState> = {
   }
 }
 
-export const user = (backend): Module<UserState, RootState> => {
+export const user = (backend : any): Module<UserState, RootState> => {
   return {
     namespaced: true,
     state,

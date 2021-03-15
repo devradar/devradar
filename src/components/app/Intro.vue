@@ -51,7 +51,7 @@ export default class App extends Vue {
   // computed
   steps: any[]
 
-  mounted () {
+  mounted () : void {
     this.$store.dispatch('intro/setTourObject', this) // make sure the vuex statemachine has access to to the $tours object
   }
 }

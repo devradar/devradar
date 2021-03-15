@@ -35,7 +35,9 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    ".eslintrc.js",
+    "*.config.js",
   ],
   "exclude": [
     "node_modules"

@@ -116,7 +116,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import MarkdownIt from 'markdown-it'
 import appConfig from '@/config'
-import { Blip as IBlip, Meta } from '@/types/domain'
+import { Blip as IBlip, BlipChange, Meta } from '@/types/domain'
 
 const md = new MarkdownIt()
 @Component({
@@ -130,10 +130,10 @@ const md = new MarkdownIt()
   }
 })
 export default class Blip extends Vue {
-  isEditMode: boolean = false
+  isEditMode = false
   tempBlip: IBlip
-  isDeleteMode: boolean = false
-  showChangeDialog: boolean = false
+  isDeleteMode = false
+  showChangeDialog = false
   blipForChange: IBlip
   blipTitleCutOff: number = appConfig.blips.titleCutOff
   darkMode: boolean = appConfig.theme.dark
@@ -144,21 +144,21 @@ export default class Blip extends Vue {
   @Prop()
   blip: IBlip
 
-  deleteBlip () {
+  deleteBlip () : void {
     this.$store.dispatch('blips/deleteBlip', this.blip)
   }
 
-  addChange () {
+  addChange () : void {
     if (!this.userCanEdit) return
     this.$emit('addChange', this.blip.id)
   }
 
-  editBlip () {
+  editBlip () : void {
     this.tempBlip = { ...this.blip }
     this.isEditMode = true
   }
 
-  saveBlip () {
+  saveBlip () : void {
     const updatedBlip = this.tempBlip
     updatedBlip.changes = this.blip.changes // update in case changes were deleted
     this.isEditMode = false
@@ -166,16 +166,16 @@ export default class Blip extends Vue {
     this.isDeleteMode = false
   }
 
-  cancelEditBlip () {
+  cancelEditBlip () : void {
     this.isEditMode = false
     this.isDeleteMode = false
   }
 
-  deleteChange (blip, change) {
+  deleteChange (blip : Blip, change : BlipChange) : void {
     this.$store.dispatch('blips/deleteChange', { blip, change })
   }
 
-  markdown (string = '') {
+  markdown (string = '') : string {
     if (!string || string.length === 0) return ''
     return md.render(string)
   }
