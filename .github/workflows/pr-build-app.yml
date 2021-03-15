@@ -8,7 +8,7 @@ defaults:
 
 jobs:
   test-lint-eslint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -21,7 +21,7 @@ jobs:
       name: eslint/standard
 
   test-lint-tsc:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -34,7 +34,7 @@ jobs:
       name: tsc build
 
   test-e2e-volatile:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
@@ -55,7 +55,7 @@ jobs:
         command: npm run test:e2e:run
 
   test-e2e-firebase:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
       VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_E2E_PROJECT }}

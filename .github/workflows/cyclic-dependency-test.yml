@@ -9,6 +9,7 @@ defaults:
 
 jobs:
   ncu-doctor:
+    runs-on: ubuntu-20.04
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
     steps:
