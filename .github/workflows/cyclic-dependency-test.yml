@@ -1,0 +1,23 @@
+name: 'Weekly dependency test'
+on:
+  schedule:
+    - cron:  '0 4 * * 4' # every thursday night
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  ncu-doctor:
+    env:
+      VUE_APP_BACKEND_TYPE: 'testVolatile'
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - run: |
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+        npm install -g npm-check-updates
+      name: configure environment
+    - run: ncu --doctor --upgrade --minimal

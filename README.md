@@ -33,7 +33,7 @@ Any developer can easily create their own devradar for free.
 
 ## License & Attributions
 
-Copyright 2019 - 2020 Andreas Offenhaeuser <https://anoff.io>
+Copyright 2019 - 2021 Andreas Offenhaeuser <https://anoff.io>
 
 This code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.
 
