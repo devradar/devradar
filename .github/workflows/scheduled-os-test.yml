@@ -12,9 +12,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-20.04]
+        os: [macos-10.15, windows-2019, ubuntu-20.04]
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
+      CYPRESS_RETRIES: 3
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -24,9 +25,6 @@ jobs:
       name: add auth token for npm packages
     - run: npm ci
     - run: npm run build
-    - uses: nick-invision/retry@v2
-      name: End-To-End tests on ${{ matrix.os }} w/ local backend
-      with:
-        timeout_minutes: 20
-        max_attempts: 3
-        command: npm run test:e2e:run
+    - name: End-To-End tests on ${{ matrix.os }} w/ local backend
+      timeout-minutes: 20
+      run: npm run test:e2e:run
