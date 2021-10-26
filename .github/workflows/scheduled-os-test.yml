@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-10.15, windows-2019, ubuntu-20.04]
+        os: [macos-11, windows-2019, ubuntu-20.04]
     env:
       VUE_APP_BACKEND_TYPE: 'testVolatile'
       CYPRESS_RETRIES: 3
