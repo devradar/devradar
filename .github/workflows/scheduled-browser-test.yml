@@ -14,7 +14,7 @@ jobs:
       matrix:
         browser: [chrome, firefox, electron]
     container: # run in container to have specific versions of browsers available
-      image: cypress/browsers:node14.15.0-chrome86-ff82 # full list at https://github.com/cypress-io/cypress-docker-images/tree/master/browsers
+      image: cypress/browsers:node16.5.0-chrome94-ff93 # full list at https://github.com/cypress-io/cypress-docker-images/tree/master/browsers
       options: --ipc=host --user 1001 # see [firefox restriction](https://github.com/cypress-io/github-action#firefox)
       env:
         VUE_APP_BACKEND_TYPE: 'testVolatile'
@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: 14
+        node-version: 16
     - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
       name: add auth token for npm packages
     - run: npm ci
