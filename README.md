@@ -19,6 +19,9 @@
 
 # Roadmap
 
+At the moment devradar is kind of stale.
+There is not much active development, but I try to keep its dependencies up to date.
+
 The current development goal of [devradar 1.0](https://github.com/devradar/devradar/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0) is to provide the devradar editor experience as a hosted service.
 Any developer can easily create their own devradar for free.
 
@@ -26,10 +29,10 @@ Any developer can easily create their own devradar for free.
 
 | Milestone | Feature Focus | Release |
 |----|-----|-----|
-| [1.0](https://github.com/devradar/devradar/milestone/1) | Hosted service for Editor | 2020-Q3 |
-| [1.x](https://github.com/devradar/devradar/milestone/2) | Smaller feature adds | 2020-Q4 |
-| [2.0](https://github.com/devradar/devradar/milestone/3) | Competence management for teams | 2021 |
-| [2.x](https://github.com/devradar/devradar/milestone/4) | Bigger feature changes like internationalization | 2021 |
+| [1.0](https://github.com/devradar/devradar/milestone/1) | Hosted service for Editor | ? |
+| [1.x](https://github.com/devradar/devradar/milestone/2) | Smaller feature adds | ? |
+| [2.0](https://github.com/devradar/devradar/milestone/3) | Competence management for teams | ? |
+| [2.x](https://github.com/devradar/devradar/milestone/4) | Bigger feature changes like internationalization | ? |
 
 ## License & Attributions
 
