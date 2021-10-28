@@ -64,6 +64,15 @@ jobs:
         max_attempts: 2
         command: npm run test:e2e:run
 
+  unique_id:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate unique id
+        id: unique_id
+        run: echo "::set-output name=id::$(uuidgen)"
+    outputs:
+      unique_id: ${{ steps.unique_id.outputs.id }}
+
   test-e2e-firebase:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' # run only on master to make sure badge works and records are not wasted
     runs-on: ubuntu-20.04
@@ -74,6 +83,7 @@ jobs:
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
       CYPRESS_RETRIES: 2
       FIREBASE_SERVICEACCOUNT: ${{ secrets.FIREBASE_E2E_ACCOUNTKEY }}
+      CI_UNIQUE_ID: ${GITHUB_SHA}-${{needs.unique_id.outputs.unique_id}}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
