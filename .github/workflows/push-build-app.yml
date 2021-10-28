@@ -74,7 +74,7 @@ jobs:
       unique_id: ${{ steps.unique_id.outputs.id }}
 
   test-e2e-firebase:
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/master' # run only on master to make sure badge works and records are not wasted
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' # run only on master to make sure badge works and records are not wasted
     runs-on: ubuntu-20.04
     needs: [unique_id]
     env:
