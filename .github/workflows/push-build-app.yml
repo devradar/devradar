@@ -76,6 +76,7 @@ jobs:
   test-e2e-firebase:
     # if: github.event_name == 'push' && github.ref == 'refs/heads/master' # run only on master to make sure badge works and records are not wasted
     runs-on: ubuntu-20.04
+    needs: [unique_id]
     env:
       VUE_APP_BACKEND_TYPE: 'firebase'
       VUE_APP_BACKEND_PROJECT: ${{ secrets.FIREBASE_E2E_PROJECT }}
@@ -105,7 +106,7 @@ jobs:
         command: npm run build
     - name: cypress tests w/ firebase backend
       run: |
-        echo $ {{ env.CI_UNIQUE_ID }}
+        echo unique ID is: ${CI_UNIQUE_ID}
         npm run test:e2e:ci:firebase:record # cypress key provided via CYPRESS_RECORD_KEY env variable
 
   firebase-deploy:
