@@ -1,6 +1,5 @@
 name: 'Cross-Browser Test'
 on:
-  push:
   schedule:
     - cron:  '0 2 * * *' # UTC time
 
