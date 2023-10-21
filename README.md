@@ -17,26 +17,15 @@
 [![Cross-OS Test](https://github.com/devradar/devradar/workflows/Cross-OS%20Test/badge.svg)](https://github.com/devradar/devradar/actions?query=workflow%3A%22Cross-OS+Test%22)
 [![Cross-Browser Test](https://github.com/devradar/devradar/workflows/Cross-Browser%C2%A0Test/badge.svg)](https://github.com/devradar/devradar/actions?query=workflow%3ACross-Browser%C2%A0Test)
 
-# Roadmap
+# ⚠️ Abandoned
 
-At the moment devradar is kind of stale.
-There is not much active development, but I try to keep its dependencies up to date.
-
-The current development goal of [devradar 1.0](https://github.com/devradar/devradar/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0) is to provide the devradar editor experience as a hosted service.
-Any developer can easily create their own devradar for free.
-
-> 📢 If you have any requests for features please open an [issue](https://github.com/devradar/devradar/issues) or join the [gitter chat](https://gitter.im/devradar/discuss).
-
-| Milestone | Feature Focus | Release |
-|----|-----|-----|
-| [1.0](https://github.com/devradar/devradar/milestone/1) | Hosted service for Editor | ? |
-| [1.x](https://github.com/devradar/devradar/milestone/2) | Smaller feature adds | ? |
-| [2.0](https://github.com/devradar/devradar/milestone/3) | Competence management for teams | ? |
-| [2.x](https://github.com/devradar/devradar/milestone/4) | Bigger feature changes like internationalization | ? |
+Even though I love the project I currently do not have time to work on it.
+Most dependencies are outdated since over a year and I have not taken care of any issues.
+There are a lot of bad design flaws in this Vue application that make it difficult to maintain.
 
 ## License & Attributions
 
-Copyright 2019 - 2021 Andreas Offenhaeuser <https://anoff.io>
+Copyright 2019 - 2023 Andreas Offenhaeuser <https://anoff.io>
 
 This code is licensed under [MIT](LICENSE) see [tl;dr; legal](https://tldrlegal.com/license/mit-license) for a quick overview of what this means.
 
