@@ -2,7 +2,7 @@ name: 'Create housekeeping issues'
 
 on:
   schedule:
-  - cron:  '0 10 1 */2 *' # run every second month
+  # - cron:  '0 10 1 */2 *' # run every second month
 
 jobs:
   create-issues:

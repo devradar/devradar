@@ -1,7 +1,7 @@
 name: 'Cross-OS Test'
 on:
   schedule:
-    - cron:  '0 2 * * *' # UTC time
+    # - cron:  '0 2 * * *' # UTC time
 
 defaults:
   run:
