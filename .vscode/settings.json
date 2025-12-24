@@ -1,0 +1,11 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode", // Default to Prettier for everything...
+    // ...EXCEPT Go
+    "[go]": {
+        "editor.defaultFormatter": "golang.go"
+    },
+    "[go.mod]": {
+        "editor.defaultFormatter": "golang.go"
+    }
+}

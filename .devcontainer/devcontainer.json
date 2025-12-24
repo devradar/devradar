@@ -1,0 +1,42 @@
+// .devcontainer/devcontainer.json
+{
+    "name": "Go + React + Postgres",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspace",
+    // "Features" are essentially plugins that install tools for you
+    "features": {
+        "ghcr.io/devcontainers/features/go:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        },
+        // Installs common utils like curl, git, etc.
+        "ghcr.io/devcontainers/features/common-utils:2": {}
+    },
+    // Expose ports: Go (8080), Vite (5173), Postgres (5432)
+    "forwardPorts": [
+        8080,
+        5173,
+        5432
+    ],
+    // Configure VS Code extensions to install automatically
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "golang.go",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "tamasfe.even-better-toml", // for config files
+                "cweijan.vscode-postgresql-client2" // GUI for Postgres inside VS Code
+            ]
+        }
+    },
+    // Run this command once when the container is created
+    // Useful to install dependencies automatically
+    // "postCreateCommand": "go mod download && cd web && npm install",
+    // Connect as a non-root user (good practice)
+    "remoteUser": "vscode",
+    "postCreateCommand": "npm install -g typescript && go mod download"
+}

@@ -1,0 +1,23 @@
+services:
+  app:
+    # We use a base OS image because we will install Go and Node via "Features"
+    image: mcr.microsoft.com/devcontainers/base:bullseye
+    volumes:
+      # Mounts your project root into the container
+      - ../:/workspace:cached
+    # Keep the container running indefinitely so VS Code can attach
+    command: sleep infinity
+    network_mode: service:db # Trick: Share network namespace with DB for easy access via "localhost"
+
+  db:
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

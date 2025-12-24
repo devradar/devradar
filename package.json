@@ -1,0 +1,24 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">   <img src=\"assets/logo-text.png\">   <br>   Track and present your skills as developer.   Actively manage team competencies as leader. </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devradar/devradar.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/devradar/devradar/issues"
+  },
+  "homepage": "https://github.com/devradar/devradar#readme",
+  "devDependencies": {
+    "prettier": "^3.7.4"
+  }
+}
