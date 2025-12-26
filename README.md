@@ -17,6 +17,42 @@
 [![Cross-OS Test](https://github.com/devradar/devradar/workflows/Cross-OS%20Test/badge.svg)](https://github.com/devradar/devradar/actions?query=workflow%3A%22Cross-OS+Test%22)
 [![Cross-Browser Test](https://github.com/devradar/devradar/workflows/Cross-Browser%C2%A0Test/badge.svg)](https://github.com/devradar/devradar/actions?query=workflow%3ACross-Browser%C2%A0Test)
 
+## 🏗️ Architecture
+
+```mermaid
+graph TB
+  subgraph "Client Browser"
+      FE[React Frontend<br/>Vite + TypeScript<br/>:5173]
+  end
+
+  subgraph "Backend Services"
+      API[Go API Server<br/>Chi Router<br/>:8080]
+      SQLC[sqlc Generated Code<br/>Type-safe SQL]
+  end
+
+  subgraph "Data Layer"
+      DB[(PostgreSQL<br/>:5432)]
+      MIG[Goose Migrations<br/>Schema Management]
+  end
+
+  subgraph "Future: ML Services"
+      ML[Python API<br/>FastAPI + Scikit-learn<br/>Recommendations]
+  end
+
+  FE -->|REST API| API
+  API --> SQLC
+  SQLC -->|SQL Queries| DB
+  MIG -.->|Schema Updates| DB
+  API -.->|Future| ML
+
+  style FE fill:#61dafb,stroke:#333,color:#000
+  style API fill:#00add8,stroke:#333,color:#fff
+  style DB fill:#336791,stroke:#333,color:#fff
+  style ML fill:#ffde57,stroke:#333,color:#000
+  style SQLC fill:#00add8,stroke:#333,color:#fff
+  style MIG fill:#00add8,stroke:#333,color:#fff
+```
+
 ## 🚀 Tech Stack
 
 ### Frontend (`/web`)
@@ -39,15 +75,11 @@
 
 - Python (FastAPI + Scikit-learn)
 
----
-
 ## 🎯 Project Goals
 
 1.  **Skill Journal:** A "diary" view for users to log daily activities and link them to specific skills.
 2.  **Visual Analytics:** Graphical dashboards to visualize competence growth over time.
 3.  **Smart Recommendations:** A system that suggests new skills or activities based on the user's history and similar users' data.
-
----
 
 ## 🛠️ Development Setup
 
@@ -67,31 +99,30 @@ This project uses **VS Code Dev Containers** to ensure a consistent environment.
 
 3.  **Wait for Initialization:**
 
-4.  **Start Development Servers:**
-    Open the integrated terminal (Ctrl+`) inside VS Code.
+4.  **Use Task to do what you want**
 
-    **Terminal 1 (Backend):**
+We use [Task](https://taskfile.dev/) to automate development.
 
-    ```bash
-    # Runs the Go server with live reloading (Air)
-    # Ensure you have 'air' installed or run 'go run cmd/server/main.go'
-    go run cmd/server/main.go
-    ```
+| Command                   | Description                                                       |
+| :------------------------ | :---------------------------------------------------------------- |
+| `task setup`              | Installs Go modules and NPM packages. Run this first.             |
+| `task dev`                | Starts the **Go Backend** (:8080) and **React Frontend** (:5173). |
+| `task db:create name=foo` | Creates a new SQL migration file in `backend/db/migrations`.      |
+| `task db:up`              | Applies pending migrations to the database.                       |
+| `task generate`           | Runs `sqlc` to update Go structs based on SQL queries.            |
+| `task db:reset`           | **Destructive:** Wipes the DB and re-runs all migrations.         |
 
-    **Terminal 2 (Frontend):**
+### Typical Workflow
 
-    ```bash
-    cd web
-    npm install
-    npm run dev
-    ```
+1. **New Feature:** `task db:create name=add_comments`
+2. **Edit SQL:** Write your SQL in the new file.
+3. **Apply:** `task db:up` (This automatically runs `task generate` too!)
+4. **Code:** `task dev` and start using the new generated structs in Go.
 
-5.  **Access the App:**
-    - Frontend: [http://localhost:5173](http://localhost:5173)
-    - Backend API: [http://localhost:8080](http://localhost:8080)
-    - Database: `localhost:5432` (User: `postgres`, Pass: `postgres`, DB: `postgres`)
-
----
+5. **Access the App:**
+   - Frontend: [http://localhost:5173](http://localhost:5173)
+   - Backend API: [http://localhost:8080](http://localhost:8080)
+   - Database: `localhost:5432` (User: `postgres`, Pass: `postgres`, DB: `postgres`)
 
 ## 🗺️ Roadmap & Step Plan
 
@@ -99,22 +130,22 @@ We follow the "Tracer Bullet" methodology: building thin, complete slices of fun
 
 ### Phase 1: The Foundation (Tracer Bullet)
 
-- [ ] Set up Monorepo structure (Go + Vite).
-- [ ] Configure Dev Container with Postgres.
-- [ ] **Goal:** A `/api/health` endpoint that queries the DB and is displayed on the React frontend.
+- [x] Set up Monorepo structure (Go + Vite).
+- [x] Configure Dev Container with Postgres.
+- [x] **Goal:** A `/api/users` endpoint that queries the DB and is displayed on the React frontend.
 
-### Phase 2: Auth & Infrastructure
-
-- [ ] Implement GitHub OAuth flow (Backend-for-Frontend pattern).
-- [ ] Secure cookies (HttpOnly, SameSite).
-- [ ] Deploy "Skeleton" to Production (Railway + Vercel) to verify cross-domain cookies.
-
-### Phase 3: The Diary Core
+### Phase 2: The Diary Core
 
 - [ ] Design DB Schema (`users`, `skills`, `activities`).
 - [ ] Generate Go code with `sqlc`.
 - [ ] Build "Add Activity" form (React Hook Form + Zod).
 - [ ] Build "Activity Feed" (Infinite Scroll with React Query).
+
+### Phase 3: Auth & Infrastructure
+
+- [ ] Implement GitHub OAuth flow (Backend-for-Frontend pattern).
+- [ ] Secure cookies (HttpOnly, SameSite).
+- [ ] Deploy "Skeleton" to Production (Railway + Vercel) to verify cross-domain cookies.
 
 ### Phase 4: Visualization & Intelligence
 
@@ -122,8 +153,6 @@ We follow the "Tracer Bullet" methodology: building thin, complete slices of fun
 - [ ] Implement Charts using Recharts.
 - [ ] Spin up Python Microservice (FastAPI).
 - [ ] Implement basic recommendation algorithm.
-
----
 
 ## ☁️ Deployment Setup
 
@@ -137,19 +166,3 @@ We use a split-stack deployment strategy for cost and performance optimization.
 | **Backend**  | **Railway**           | Easy Docker deployment, runs close to the DB.                              |
 | **Database** | **Railway** (or Neon) | Managed Postgres.                                                          |
 | **DNS**      | **Custom Domain**     | Required for shared cookies (e.g., `app.domain.com` and `api.domain.com`). |
-
-### Production Environment Variables
-
-**Backend (Railway):**
-
-```env
-PORT=8080
-DATABASE_URL=postgres://...
-GO_ENV=production
-# OAuth
-GITHUB_CLIENT_ID=...
-GITHUB_CLIENT_SECRET=...
-# Security
-SESSION_SECRET=...
-FRONTEND_URL=[https://app.yourdomain.com](https://app.yourdomain.com)
-```

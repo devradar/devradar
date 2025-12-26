@@ -13,7 +13,8 @@
             "version": "lts"
         },
         // Installs common utils like curl, git, etc.
-        "ghcr.io/devcontainers/features/common-utils:2": {}
+        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/devcontainers-extra/features/go-task:1": {}
     },
     // Expose ports: Go (8080), Vite (5173), Postgres (5432)
     "forwardPorts": [
@@ -28,8 +29,9 @@
                 "golang.go",
                 "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode",
-                "tamasfe.even-better-toml", // for config files
-                "cweijan.vscode-postgresql-client2" // GUI for Postgres inside VS Code
+                "tamasfe.even-better-toml",
+                "cweijan.vscode-postgresql-client2",
+                "bierner.markdown-mermaid"
             ]
         }
     },

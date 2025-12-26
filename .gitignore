@@ -1,1 +1,3 @@
 node_modules/
+backend/tmp/
+.env

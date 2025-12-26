@@ -1,0 +1,100 @@
+version: '3'
+
+dotenv: ['.env']
+
+tasks:
+  # --- 1. SETUP & INIT ---
+  default:
+    cmds:
+      - task --list
+    silent: true
+
+  setup:
+    desc: 'Install dependencies for Go and React'
+    silent: true
+    cmds:
+      - task install:tools
+      - echo "📦 Installing Backend deps..."
+      - cd backend && go mod download
+      - echo "📦 Installing Frontend deps..."
+      - cd web && npm install
+      - echo "✅ Setup complete. Run 'task dev' to start."
+
+  install:tools:
+    desc: 'Install required Go tools (sqlc, goose, air)'
+    silent: true
+    cmds:
+      - echo "📦 Installing sqlc (via binary)..."
+      - |
+        SQLC_VERSION=$(curl -s https://api.github.com/repos/sqlc-dev/sqlc/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        curl -L -s https://github.com/sqlc-dev/sqlc/releases/download/v${SQLC_VERSION}/sqlc_${SQLC_VERSION}_linux_arm64.tar.gz | tar xz -C /tmp
+        sudo mv /tmp/sqlc /usr/local/bin/sqlc
+        sudo chmod +x /usr/local/bin/sqlc
+      - echo "📦 Installing goose..."
+      - go install github.com/pressly/goose/v3/cmd/goose@latest
+      - echo "📦 Installing air (live reload)..."
+      - go install github.com/air-verse/air@latest
+      - echo "✅ Tools installed"
+
+  # --- 2. DEVELOPMENT SERVER ---
+  dev:
+    desc: 'Start the full stack (Go Backend + React Frontend)'
+    deps: [dev:backend, dev:frontend]
+    # Run in parallel so you see logs from both
+
+  dev:backend:
+    dir: backend
+    cmds:
+      - echo "🚀 Starting Go Server..."
+      - go run cmd/server/main.go
+    ignore_error: true
+
+  dev:frontend:
+    dir: web
+    cmds:
+      - echo "🎨 Starting Vite..."
+      - npm run dev
+    ignore_error: true
+
+  # --- 3. DATABASE MANAGEMENT (Goose) ---
+  db:create:
+    desc: 'Create a new migration. Usage: task db:create name=add_user'
+    dir: .
+    cmds:
+      - goose -dir {{.MIGRATION_DIR}} create {{.name}} sql
+    preconditions:
+      - sh: '[ -n "{{.name}}" ]'
+        msg: '❌ Error: Missing name. Usage: task db:create name=my_migration'
+
+  db:up:
+    desc: 'Migrate DB UP (Apply changes)'
+    cmds:
+      - goose -dir {{.MIGRATION_DIR}} postgres "{{.DATABASE_URL}}" up
+      # Nice trick: Regenerate Go code automatically after migrating!
+      - task generate
+
+  db:down:
+    desc: 'Migrate DB DOWN (Rollback one step)'
+    cmds:
+      - goose -dir {{.MIGRATION_DIR}} postgres "{{.DATABASE_URL}}" down
+
+  db:status:
+    desc: 'Show migration status'
+    cmds:
+      - goose -dir {{.MIGRATION_DIR}} postgres "{{.DATABASE_URL}}" status
+
+  db:reset:
+    desc: '⚠️  DROP database and re-apply all migrations (Fresh start)'
+    prompt: 'This will delete all data. Are you sure?'
+    cmds:
+      - goose -dir {{.MIGRATION_DIR}} postgres "{{.DATABASE_URL}}" reset
+      - task: db:up
+
+  # --- 4. CODE GENERATION (sqlc) ---
+  generate:
+    desc: 'Generate Go code from SQL (sqlc)'
+    silent: true
+    dir: backend
+    cmds:
+      - sqlc generate -f db/sqlc.yaml
+      - echo "✅ Go code generated from SQL"

@@ -1,0 +1,15 @@
+version: "2"
+sql:
+  - schema: "migrations/"  # sqlc reads your UP migrations to understand the DB structure
+    queries: "query.sql"     # The file where you write your SQL queries
+    engine: "postgresql"
+    gen:
+      go:
+        package: "db"        # The package name of the generated code
+        out: "../internal/db"   # Where to save the generated Go files
+        sql_package: "pgx/v5" # CRITICAL: Uses pgx driver instead of standard library
+        
+        # Optional but recommended settings:
+        emit_json_tags: true            # Adds json:"name" to structs
+        emit_prepared_queries: false    # Simpler for dev
+        emit_interface: true            # Useful for mocking in tests later
