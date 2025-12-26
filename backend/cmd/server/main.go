@@ -8,8 +8,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/jackc/pgx/v5"
-
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/devradar/devradar/internal/db"
 	"github.com/devradar/devradar/internal/handlers"
 )
@@ -21,13 +20,13 @@ func main() {
 	}
 
 	ctx := context.Background()
-	conn, err := pgx.Connect(ctx, dbURL)
+	dbPool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
-		log.Fatalf("Unable to connect to database: %v\n", err)
+		log.Fatalf("Unable to create connection pool: %v\n", err)
 	}
-	defer conn.Close(ctx)
+	defer dbPool.Close()
 
-	queries := db.New(conn)
+	queries := db.New(dbPool)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)

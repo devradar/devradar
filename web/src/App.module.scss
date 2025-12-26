@@ -1,0 +1,108 @@
+@use './styles/_variables' as *;
+@reference "./styles/globals.scss";
+
+.container {
+  @apply min-h-screen bg-black text-white;
+  font-family: $font-main;
+}
+
+.mainContent {
+  // Centering the whole app
+  @apply mx-auto px-6 py-12;
+  max-width: 1400px; // Limits how wide the content stretches on 4K screens
+
+  .hero {
+    @apply mb-12 border-l-4 border-[#00FF00] pl-6;
+
+    h1 {
+      @apply text-5xl md:text-7xl font-black uppercase italic tracking-tighter;
+      span {
+        @apply text-[#00FF00];
+      }
+    }
+    p {
+      @apply text-gray-500 uppercase tracking-widest text-xs mt-2;
+    }
+  }
+}
+
+.grid {
+  @apply grid gap-6;
+  // This ensures the grid uses all available horizontal space
+  grid-template-columns: 1fr;
+
+  @screen lg {
+    grid-template-columns: 3fr 1fr; // 75% for table, 25% for stats
+  }
+}
+
+.userCard {
+  @apply bg-[#111] border border-white/5 p-8 rounded-sm overflow-x-auto;
+
+  table {
+    @apply w-full text-left border-collapse;
+
+    th {
+      @apply text-gray-500 uppercase text-[10px] tracking-[0.2em] pb-6 border-b border-white/10;
+    }
+    td {
+      @apply py-5 border-b border-white/5;
+    }
+  }
+}
+
+.statusSidebar {
+  @apply bg-[#00FF00] text-black p-8 rounded-sm flex flex-col justify-between;
+  min-height: 300px;
+
+  h2 {
+    @apply text-2xl font-black uppercase leading-tight;
+  }
+  .count {
+    @apply text-7xl font-black tracking-tighter;
+  }
+}
+
+.navbar {
+  @apply sticky top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-xl;
+
+  .navContainer {
+    @apply mx-auto flex max-w-[1400px] items-center justify-between px-8 py-5;
+  }
+
+  .logo {
+    @apply flex items-center gap-3 cursor-pointer;
+
+    .iconWrapper {
+      @apply flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#00FF00] text-[#00FF00];
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+    }
+
+    .brandName {
+      @apply text-2xl font-black italic uppercase tracking-tighter;
+      // This creates the "tight" logo look from your icon
+      letter-spacing: -0.05em;
+    }
+  }
+
+  .navLinks {
+    @apply hidden md:flex items-center gap-10;
+
+    a {
+      @apply text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 transition-all hover:text-[#00FF00];
+    }
+  }
+
+  .systemStatus {
+    @apply flex items-center gap-3 rounded-full border border-white/5 bg-white/5 px-4 py-1.5;
+
+    .statusDot {
+      @apply h-1.5 w-1.5 animate-pulse rounded-full bg-[#00FF00];
+      box-shadow: 0 0 8px #00ff00;
+    }
+
+    span {
+      @apply font-mono text-[10px] font-bold text-[#00FF00];
+    }
+  }
+}

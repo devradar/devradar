@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+// Your custom global styles here
+body {
+  @apply bg-black text-white;
+  margin: 0;
+}

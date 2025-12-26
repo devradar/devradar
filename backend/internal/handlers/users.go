@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"log"
 
 	"github.com/devradar/devradar/internal/db"
 	"github.com/go-chi/chi/v5"
@@ -19,8 +20,10 @@ func (h *UserHandler) RegisterRoutes(r chi.Router) {
 
 func (h *UserHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := h.Queries.ListUsers(r.Context())
+	log.Println("weee")
 	if err != nil {
 		Error(w, http.StatusInternalServerError, "Could not fetch users")
+		log.Fatal(err)
 		return
 	}
 	JSON(w, http.StatusOK, users)
