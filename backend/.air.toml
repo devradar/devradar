@@ -1,4 +1,4 @@
-# ////:schema https://raw.githubusercontent.com/air-verse/air/master/runner/air_schema.json
+#:schema https://raw.githubusercontent.com/air-verse/air/master/runner/air_schema.json
 
 root = "."
 tmp_dir = "tmp"
