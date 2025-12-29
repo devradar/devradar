@@ -3,5 +3,14 @@
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "es5",
-  "printWidth": 100
+  "printWidth": 100,
+  "overrides": [
+    {
+      "files": ["web/src/**/*.{ts,tsx,js,jsx,json,css,scss,md}"],
+      "options": {
+        "semi": false,
+        "singleQuote": true
+      }
+    }
+  ]
 }

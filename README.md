@@ -4,152 +4,225 @@
   <img src="assets/logo-text.png">
   <br>
   Track and present your skills as developer.
-  Actively manage team competencies as leader.
+  <br>
+  A client-side only SPA for skill tracking and visualization.
 </p>
 
 [![License](https://badgen.net/badge/license/COPYRIGHT/orange)](LICENSE)
 [![TypeScript](https://badgen.net/badge/code/TypeScript/blue)](https://www.typescriptlang.org/)
-[![Standard](https://badgen.net/badge/code%20style/standard/pink)](https://standardjs.com/)
+[![React](https://badgen.net/badge/framework/React%2019/blue)](https://react.dev/)
+[![Vite](https://badgen.net/badge/build/Vite/purple)](https://vitejs.dev/)
 
-[![E2E Test](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/detailed/gumn5q/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/gumn5q/runs)
+## 🏗️ Architecture
 
-[![devradar.io](https://github.com/devradar/devradar/workflows/devradar.io/badge.svg?branch=master)](https://github.com/devradar/devradar/actions?query=workflow%3Adevradar.io)
-[![Cross-OS Test](https://github.com/devradar/devradar/workflows/Cross-OS%20Test/badge.svg)](https://github.com/devradar/devradar/actions?query=workflow%3A%22Cross-OS+Test%22)
-[![Cross-Browser Test](https://github.com/devradar/devradar/workflows/Cross-Browser%C2%A0Test/badge.svg)](https://github.com/devradar/devradar/actions?query=workflow%3ACross-Browser%C2%A0Test)
+```mermaid
+graph TB
+  subgraph "Client Browser"
+      FE[React SPA<br/>Vite + TypeScript<br/>:5173]
+      LS[(LocalStorage<br/>Data Persistence)]
+  end
+
+  FE -->|Read/Write| LS
+
+  style FE fill:#61dafb,stroke:#333,color:#000
+  style LS fill:#ff9900,stroke:#333,color:#fff
+```
+
+This is a **frontend-only Single Page Application** with no backend. All data is stored locally in the browser's LocalStorage.
 
 ## 🚀 Tech Stack
 
-### Frontend (`/web`)
-
-- **Framework:** React + TypeScript (Vite)
-- **State:** TanStack Query (Server State) + Zustand (UI State)
-- **Styling:** Tailwind CSS + Shadcn UI
-- **Routing:** React Router
-- **Visuals:** Recharts
-
-### Backend (`/backend`)
-
-- **Language:** Go
-- **Router:** Chi
-- **Database Access:** sqlc (Type-safe SQL generation)
-- **Database:** PostgreSQL
-- **Auth:** OAuth2 (GitHub/Google) with HttpOnly Sessions
-
-### Recommendation Engine _[Planned]_
-
-- Python (FastAPI + Scikit-learn)
-
----
+- **Build Tool:** Vite
+- **Framework:** React 19+ with TypeScript
+- **State Management:**
+  - Local State: React Hooks (useState, useReducer)
+  - Persistence: LocalStorage with custom hooks
+  - Optional UI State: Zustand
+- **Styling:** Tailwind CSS v4 + Shadcn UI + SCSS Modules
+- **Routing:** React Router 7
+- **Visuals:** Recharts or similar charting libraries
+- **Icons:** Lucide React
 
 ## 🎯 Project Goals
 
-1.  **Skill Journal:** A "diary" view for users to log daily activities and link them to specific skills.
-2.  **Visual Analytics:** Graphical dashboards to visualize competence growth over time.
-3.  **Smart Recommendations:** A system that suggests new skills or activities based on the user's history and similar users' data.
-
----
+1. **Skill Tracking:** Log and categorize your skills with proficiency levels
+2. **Skill Journal:** A "diary" view to log daily activities and link them to specific skills
+3. **Visual Analytics:** Graphical dashboards to visualize competence growth over time
+4. **Local-First:** All data stored client-side - works offline, no server required
+5. **Portable:** Export/import data as JSON for backup and portability
 
 ## 🛠️ Development Setup
 
-This project uses **VS Code Dev Containers** to ensure a consistent environment. You do not need to install Go, Node.js, or Postgres locally on your machine—only Docker.
+### Option 1: Using VS Code Dev Container (Recommended)
 
-### Prerequisites
+This project includes a Dev Container configuration for a consistent development environment.
 
+**Prerequisites:**
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Running)
 - [VS Code](https://code.visualstudio.com/)
 - [Remote - Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-### Quick Start
+**Quick Start:**
 
-1.  **Clone the repo:**
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/devradar/devradar.git
+   cd devradar
+   ```
 
-2.  **Open in Container:**
+2. **Open in Container:**
+   - Open folder in VS Code
+   - Click "Reopen in Container" when prompted
+   - Or: `Ctrl/Cmd+Shift+P` → "Dev Containers: Reopen in Container"
 
-3.  **Wait for Initialization:**
+3. **Start development:**
+   ```bash
+   task dev
+   ```
 
-4.  **Start Development Servers:**
-    Open the integrated terminal (Ctrl+`) inside VS Code.
+4. **Open in browser:**
+   - Navigate to `http://localhost:5173`
 
-    **Terminal 1 (Backend):**
+### Option 2: Local Development
 
-    ```bash
-    # Runs the Go server with live reloading (Air)
-    # Ensure you have 'air' installed or run 'go run cmd/server/main.go'
-    go run cmd/server/main.go
-    ```
+**Prerequisites:**
+- Node.js 20+ (LTS recommended)
+- npm or pnpm
 
-    **Terminal 2 (Frontend):**
+**Quick Start:**
 
-    ```bash
-    cd web
-    npm install
-    npm run dev
-    ```
+1. **Clone and install:**
+   ```bash
+   git clone https://github.com/devradar/devradar.git
+   cd devradar
+   npm install
+   ```
 
-5.  **Access the App:**
-    - Frontend: [http://localhost:5173](http://localhost:5173)
-    - Backend API: [http://localhost:8080](http://localhost:8080)
-    - Database: `localhost:5432` (User: `postgres`, Pass: `postgres`, DB: `postgres`)
+2. **Start development server:**
+   ```bash
+   npm run dev
+   ```
 
----
+3. **Open in browser:**
+   - Navigate to `http://localhost:5173`
 
-## 🗺️ Roadmap & Step Plan
+## 📋 Available Commands
 
-We follow the "Tracer Bullet" methodology: building thin, complete slices of functionality rather than isolated layers.
+We use [Task](https://taskfile.dev/) to automate development tasks. All commands can be run from the project root.
 
-### Phase 1: The Foundation (Tracer Bullet)
+| Command         | Description                                              |
+| :-------------- | :------------------------------------------------------- |
+| `task dev`      | Starts the Vite development server (:5173)               |
+| `task build`    | Creates production build in `web/dist`                   |
+| `task preview`  | Preview production build locally                         |
+| `task clean`    | Remove build artifacts and node_modules                  |
 
-- [ ] Set up Monorepo structure (Go + Vite).
-- [ ] Configure Dev Container with Postgres.
-- [ ] **Goal:** A `/api/health` endpoint that queries the DB and is displayed on the React frontend.
 
-### Phase 2: Auth & Infrastructure
+## 🗂️ Project Structure
 
-- [ ] Implement GitHub OAuth flow (Backend-for-Frontend pattern).
-- [ ] Secure cookies (HttpOnly, SameSite).
-- [ ] Deploy "Skeleton" to Production (Railway + Vercel) to verify cross-domain cookies.
-
-### Phase 3: The Diary Core
-
-- [ ] Design DB Schema (`users`, `skills`, `activities`).
-- [ ] Generate Go code with `sqlc`.
-- [ ] Build "Add Activity" form (React Hook Form + Zod).
-- [ ] Build "Activity Feed" (Infinite Scroll with React Query).
-
-### Phase 4: Visualization & Intelligence
-
-- [ ] Create Aggregation Queries in SQL (Competence over time).
-- [ ] Implement Charts using Recharts.
-- [ ] Spin up Python Microservice (FastAPI).
-- [ ] Implement basic recommendation algorithm.
-
----
-
-## ☁️ Deployment Setup
-
-We use a split-stack deployment strategy for cost and performance optimization.
-
-### Architecture
-
-| Component    | Provider              | Reason                                                                     |
-| :----------- | :-------------------- | :------------------------------------------------------------------------- |
-| **Frontend** | **Vercel**            | Global CDN, optimized for Vite/React static assets.                        |
-| **Backend**  | **Railway**           | Easy Docker deployment, runs close to the DB.                              |
-| **Database** | **Railway** (or Neon) | Managed Postgres.                                                          |
-| **DNS**      | **Custom Domain**     | Required for shared cookies (e.g., `app.domain.com` and `api.domain.com`). |
-
-### Production Environment Variables
-
-**Backend (Railway):**
-
-```env
-PORT=8080
-DATABASE_URL=postgres://...
-GO_ENV=production
-# OAuth
-GITHUB_CLIENT_ID=...
-GITHUB_CLIENT_SECRET=...
-# Security
-SESSION_SECRET=...
-FRONTEND_URL=[https://app.yourdomain.com](https://app.yourdomain.com)
 ```
+devradar/
+├── web/                    # React application
+│   ├── src/
+│   │   ├── App.tsx        # Main app component
+│   │   ├── main.tsx       # Entry point
+│   │   ├── assets/        # Static assets
+│   │   └── styles/        # Global styles
+│   ├── public/            # Public assets
+│   ├── index.html         # HTML template
+│   ├── vite.config.ts     # Vite configuration
+│   └── package.json       # Frontend dependencies
+├── assets/                # Project assets (logo, etc.)
+├── .devcontainer/         # VS Code Dev Container config
+├── Taskfile.yml          # Task automation config
+└── README.md             # This file
+```
+
+## 💾 Data Storage
+
+All application data is stored in the browser's LocalStorage. This means:
+
+- ✅ **No server required** - Works completely offline
+- ✅ **Private** - Your data never leaves your device
+- ✅ **Fast** - Instant read/write operations
+- ⚠️ **Browser-specific** - Data is tied to the browser on this device
+- ⚠️ **Limited storage** - Typically 5-10MB per domain
+- ⚠️ **Can be cleared** - Clearing browser data will delete app data
+
+### Data Persistence Best Practices
+
+To avoid data loss:
+
+1. **Export Regularly:** Use the built-in export feature to download your data as JSON
+2. **Import on New Devices:** Import your JSON file to restore data on other devices/browsers
+3. **Backup:** Keep periodic backups of your exported JSON files
+
+## 🚀 Building for Production
+
+### Build Static Assets
+
+```bash
+task build
+# or
+cd web && npm run build
+```
+
+This creates an optimized production build in `web/dist/`.
+
+### Deploy Options
+
+Since this is a static SPA, you can deploy to any static hosting service:
+
+- **[Vercel](https://vercel.com/)** - Zero-config deployment for Vite apps
+- **[Netlify](https://www.netlify.com/)** - Drag-and-drop or Git integration
+- **[GitHub Pages](https://pages.github.com/)** - Free hosting for public repos
+- **[Cloudflare Pages](https://pages.cloudflare.com/)** - Global CDN with great performance
+- **Self-hosted** - Any web server (nginx, Apache, etc.)
+
+### Example: Deploy to Vercel
+
+```bash
+npm install -g vercel
+cd web
+vercel --prod
+```
+
+## 🗺️ Roadmap
+
+### Phase 1: Foundation ✅
+- [x] Set up Vite + React + TypeScript
+- [x] Configure Tailwind CSS
+- [x] Dev Container setup
+
+### Phase 2: Core Features (In Progress)
+- [ ] LocalStorage abstraction layer
+- [ ] Skill CRUD operations
+- [ ] Activity logging
+- [ ] Basic routing structure
+
+### Phase 3: Visualization
+- [ ] Skill proficiency charts
+- [ ] Activity timeline
+- [ ] Progress tracking
+
+### Phase 4: Polish
+- [ ] Data export/import (YAML)
+- [ ] Dark mode
+- [ ] Responsive design improvements
+- [ ] Keyboard shortcuts
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+See [LICENSE](LICENSE) file for details.
+
+## 🙋 Support
+
+If you have questions or need help, please open an issue on GitHub.
+
+---
+
+**Made with ❤️ for developers who love tracking their growth**

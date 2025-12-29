@@ -1,5 +1,7 @@
-/backend
-/ml-service
-.devcontainer
 dist
+node_modules
+.vite
 coverage
+.devcontainer
+package-lock.json
+assets/

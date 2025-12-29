@@ -1,0 +1,46 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list
+    silent: true
+
+  setup:
+    desc: 'Install frontend dependencies'
+    silent: true
+    dir: web
+    cmds:
+      - echo "📦 Installing dependencies..."
+      - npm install
+      - echo "✅ Setup complete. Run 'task dev' to start development server."
+
+  dev:
+    desc: 'Start Vite development server'
+    dir: web
+    cmds:
+      - echo "🚀 Starting Vite dev server..."
+      - npm run dev
+
+  build:
+    desc: 'Build production bundle'
+    dir: web
+    cmds:
+      - echo "🏗️  Building for production..."
+      - npm run build
+      - echo "✅ Build complete! Output in web/dist/"
+
+  lint:
+    desc: 'Check code style'
+    dir: web
+    cmds:
+      - echo "🔍 Running Lint..."
+      - npm run lint
+
+  clean:
+    desc: 'Remove build artifacts and dependencies'
+    cmds:
+      - echo "🧹 Cleaning build artifacts..."
+      - rm -rf web/dist web/node_modules node_modules
+      - echo "✅ Clean complete"
+

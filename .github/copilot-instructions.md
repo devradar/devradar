@@ -1,7 +1,7 @@
 # Project Context & Rules
 
-You are an expert Full Stack Developer working on a "State of the Art" 2025 web platform.
-The project is a Monorepo containing a Go backend and a React frontend.
+You are an expert Frontend Developer working on a "State of the Art" 2025 web application.
+This is a **frontend-only SPA** (Single Page Application) with **no backend**. All data is stored in the browser's LocalStorage.
 
 ## 1. Tech Stack (Strict Enforcement)
 
@@ -9,70 +9,169 @@ The project is a Monorepo containing a Go backend and a React frontend.
 - **Build Tool:** Vite (NOT Create-React-App, NOT Next.js)
 - **Framework:** React 19+ with TypeScript (Strict Mode)
 - **State Management:**
-  - Server State: TanStack Query (React Query) v5+
+  - Local State: React Hooks (useState, useReducer, useContext)
+  - Data Persistence: LocalStorage (with custom hooks)
   - UI State: Zustand (NO Redux, NO Context API for complex state)
-- **Styling:** Tailwind CSS v4 + Shadcn UI
+- **Styling:** Tailwind CSS v4 + Shadcn UI + SCSS Modules
 - **Routing:** React Router 7
-- **Data Fetching:** Fetch API (wrapped in custom hooks)
+- **Data Storage:** LocalStorage API (wrapped in custom hooks)
+- **Icons:** Lucide React
 
-### Backend (`/cmd`, `/internal`)
-- **Language:** Go 1.23+
-- **Router:** Chi (v5) - Keep it simple, standard library compatible.
-- **Database Access:** sqlc (Generate Go from SQL). DO NOT suggest GORM or raw `sql.Query` manually.
-- **Auth:** Session-based with HttpOnly cookies.
-- **Testing:** Standard `testing` package + `testcontainers-go` (for integration).
-
-### Database (`/db`)
-- **Dialect:** PostgreSQL 15+
-- **Migrations:** `golang-migrate` or `goose`
+### No Backend
+- This project has NO backend server
+- NO API calls to external services
+- NO database (PostgreSQL, MySQL, etc.)
+- All data is stored client-side in LocalStorage
 
 ---
 
 ## 2. Coding Principles
 
-### The "Tracer Bullet" Methodology
-- **Bias for Action:** When asked to build a feature, prefer building a "thin slice" all the way through (DB -> SQL -> Go Handler -> JSON -> React Component) rather than over-engineering one layer.
-- **No Mocking (unless necessary):** Prefer integration tests with real Postgres containers over complex mocking of interfaces.
-
-### Go Guidelines (Backend)
-- **Project Layout:** Follow standard Go layout.
-  - `cmd/server/main.go` -> Entry point.
-  - `internal/service` -> Business logic.
-  - `internal/db` -> sqlc generated code.
-  - `internal/handler` -> HTTP handlers (Chi).
-- **Error Handling:** Return wrapped errors using `fmt.Errorf("...: %w", err)`. Don't just log and return nil.
-- **Concurrency:** Use `errgroup` for parallel tasks. Avoid manual `go func()` without lifecycle management.
+### The "Local-First" Methodology
+- **Client-Side Only:** All logic runs in the browser
+- **LocalStorage First:** All persistent data stored in LocalStorage
+- **No Server Calls:** Never suggest APIs, fetch calls, or backend endpoints
+- **Export/Import:** Provide JSON export/import for data portability
 
 ### React Guidelines (Frontend)
 - **Components:** Functional components only. Use named exports.
-- **Hooks:** Isolate logic into custom hooks (e.g., `useUserSkills`). Do not bloat components with `useEffect`.
-- **Typing:** NO `any`. Use generic types for API responses.
-- **Folder Structure:** Feature-based grouping (e.g., `/features/diary/DiaryEntry.tsx`) rather than generic `/components` bin.
+- **Hooks:** Isolate logic into custom hooks (e.g., `useLocalStorage`, `useSkills`).
+- **Typing:** NO `any`. Use generic types for data structures.
+- **Folder Structure:** Feature-based grouping (e.g., `/features/skills/SkillCard.tsx`) rather than generic `/components` bin.
+- **LocalStorage Abstraction:** Create custom hooks to abstract LocalStorage operations
+
+### Data Management Patterns
+
+#### Custom LocalStorage Hook Pattern
+```typescript
+function useLocalStorage<T>(key: string, initialValue: T) {
+  const [value, setValue] = useState<T>(() => {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : initialValue;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue] as const;
+}
+```
+
+#### Feature-Specific Hooks
+```typescript
+// useSkills.ts - Manages skills in LocalStorage
+function useSkills() {
+  const [skills, setSkills] = useLocalStorage<Skill[]>('skills', []);
+  
+  const addSkill = (skill: Skill) => {
+    setSkills([...skills, { ...skill, id: generateId() }]);
+  };
+  
+  const updateSkill = (id: string, updates: Partial<Skill>) => {
+    setSkills(skills.map(s => s.id === id ? { ...s, ...updates } : s));
+  };
+  
+  return { skills, addSkill, updateSkill };
+}
+```
 
 ---
 
 ## 3. Anti-Patterns (What to Avoid)
 
 - **Frontend:**
-  - NEVER suggest Redux or Redux Toolkit.
-  - NEVER suggest `useEffect` for data fetching (use `useQuery` instead).
-  - Avoid class components.
-- **Backend:**
-  - NEVER suggest GORM or other ORMs. We write SQL.
-  - Avoid "Clean Architecture" boilerplate with 10 layers. Keep it to `Handler -> Service -> Repository (sqlc)`.
+  - NEVER suggest Redux or Redux Toolkit
+  - NEVER suggest backend APIs, REST endpoints, or GraphQL
+  - NEVER suggest useEffect for data fetching (there's no fetching!)
+  - NEVER suggest server-side solutions (authentication, databases, etc.)
+  - Avoid class components
+  - Don't over-engineer state management - React's built-in hooks are sufficient
+
+- **Backend:** 
+  - There is NO backend. Don't suggest one.
 
 ---
 
 ## 4. Specific Workflows
 
-### When adding a new API Endpoint
+### When adding a new feature that needs data
 
-1. Define the query in `query.sql`.
-2. Run `sqlc generate`.
-3. Create the Handler in `internal/handler`.
-4. Wire it up in `routes.go`.
+1. Define TypeScript interfaces for the data structure
+2. Create a custom hook using `useLocalStorage`
+3. Create the UI components that use the hook
+4. Add routes if needed (React Router)
 
-### When connecting Frontend to Backend
+### When user asks about data persistence
 
-1. Create a `useQuery` hook in `/web/src/hooks`.
-2. Use relative paths for fetch (e.g., `/api/v1/...`) because we use a Proxy in Dev.
+1. Explain that data is stored in LocalStorage
+2. Suggest export/import functionality for backups
+3. Warn about browser data clearing risks
+
+### When user asks about authentication/users
+
+1. Explain this is a single-user, local-only app
+2. Data is private to the browser (no sharing across devices)
+3. Suggest export/import for moving data between devices
+
+---
+
+## 5. Project Structure
+
+```
+web/
+├── src/
+│   ├── features/           # Feature-based modules
+│   │   ├── skills/
+│   │   │   ├── SkillCard.tsx
+│   │   │   ├── SkillForm.tsx
+│   │   │   └── useSkills.ts
+│   │   └── diary/
+│   │       ├── DiaryEntry.tsx
+│   │       └── useDiary.ts
+│   ├── hooks/              # Shared custom hooks
+│   │   ├── useLocalStorage.ts
+│   │   └── useExportImport.ts
+│   ├── types/              # TypeScript type definitions
+│   │   └── index.ts
+│   ├── utils/              # Utility functions
+│   │   └── storage.ts
+│   ├── App.tsx
+│   └── main.tsx
+```
+
+---
+
+## 6. Data Export/Import Pattern
+
+Always provide users with data export/import functionality:
+
+```typescript
+// Export data
+const exportData = () => {
+  const data = {
+    skills: localStorage.getItem('skills'),
+    diary: localStorage.getItem('diary'),
+    // ... other data
+  };
+  
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `devradar-backup-${Date.now()}.json`;
+  link.click();
+};
+
+// Import data
+const importData = (file: File) => {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const data = JSON.parse(e.target?.result as string);
+    Object.entries(data).forEach(([key, value]) => {
+      if (value) localStorage.setItem(key, value as string);
+    });
+  };
+  reader.readAsText(file);
+};
+```
