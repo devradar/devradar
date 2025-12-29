@@ -1,4 +1,4 @@
-@reference "../styles/globals.scss";
+@use "tailwindcss";
 
 .themeToggle {
   @apply cursor-pointer rounded-full p-2 transition-all;

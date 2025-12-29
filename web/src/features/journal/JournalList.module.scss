@@ -1,0 +1,227 @@
+@use "tailwindcss";
+
+.container {
+  @apply min-h-screen py-12 px-6;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  @apply flex justify-between items-start mb-12;
+  border-left: 4px solid var(--color-accent-green);
+  padding-left: 1.5rem;
+}
+
+.title {
+  @apply text-5xl md:text-6xl font-black uppercase italic tracking-tighter;
+  color: #ffffff;
+}
+
+:global(.light) .title {
+  color: #1a1a1a;
+}
+
+.titleAccent {
+  color: var(--color-accent-green);
+}
+
+.subtitle {
+  @apply text-xs uppercase tracking-widest mt-2;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:global(.light) .subtitle {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.addButton {
+  @apply flex items-center gap-2 px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm;
+  background-color: var(--color-accent-green);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 15px var(--color-accent-green-glow);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px var(--color-accent-green-glow);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.filterBar {
+  @apply mb-8 p-6 rounded-sm border border-white/5;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+:global(.light) .filterBar {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.filterRow {
+  @apply mb-4;
+
+  &:last-child {
+    @apply mb-0;
+  }
+}
+
+.filterLabel {
+  @apply flex items-center gap-2 mb-4 text-xs uppercase tracking-widest font-bold;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:global(.light) .filterLabel {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.filterButtons {
+  @apply flex flex-wrap gap-2;
+}
+
+.filterButton {
+  @apply px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+:global(.light) .filterButton {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.6);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.8);
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+}
+
+.filterButtonActive {
+  background-color: var(--color-accent-green) !important;
+  color: #000 !important;
+  border-color: var(--color-accent-green) !important;
+  box-shadow: 0 0 10px var(--color-accent-green-glow);
+
+  &:hover {
+    background-color: var(--color-accent-green) !important;
+    color: #000 !important;
+  }
+}
+
+.filterBadge {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-sm;
+  background-color: var(--color-accent-green);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filterBadgeRemove {
+  @apply flex items-center justify-center;
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  color: #000;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+  }
+}
+
+.entriesList {
+  @apply space-y-6;
+}
+
+.loading {
+  @apply py-12 text-center flex flex-col items-center gap-3;
+  
+  p {
+    @apply text-sm uppercase tracking-wider;
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+:global(.light) .loading p {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.loadingDot {
+  @apply h-2 w-2 animate-pulse rounded-full;
+  background-color: var(--color-accent-green);
+  box-shadow: 0 0 8px var(--color-accent-green);
+}
+
+.endMessage {
+  @apply text-center py-12 text-xs uppercase tracking-widest;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+:global(.light) .endMessage {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.empty {
+  @apply text-center py-24;
+}
+
+.emptyTitle {
+  @apply text-2xl font-black uppercase tracking-tight mb-2;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+:global(.light) .emptyTitle {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.emptySubtitle {
+  @apply text-sm mb-8;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+:global(.light) .emptySubtitle {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.emptyButton {
+  @apply px-8 py-4 rounded-sm font-bold uppercase tracking-wider text-sm;
+  background-color: var(--color-accent-green);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 15px var(--color-accent-green-glow);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px var(--color-accent-green-glow);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

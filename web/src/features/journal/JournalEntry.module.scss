@@ -1,0 +1,140 @@
+@use "tailwindcss";
+
+.card {
+  @apply border border-white/5 rounded-sm overflow-hidden;
+  background-color: #242424;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 15px var(--color-accent-green-glow);
+  }
+}
+
+:global(.light) .card {
+  background-color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 15px var(--color-accent-green-glow);
+  }
+}
+
+.header {
+  @apply p-6 pb-4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+:global(.light) .header {
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+.badges {
+  @apply flex flex-wrap gap-2 mb-2;
+}
+
+.badgeSkill {
+  @apply px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+  background-color: var(--color-accent-green);
+  color: #000;
+}
+
+.badgeCategory {
+  @apply px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+:global(.light) .badgeCategory {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.8);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.badgeActivity {
+  @apply px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+:global(.light) .badgeActivity {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.badgeLevel {
+  @apply px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(.light) .badgeLevel {
+  background-color: rgba(0, 0, 0, 0.03);
+  color: rgba(0, 0, 0, 0.6);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.date {
+  @apply text-xs uppercase tracking-widest;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+:global(.light) .date {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.content {
+  @apply p-6;
+  
+  p {
+    @apply text-sm leading-relaxed;
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+:global(.light) .content p {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.footer {
+  @apply flex gap-2 px-6 pb-6;
+}
+
+.btnEdit,
+.btnDelete {
+  @apply flex items-center gap-2 px-4 py-2 rounded text-xs font-bold uppercase tracking-wider;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+}
+
+:global(.light) .btnEdit,
+:global(.light) .btnDelete {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.6);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+}
+
+.btnDelete:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}

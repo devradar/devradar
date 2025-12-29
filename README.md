@@ -197,7 +197,7 @@ vercel --prod
 ### Phase 2: Core Features (In Progress)
 - [ ] LocalStorage abstraction layer
 - [ ] Skill CRUD operations
-- [ ] Activity logging
+- [x] Activity logging
 - [ ] Basic routing structure
 
 ### Phase 3: Visualization
@@ -207,7 +207,7 @@ vercel --prod
 
 ### Phase 4: Polish
 - [ ] Data export/import (YAML)
-- [ ] Dark mode
+- [x] Dark mode
 - [ ] Responsive design improvements
 - [ ] Keyboard shortcuts
 

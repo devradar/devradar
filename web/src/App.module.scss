@@ -1,5 +1,5 @@
 @use './styles/_variables' as *;
-@reference "./styles/globals.scss";
+@use "tailwindcss";
 
 .container {
   @apply min-h-screen text-white;
