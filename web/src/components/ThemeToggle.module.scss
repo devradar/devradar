@@ -1,0 +1,36 @@
+@reference "../styles/globals.scss";
+
+.themeToggle {
+  @apply cursor-pointer rounded-full p-2 transition-all;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .icon {
+    @apply transition-all;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:hover .icon {
+    color: var(--color-accent-green);
+  }
+}
+
+:global(.light) .themeToggle {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .icon {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  &:hover .icon {
+    color: var(--color-accent-green);
+  }
+}

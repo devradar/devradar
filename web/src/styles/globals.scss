@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
+// CSS Custom Properties
+:root {
+  // Universal green that works for both light and dark modes
+  --color-accent-green: #00e676;
+  --color-accent-green-glow: rgba(0, 230, 118, 0.25);
+}
+
 // Your custom global styles here
 body {
-  @apply bg-black text-white;
+  background-color: #1a1a1a;
+  color: #ffffff;
   margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// Light mode styles
+body.light {
+  background-color: #f5f5f5;
+  color: #1a1a1a;
 }

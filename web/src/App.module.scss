@@ -2,8 +2,16 @@
 @reference "./styles/globals.scss";
 
 .container {
-  @apply min-h-screen bg-black text-white;
+  @apply min-h-screen text-white;
+  background-color: #1a1a1a;
   font-family: $font-main;
+  transition: background-color 0.3s ease;
+}
+
+// Light mode
+:global(.light) .container {
+  @apply text-black;
+  background-color: #f5f5f5;
 }
 
 .mainContent {
@@ -12,17 +20,31 @@
   max-width: 1400px; // Limits how wide the content stretches on 4K screens
 
   .hero {
-    @apply mb-12 border-l-4 border-[#00FF00] pl-6;
+    @apply mb-12 pl-6;
+    border-left: 4px solid var(--color-accent-green);
+    transition: border-color 0.3s ease;
 
     h1 {
       @apply text-5xl md:text-7xl font-black uppercase italic tracking-tighter;
       span {
-        @apply text-[#00FF00];
+        color: var(--color-accent-green);
+        transition: color 0.3s ease;
       }
     }
     p {
       @apply text-gray-500 uppercase tracking-widest text-xs mt-2;
     }
+  }
+}
+
+// Light mode hero
+:global(.light) .mainContent .hero {
+  h1 span {
+    color: var(--color-accent-green);
+  }
+  
+  p {
+    @apply text-gray-600;
   }
 }
 
@@ -37,23 +59,50 @@
 }
 
 .userCard {
-  @apply bg-[#111] border border-white/5 p-8 rounded-sm overflow-x-auto;
+  @apply border border-white/5 p-8 rounded-sm overflow-x-auto;
+  background-color: #242424;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 
   table {
     @apply w-full text-left border-collapse;
 
     th {
       @apply text-gray-500 uppercase text-[10px] tracking-[0.2em] pb-6 border-b border-white/10;
+      transition: color 0.3s ease, border-color 0.3s ease;
     }
     td {
       @apply py-5 border-b border-white/5;
+      transition: border-color 0.3s ease;
+    }
+  }
+}
+
+// Light mode userCard
+:global(.light) .userCard {
+  background-color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  table {
+    th {
+      @apply text-gray-600;
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+    td {
+      border-color: rgba(0, 0, 0, 0.05);
+    }
+
+    tbody tr:hover {
+      background-color: rgba(0, 0, 0, 0.02) !important;
     }
   }
 }
 
 .statusSidebar {
-  @apply bg-[#00FF00] text-black p-8 rounded-sm flex flex-col justify-between;
+  @apply text-black p-8 rounded-sm flex flex-col justify-between;
+  background-color: var(--color-accent-green);
   min-height: 300px;
+  transition: background-color 0.3s ease;
 
   h2 {
     @apply text-2xl font-black uppercase leading-tight;
@@ -64,7 +113,9 @@
 }
 
 .navbar {
-  @apply sticky top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-xl;
+  @apply sticky top-0 z-50 w-full border-b border-white/10 backdrop-blur-xl;
+  background-color: rgba(26, 26, 26, 0.9);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 
   .navContainer {
     @apply mx-auto flex max-w-[1400px] items-center justify-between px-8 py-5;
@@ -74,14 +125,18 @@
     @apply flex items-center gap-3 cursor-pointer;
 
     .iconWrapper {
-      @apply flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#00FF00] text-[#00FF00];
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+      @apply flex h-9 w-9 items-center justify-center rounded-full;
+      border: 2px solid var(--color-accent-green);
+      color: var(--color-accent-green);
+      box-shadow: 0 0 10px var(--color-accent-green-glow);
+      transition: border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .brandName {
       @apply text-2xl font-black italic uppercase tracking-tighter;
       // This creates the "tight" logo look from your icon
       letter-spacing: -0.05em;
+      transition: color 0.3s ease;
     }
   }
 
@@ -89,20 +144,88 @@
     @apply hidden md:flex items-center gap-10;
 
     a {
-      @apply text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 transition-all hover:text-[#00FF00];
+      @apply text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 transition-all;
+      
+      &:hover {
+        color: var(--color-accent-green);
+      }
     }
   }
 
   .systemStatus {
     @apply flex items-center gap-3 rounded-full border border-white/5 bg-white/5 px-4 py-1.5;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 
     .statusDot {
-      @apply h-1.5 w-1.5 animate-pulse rounded-full bg-[#00FF00];
-      box-shadow: 0 0 8px #00ff00;
+      @apply h-1.5 w-1.5 animate-pulse rounded-full;
+      background-color: var(--color-accent-green);
+      box-shadow: 0 0 8px var(--color-accent-green);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     span {
-      @apply font-mono text-[10px] font-bold text-[#00FF00];
+      @apply font-mono text-[10px] font-bold;
+      color: var(--color-accent-green);
+      transition: color 0.3s ease;
     }
+  }
+}
+
+// Light mode navbar
+:global(.light) .navbar {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.1);
+
+  .logo {
+    .brandName {
+      @apply text-black;
+    }
+  }
+
+  .navLinks a {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  .systemStatus {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Light mode table cell colors
+:global(.light) {
+  .text-gray-400 {
+    @apply text-gray-600;
+  }
+}
+
+.scanLine {
+  @apply pointer-events-none fixed inset-0 z-0;
+  
+  &::before {
+    @apply absolute inset-0;
+    content: '';
+    background: linear-gradient(
+      180deg,
+      rgba(0, 230, 118, 0) 0%,
+      rgba(0, 230, 118, 0.12) 50%,
+      rgba(0, 230, 118, 0) 100%
+    );
+    height: 100px;
+    animation: scan 4s linear infinite;
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
   }
 }

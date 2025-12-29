@@ -1,7 +1,17 @@
-$color-black: #000000;
-$color-dark-grey: #111111;
-$color-radar-green: #00FF00;
+// Dark mode colors
+$color-bg-main: #1a1a1a;
+$color-bg-card: #242424;
+$color-bg-darker: #0f0f0f;
+$color-radar-green: var(--color-accent-green);
 $color-white: #ffffff;
 $color-text-dim: rgba(255, 255, 255, 0.5);
+
+// Light mode colors
+$color-light-bg-main: #f5f5f5;
+$color-light-bg-card: #ffffff;
+$color-light-bg-accent: #e8e8e8;
+$color-light-radar-green: var(--color-accent-green);
+$color-light-text: #1a1a1a;
+$color-light-text-dim: rgba(0, 0, 0, 0.5);
 
 $font-main: 'Inter', system-ui, sans-serif;

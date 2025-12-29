@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Radar, Settings, Activity } from 'lucide-react';
+import { useThemeStore } from './stores/useThemeStore';
+import { ThemeToggle } from './components/ThemeToggle';
 import styles from './App.module.scss';
 
 const App = () => {
   const [users, setUsers] = useState([]);
+  const { theme } = useThemeStore();
+
+  useEffect(() => {
+    // Apply theme class to body
+    document.body.className = theme;
+  }, [theme]);
 
   useEffect(() => {
     fetch('http://localhost:8080/api/users')
@@ -37,6 +45,7 @@ const App = () => {
               <div className={styles.statusDot} />
               <span>SYS_ACTIVE</span>
             </div>
+            <ThemeToggle />
             <Settings
               size={20}
               className="text-white/20 hover:text-white transition-colors cursor-pointer"
@@ -54,7 +63,7 @@ const App = () => {
         <section className={styles.grid}>
           {/* Main Data Panel */}
           <div className={styles.userCard}>
-            <div className="flex items-center gap-2 mb-8 text-[#00FF00]">
+            <div className="flex items-center gap-2 mb-8" style={{ color: 'var(--color-accent-green)' }}>
               <Activity size={16} />
               <span className="text-xs font-bold uppercase tracking-widest">Active Personnel</span>
             </div>
@@ -70,7 +79,7 @@ const App = () => {
               <tbody>
                 {users.map((user: any) => (
                   <tr key={user.id} className="group hover:bg-white/[0.02]">
-                    <td className="font-mono text-[#00FF00]">[{user.id.toString().padStart(3, '0')}]</td>
+                    <td className="font-mono" style={{ color: 'var(--color-accent-green)' }}>[{user.id.toString().padStart(3, '0')}]</td>
                     <td className="font-bold tracking-tight">{user.name}</td>
                     <td className="text-gray-400">{user.email}</td>
                   </tr>
