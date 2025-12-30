@@ -24,7 +24,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* MIDDLE NAVIGATION */}
           <div className={styles.navLinks}>
             <NavLink to="/journal">Journal</NavLink>
-            <NavLink to="/skills">Skills</NavLink>
+            <NavLink to="/summary">Summary</NavLink>
             <NavLink to="/stats">Stats</NavLink>
             <NavLink to="/settings">Settings</NavLink>
           </div>

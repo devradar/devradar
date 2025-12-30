@@ -43,7 +43,7 @@ export function JournalList({
       loadMore()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInitialized])
+  }, [isInitialized, loadMore])
 
   // Intersection Observer for infinite scroll
   useEffect(() => {

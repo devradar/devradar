@@ -22,7 +22,12 @@ export function useJournal() {
     if (newEntries.length < PAGE_SIZE) {
       setHasMore(false)
     }
-    setEntries((prev) => [...prev, ...newEntries])
+    // Deduplicate by ID - merge new entries with existing ones
+    setEntries((prev) => {
+      const existingIds = new Set(prev.map((e) => e.id))
+      const uniqueNewEntries = newEntries.filter((e) => !existingIds.has(e.id))
+      return [...prev, ...uniqueNewEntries]
+    })
     setPage((p) => p + 1)
     setIsInitialized(true)
   }, [page, categoryFilter, skillNameFilter])
@@ -86,18 +91,12 @@ export function useJournal() {
     (category: string) => {
       setCategoryFilter(category)
       // Reset and reload immediately with new filter
-      const newEntries = storageService.getPaginatedEntries(
-        0,
-        PAGE_SIZE,
-        category === 'all' ? undefined : category,
-        skillNameFilter || undefined
-      )
-      setEntries(newEntries)
-      setPage(1)
-      setHasMore(newEntries.length === PAGE_SIZE)
-      setIsInitialized(true)
+      setIsInitialized(false)
+      setEntries([])
+      setPage(0)
+      setHasMore(true)
     },
-    [skillNameFilter]
+    []
   )
 
   const setSkillName = useCallback(
@@ -108,18 +107,12 @@ export function useJournal() {
         setCategoryFilter('all')
       }
       // Reset and reload immediately with new filter
-      const newEntries = storageService.getPaginatedEntries(
-        0,
-        PAGE_SIZE,
-        skillName ? undefined : categoryFilter === 'all' ? undefined : categoryFilter,
-        skillName || undefined
-      )
-      setEntries(newEntries)
-      setPage(1)
-      setHasMore(newEntries.length === PAGE_SIZE)
-      setIsInitialized(true)
+      setIsInitialized(false)
+      setEntries([])
+      setPage(0)
+      setHasMore(true)
     },
-    [categoryFilter]
+    []
   )
 
   return {

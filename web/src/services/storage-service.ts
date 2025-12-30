@@ -43,10 +43,12 @@ export const storageService = {
     if (skillNameFilter) {
       filtered = filtered.filter((e) => e.skill_name === skillNameFilter)
     }
-    // Sort by created_at DESC (newest first)
-    const sorted = [...filtered].sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    )
+    // Sort by date DESC (newest first), then by skill name alphabetically
+    const sorted = [...filtered].sort((a, b) => {
+      const dateCompare = new Date(b.date).getTime() - new Date(a.date).getTime()
+      if (dateCompare !== 0) return dateCompare
+      return a.skill_name.localeCompare(b.skill_name)
+    })
     const start = page * pageSize
     return sorted.slice(start, start + pageSize)
   },
