@@ -59,7 +59,7 @@ export const SkillsList: React.FC = () => {
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
           <h1 className={styles.title}>
-            <span className={styles.titleAccent}>{'>'}</span> Skills
+            SKILL <span className={styles.titleAccent}>SUMMARY</span>
           </h1>
           <p className={styles.subtitle}>Skill Tracking & Proficiency</p>
         </div>

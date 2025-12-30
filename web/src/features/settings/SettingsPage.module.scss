@@ -1,108 +1,253 @@
-.container {
-  max-width: 800px;
-  margin: 0 auto;
+@use 'tailwindcss';
 
-  h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
-  }
+.container {
+  @apply min-h-screen py-12 px-6;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  @apply flex justify-between items-start mb-12;
+  border-left: 4px solid var(--color-accent-green);
+  padding-left: 1.5rem;
+}
+
+.title {
+  @apply text-5xl md:text-6xl font-black uppercase italic tracking-tighter;
+  color: #ffffff;
+}
+
+:global(.light) .title {
+  color: #1a1a1a;
+}
+
+.titleAccent {
+  color: var(--color-accent-green);
 }
 
 .subtitle {
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
+  @apply text-xs uppercase tracking-widest mt-2;
+  color: rgba(255, 255, 255, 0.5);
 }
 
-.section {
-  margin-bottom: 2rem;
+:global(.light) .subtitle {
+  color: rgba(0, 0, 0, 0.5);
+}
 
-  h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
-  }
+.card {
+  @apply border border-white/5 rounded-sm overflow-hidden mb-8;
+  background-color: #242424;
+  transition: all 0.3s ease;
 
-  p {
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
+  &:hover {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 15px var(--color-accent-green-glow);
   }
+}
+
+:global(.light) .card {
+  background-color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 15px var(--color-accent-green-glow);
+  }
+}
+
+.cardHeader {
+  @apply p-6 pb-4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(.light) .cardHeader {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.cardTitle {
+  @apply text-xl font-bold uppercase tracking-wide;
+  color: #ffffff;
+  margin: 0;
+}
+
+:global(.light) .cardTitle {
+  color: #1a1a1a;
+}
+
+.cardContent {
+  @apply p-6;
+}
+
+.cardDescription {
+  @apply text-sm mb-6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:global(.light) .cardDescription {
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  @apply flex gap-4 flex-wrap;
+}
+
+.actionButton {
+  @apply flex items-center gap-2 px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &.primary {
+    background-color: var(--color-accent-green);
+    color: #000;
+    box-shadow: 0 0 15px var(--color-accent-green-glow);
+
+    &:hover {
+      box-shadow: 0 0 25px var(--color-accent-green-glow);
+    }
+  }
+
+  &.secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: var(--color-accent-green);
+    }
+  }
+
+  &.danger {
+    background-color: rgba(239, 68, 68, 0.8);
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+
+    &:hover {
+      background-color: rgba(239, 68, 68, 1);
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+    }
+  }
+}
+
+:global(.light) .actionButton.secondary {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #1a1a1a;
+  border-color: rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 
 .storageGrid {
-  display: grid;
+  @apply grid gap-4;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
 }
 
 .storageItem {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: var(--secondary-bg);
-  border-radius: 6px;
+  @apply flex items-center gap-3 p-4 rounded-sm;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 10px var(--color-accent-green-glow);
+  }
 
   svg {
-    color: var(--text-secondary);
+    color: var(--color-accent-green);
+  }
+
+  &.total {
+    border-color: var(--color-accent-green);
+    background-color: rgba(var(--color-accent-green-rgb), 0.1);
+    box-shadow: 0 0 10px var(--color-accent-green-glow);
   }
 }
 
-.storageItem.total {
-  border: 2px solid var(--accent-color);
-  background: var(--accent-bg);
+:global(.light) .storageItem {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .label {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
+  @apply text-xs uppercase tracking-widest;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+:global(.light) .label {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .value {
-  font-weight: 600;
-  color: var(--text-color);
+  @apply font-bold uppercase text-sm;
+  color: #ffffff;
   font-family: 'JetBrains Mono', monospace;
 }
 
+:global(.light) .value {
+  color: #1a1a1a;
+}
+
 .infoGrid {
-  display: grid;
+  @apply grid gap-4 mb-6;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
 }
 
 .infoItem {
+  @apply p-4 rounded-sm;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 10px var(--color-accent-green-glow);
+  }
+
   h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 0.25rem;
+    @apply text-sm font-bold uppercase tracking-wide mb-2;
+    color: var(--color-accent-green);
   }
 
   p {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+    @apply text-xs;
+    color: rgba(255, 255, 255, 0.7);
     margin: 0;
   }
 }
 
+:global(.light) .infoItem {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.1);
+
+  p {
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
+
 .warning {
-  padding: 1rem;
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: 6px;
-  color: var(--text-color);
+  @apply p-4 rounded-sm;
+  background-color: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.875rem;
 
   strong {
     color: rgb(245, 158, 11);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
+}
+
+:global(.light) .warning {
+  color: rgba(0, 0, 0, 0.8);
 }
