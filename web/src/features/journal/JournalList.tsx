@@ -37,12 +37,10 @@ export function JournalList({
     openAddDialog(skillNameFilter || undefined)
   }
 
-  // Initial load - runs on mount and when filter changes (isInitialized becomes false)
   useEffect(() => {
     if (!isInitialized) {
       loadMore()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInitialized, loadMore])
 
   // Intersection Observer for infinite scroll

@@ -1,27 +1,40 @@
 import React, { useRef } from 'react'
-import { Download, Upload, Trash2, Database } from 'lucide-react'
+import { Upload, Trash2, Database, FileText, Award } from 'lucide-react'
 import { dataExportService } from '@/utils/dataExport'
 import styles from './SettingsPage.module.scss'
 
 export const SettingsPage: React.FC = () => {
-    const fileInputRef = useRef<HTMLInputElement>(null)
+    const csvJournalInputRef = useRef<HTMLInputElement>(null)
     const storageInfo = dataExportService.getStorageInfo()
 
-    const handleExport = () => {
-        dataExportService.exportAllData()
+    const handleExportJournals = () => {
+        dataExportService.exportJournalsAsCSV()
     }
 
-    const handleImportClick = () => {
-        fileInputRef.current?.click()
+    const handleExportCustomSkills = () => {
+        dataExportService.exportCustomSkillsAsCSV()
     }
 
-    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImportJournalsClick = () => {
+        csvJournalInputRef.current?.click()
+    }
+
+    const handleCsvJournalFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
         if (!file) return
 
-        const success = await dataExportService.importData(file)
+        const confirmed = window.confirm(
+            'Warning: This will REPLACE all your existing journal entries with the data from this CSV file. This action cannot be undone. Continue?'
+        )
+
+        if (!confirmed) {
+            event.target.value = ''
+            return
+        }
+
+        const success = await dataExportService.importJournalsFromCSV(file)
         if (!success) {
-            alert('Failed to import data. Please check the file format.')
+            alert('Failed to import journals. Please check the CSV file format.')
         }
         // Reset the input
         event.target.value = ''
@@ -62,21 +75,35 @@ export const SettingsPage: React.FC = () => {
                 </div>
                 <div className={styles.cardContent}>
                     <p className={styles.cardDescription}>
-                        Your data is stored locally in your browser. Use these tools to backup and restore your
-                        information.
+                        Export your data as CSV files or clear all stored data from your browser.
                     </p>
 
+                    <div className={styles.separator}>CSV Exports</div>
+
                     <div className={styles.actions}>
-                        <button className={`${styles.actionButton} ${styles.primary}`} onClick={handleExport}>
-                            <Download size={16} />
-                            Export Data
+                        <button className={`${styles.actionButton} ${styles.info}`} onClick={handleExportJournals}>
+                            <FileText size={16} />
+                            Export Journals (CSV)
                         </button>
 
-                        <button className={`${styles.actionButton} ${styles.secondary}`} onClick={handleImportClick}>
+                        <button className={`${styles.actionButton} ${styles.info}`} onClick={handleExportCustomSkills}>
+                            <Award size={16} />
+                            Export Custom Skills (CSV)
+                        </button>
+                    </div>
+
+                    <div className={styles.separator}>CSV Imports</div>
+
+                    <div className={styles.actions}>
+                        <button className={`${styles.actionButton} ${styles.warning}`} onClick={handleImportJournalsClick}>
                             <Upload size={16} />
-                            Import Data
+                            Import Journals (CSV)
                         </button>
+                    </div>
 
+                    <div className={styles.separator}>Data Management</div>
+
+                    <div className={styles.actions}>
                         <button className={`${styles.actionButton} ${styles.danger}`} onClick={handleClearData}>
                             <Trash2 size={16} />
                             Clear All Data
@@ -85,10 +112,10 @@ export const SettingsPage: React.FC = () => {
                 </div>
 
                 <input
-                    ref={fileInputRef}
+                    ref={csvJournalInputRef}
                     type="file"
-                    accept=".json"
-                    onChange={handleFileChange}
+                    accept=".csv"
+                    onChange={handleCsvJournalFileChange}
                     style={{ display: 'none' }}
                 />
             </div>

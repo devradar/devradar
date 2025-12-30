@@ -1,4 +1,4 @@
-import { SKILLS_CONFIG } from '@/config/skills-config'
+import { SKILLS } from '@/config/skills'
 import type { Skill } from '@/types'
 
 const STORAGE_KEY = 'devradar_skills'
@@ -19,14 +19,14 @@ function getStorage(): SkillsStorage {
   if (!raw) {
     // Initialize with predefined skills from config on first load
     const storage: SkillsStorage = { items: [], lastId: 0 }
-    SKILLS_CONFIG.forEach((skill) => {
+    SKILLS.forEach((skill) => {
       storage.items.push({
         ...skill,
         is_custom: false,
         activity_count: 0
       })
     })
-    storage.lastId = SKILLS_CONFIG.length
+    storage.lastId = SKILLS.length
     localStorage.setItem(STORAGE_KEY, JSON.stringify(storage))
     return storage
   }
@@ -61,15 +61,12 @@ export const skillsService = {
   },
 
   addCustomSkill(
-    skill: Omit<UserSkill, 'id' | 'created_at' | 'updated_at' | 'is_custom'>
+    skill: Omit<UserSkill, 'id' | 'is_custom'>
   ): UserSkill {
     const storage = getStorage()
-    const now = new Date().toISOString()
     const newSkill: UserSkill = {
       ...skill,
       id: `custom-${storage.lastId + 1}`,
-      created_at: now,
-      updated_at: now,
       is_custom: true
     }
     storage.items.push(newSkill)
@@ -85,8 +82,7 @@ export const skillsService = {
 
     const updated: UserSkill = {
       ...storage.items[index],
-      ...updates,
-      updated_at: new Date().toISOString()
+      ...updates
     }
     storage.items[index] = updated
     setStorage(storage)
@@ -111,8 +107,7 @@ export const skillsService = {
       storage.items[index] = {
         ...storage.items[index],
         activity_count: count,
-        last_practiced: lastPracticed,
-        updated_at: new Date().toISOString()
+        last_practiced: lastPracticed
       }
       setStorage(storage)
     }

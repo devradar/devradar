@@ -219,7 +219,7 @@ vercel --prod
 
 ### Phase 4: Polish
 
-- [ ] Data export/import (YAML)
+- [x] Data export/import (CSV)
 - [x] Dark mode
 - [ ] Responsive design improvements
 - [ ] Keyboard shortcuts

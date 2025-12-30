@@ -133,6 +133,28 @@
       box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
     }
   }
+
+  &.info {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+
+    &:hover {
+      background-color: rgba(59, 130, 246, 0.25);
+      border-color: rgba(59, 130, 246, 0.5);
+    }
+  }
+
+  &.warning {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+
+    &:hover {
+      background-color: rgba(245, 158, 11, 0.25);
+      border-color: rgba(245, 158, 11, 0.5);
+    }
+  }
 }
 
 :global(.light) .actionButton.secondary {
@@ -143,6 +165,38 @@
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
+}
+
+:global(.light) .actionButton.info {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #1a1a1a;
+  border-color: rgba(59, 130, 246, 0.2);
+
+  &:hover {
+    background-color: rgba(59, 130, 246, 0.15);
+  }
+}
+
+:global(.light) .actionButton.warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #1a1a1a;
+  border-color: rgba(245, 158, 11, 0.2);
+
+  &:hover {
+    background-color: rgba(245, 158, 11, 0.15);
+  }
+}
+
+.separator {
+  @apply text-xs uppercase tracking-widest mt-6 mb-4 pb-2;
+  color: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+}
+
+:global(.light) .separator {
+  color: rgba(0, 0, 0, 0.5);
+  border-bottom-color: rgba(0, 0, 0, 0.1);
 }
 
 .storageGrid {

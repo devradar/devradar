@@ -2,6 +2,7 @@ import { Pencil, Trash2 } from 'lucide-react'
 import type { UserActivity } from '@/types'
 import { useJournalStore } from '@/stores/useJournalStore'
 import { ProgressBar } from '@/components/ProgressBar'
+import { LEVEL_LABELS } from '@/config/app-config'
 import styles from './JournalEntry.module.scss'
 
 interface JournalEntryProps {
@@ -9,8 +10,6 @@ interface JournalEntryProps {
   onDelete: (id: string) => void
   onSkillClick?: (skillName: string) => void
 }
-
-const LEVEL_LABELS = ['', 'Novice', 'Beginner', 'Competent', 'Proficient', 'Expert']
 
 export function JournalEntry({ entry, onDelete, onSkillClick }: JournalEntryProps) {
   const { openEditDialog } = useJournalStore()

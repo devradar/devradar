@@ -49,7 +49,7 @@ export function useJournal() {
   }, [categoryFilter, skillNameFilter])
 
   const addEntry = useCallback(
-    (entry: Omit<UserActivity, 'id' | 'created_at' | 'updated_at'>) => {
+    (entry: Omit<UserActivity, 'id'>) => {
       storageService.addEntry(entry)
       refresh()
     },
@@ -57,7 +57,7 @@ export function useJournal() {
   )
 
   const updateEntry = useCallback(
-    (id: string, updates: Partial<Omit<UserActivity, 'id' | 'created_at'>>) => {
+    (id: string, updates: Partial<Omit<UserActivity, 'id'>>) => {
       storageService.updateEntry(id, updates)
       refresh()
     },

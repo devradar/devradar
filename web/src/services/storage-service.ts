@@ -64,14 +64,11 @@ export const storageService = {
     return filtered.length
   },
 
-  addEntry(entry: Omit<UserActivity, 'id' | 'created_at' | 'updated_at'>): UserActivity {
+  addEntry(entry: Omit<UserActivity, 'id'>): UserActivity {
     const storage = getStorage()
-    const now = new Date().toISOString()
     const newEntry: UserActivity = {
       ...entry,
-      id: `local-${storage.lastId + 1}`,
-      created_at: now,
-      updated_at: now
+      id: `local-${storage.lastId + 1}`
     }
     storage.entries.push(newEntry)
     storage.lastId += 1
@@ -81,7 +78,7 @@ export const storageService = {
 
   updateEntry(
     id: string,
-    updates: Partial<Omit<UserActivity, 'id' | 'created_at'>>
+    updates: Partial<Omit<UserActivity, 'id'>>
   ): UserActivity | null {
     const storage = getStorage()
     const index = storage.entries.findIndex((e) => e.id === id)
@@ -89,8 +86,7 @@ export const storageService = {
 
     const updated: UserActivity = {
       ...storage.entries[index],
-      ...updates,
-      updated_at: new Date().toISOString()
+      ...updates
     }
     storage.entries[index] = updated
     setStorage(storage)

@@ -43,6 +43,7 @@ This is a **frontend-only SPA** (Single Page Application) with **no backend**. A
 - **Typing:** NO `any`. Use generic types for data structures.
 - **Folder Structure:** Feature-based grouping (e.g., `/features/skills/SkillCard.tsx`) rather than generic `/components` bin.
 - **LocalStorage Abstraction:** Create custom hooks to abstract LocalStorage operations
+- **Comments:** Write self-documenting code. ONLY use JSDoc for exported functions/components. NO inline comments, section comments, or explanatory comments. Code should be clear without comments.
 
 ### Data Management Patterns
 

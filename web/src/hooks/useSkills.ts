@@ -65,7 +65,7 @@ export function useSkills() {
     (
       skill: Omit<
         UserSkill,
-        'id' | 'created_at' | 'updated_at' | 'is_custom' | 'activity_count' | 'last_practiced'
+        'id' | 'is_custom' | 'activity_count' | 'last_practiced'
       >
     ) => {
       skillsService.addCustomSkill(skill)
@@ -75,7 +75,7 @@ export function useSkills() {
   )
 
   const updateSkill = useCallback(
-    (id: string, updates: Partial<Omit<UserSkill, 'id' | 'created_at' | 'is_custom'>>) => {
+    (id: string, updates: Partial<Omit<UserSkill, 'id' | 'is_custom'>>) => {
       skillsService.updateSkill(id, updates)
       loadSkills()
     },

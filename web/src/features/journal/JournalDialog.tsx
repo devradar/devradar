@@ -2,20 +2,13 @@ import { useState, useMemo, useEffect } from 'react'
 import { X, Calendar } from 'lucide-react'
 import { useJournalStore } from '@/stores/useJournalStore'
 import type { UserActivity } from '@/types'
-import { SKILLS_CONFIG, ACTIVITY_TYPES_CONFIG } from '@/config/skills-config'
+import { SKILLS } from '@/config/skills'
+import { SKILL_LEVEL_DEFINITIONS, ACTIVITY_TYPES_CONFIG } from '@/config/app-config'
 import styles from './JournalDialog.module.scss'
 
-const LEVEL_OPTIONS = [
-  { value: 1, label: 'Novice', description: 'Just starting out' },
-  { value: 2, label: 'Beginner', description: 'Learning the basics' },
-  { value: 3, label: 'Competent', description: 'Can work independently' },
-  { value: 4, label: 'Proficient', description: 'Deep understanding' },
-  { value: 5, label: 'Expert', description: 'Mastery level' }
-]
-
 interface JournalDialogProps {
-  addEntry: (entry: Omit<UserActivity, 'id' | 'created_at' | 'updated_at'>) => void
-  updateEntry: (id: string, updates: Partial<Omit<UserActivity, 'id' | 'created_at'>>) => void
+  addEntry: (entry: Omit<UserActivity, 'id'>) => void
+  updateEntry: (id: string, updates: Partial<Omit<UserActivity, 'id'>>) => void
 }
 
 export function JournalDialog({ addEntry, updateEntry }: JournalDialogProps) {
@@ -44,17 +37,17 @@ export function JournalDialog({ addEntry, updateEntry }: JournalDialogProps) {
   }, [isAddDialogOpen, editingEntry, preselectedSkillName])
 
   const availableCategories = useMemo(() => {
-    const categories = new Set(SKILLS_CONFIG.map((s) => s.category_name))
+    const categories = new Set(SKILLS.map((s) => s.category_name))
     return ['all', ...Array.from(categories).sort()]
   }, [])
 
   const filteredSkills = useMemo(() => {
-    if (skillCategoryFilter === 'all') return SKILLS_CONFIG
-    return SKILLS_CONFIG.filter((s) => s.category_name === skillCategoryFilter)
+    if (skillCategoryFilter === 'all') return SKILLS
+    return SKILLS.filter((s) => s.category_name === skillCategoryFilter)
   }, [skillCategoryFilter])
 
   const selectedSkill = useMemo(() => {
-    return SKILLS_CONFIG.find((s) => s.name === skillName)
+    return SKILLS.find((s) => s.name === skillName)
   }, [skillName])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -206,7 +199,7 @@ export function JournalDialog({ addEntry, updateEntry }: JournalDialogProps) {
                 Your proficiency level *
               </label>
               <div className={styles.levelGrid}>
-                {LEVEL_OPTIONS.map((opt) => (
+                {SKILL_LEVEL_DEFINITIONS.map((opt) => (
                   <div
                     key={opt.value}
                     className={`${styles.levelOption} ${level === opt.value ? styles.levelOptionActive : ''}`}
