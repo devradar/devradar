@@ -72,30 +72,30 @@ Create reusable hooks to manage LocalStorage:
 
 ```typescript
 // hooks/useLocalStorage.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
   // Get from localStorage on mount
   const [value, setValue] = useState<T>(() => {
     try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      const item = window.localStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
     } catch (error) {
-      console.error(`Error reading localStorage key "${key}":`, error);
-      return initialValue;
+      console.error(`Error reading localStorage key "${key}":`, error)
+      return initialValue
     }
-  });
+  })
 
   // Save to localStorage when value changes
   useEffect(() => {
     try {
-      window.localStorage.setItem(key, JSON.stringify(value));
+      window.localStorage.setItem(key, JSON.stringify(value))
     } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error);
+      console.error(`Error setting localStorage key "${key}":`, error)
     }
-  }, [key, value]);
+  }, [key, value])
 
-  return [value, setValue] as const;
+  return [value, setValue] as const
 }
 ```
 
@@ -105,38 +105,36 @@ Build domain-specific hooks on top of `useLocalStorage`:
 
 ```typescript
 // features/skills/useSkills.ts
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 
 export interface Skill {
-  id: string;
-  name: string;
-  category: string;
-  proficiency: number;
-  lastUsed: string;
+  id: string
+  name: string
+  category: string
+  proficiency: number
+  lastUsed: string
 }
 
 export function useSkills() {
-  const [skills, setSkills] = useLocalStorage<Skill[]>('devradar:skills', []);
+  const [skills, setSkills] = useLocalStorage<Skill[]>('devradar:skills', [])
 
   const addSkill = (skill: Omit<Skill, 'id'>) => {
     const newSkill: Skill = {
       ...skill,
-      id: crypto.randomUUID(),
-    };
-    setSkills([...skills, newSkill]);
-  };
+      id: crypto.randomUUID()
+    }
+    setSkills([...skills, newSkill])
+  }
 
   const updateSkill = (id: string, updates: Partial<Skill>) => {
-    setSkills(skills.map(s => 
-      s.id === id ? { ...s, ...updates } : s
-    ));
-  };
+    setSkills(skills.map((s) => (s.id === id ? { ...s, ...updates } : s)))
+  }
 
   const deleteSkill = (id: string) => {
-    setSkills(skills.filter(s => s.id !== id));
-  };
+    setSkills(skills.filter((s) => s.id !== id))
+  }
 
-  return { skills, addSkill, updateSkill, deleteSkill };
+  return { skills, addSkill, updateSkill, deleteSkill }
 }
 ```
 
@@ -222,39 +220,39 @@ export function useExportImport() {
       skills: localStorage.getItem('devradar:skills'),
       diary: localStorage.getItem('devradar:diary'),
       settings: localStorage.getItem('devradar:settings'),
-      exportedAt: new Date().toISOString(),
-    };
+      exportedAt: new Date().toISOString()
+    }
 
     const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: 'application/json',
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `devradar-backup-${Date.now()}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+      type: 'application/json'
+    })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `devradar-backup-${Date.now()}.json`
+    link.click()
+    URL.revokeObjectURL(url)
+  }
 
   const importData = (file: File) => {
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.onload = (e) => {
       try {
-        const data = JSON.parse(e.target?.result as string);
+        const data = JSON.parse(e.target?.result as string)
         Object.entries(data).forEach(([key, value]) => {
           if (key !== 'exportedAt' && value) {
-            localStorage.setItem(key, value as string);
+            localStorage.setItem(key, value as string)
           }
-        });
-        window.location.reload(); // Refresh to load new data
+        })
+        window.location.reload() // Refresh to load new data
       } catch (error) {
-        console.error('Error importing data:', error);
+        console.error('Error importing data:', error)
       }
-    };
-    reader.readAsText(file);
-  };
+    }
+    reader.readAsText(file)
+  }
 
-  return { exportData, importData };
+  return { exportData, importData }
 }
 ```
 
@@ -265,13 +263,13 @@ export function useExportImport() {
 Use a consistent prefix to avoid conflicts:
 
 ```typescript
-const STORAGE_PREFIX = 'devradar:';
+const STORAGE_PREFIX = 'devradar:'
 
 // Good
-localStorage.setItem('devradar:skills', data);
+localStorage.setItem('devradar:skills', data)
 
 // Bad
-localStorage.setItem('skills', data);
+localStorage.setItem('skills', data)
 ```
 
 ### 2. Handle Parse Errors
@@ -280,10 +278,10 @@ Always wrap JSON operations in try-catch:
 
 ```typescript
 try {
-  const data = JSON.parse(localStorage.getItem(key) || '[]');
+  const data = JSON.parse(localStorage.getItem(key) || '[]')
 } catch (error) {
-  console.error('Failed to parse data:', error);
-  return defaultValue;
+  console.error('Failed to parse data:', error)
+  return defaultValue
 }
 ```
 
@@ -294,10 +292,10 @@ Use TypeScript generics for type-safe storage:
 ```typescript
 function getStorageItem<T>(key: string, defaultValue: T): T {
   try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : defaultValue;
+    const item = localStorage.getItem(key)
+    return item ? JSON.parse(item) : defaultValue
   } catch {
-    return defaultValue;
+    return defaultValue
   }
 }
 ```
@@ -317,16 +315,16 @@ Version your data structures for future migrations:
 
 ```typescript
 interface StoredData {
-  version: number;
-  skills: Skill[];
+  version: number
+  skills: Skill[]
 }
 
 function migrateData(data: any): StoredData {
   if (!data.version) {
     // Migrate from v0 to v1
-    return { version: 1, skills: data };
+    return { version: 1, skills: data }
   }
-  return data;
+  return data
 }
 ```
 
@@ -355,7 +353,7 @@ Vite provides fast HMR. If state resets on save:
 ```typescript
 // Preserve state across HMR
 if (import.meta.hot) {
-  import.meta.hot.accept();
+  import.meta.hot.accept()
 }
 ```
 
@@ -371,15 +369,12 @@ Use React DevTools and browser DevTools:
 
 ```typescript
 // Log all localStorage data
-console.log(
-  Object.entries(localStorage)
-    .filter(([key]) => key.startsWith('devradar:'))
-);
+console.log(Object.entries(localStorage).filter(([key]) => key.startsWith('devradar:')))
 
 // Clear all app data
 Object.keys(localStorage)
-  .filter(key => key.startsWith('devradar:'))
-  .forEach(key => localStorage.removeItem(key));
+  .filter((key) => key.startsWith('devradar:'))
+  .forEach((key) => localStorage.removeItem(key))
 ```
 
 ## Performance Optimization
@@ -389,10 +384,7 @@ Object.keys(localStorage)
 Use React memoization for expensive computations:
 
 ```typescript
-const sortedSkills = useMemo(
-  () => skills.sort((a, b) => b.proficiency - a.proficiency),
-  [skills]
-);
+const sortedSkills = useMemo(() => skills.sort((a, b) => b.proficiency - a.proficiency), [skills])
 ```
 
 ### Lazy Loading
@@ -400,7 +392,7 @@ const sortedSkills = useMemo(
 Code-split routes and heavy components:
 
 ```typescript
-const DiaryPage = lazy(() => import('./features/diary/DiaryPage'));
+const DiaryPage = lazy(() => import('./features/diary/DiaryPage'))
 ```
 
 ### Virtual Scrolling
@@ -420,6 +412,7 @@ npm run build
 ```
 
 Deploy `dist/` folder to:
+
 - **Vercel** (recommended)
 - **Netlify**
 - **GitHub Pages**

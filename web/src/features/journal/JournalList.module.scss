@@ -1,4 +1,4 @@
-@use "tailwindcss";
+@use 'tailwindcss';
 
 .container {
   @apply min-h-screen py-12 px-6;
@@ -159,7 +159,7 @@
 
 .loading {
   @apply py-12 text-center flex flex-col items-center gap-3;
-  
+
   p {
     @apply text-sm uppercase tracking-wider;
     color: rgba(255, 255, 255, 0.4);

@@ -1,5 +1,5 @@
 @use './styles/_variables' as *;
-@use "tailwindcss";
+@use 'tailwindcss';
 
 .container {
   @apply min-h-screen text-white;
@@ -42,7 +42,7 @@
   h1 span {
     color: var(--color-accent-green);
   }
-  
+
   p {
     @apply text-gray-600;
   }
@@ -61,14 +61,18 @@
 .userCard {
   @apply border border-white/5 p-8 rounded-sm overflow-x-auto;
   background-color: #242424;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 
   table {
     @apply w-full text-left border-collapse;
 
     th {
       @apply text-gray-500 uppercase text-[10px] tracking-[0.2em] pb-6 border-b border-white/10;
-      transition: color 0.3s ease, border-color 0.3s ease;
+      transition:
+        color 0.3s ease,
+        border-color 0.3s ease;
     }
     td {
       @apply py-5 border-b border-white/5;
@@ -115,7 +119,9 @@
 .navbar {
   @apply sticky top-0 z-50 w-full border-b border-white/10 backdrop-blur-xl;
   background-color: rgba(26, 26, 26, 0.9);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 
   .navContainer {
     @apply mx-auto flex max-w-[1400px] items-center justify-between px-8 py-5;
@@ -129,7 +135,10 @@
       border: 2px solid var(--color-accent-green);
       color: var(--color-accent-green);
       box-shadow: 0 0 10px var(--color-accent-green-glow);
-      transition: border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+      transition:
+        border-color 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease;
     }
 
     .brandName {
@@ -147,14 +156,14 @@
       @apply text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 transition-all;
       position: relative;
       padding-bottom: 0.5rem;
-      
+
       &:hover {
         color: var(--color-accent-green);
       }
 
       &.active {
         color: var(--color-accent-green);
-        
+
         &::after {
           content: '';
           position: absolute;
@@ -170,13 +179,17 @@
 
   .systemStatus {
     @apply flex items-center gap-3 rounded-full border border-white/5 bg-white/5 px-4 py-1.5;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease;
 
     .statusDot {
       @apply h-1.5 w-1.5 animate-pulse rounded-full;
       background-color: var(--color-accent-green);
       box-shadow: 0 0 8px var(--color-accent-green);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
     }
 
     span {
@@ -217,7 +230,7 @@
 
 .scanLine {
   @apply pointer-events-none fixed inset-0 z-0;
-  
+
   &::before {
     @apply absolute inset-0;
     content: '';

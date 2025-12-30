@@ -1,17 +1,19 @@
-# devradar
+# DevRadar
 
 <p align="center">
   <img src="assets/logo-text.png">
   <br>
-  Track and present your skills as developer.
+  Track and present your skills as a developer.
   <br>
-  A client-side only SPA for skill tracking and visualization.
+  A local-first SPA for skill tracking and journaling.
 </p>
 
 [![License](https://badgen.net/badge/license/COPYRIGHT/orange)](LICENSE)
 [![TypeScript](https://badgen.net/badge/code/TypeScript/blue)](https://www.typescriptlang.org/)
 [![React](https://badgen.net/badge/framework/React%2019/blue)](https://react.dev/)
 [![Vite](https://badgen.net/badge/build/Vite/purple)](https://vitejs.dev/)
+
+DevRadar is a frontend-only Single Page Application (SPA) for tracking and managing your development skills and activities. All data is stored locally in your browser's LocalStorage, ensuring your information remains private and accessible offline.
 
 ## 🏗️ Architecture
 
@@ -28,28 +30,26 @@ graph TB
   style LS fill:#ff9900,stroke:#333,color:#fff
 ```
 
-This is a **frontend-only Single Page Application** with no backend. All data is stored locally in the browser's LocalStorage.
+This is a **local-first, frontend-only Single Page Application** with no backend. All data is stored locally in the browser's LocalStorage.
 
 ## 🚀 Tech Stack
 
-- **Build Tool:** Vite
 - **Framework:** React 19+ with TypeScript
-- **State Management:**
-  - Local State: React Hooks (useState, useReducer)
-  - Persistence: LocalStorage with custom hooks
-  - Optional UI State: Zustand
+- **Build Tool:** Vite
 - **Styling:** Tailwind CSS v4 + Shadcn UI + SCSS Modules
+- **State Management:** Zustand & React Hooks
 - **Routing:** React Router 7
-- **Visuals:** Recharts or similar charting libraries
+- **Data Storage:** Browser LocalStorage
 - **Icons:** Lucide React
 
-## 🎯 Project Goals
+## 🎯 Features
 
-1. **Skill Tracking:** Log and categorize your skills with proficiency levels
-2. **Skill Journal:** A "diary" view to log daily activities and link them to specific skills
-3. **Visual Analytics:** Graphical dashboards to visualize competence growth over time
-4. **Local-First:** All data stored client-side - works offline, no server required
-5. **Portable:** Export/import data as JSON for backup and portability
+- **Skill Tracking:** Add, manage, and track your development skills with proficiency levels
+- **Skill Journal:** Log daily activities and associate them with specific skills
+- **Progress Analytics:** Visualize skill development and track progress over time
+- **Local-First:** No backend, no cloud, no accounts. All data stays on your device
+- **Data Portability:** Export and import your data as JSON for backup and portability
+- **Offline Ready:** Works completely offline since there's no server dependency
 
 ## 🛠️ Development Setup
 
@@ -58,6 +58,7 @@ This is a **frontend-only Single Page Application** with no backend. All data is
 This project includes a Dev Container configuration for a consistent development environment.
 
 **Prerequisites:**
+
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Running)
 - [VS Code](https://code.visualstudio.com/)
 - [Remote - Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
@@ -65,6 +66,7 @@ This project includes a Dev Container configuration for a consistent development
 **Quick Start:**
 
 1. **Clone the repo:**
+
    ```bash
    git clone https://github.com/devradar/devradar.git
    cd devradar
@@ -76,6 +78,7 @@ This project includes a Dev Container configuration for a consistent development
    - Or: `Ctrl/Cmd+Shift+P` → "Dev Containers: Reopen in Container"
 
 3. **Start development:**
+
    ```bash
    task dev
    ```
@@ -86,37 +89,43 @@ This project includes a Dev Container configuration for a consistent development
 ### Option 2: Local Development
 
 **Prerequisites:**
+
 - Node.js 20+ (LTS recommended)
 - npm or pnpm
 
 **Quick Start:**
 
-1. **Clone and install:**
+1. **Navigate to the web directory:**
+
    ```bash
-   git clone https://github.com/devradar/devradar.git
-   cd devradar
+   cd web
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
    npm install
    ```
 
-2. **Start development server:**
+3. **Run the development server:**
+
    ```bash
    npm run dev
    ```
 
-3. **Open in browser:**
+4. **Open in browser:**
    - Navigate to `http://localhost:5173`
 
 ## 📋 Available Commands
 
 We use [Task](https://taskfile.dev/) to automate development tasks. All commands can be run from the project root.
 
-| Command         | Description                                              |
-| :-------------- | :------------------------------------------------------- |
-| `task dev`      | Starts the Vite development server (:5173)               |
-| `task build`    | Creates production build in `web/dist`                   |
-| `task preview`  | Preview production build locally                         |
-| `task clean`    | Remove build artifacts and node_modules                  |
-
+| Command        | Description                                |
+| :------------- | :----------------------------------------- |
+| `task dev`     | Starts the Vite development server (:5173) |
+| `task build`   | Creates production build in `web/dist`     |
+| `task preview` | Preview production build locally           |
+| `task clean`   | Remove build artifacts and node_modules    |
 
 ## 🗂️ Project Structure
 
@@ -190,22 +199,26 @@ vercel --prod
 ## 🗺️ Roadmap
 
 ### Phase 1: Foundation ✅
+
 - [x] Set up Vite + React + TypeScript
 - [x] Configure Tailwind CSS
 - [x] Dev Container setup
 
 ### Phase 2: Core Features (In Progress)
+
 - [x] LocalStorage abstraction layer
 - [x] Skill CRUD operations
 - [x] Activity logging
 - [x] Basic routing structure
 
 ### Phase 3: Visualization
+
 - [ ] Skill proficiency charts
 - [ ] Activity timeline
 - [ ] Progress tracking
 
 ### Phase 4: Polish
+
 - [ ] Data export/import (YAML)
 - [x] Dark mode
 - [ ] Responsive design improvements

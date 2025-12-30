@@ -1,4 +1,4 @@
-@use "tailwindcss";
+@use 'tailwindcss';
 
 .card {
   @apply border border-white/5 rounded-sm overflow-hidden;
@@ -96,7 +96,7 @@
 
 .content {
   @apply p-6;
-  
+
   p {
     @apply text-sm leading-relaxed;
     color: rgba(255, 255, 255, 0.8);
