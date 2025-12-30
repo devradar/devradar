@@ -1,7 +1,7 @@
 @use 'tailwindcss';
 
 .container {
-  @apply min-h-screen py-12 px-6;
+  @apply min-h-screen pt-3 pb-12 px-6;
   max-width: 1200px;
   margin: 0 auto;
 }
