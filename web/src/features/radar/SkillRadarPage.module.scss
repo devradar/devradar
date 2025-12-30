@@ -1,0 +1,55 @@
+@use 'tailwindcss';
+
+.container {
+  @apply min-h-screen py-12 px-6;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  border-left: 4px solid var(--color-accent-green);
+  padding-left: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  @apply text-5xl md:text-6xl font-black uppercase italic tracking-tighter;
+  color: #ffffff;
+  margin: 0;
+}
+
+:global(.light) .title {
+  color: #1a1a1a;
+}
+
+.titleAccent {
+  color: var(--color-accent-green);
+  text-shadow: 0 0 20px var(--color-accent-green-glow);
+}
+
+.subtitle {
+  @apply text-base text-gray-400 mt-2 font-mono uppercase tracking-wider;
+}
+
+:global(.light) .subtitle {
+  @apply text-gray-600;
+}
+
+.radarWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 150px);
+  min-height: 600px;
+}
+
+.radar {
+  max-width: 100%;
+  max-height: 100%;
+}

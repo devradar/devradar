@@ -25,6 +25,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className={styles.navLinks}>
             <NavLink to="/journal">Journal</NavLink>
             <NavLink to="/summary">Summary</NavLink>
+            <NavLink to="/radar">Skill Radar</NavLink>
             <NavLink to="/stats">Stats</NavLink>
             <NavLink to="/settings">Settings</NavLink>
           </div>
