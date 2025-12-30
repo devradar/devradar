@@ -2,6 +2,7 @@ import React from 'react';
 import { Edit2, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useJournalStore } from '@/stores/useJournalStore';
+import { ProgressBar } from '@/components/ProgressBar';
 import styles from './SkillCard.module.scss';
 import type { Skill } from '@/types';
 
@@ -58,11 +59,18 @@ export const SkillCard: React.FC<SkillCardProps> = ({ skill, onEdit, onDelete })
         <div className={styles.skillCard} onClick={handleCardClick}>
             <div className={styles.header}>
                 <h3 className={styles.skillName}>{skill.name}</h3>
-                {skill.is_custom && <span className={styles.customBadge}>CUSTOM</span>}
+                <div className={styles.headerRight}>
+                    <span className={styles.category}>{skill.category_name}</span>
+                    {skill.is_custom && <span className={styles.customBadge}>CUSTOM</span>}
+                </div>
             </div>
 
+            {activityCount > 0 && <ProgressBar level={proficiencyLevel} />}
+
             <div className={styles.content}>
-                <div className={styles.category}>{skill.category_name}</div>
+                {skill.description && (
+                    <p className={styles.description}>{skill.description}</p>
+                )}
 
                 <div className={styles.stats}>
                     <div className={styles.stat}>
@@ -78,19 +86,9 @@ export const SkillCard: React.FC<SkillCardProps> = ({ skill, onEdit, onDelete })
                 </div>
 
                 {activityCount > 0 && (
-                    <>
-                        <div className={styles.proficiency}>
-                            {[...Array(5)].map((_, i) => (
-                                <div
-                                    key={i}
-                                    className={`${styles.proficiencyBar} ${i < proficiencyLevel ? styles.active : ''}`}
-                                />
-                            ))}
-                        </div>
-                        <div className={styles.lastPracticed}>
-                            Last: {formatDate(skill.last_practiced)}
-                        </div>
-                    </>
+                    <div className={styles.lastPracticed}>
+                        Last: {formatDate(skill.last_practiced)}
+                    </div>
                 )}
 
                 {skill.is_custom && (

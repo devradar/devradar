@@ -1,6 +1,7 @@
 import { Pencil, Trash2 } from 'lucide-react';
 import type { UserActivity } from '@/types';
 import { useJournalStore } from '@/stores/useJournalStore';
+import { ProgressBar } from '@/components/ProgressBar';
 import styles from './JournalEntry.module.scss';
 
 interface JournalEntryProps {
@@ -23,29 +24,34 @@ export function JournalEntry({ entry, onDelete, onSkillClick }: JournalEntryProp
     return (
         <div className={styles.card}>
             <div className={styles.header}>
-                <div className={styles.badges}>
-                    <span
-                        className={styles.badgeSkill}
-                        onClick={() => onSkillClick?.(entry.skill_name)}
-                        style={{ cursor: onSkillClick ? 'pointer' : 'default' }}
-                    >
-                        {entry.skill_name}
-                    </span>
-                    <span className={styles.badgeCategory}>{entry.skill_category}</span>
-                    <span className={styles.badgeActivity}>{entry.activity_name}</span>
-                    <span className={styles.badgeLevel}>{LEVEL_LABELS[entry.level]}</span>
-                </div>
-                <p className={styles.date}>
-                    {new Date(entry.date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                    })}
-                </p>
+                <h3
+                    className={styles.skillName}
+                    onClick={() => onSkillClick?.(entry.skill_name)}
+                    style={{ cursor: onSkillClick ? 'pointer' : 'default' }}
+                >
+                    {entry.skill_name}
+                </h3>
+                <span className={styles.category}>{entry.skill_category}</span>
             </div>
 
+            <ProgressBar level={entry.level} />
+
             <div className={styles.content}>
-                <p>{entry.description}</p>
+                <div className={styles.meta}>
+                    <div className={styles.badges}>
+                        <span className={styles.badgeActivity}>{entry.activity_name}</span>
+                        <span className={styles.badgeLevel}>{LEVEL_LABELS[entry.level]}</span>
+                    </div>
+                    <p className={styles.date}>
+                        {new Date(entry.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        })}
+                    </p>
+                </div>
+
+                <p className={styles.description}>{entry.description}</p>
             </div>
 
             <div className={styles.footer}>

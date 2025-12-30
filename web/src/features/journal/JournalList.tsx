@@ -141,7 +141,7 @@ export function JournalList({ entries, hasMore, isInitialized, loadMore, deleteE
                 <div className={styles.empty}>
                     <p className={styles.emptyTitle}>No journal entries yet</p>
                     <p className={styles.emptySubtitle}>Start tracking your skills and learning activities</p>
-                    <button className={styles.emptyButton} onClick={openAddDialog}>
+                    <button className={styles.emptyButton} onClick={handleAddEntry}>
                         Create your first entry
                     </button>
                 </div>

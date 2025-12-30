@@ -24,34 +24,40 @@
 
 .header {
   @apply p-6 pb-4;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-:global(.light) .header {
-  border-bottom-color: rgba(0, 0, 0, 0.05);
+.skillName {
+  @apply text-xl font-bold uppercase tracking-wide;
+  color: #ffffff;
+  margin: 0;
+}
+
+:global(.light) .skillName {
+  color: #1a1a1a;
+}
+
+.category {
+  @apply text-xs uppercase tracking-widest font-bold;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:global(.light) .category {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.content {
+  @apply p-6;
+}
+
+.meta {
+  @apply flex justify-between items-start mb-3;
 }
 
 .badges {
-  @apply flex flex-wrap gap-2 mb-2;
-}
-
-.badgeSkill {
-  @apply px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
-  background-color: var(--color-accent-green);
-  color: #000;
-}
-
-.badgeCategory {
-  @apply px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide;
-  background-color: rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-:global(.light) .badgeCategory {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.8);
-  border-color: rgba(0, 0, 0, 0.15);
+  @apply flex flex-wrap gap-2;
 }
 
 .badgeActivity {

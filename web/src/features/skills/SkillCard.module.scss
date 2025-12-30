@@ -25,14 +25,9 @@
 
 .header {
   @apply p-6 pb-4;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-}
-
-:global(.light) .header {
-  border-bottom-color: rgba(0, 0, 0, 0.05);
 }
 
 .skillName {
@@ -45,6 +40,23 @@
   color: #1a1a1a;
 }
 
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: right;
+}
+
+.category {
+  @apply text-xs uppercase tracking-widest font-bold;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: right;
+}
+
+:global(.light) .category {
+  color: rgba(0, 0, 0, 0.5);
+}
+
 .customBadge {
   @apply px-2 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
   background-color: var(--color-accent-green);
@@ -55,13 +67,13 @@
   @apply p-6 pt-4;
 }
 
-.category {
-  @apply mb-4 text-xs uppercase tracking-widest font-bold;
-  color: rgba(255, 255, 255, 0.5);
+.description {
+  @apply text-sm leading-relaxed mb-4;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-:global(.light) .category {
-  color: rgba(0, 0, 0, 0.5);
+:global(.light) .description {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .stats {
@@ -91,30 +103,6 @@
 .statValue {
   @apply text-2xl font-black italic;
   color: var(--color-accent-green);
-}
-
-.proficiency {
-  @apply flex gap-1 mb-3;
-}
-
-.proficiencyBar {
-  flex: 1;
-  height: 4px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
-  transition: background-color 0.2s ease;
-
-  &.active {
-    background-color: var(--color-accent-green);
-  }
-}
-
-:global(.light) .proficiencyBar {
-  background-color: rgba(0, 0, 0, 0.1);
-
-  &.active {
-    background-color: var(--color-accent-green);
-  }
 }
 
 .lastPracticed {
