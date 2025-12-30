@@ -1,0 +1,192 @@
+@use "tailwindcss";
+
+.overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.dialog {
+  @apply w-full max-w-lg rounded-sm border border-white/10;
+  background-color: #1a1a1a;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 30px var(--color-accent-green-glow);
+}
+
+:global(.light) .dialog {
+  background-color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  @apply flex items-center justify-between p-6 pb-4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(.light) .header {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  @apply text-2xl font-black uppercase italic tracking-tight;
+  color: #ffffff;
+}
+
+:global(.light) .title {
+  color: #1a1a1a;
+}
+
+.closeButton {
+  @apply p-2 rounded-full;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+}
+
+:global(.light) .closeButton {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.6);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+}
+
+.content {
+  @apply p-6;
+}
+
+.form {
+  @apply flex flex-col gap-6;
+}
+
+.formGroup {
+  @apply flex flex-col gap-2;
+}
+
+.label {
+  @apply text-xs uppercase tracking-widest font-bold;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+:global(.light) .label {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.input,
+.textarea,
+.select {
+  @apply px-4 py-3 rounded-sm text-sm;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 10px var(--color-accent-green-glow);
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+:global(.light) {
+  .input,
+  .textarea,
+  .select {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
+
+    &:focus {
+      border-color: var(--color-accent-green);
+    }
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.hint {
+  @apply text-xs;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+:global(.light) .hint {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.actions {
+  @apply flex gap-3 pt-6;
+}
+
+.cancelButton {
+  @apply flex-1 px-6 py-3 rounded font-bold uppercase tracking-wider text-sm;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+}
+
+:global(.light) .cancelButton {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.6);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #1a1a1a;
+  }
+}
+
+.submitButton {
+  @apply flex-1 px-6 py-3 rounded font-bold uppercase tracking-wider text-sm;
+  background-color: var(--color-accent-green);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 15px var(--color-accent-green-glow);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 25px var(--color-accent-green-glow);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}

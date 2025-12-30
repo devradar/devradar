@@ -195,10 +195,10 @@ vercel --prod
 - [x] Dev Container setup
 
 ### Phase 2: Core Features (In Progress)
-- [ ] LocalStorage abstraction layer
-- [ ] Skill CRUD operations
+- [x] LocalStorage abstraction layer
+- [x] Skill CRUD operations
 - [x] Activity logging
-- [ ] Basic routing structure
+- [x] Basic routing structure
 
 ### Phase 3: Visualization
 - [ ] Skill proficiency charts

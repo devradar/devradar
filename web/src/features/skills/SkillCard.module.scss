@@ -1,0 +1,190 @@
+@use "tailwindcss";
+
+.skillCard {
+  @apply border border-white/5 rounded-sm overflow-hidden;
+  background-color: #242424;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 15px var(--color-accent-green-glow);
+  }
+}
+
+:global(.light) .skillCard {
+  background-color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 15px var(--color-accent-green-glow);
+  }
+}
+
+.header {
+  @apply p-6 pb-4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+:global(.light) .header {
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+.skillName {
+  @apply text-xl font-bold uppercase tracking-wide;
+  color: #ffffff;
+  margin: 0;
+}
+
+:global(.light) .skillName {
+  color: #1a1a1a;
+}
+
+.customBadge {
+  @apply px-2 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+  background-color: var(--color-accent-green);
+  color: #000;
+}
+
+.content {
+  @apply p-6 pt-4;
+}
+
+.category {
+  @apply mb-4 text-xs uppercase tracking-widest font-bold;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:global(.light) .category {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.stats {
+  @apply flex gap-6 mb-4 pb-4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+:global(.light) .stats {
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statLabel {
+  @apply text-xs uppercase tracking-widest font-bold;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+:global(.light) .statLabel {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.statValue {
+  @apply text-2xl font-black italic;
+  color: var(--color-accent-green);
+}
+
+.proficiency {
+  @apply flex gap-1 mb-3;
+}
+
+.proficiencyBar {
+  flex: 1;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+
+  &.active {
+    background-color: var(--color-accent-green);
+  }
+}
+
+:global(.light) .proficiencyBar {
+  background-color: rgba(0, 0, 0, 0.1);
+
+  &.active {
+    background-color: var(--color-accent-green);
+  }
+}
+
+.lastPracticed {
+  @apply text-xs uppercase tracking-wider;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 1rem;
+}
+
+:global(.light) .lastPracticed {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.actions {
+  @apply flex gap-2 pt-4;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+:global(.light) .actions {
+  border-top-color: rgba(0, 0, 0, 0.05);
+}
+
+.actionBtn {
+  @apply flex items-center gap-2 px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-accent-green);
+    color: var(--color-accent-green);
+  }
+
+  &.delete:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+  }
+}
+
+:global(.light) .actionBtn {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.7);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: var(--color-accent-green);
+    color: var(--color-accent-green);
+  }
+
+  &.delete:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+  }
+}
+:global(.light) .actionBtn {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.7);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: var(--color-accent-green);
+    color: var(--color-accent-green);
+  }
+
+  &.delete:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+  }
+}

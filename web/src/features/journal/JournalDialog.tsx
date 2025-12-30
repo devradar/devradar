@@ -19,7 +19,7 @@ interface JournalDialogProps {
 }
 
 export function JournalDialog({ addEntry, updateEntry }: JournalDialogProps) {
-    const { isAddDialogOpen, editingEntry, closeAddDialog } = useJournalStore();
+    const { isAddDialogOpen, editingEntry, preselectedSkillName, closeAddDialog } = useJournalStore();
 
     const [skillName, setSkillName] = useState(editingEntry?.skill_name || '');
     const [skillCategoryFilter, setSkillCategoryFilter] = useState(editingEntry?.skill_category || 'all');
@@ -32,14 +32,14 @@ export function JournalDialog({ addEntry, updateEntry }: JournalDialogProps) {
     useEffect(() => {
         if (isAddDialogOpen) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
-            setSkillName(editingEntry?.skill_name || '');
+            setSkillName(editingEntry?.skill_name || preselectedSkillName || '');
             setSkillCategoryFilter(editingEntry?.skill_category || 'all');
             setActivityName(editingEntry?.activity_name || '');
             setLevel(editingEntry?.level || 3);
             setDescription(editingEntry?.description || '');
             setDate(editingEntry?.date || new Date().toISOString().split('T')[0]);
         }
-    }, [isAddDialogOpen, editingEntry]);
+    }, [isAddDialogOpen, editingEntry, preselectedSkillName]);
 
     const availableCategories = useMemo(() => {
         const categories = new Set(SKILLS_CONFIG.map(s => s.category_name));

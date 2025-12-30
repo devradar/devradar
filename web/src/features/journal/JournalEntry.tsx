@@ -36,7 +36,7 @@ export function JournalEntry({ entry, onDelete, onSkillClick }: JournalEntryProp
                     <span className={styles.badgeLevel}>{LEVEL_LABELS[entry.level]}</span>
                 </div>
                 <p className={styles.date}>
-                    {new Date(entry.created_at).toLocaleDateString('en-US', {
+                    {new Date(entry.date).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric'

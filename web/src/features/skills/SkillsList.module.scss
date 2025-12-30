@@ -1,0 +1,224 @@
+@use "tailwindcss";
+
+.container {
+  @apply min-h-screen py-12 px-6;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  @apply flex justify-between items-start mb-12;
+  border-left: 4px solid var(--color-accent-green);
+  padding-left: 1.5rem;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  @apply text-5xl md:text-6xl font-black uppercase italic tracking-tighter;
+  color: #ffffff;
+  margin: 0;
+}
+
+:global(.light) .title {
+  color: #1a1a1a;
+}
+
+.titleAccent {
+  color: var(--color-accent-green);
+}
+
+.subtitle {
+  @apply text-xs uppercase tracking-widest mt-2;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:global(.light) .subtitle {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.addButton {
+  @apply flex items-center gap-2 px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm;
+  background-color: var(--color-accent-green);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 15px var(--color-accent-green-glow);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px var(--color-accent-green-glow);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.stats {
+  @apply mb-8 p-6 rounded-sm border border-white/5;
+  background-color: rgba(255, 255, 255, 0.03);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 2rem;
+}
+
+:global(.light) .stats {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.statLabel {
+  @apply text-xs uppercase tracking-widest font-bold;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:global(.light) .statLabel {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.statValue {
+  @apply text-4xl font-black italic;
+  color: var(--color-accent-green);
+}
+
+.filterBar {
+  @apply mb-8 p-6 rounded-sm border border-white/5;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+:global(.light) .filterBar {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.filterLabel {
+  @apply flex items-center gap-2 mb-4 text-xs uppercase tracking-widest font-bold;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:global(.light) .filterLabel {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.filterButtons {
+  @apply flex flex-wrap gap-2;
+}
+
+.filterButton {
+  @apply px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &.active {
+    background-color: var(--color-accent-green);
+    color: #000;
+    border-color: var(--color-accent-green);
+  }
+}
+
+:global(.light) .filterButton {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.6);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.8);
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  &.active {
+    background-color: var(--color-accent-green);
+    color: #000;
+    border-color: var(--color-accent-green);
+  }
+}
+
+.section {
+  margin-bottom: 3rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sectionTitle {
+  @apply text-3xl font-black uppercase italic tracking-tight mb-6;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-left: 3px solid var(--color-accent-green);
+  padding-left: 1rem;
+  margin: 0 0 1.5rem 0;
+}
+
+:global(.light) .sectionTitle {
+  color: #1a1a1a;
+}
+
+.count {
+  @apply text-lg font-normal;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:global(.light) .count {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.empty {
+  @apply text-center py-16 px-8;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+:global(.light) .empty {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.emptyIcon {
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.emptyText {
+  @apply text-lg font-bold uppercase tracking-wider mb-2;
+}
+
+.emptyHint {
+  @apply text-xs uppercase tracking-widest;
+  opacity: 0.7;
+}
+
+.loading {
+  @apply flex justify-center items-center py-16;
+  color: var(--color-accent-green);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}

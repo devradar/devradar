@@ -74,11 +74,18 @@ export function useJournal() {
 
     const setCategory = useCallback((category: string) => {
         setCategoryFilter(category);
-        setPage(0);
-        setEntries([]);
-        setHasMore(true);
-        setIsInitialized(false);
-    }, []);
+        // Reset and reload immediately with new filter
+        const newEntries = storageService.getPaginatedEntries(
+            0,
+            PAGE_SIZE,
+            category === 'all' ? undefined : category,
+            skillNameFilter || undefined
+        );
+        setEntries(newEntries);
+        setPage(1);
+        setHasMore(newEntries.length === PAGE_SIZE);
+        setIsInitialized(true);
+    }, [skillNameFilter]);
 
     const setSkillName = useCallback((skillName: string | null) => {
         setSkillNameFilter(skillName);
@@ -86,11 +93,18 @@ export function useJournal() {
             // Reset category filter to 'all' when filtering by skill
             setCategoryFilter('all');
         }
-        setPage(0);
-        setEntries([]);
-        setHasMore(true);
-        setIsInitialized(false);
-    }, []);
+        // Reset and reload immediately with new filter
+        const newEntries = storageService.getPaginatedEntries(
+            0,
+            PAGE_SIZE,
+            skillName ? undefined : categoryFilter === 'all' ? undefined : categoryFilter,
+            skillName || undefined
+        );
+        setEntries(newEntries);
+        setPage(1);
+        setHasMore(newEntries.length === PAGE_SIZE);
+        setIsInitialized(true);
+    }, [categoryFilter]);
 
     return {
         entries,

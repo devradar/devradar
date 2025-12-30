@@ -5,9 +5,10 @@ interface JournalStore {
     // Dialog state
     isAddDialogOpen: boolean;
     editingEntry: UserActivity | null;
+    preselectedSkillName: string | null;
 
     // Actions
-    openAddDialog: () => void;
+    openAddDialog: (skillName?: string) => void;
     closeAddDialog: () => void;
     openEditDialog: (entry: UserActivity) => void;
     closeEditDialog: () => void;
@@ -16,9 +17,10 @@ interface JournalStore {
 export const useJournalStore = create<JournalStore>((set) => ({
     isAddDialogOpen: false,
     editingEntry: null,
+    preselectedSkillName: null,
 
-    openAddDialog: () => set({ isAddDialogOpen: true, editingEntry: null }),
-    closeAddDialog: () => set({ isAddDialogOpen: false }),
-    openEditDialog: (entry) => set({ isAddDialogOpen: true, editingEntry: entry }),
-    closeEditDialog: () => set({ isAddDialogOpen: false, editingEntry: null }),
+    openAddDialog: (skillName?: string) => set({ isAddDialogOpen: true, editingEntry: null, preselectedSkillName: skillName || null }),
+    closeAddDialog: () => set({ isAddDialogOpen: false, preselectedSkillName: null }),
+    openEditDialog: (entry) => set({ isAddDialogOpen: true, editingEntry: entry, preselectedSkillName: null }),
+    closeEditDialog: () => set({ isAddDialogOpen: false, editingEntry: null, preselectedSkillName: null }),
 }));

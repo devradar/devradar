@@ -22,6 +22,10 @@ export function JournalList({ entries, hasMore, isInitialized, loadMore, deleteE
     const { openAddDialog } = useJournalStore();
     const observerTarget = useRef<HTMLDivElement>(null);
 
+    const handleAddEntry = () => {
+        openAddDialog(skillNameFilter || undefined);
+    };
+
     // Initial load - runs on mount and when filter changes (isInitialized becomes false)
     useEffect(() => {
         if (!isInitialized) {
@@ -62,7 +66,7 @@ export function JournalList({ entries, hasMore, isInitialized, loadMore, deleteE
                     </h1>
                     <p className={styles.subtitle}>Track your learning journey</p>
                 </div>
-                <button className={styles.addButton} onClick={openAddDialog}>
+                <button className={styles.addButton} onClick={handleAddEntry}>
                     <Plus size={20} strokeWidth={3} />
                     <span>New Entry</span>
                 </button>

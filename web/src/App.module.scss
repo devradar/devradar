@@ -145,9 +145,25 @@
 
     a {
       @apply text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 transition-all;
+      position: relative;
+      padding-bottom: 0.5rem;
       
       &:hover {
         color: var(--color-accent-green);
+      }
+
+      &.active {
+        color: var(--color-accent-green);
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--color-accent-green);
+        }
       }
     }
   }
